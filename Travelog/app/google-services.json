@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "477673007751",
+    "project_id": "travelog-62e3f",
+    "storage_bucket": "travelog-62e3f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477673007751:android:fe0dcd587cdaabc7346622",
+        "android_client_info": {
+          "package_name": "com.thequietz.travelog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "477673007751-6i0ju83k4tesehsr60g9kqfngrfg5rkp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6-fFLTO5ifAh2hhUjdvV1LaprygidTIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "477673007751-6i0ju83k4tesehsr60g9kqfngrfg5rkp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
