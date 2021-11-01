@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "정적 분석 중"
+
+./gradlew ktlintCheck detekt
+
+status=$?
+
+if [ "$status" = 0 ] ; then
+    echo "이슈 없음"
+    exit 0
+else
+    echo 1>&2 "이슈 있음"
+    exit 1
+fi
