@@ -5,11 +5,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:7.0.2"
+        classpath "com.android.tools.build:gradle:7.0.3"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
         classpath 'com.google.gms:google-services:4.3.10'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+
+        // Androidx Navigation
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.4.0-beta01"
+
+        // Hilt
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.28-alpha'
     }
 }
 
@@ -20,6 +24,7 @@ plugins {
 
 subprojects {
     apply plugin: "org.jlleitschuh.gradle.ktlint"
+    apply plugin: 'dagger.hilt.android.plugin'
 
     detekt {
         toolVersion = "1.18.1"
