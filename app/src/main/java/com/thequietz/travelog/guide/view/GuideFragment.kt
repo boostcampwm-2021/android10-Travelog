@@ -8,10 +8,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentGuideBinding
+import com.thequietz.travelog.guide.viewmodel.GuideViewModel
+
+private const val TAG = "AREA_LIST"
 
 class GuideFragment : Fragment() {
     private var _binding: FragmentGuideBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var viewModel: GuideViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
