@@ -7,14 +7,15 @@ import retrofit2.http.Query
 
 interface TravelAPI {
     @GET("areaBasedList")
-    suspend fun loadAreaList(
-        @Query("numOfRows") num: Int = 10,
-        @Query("pageNo") page: Int = 1,
-        @Query("MobileOS") os: String = "AND",
+    fun loadAreaList(
+        @Query("numOfRows") num: String = "10",
+        @Query("pageNo") page: String = "1",
+        @Query("MobileOS") os: String = "ETC",
         @Query("MobileApp") app: String = "Travelog",
         @Query("ServiceKey") serviceKey: String,
         @Query("listYN") isList: String = "Y",
-        @Query("arrange") arrange: String = "B",
-        @Query("areaCode") code: Int,
+        @Query("arrange") arrange: String = "P",
+        @Query("_type") responseType: String = "json",
+        @Query("areaCode") code: String,
     ): Call<GuideResponse>
 }
