@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.thequietz.travelog.guide.viewmodel.GuideViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/rl_guide_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/ib_guide_item"
+            android:layout_width="105dp"
+            android:layout_height="105dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="8dp"
+            android:background="?android:selectableItemBackground"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tv_guide_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/ib_guide_item"
+            android:layout_alignTop="@id/ib_guide_item"
+            android:layout_alignEnd="@id/ib_guide_item"
+            android:layout_alignBottom="@id/ib_guide_item"
+            android:gravity="center"
+            android:textSize="24sp"
+            tools:text="@string/tv_guide_item" />
+
+    </RelativeLayout>
+</layout>
