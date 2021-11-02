@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Travelog</string>
+
+    <!-- Bottom Navigation Menu - menu_bottom_navigation.xml -->
+    <string name="menu_guide">가이드</string>
+    <string name="menu_menu">메뉴</string>
+    <string name="menu_record">기록</string>
+    <string name="menu_schedule">일정</string>
+    <string name="tv_guide">가이드 화면</string>
+    <string name="tv_record">기록 화면</string>
+    <string name="tv_schedule">일정 화면</string>
+    <string name="tv_menu">메뉴 화면</string>
+
 </resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/guideFragment"
+        android:enabled="true"
+        android:title="@string/menu_guide"/>
+    <item
+        android:id="@+id/scheduleFragment"
+        android:enabled="true"
+        android:title="@string/menu_schedule"/>
+    <item
+        android:id="@+id/recordFragment"
+        android:enabled="true"
+        android:title="@string/menu_record"/>
+    <item
+        android:id="@+id/menuFragment"
+        android:enabled="true"
+        android:title="@string/menu_menu"/>
+</menu>
