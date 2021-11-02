@@ -1,4 +1,4 @@
-package com.thequietz.travelog.guide
+package com.thequietz.travelog.guide.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
