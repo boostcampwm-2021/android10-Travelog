@@ -10,6 +10,8 @@
     <string name="tv_record">기록 화면</string>
     <string name="tv_schedule">일정 화면</string>
     <string name="tv_menu">메뉴 화면</string>
+    <string name="btn_search">검색</string>
+    <string name="tv_search">여행정보 검색 화면</string>
 
     <!-- Schedule Select Fragment fragment_schedule_select.xml -->
     <string name="tv_travel_name">여행 이름</string>

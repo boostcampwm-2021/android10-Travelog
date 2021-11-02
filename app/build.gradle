@@ -7,6 +7,9 @@ plugins {
     id 'kotlin-android-extensions'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
 android {
     compileSdk 31
 
@@ -18,6 +21,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "TOUR_API_KEY", properties["tour_api_key"]
     }
 
     buildTypes {
