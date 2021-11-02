@@ -13,7 +13,7 @@ class GuideAdapter(private val areaList: List<GuideModel>) :
     RecyclerView.Adapter<GuideAdapter.ViewHolder>() {
     class ViewHolder(val binding: ItemRecyclerGuideBinding) : RecyclerView.ViewHolder(binding.root)
 
-    private lateinit var binding: ItemRecyclerGuideBinding;
+    private lateinit var binding: ItemRecyclerGuideBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         binding = DataBindingUtil.inflate(
