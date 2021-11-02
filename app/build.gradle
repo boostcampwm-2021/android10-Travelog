@@ -76,4 +76,7 @@ dependencies {
     // Hilt
     implementation "com.google.dagger:hilt-android:2.36"
     kapt "com.google.dagger:hilt-android-compiler:2.36"
+
+    // Date Range Picker
+    implementation 'com.andrewjapar.rangedatepicker:rangedatepicker:0.2.1'
 }
