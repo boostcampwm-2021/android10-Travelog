@@ -1,6 +1,5 @@
 package com.thequietz.travelog.guide.repository
 
-import android.util.Log
 import com.thequietz.travelog.BuildConfig
 import com.thequietz.travelog.data.TravelAPI
 import com.thequietz.travelog.guide.model.GuideModel

@@ -8,7 +8,7 @@ import com.thequietz.travelog.guide.model.GuideModel
 import com.thequietz.travelog.guide.repository.GuideRepository
 import kotlinx.coroutines.launch
 
-class GuideViewModel: ViewModel() {
+class GuideViewModel : ViewModel() {
     private var _areaList = MutableLiveData<List<GuideModel>>()
     val areaList: LiveData<List<GuideModel>> = _areaList
 

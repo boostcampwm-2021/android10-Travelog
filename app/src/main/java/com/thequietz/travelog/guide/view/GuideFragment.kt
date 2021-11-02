@@ -1,11 +1,13 @@
 package com.thequietz.travelog.guide.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentGuideBinding
 import com.thequietz.travelog.guide.viewmodel.GuideViewModel
@@ -17,6 +19,9 @@ class GuideFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: GuideViewModel
+    private lateinit var adapter: GuideAdapter;
+    private lateinit var mContext: Context;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
