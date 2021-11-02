@@ -19,8 +19,8 @@ class GuideFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: GuideViewModel
-    private lateinit var adapter: GuideAdapter;
-    private lateinit var mContext: Context;
+    private lateinit var adapter: GuideAdapter
+    private lateinit var mContext: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
