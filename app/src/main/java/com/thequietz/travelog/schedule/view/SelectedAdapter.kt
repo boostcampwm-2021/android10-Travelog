@@ -38,7 +38,7 @@ class SelectedAdapter(
     }
 
     override fun getItemCount(): Int {
-        return selectedDataList.size;
+        return selectedDataList.size
     }
 
     interface OnItemClickListener {

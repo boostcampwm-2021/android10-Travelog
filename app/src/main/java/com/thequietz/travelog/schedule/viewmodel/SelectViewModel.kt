@@ -13,7 +13,7 @@ class SelectViewModel : ViewModel() {
     private var _areaList = MutableLiveData<List<SelectModel>>()
     val areaList: LiveData<List<SelectModel>> = _areaList
 
-    private var _selectedList = MutableLiveData<MutableList<SelectedData>>();
+    private var _selectedList = MutableLiveData<MutableList<SelectedData>>()
     val selectedDataList: LiveData<MutableList<SelectedData>> = _selectedList
 
     private val repository = SelectRepository()
