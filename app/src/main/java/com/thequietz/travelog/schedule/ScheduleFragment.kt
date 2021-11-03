@@ -23,8 +23,25 @@ class ScheduleFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_schedule, container, false)
+        val adapter = ScheduleRecyclerAdapter()
+        binding.rvSchedule.adapter = adapter
+        subscribeUi(adapter)
+
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.btnAdd.setOnClickListener {
+            // TODO: 여행 지역 선택화면으로 연결
+        }
+    }
+
+    private fun subscribeUi(adapter: ScheduleRecyclerAdapter) {
+        viewModel.schedules.observe(viewLifecycleOwner) { schedules ->
+            adapter.submitList(schedules)
+        }
     }
 }
