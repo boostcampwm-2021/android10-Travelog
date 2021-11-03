@@ -2,7 +2,6 @@ package com.thequietz.travelog.schedule.view
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,24 +46,28 @@ class SelectFragment : Fragment() {
                 return@observe
             }
 
-            selectAdapter = SelectAdapter(it, object : SelectAdapter.OnItemClickListener {
-                override fun onItemClick(view: View, position: Int) {
-                    view.alpha = 0.7F
-                    viewModel.addSelectedList(position, it[position])
+            selectAdapter = SelectAdapter(
+                it,
+                object : SelectAdapter.OnItemClickListener {
+                    override fun onItemClick(view: View, position: Int) {
+                        view.alpha = 0.7F
+                        viewModel.addSelectedList(position, it[position])
+                    }
                 }
-
-            })
+            )
             binding.rvSelectSearch.layoutManager = GridLayoutManager(mContext, 2)
             binding.rvSelectSearch.adapter = selectAdapter
         })
 
         viewModel.selectedDataList.observe(viewLifecycleOwner, {
-            selectedAdapter = SelectedAdapter(it, object: SelectedAdapter.OnItemClickListener {
-                override fun onItemClick(view: View, position: Int) {
-                    viewModel.removeSelectedList(position)
+            selectedAdapter = SelectedAdapter(
+                it,
+                object : SelectedAdapter.OnItemClickListener {
+                    override fun onItemClick(view: View, position: Int) {
+                        viewModel.removeSelectedList(position)
+                    }
                 }
-
-            })
+            )
             binding.rlSelectItem.layoutManager =
                 LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
             binding.rlSelectItem.adapter = selectedAdapter
