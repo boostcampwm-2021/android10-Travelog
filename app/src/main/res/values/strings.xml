@@ -11,4 +11,8 @@
     <string name="tv_schedule">일정 화면</string>
     <string name="tv_menu">메뉴 화면</string>
 
+    <!-- Schedule Select Fragment fragment_schedule_select.xml -->
+    <string name="tv_travel_name">여행 이름</string>
+    <string name="tv_select_date">날짜 선택</string>
+
 </resources>
