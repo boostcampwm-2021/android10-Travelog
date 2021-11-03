@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:layout_marginHorizontal="20dp"
@@ -12,21 +13,21 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
-        android:text="여행 이름"
         android:textColor="#000000"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.25" />
+        app:layout_constraintWidth_percent="0.25"
+        tools:text="여행 이름" />
 
     <TextView
         android:id="@+id/tv_dest_desc"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
-        android:text="여행지"
+        android:text="@string/tv_dest_desc_schedule"
         android:textColor="#000000"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/tv_schedule_desc"
@@ -40,20 +41,20 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
-        android:text="여행지 목록 텍스트"
         android:textColor="#000000"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/tv_schedule_desc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_dest_desc"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="여행지 목록 텍스트" />
 
     <TextView
         android:id="@+id/tv_schedule_desc"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
-        android:text="여행 일정"
+        android:text="@string/tv_schedule_desc"
         android:textColor="#000000"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -67,12 +68,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
-        android:text="00.00.00 ~ 00.00.00"
         android:textColor="#000000"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_schedule_desc"
-        app:layout_constraintTop_toBottomOf="@id/tv_dest_desc" />
+        app:layout_constraintTop_toBottomOf="@id/tv_dest_desc"
+        tools:text="21.01.01 ~ 21.01.02" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
