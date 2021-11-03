@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/guideFragment"
-        android:name="com.thequietz.travelog.guide.view.GuideFragment"
+        android:name="com.thequietz.travelog.schedule.view.SelectFragment"
         android:label="GuideFragment"
-        tools:layout="@layout/fragment_guide" />
+        tools:layout="@layout/fragment_select" />
     <fragment
         android:id="@+id/scheduleFragment"
-        android:name="com.thequietz.travelog.schedule.ScheduleFragment"
+        android:name="com.thequietz.travelog.schedule.view.ScheduleFragment"
         android:label="ScheduleFragment"
         tools:layout="@layout/fragment_schedule" />
     <fragment
