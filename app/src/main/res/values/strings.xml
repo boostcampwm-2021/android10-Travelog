@@ -21,6 +21,7 @@
     <string name="btn_search">검색</string>
     <string name="tv_search">여행정보 검색 화면</string>
     <string name="tv_guide_item">서울</string>
+    <string name="tv_item_selected">강릉</string>
 
     <!-- Schedule Select Fragment fragment_schedule_select.xml -->
     <string name="tv_travel_name">여행 이름</string>
