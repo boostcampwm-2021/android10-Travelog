@@ -1,3 +1,13 @@
 package com.thequietz.travelog.schedule
 
-data class Schedule(val id: Int, val name: String, val place: List<String>, val date: String)
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "Schedule")
+data class Schedule(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val name: String = "",
+    val place: List<String> = listOf(),
+    val date: String = ""
+)
