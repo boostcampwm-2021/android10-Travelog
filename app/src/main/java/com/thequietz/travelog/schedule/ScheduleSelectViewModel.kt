@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.thequietz.travelog.data.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
