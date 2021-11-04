@@ -2,7 +2,10 @@ package com.thequietz.travelog.data
 
 import android.content.Context
 import android.util.Log
+import com.thequietz.travelog.ApiFactory
 import com.thequietz.travelog.data.db.dao.ScheduleDao
+import com.thequietz.travelog.guide.Place
+import com.thequietz.travelog.guide.RecommendPlace
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import dagger.Module
 import dagger.Provides
@@ -24,9 +27,28 @@ object RepositoryModule {
     }
 }
 
-interface Repository
+interface Repository {
+    suspend fun loadAllPlaceData(cityName: String = "서"): List<Place>
+    suspend fun loadRecommendPlaceData(areaCode: String = "1", sigungucode: String = "10"): List<RecommendPlace>
+}
 
-class RepositoryImpl : Repository
+class RepositoryImpl : Repository {
+    private val TourApi = ApiFactory.createTourApi()
+    private val NewApi = ApiFactory.createNewApi()
+
+    override suspend fun loadAllPlaceData(cityName: String): List<Place> {
+        val result = NewApi.requestAllPlace(cityName)
+        return result.data
+    }
+
+    override suspend fun loadRecommendPlaceData(
+        areaCode: String,
+        sigunguCode: String
+    ): List<RecommendPlace> {
+        val res = TourApi.requestRecommendPlace(areaCode, sigunguCode).response.body.items.item
+        return res
+    }
+}
 
 @Singleton
 class ScheduleRepository @Inject constructor(

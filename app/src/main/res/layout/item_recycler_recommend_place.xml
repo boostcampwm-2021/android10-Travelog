@@ -1,39 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:paddingEnd="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <ImageView
-        android:layout_width="130dp"
-        android:layout_height="150dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/img_item_recommend_place"
-        android:layout_marginStart="10dp"
-        />
-    <TextView
+
+    <data>
+        <variable
+            name="item"
+            type="com.thequietz.travelog.guide.RecommendPlace" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="제주"
-        android:textColor="@color/black"
-        android:textSize="30dp"
-        app:layout_constraintEnd_toEndOf="@id/img_item_recommend_place"
-        app:layout_constraintBottom_toBottomOf="@id/img_item_recommend_place"
-        android:layout_marginBottom="35dp"
-        android:layout_marginEnd="10dp"
-        android:id="@+id/tv_item_recommend_place_title"
-        />
-    <TextView
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/img_item_recommend_place"
-        app:layout_constraintEnd_toEndOf="@id/img_item_recommend_place"
-        tools:text="dfdfdfdfdfdfdfffffffffffffffffffff"
-        android:maxLines="3"
-        android:ellipsize="end"
-        app:layout_constraintBottom_toBottomOf="@id/img_item_recommend_place"
-        android:id="@+id/tv_item_recommend_place_description"
-        />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:paddingEnd="5dp">
+
+        <ImageView
+            android:layout_width="130dp"
+            android:layout_height="150dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/img_item_recommend_place"
+            app:setImage="@{item.url}"
+            android:scaleType="fitXY"
+            android:layout_marginStart="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@{item.name}"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@id/img_item_recommend_place"
+            app:layout_constraintBottom_toBottomOf="@id/img_item_recommend_place"
+            android:layout_marginBottom="35dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/tv_item_recommend_place_title" />
+
+        <TextView
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/img_item_recommend_place"
+            app:layout_constraintEnd_toEndOf="@id/img_item_recommend_place"
+            tools:text="dfdfdfdfdfdfdfffffffffffffffffffff"
+            android:text="@{item.description}"
+            android:textColor="@color/white"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textSize="10sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_recommend_place_title"
+            android:id="@+id/tv_item_recommend_place_description" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
