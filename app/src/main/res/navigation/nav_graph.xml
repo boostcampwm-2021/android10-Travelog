@@ -45,9 +45,10 @@
         android:id="@+id/scheduleSelectFragment"
         android:name="com.thequietz.travelog.schedule.view.ScheduleSelectFragment"
         android:label="ScheduleSelectFragment">
-    <argument
-        android:name="PlaceString"
-        app:argType="string" />
+        <argument
+            android:name="PlaceString"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/specificGuideFragment"
         android:name="com.thequietz.travelog.guide.SpecificGuideFragment"
@@ -62,14 +63,14 @@
     <fragment
         android:id="@+id/otherInfoFragment"
         android:name="com.thequietz.travelog.guide.OtherInfoFragment"
-        android:label="OtherInfoFragment" >
+        android:label="OtherInfoFragment">
         <argument
             android:name="item"
             app:argType="com.thequietz.travelog.guide.Place" />
         <action
             android:id="@+id/action_otherInfoFragment_to_specificGuideFragment"
+            app:destination="@id/specificGuideFragment"
             app:popUpTo="@id/specificGuideFragment"
-            app:popUpToInclusive="true"
-            app:destination="@id/specificGuideFragment" />
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

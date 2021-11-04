@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.FragmentType
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.ItemRecyclerPlaceAllBinding
+import com.thequietz.travelog.guide.view.GuideFragmentDirections
 
 class AllPlaceAdapter(val type: FragmentType) : androidx.recyclerview.widget.ListAdapter<Place, AllPlaceAdapter.AllPlaceViewHolder>(
     diffUtil
