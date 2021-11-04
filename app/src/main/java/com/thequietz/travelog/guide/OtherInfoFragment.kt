@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentOtherInfoBinding
@@ -29,6 +31,7 @@ class OtherInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_other_info, container, false)
+
         return binding.root
     }
 
@@ -61,6 +64,7 @@ class OtherInfoFragment : Fragment() {
                 it?.let { festivalAdapter.submitList(it) }
             })
         }
+        initToolbar()
     }
     private fun initToolbar() {
         with(activity as AppCompatActivity) {
@@ -68,6 +72,11 @@ class OtherInfoFragment : Fragment() {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setDisplayShowTitleEnabled(false)
             supportActionBar?.setHomeAsUpIndicator(R.drawable.img_leftarrow)
+        }
+        binding.tbOtherInfo.setNavigationOnClickListener {
+            val action = OtherInfoFragmentDirections
+                .actionOtherInfoFragmentToSpecificGuideFragment(otherViewModel.currentPlace.value!!)
+            findNavController().navigate(action)
         }
     }
 }

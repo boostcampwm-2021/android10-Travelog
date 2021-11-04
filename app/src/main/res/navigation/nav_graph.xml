@@ -66,5 +66,10 @@
         <argument
             android:name="item"
             app:argType="com.thequietz.travelog.guide.Place" />
+        <action
+            android:id="@+id/action_otherInfoFragment_to_specificGuideFragment"
+            app:popUpTo="@id/specificGuideFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/specificGuideFragment" />
     </fragment>
 </navigation>

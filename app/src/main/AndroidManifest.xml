@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true">
         android:usesNonSdkApi="true"
-        android:theme="@style/Theme.Travelog">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".MainActivity"
             android:exported="true">

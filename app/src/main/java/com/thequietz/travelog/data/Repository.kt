@@ -1,9 +1,7 @@
 package com.thequietz.travelog.data
 
 import android.content.Context
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import com.thequietz.travelog.ApiFactory
 import com.thequietz.travelog.data.db.dao.ScheduleDao
 import com.thequietz.travelog.getTodayDate
@@ -82,7 +80,6 @@ class RepositoryImpl : Repository {
         return res
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun loadFestivalData(areaCode: String): List<RecommendPlace> {
         val res = TourApi.requestFestival(getTodayDate(), areaCode).response.body.items.item
         return res
