@@ -16,22 +16,22 @@ class GuideViewModel @Inject constructor(
     private val repository: Repository
 ) : ViewModel() {
 
-    private val _allPlaceList = MutableLiveData<List<Place>>()
-    val allPlaceList: LiveData<List<Place>> = _allPlaceList
+    private val _allDoSiList = MutableLiveData<List<Place>>()
+    val allDoSiList: LiveData<List<Place>> = _allDoSiList
 
     private val _allRecommendPlaceList = MutableLiveData<List<RecommendPlace>>()
     val allRecommendPlaceList: LiveData<List<RecommendPlace>> = _allRecommendPlaceList
 
-    fun setAllPlaceData() {
+    fun initAllDoSiData() {
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO) {
-                repository.loadAllPlaceData()
+                repository.loadAllDoSi()
             }
-            _allPlaceList.value = res
+            _allDoSiList.value = res
         }
     }
 
-    fun setRecommendPlaceData() {
+    fun initRecommendPlaceData() {
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO) {
                 repository.loadRecommendPlaceData()

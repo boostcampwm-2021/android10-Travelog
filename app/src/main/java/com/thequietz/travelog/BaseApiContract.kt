@@ -15,7 +15,16 @@ interface BaseApiContract {
     }
 
     interface PlaceListApi {
-        @GET("/dev/{id}")
-        suspend fun requestAllPlace(@Path("id") id: String): AllPlaceResponse
+        @GET("/dev")
+        suspend fun requestAll(): AllPlaceResponse
+
+        @GET("/dev/guide")
+        suspend fun requestALLDoSi(): AllPlaceResponse
+
+        @GET("/dev/code/{code}")
+        suspend fun requestDoSiByCode(@Path("code") code: String): AllPlaceResponse
+
+        @GET("/dev/search/{keyword}")
+        suspend fun requestAllByKeyword(@Path("keyword") keyword: String): AllPlaceResponse
     }
 }

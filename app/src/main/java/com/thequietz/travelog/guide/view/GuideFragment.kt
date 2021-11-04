@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.thequietz.travelog.FragmentType
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentGuideBinding
 import com.thequietz.travelog.guide.AllPlaceAdapter
@@ -39,7 +40,7 @@ class GuideFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        allPlaceAdapter = AllPlaceAdapter()
+        allPlaceAdapter = AllPlaceAdapter(FragmentType.DOSI)
         recommendPlaceAdapter = RecommendPlaceAdapter()
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
@@ -47,9 +48,9 @@ class GuideFragment : Fragment() {
             rvPlaceAll.adapter = allPlaceAdapter
             rvRecommendPlace.adapter = recommendPlaceAdapter
         }
-        guideViewModel.setAllPlaceData()
-        guideViewModel.setRecommendPlaceData()
-        guideViewModel.allPlaceList.observe(viewLifecycleOwner, { it ->
+        guideViewModel.initAllDoSiData()
+        // guideViewModel.initRecommendPlaceData()
+        guideViewModel.allDoSiList.observe(viewLifecycleOwner, { it ->
             it?.let { allPlaceAdapter.submitList(it) }
         })
         guideViewModel.allRecommendPlaceList.observe(viewLifecycleOwner, { it ->

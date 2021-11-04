@@ -28,18 +28,16 @@ object RepositoryModule {
 }
 
 interface Repository {
-    suspend fun loadAllPlaceData(cityName: String = "서"): List<Place>
     suspend fun loadRecommendPlaceData(areaCode: String = "1", sigungucode: String = "10"): List<RecommendPlace>
+    suspend fun loadAllPlaceData(): List<Place>
+    suspend fun loadAllDoSi(): List<Place>
+    suspend fun loadDoSiByCode(code: String = "3"): List<Place>
+    suspend fun loadDoSiByKeyword(keyword: String = "서"): List<Place>
 }
 
 class RepositoryImpl : Repository {
     private val TourApi = ApiFactory.createTourApi()
-    private val NewApi = ApiFactory.createNewApi()
-
-    override suspend fun loadAllPlaceData(cityName: String): List<Place> {
-        val result = NewApi.requestAllPlace(cityName)
-        return result.data
-    }
+    private val PlaceListApi = ApiFactory.createPlaceListApi()
 
     override suspend fun loadRecommendPlaceData(
         areaCode: String,
@@ -47,6 +45,26 @@ class RepositoryImpl : Repository {
     ): List<RecommendPlace> {
         val res = TourApi.requestRecommendPlace(areaCode, sigunguCode).response.body.items.item
         return res
+    }
+
+    override suspend fun loadAllPlaceData(): List<Place> {
+        val result = PlaceListApi.requestAll()
+        return result.data
+    }
+
+    override suspend fun loadAllDoSi(): List<Place> {
+        val result = PlaceListApi.requestALLDoSi()
+        return result.data
+    }
+
+    override suspend fun loadDoSiByCode(code: String): List<Place> {
+        val result = PlaceListApi.requestDoSiByCode(code)
+        return result.data
+    }
+
+    override suspend fun loadDoSiByKeyword(keyword: String): List<Place> {
+        val result = PlaceListApi.requestAllByKeyword(keyword)
+        return result.data
     }
 }
 

@@ -2,13 +2,16 @@ package com.thequietz.travelog.guide
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.thequietz.travelog.FragmentType
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.ItemRecyclerPlaceAllBinding
 
-class AllPlaceAdapter : androidx.recyclerview.widget.ListAdapter<Place, AllPlaceAdapter.AllPlaceViewHolder>(
+class AllPlaceAdapter(val type: FragmentType) : androidx.recyclerview.widget.ListAdapter<Place, AllPlaceAdapter.AllPlaceViewHolder>(
     diffUtil
 ) {
 
@@ -23,13 +26,25 @@ class AllPlaceAdapter : androidx.recyclerview.widget.ListAdapter<Place, AllPlace
     }
 
     override fun onBindViewHolder(holder: AllPlaceViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), type)
     }
 
     class AllPlaceViewHolder(val binding: ItemRecyclerPlaceAllBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Place?) {
+        fun bind(item: Place?, type: FragmentType) {
             binding.item = item
             binding.executePendingBindings()
+            itemView.setOnClickListener {
+                when (type) {
+                    FragmentType.DOSI -> {
+                        val action = GuideFragmentDirections
+                            .actionGuideFragmentToSpecificGuideFragment(item!!)
+                        it.findNavController().navigate(action)
+                    }
+                    FragmentType.SPECIFIC -> {
+                        Toast.makeText(itemView.context, "specific~~", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     }
 
