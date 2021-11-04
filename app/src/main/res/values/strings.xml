@@ -17,6 +17,8 @@
     <string name="btn_add_schedule">+ 새 일정 추가</string>
     <string name="tv_dest_desc_schedule">여행지</string>
     <string name="tv_schedule_desc">여행 일정</string>
+    <string name="tv_recommend_place">추천 여행지역</string>
+    <string name="tv_place_all">여행지역 전체 보기</string>
 
     <!-- Schedule Select Fragment fragment_schedule_select.xml -->
     <string name="btn_search">다음</string>
