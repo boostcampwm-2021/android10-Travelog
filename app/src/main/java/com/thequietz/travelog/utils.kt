@@ -16,3 +16,6 @@ fun loadImage(imageView: ImageView, url: String?) {
         imageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
     }
 }
+enum class FragmentType {
+    DOSI, SPECIFIC
+}

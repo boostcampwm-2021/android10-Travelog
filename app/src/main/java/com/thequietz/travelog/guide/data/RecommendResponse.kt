@@ -14,3 +14,8 @@ data class rBody(
 data class rItems(
     @SerializedName("item") val item: List<RecommendPlace>
 )
+data class RecommendPlace(
+    @SerializedName("title") val name: String = "",
+    @SerializedName("firstimage") val url: String = "",
+    @SerializedName("addr1") val description: String = ""
+)
