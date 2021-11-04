@@ -34,6 +34,8 @@
     <!-- Schedule Select Fragment fragment_schedule_select.xml -->
     <string name="tv_travel_name">여행 이름</string>
     <string name="tv_select_date">날짜 선택</string>
+    <string name="et_put_travel_name">여행 이름을 입력하세요</string>
+    <string name="btn_next">다음</string>
     <string name="tv_no_schedule">아직 여행 일정이 없어요!\n새 일정을 추가해 보세요!</string>
 
     <string name="tv_noData">해당 데이터가 없습니다</string>
