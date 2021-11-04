@@ -1,6 +1,7 @@
 package com.thequietz.travelog.schedule.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,9 +28,7 @@ class ScheduleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_schedule, container, false)
-        val adapter = ScheduleRecyclerAdapter()
-        binding.rvSchedule.adapter = adapter
-        subscribeUi(adapter)
+        initRecyclerView()
 
         return binding.root
     }
@@ -40,11 +39,30 @@ class ScheduleFragment : Fragment() {
         binding.btnAdd.setOnClickListener {
             val action = ScheduleFragmentDirections.actionScheduleFragmentToSchedulePlaceFragment()
             it.findNavController().navigate(action)
+            viewModel.createSchedule()
         }
+    }
+
+    private fun initRecyclerView() {
+        val adapter = ScheduleRecyclerAdapter(
+            {
+                // TODO: 세부 일정 설정 화면 Navigation 연결
+            },
+            {
+                Log.d("Loaded Data", it.toString())
+                viewModel.deleteSchedule(it)
+            }
+        )
+        binding.rvSchedule.adapter = adapter
+        subscribeUi(adapter)
     }
 
     private fun subscribeUi(adapter: ScheduleRecyclerAdapter) {
         viewModel.schedules.observe(viewLifecycleOwner) { schedules ->
+            if (schedules.isNullOrEmpty())
+                binding.tvNoSchedule.visibility = View.VISIBLE
+            else
+                binding.tvNoSchedule.visibility = View.INVISIBLE
             adapter.submitList(schedules)
         }
     }

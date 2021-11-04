@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.databinding.ItemRecyclerScheduleBinding
 import com.thequietz.travelog.schedule.model.ScheduleModel
 
-class ScheduleRecyclerAdapter : ListAdapter<ScheduleModel, RecyclerView.ViewHolder>(diffUtil) {
+class ScheduleRecyclerAdapter(
+    val onClick: (Int) -> (Unit),
+    val onDelete: (Int) -> (Unit)
+) : ListAdapter<ScheduleModel, RecyclerView.ViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ScheduleViewHolder(
