@@ -6,22 +6,22 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.R
-import com.thequietz.travelog.databinding.ItemRecyclerSelectedBinding
-import com.thequietz.travelog.schedule.model.SelectedData
+import com.thequietz.travelog.databinding.ItemRecyclerSchedulePlaceSelectedBinding
+import com.thequietz.travelog.schedule.model.PlaceSelected
 
-class SelectedAdapter(
-    private val selectedDataList: List<SelectedData>,
+class SchedulePlaceSelectedAdapter(
+    private val placeSelectedList: List<PlaceSelected>,
     private val clickListener: OnItemClickListener,
-) : RecyclerView.Adapter<SelectedAdapter.ViewHolder>() {
-    class ViewHolder(val binding: ItemRecyclerSelectedBinding) :
+) : RecyclerView.Adapter<SchedulePlaceSelectedAdapter.ViewHolder>() {
+    class ViewHolder(val binding: ItemRecyclerSchedulePlaceSelectedBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    private lateinit var binding: ItemRecyclerSelectedBinding
+    private lateinit var binding: ItemRecyclerSchedulePlaceSelectedBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         binding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.item_recycler_selected,
+            R.layout.item_recycler_schedule_place_selected,
             parent,
             false
         )
@@ -30,7 +30,7 @@ class SelectedAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.let {
-            it.btnSelectedItem.text = selectedDataList[position].value
+            it.btnSelectedItem.text = placeSelectedList[position].value
             it.btnSelectedItem.setOnClickListener { v ->
                 clickListener.onItemClick(v, position)
             }
@@ -38,7 +38,7 @@ class SelectedAdapter(
     }
 
     override fun getItemCount(): Int {
-        return selectedDataList.size
+        return placeSelectedList.size
     }
 
     interface OnItemClickListener {

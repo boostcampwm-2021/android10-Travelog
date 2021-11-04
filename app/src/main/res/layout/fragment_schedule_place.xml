@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingHorizontal="16dp"
-        tools:context=".schedule.view.SelectFragment">
+        tools:context=".schedule.view.SchedulePlaceFragment">
 
         <EditText
             android:id="@+id/et_search"
@@ -16,18 +16,19 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:background="@color/et_search"
+            android:drawableEnd="@drawable/ic_search"
             android:importantForAutofill="no"
             android:inputType="text"
             android:singleLine="true"
             app:layout_constraintBottom_toTopOf="@id/tv_search"
-            app:layout_constraintEnd_toStartOf="@id/btn_search"
+            app:layout_constraintEnd_toStartOf="@id/btn_select_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <Button
-            android:id="@+id/btn_search"
+            android:id="@+id/btn_select_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -62,7 +63,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_search"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:listitem="@layout/item_recycler_selected" />
+            tools:listitem="@layout/item_recycler_schedule_place_selected" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_select_search"
@@ -74,7 +75,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rl_select_item"
-            tools:listitem="@layout/item_recycler_select" />
+            tools:listitem="@layout/item_recycler_schedule_place" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

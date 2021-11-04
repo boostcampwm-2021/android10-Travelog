@@ -2,7 +2,7 @@ package com.thequietz.travelog.schedule.model
 
 import com.google.gson.annotations.SerializedName
 
-data class SelectModel(
+data class PlaceModel(
     @SerializedName("firstimage")
     var thumbnail: String,
 
@@ -19,12 +19,12 @@ data class SelectModel(
     val cityName: String,
 )
 
-data class SelectResponse(
+data class PlaceResponse(
     @SerializedName("data")
-    val data: List<SelectModel>,
+    val data: List<PlaceModel>,
 )
 
-data class SelectedData(
+data class PlaceSelected(
     val index: Int,
     val value: String,
 )
