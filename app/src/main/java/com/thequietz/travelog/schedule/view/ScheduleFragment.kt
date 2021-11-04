@@ -27,9 +27,7 @@ class ScheduleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_schedule, container, false)
-        val adapter = ScheduleRecyclerAdapter()
-        binding.rvSchedule.adapter = adapter
-        subscribeUi(adapter)
+        initRecyclerView()
 
         return binding.root
     }
@@ -43,14 +41,26 @@ class ScheduleFragment : Fragment() {
         }
     }
 
+    private fun initRecyclerView() {
+        val adapter = ScheduleRecyclerAdapter(
+            {
+                // TODO: 세부 일정 설정 화면 Navigation 연결
+            },
+            {
+                viewModel.deleteSchedule(it)
+            }
+        )
+        binding.rvSchedule.adapter = adapter
+        subscribeUi(adapter)
+    }
+
     private fun subscribeUi(adapter: ScheduleRecyclerAdapter) {
         viewModel.schedules.observe(viewLifecycleOwner) { schedules ->
-            if (schedules.isEmpty())
+            if (schedules.isNullOrEmpty())
                 binding.tvNoSchedule.visibility = View.VISIBLE
-            else {
+            else
                 binding.tvNoSchedule.visibility = View.INVISIBLE
-                adapter.submitList(schedules)
-            }
+            adapter.submitList(schedules)
         }
     }
 }
