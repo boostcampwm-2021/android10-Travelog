@@ -26,4 +26,8 @@ class ScheduleSelectViewModel @Inject internal constructor(
         _startDate.postValue(startDate)
         _endDate.postValue(endDate)
     }
+
+    fun setTravelName(name: String) {
+        _travelName.postValue(name)
+    }
 }

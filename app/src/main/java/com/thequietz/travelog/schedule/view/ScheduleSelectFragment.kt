@@ -1,6 +1,8 @@
 package com.thequietz.travelog.schedule.view
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +29,7 @@ class ScheduleSelectFragment : Fragment() {
     ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_select, container, false)
+        initEditText()
         initDatePicker()
         return binding.root
     }
@@ -35,6 +38,20 @@ class ScheduleSelectFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = scheduleSelectViewModel
+    }
+
+    private fun initEditText() {
+        binding.etTravelName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                scheduleSelectViewModel.setTravelName(p0.toString())
+            }
+        })
     }
 
     private fun initDatePicker() {
