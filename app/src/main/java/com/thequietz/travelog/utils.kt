@@ -2,9 +2,7 @@ package com.thequietz.travelog
 
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.os.Build
 import android.widget.ImageView
-import androidx.annotation.RequiresApi
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -25,7 +23,6 @@ fun loadImage(imageView: ImageView, url: String?) {
         imageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
     }
 }
-@RequiresApi(Build.VERSION_CODES.O)
 fun getTodayDate(): String {
     val time = System.currentTimeMillis()
     val date = Date(time)
