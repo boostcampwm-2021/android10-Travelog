@@ -28,6 +28,15 @@ class OtherViewModel @Inject constructor(
     private val _currentPlace = MutableLiveData<Place>()
     val currentPlace: LiveData<Place> = _currentPlace
 
+    private val _vacationSpotList4 = MutableLiveData<List<RecommendPlace>>()
+    val vacationSpotList4: LiveData<List<RecommendPlace>> = _vacationSpotList4
+
+    private val _foodList4 = MutableLiveData<List<RecommendPlace>>()
+    val foodList4: LiveData<List<RecommendPlace>> = _foodList4
+
+    private val _festivalList4 = MutableLiveData<List<RecommendPlace>>()
+    val festivalList4: LiveData<List<RecommendPlace>> = _festivalList4
+
     fun initCurrenetItem(item: Place) {
         _currentPlace.value = item
     }
@@ -38,6 +47,7 @@ class OtherViewModel @Inject constructor(
                 repository.loadVacationSpotData(currentPlace.value!!.areaCode)
             }
             _vacationSpotList.value = res
+            _vacationSpotList4.value = res.subList(0, 4)
         }
     }
 
@@ -47,6 +57,7 @@ class OtherViewModel @Inject constructor(
                 repository.loadFoodData(currentPlace.value!!.areaCode)
             }
             _foodList.value = res
+            _foodList4.value = res.subList(0, 4)
         }
     }
 
@@ -56,6 +67,7 @@ class OtherViewModel @Inject constructor(
                 repository.loadFestivalData(currentPlace.value!!.areaCode)
             }
             _festivalList.value = res
+            _festivalList4.value = res.subList(0, 4)
         }
     }
 }
