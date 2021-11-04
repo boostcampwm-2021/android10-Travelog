@@ -1,8 +1,9 @@
 package com.thequietz.travelog.data
 
 import android.content.Context
+import android.util.Log
 import com.thequietz.travelog.data.db.dao.ScheduleDao
-import com.thequietz.travelog.schedule.Schedule
+import com.thequietz.travelog.schedule.model.ScheduleModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,13 +35,14 @@ class ScheduleRepository @Inject constructor(
 ) {
     fun loadSchedules() = scheduleDao.loadAllSchedules()
 
-    fun createSchedules(schedule: Schedule) {
+    fun createSchedules(schedule: ScheduleModel) {
         coroutineScope.launch { scheduleDao.insert(schedule) }
     }
 
     fun deleteSchedule(id: Int) {
         coroutineScope.launch {
             val data = scheduleDao.loadScheduleById(id)
+            Log.d("Loaded Data", data[0].name)
 
             if (!data.isNullOrEmpty())
                 scheduleDao.delete(data[0])

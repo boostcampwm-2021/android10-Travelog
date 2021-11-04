@@ -1,5 +1,6 @@
 package com.thequietz.travelog.schedule.adapter
 
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.databinding.ItemRecyclerScheduleBinding
@@ -28,12 +29,14 @@ class ScheduleViewHolder(
 
             btnRemove.setOnClickListener {
                 val adapter = bindingAdapter as ScheduleRecyclerAdapter
+                Log.d("Loaded Data", "ok")
                 id?.let { adapter.onDelete(it) }
             }
         }
     }
 
     fun bind(item: ScheduleModel) {
+        id = item.id
         binding.apply {
             schedule = item
             executePendingBindings()

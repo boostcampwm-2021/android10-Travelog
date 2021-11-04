@@ -25,7 +25,7 @@ class ScheduleViewModel @Inject internal constructor(
     fun createSchedule() {
         // 임시 스케줄 생성
         repository.createSchedules(
-            Schedule(
+            ScheduleModel(
                 name = "Sample",
                 place = listOf("Place 1", "Place 2"),
                 date = "2021.01.01 ~ 2021.01.02"

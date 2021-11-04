@@ -1,6 +1,7 @@
 package com.thequietz.travelog.schedule.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +39,7 @@ class ScheduleFragment : Fragment() {
         binding.btnAdd.setOnClickListener {
             val action = ScheduleFragmentDirections.actionScheduleFragmentToSchedulePlaceFragment()
             it.findNavController().navigate(action)
+            viewModel.createSchedule()
         }
     }
 
@@ -47,6 +49,7 @@ class ScheduleFragment : Fragment() {
                 // TODO: 세부 일정 설정 화면 Navigation 연결
             },
             {
+                Log.d("Loaded Data", it.toString())
                 viewModel.deleteSchedule(it)
             }
         )
