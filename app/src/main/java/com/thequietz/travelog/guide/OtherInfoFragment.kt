@@ -54,17 +54,18 @@ class OtherInfoFragment : Fragment() {
             initVacationSpotData()
             initFoodData()
             initFestivalData()
-            vacationSpotList.observe(viewLifecycleOwner, { it ->
+            vacationSpotList4.observe(viewLifecycleOwner, { it ->
                 it?.let { vacationAdapter.submitList(it) }
             })
-            foodList.observe(viewLifecycleOwner, { it ->
+            foodList4.observe(viewLifecycleOwner, { it ->
                 it?.let { foodAdapter.submitList(it) }
             })
-            festivalList.observe(viewLifecycleOwner, { it ->
+            festivalList4.observe(viewLifecycleOwner, { it ->
                 it?.let { festivalAdapter.submitList(it) }
             })
         }
         initToolbar()
+        setClickListener()
     }
     private fun initToolbar() {
         with(activity as AppCompatActivity) {
@@ -73,10 +74,29 @@ class OtherInfoFragment : Fragment() {
             supportActionBar?.setDisplayShowTitleEnabled(false)
             supportActionBar?.setHomeAsUpIndicator(R.drawable.img_leftarrow)
         }
-        binding.tbOtherInfo.setNavigationOnClickListener {
-            val action = OtherInfoFragmentDirections
-                .actionOtherInfoFragmentToSpecificGuideFragment(otherViewModel.currentPlace.value!!)
-            findNavController().navigate(action)
+    }
+    private fun setClickListener() {
+        with(binding) {
+            tvVacationSpotMore.setOnClickListener {
+                viewModel!!.vacationSpotList.observe(viewLifecycleOwner, { it ->
+                    it?.let { vacationAdapter.submitList(it) }
+                })
+            }
+            tvFoodMore.setOnClickListener {
+                viewModel!!.foodList.observe(viewLifecycleOwner, { it ->
+                    it?.let { foodAdapter.submitList(it) }
+                })
+            }
+            tvFestivalMore.setOnClickListener {
+                viewModel!!.festivalList.observe(viewLifecycleOwner, { it ->
+                    it?.let { festivalAdapter.submitList(it) }
+                })
+            }
+            tbOtherInfo.setNavigationOnClickListener {
+                val action = OtherInfoFragmentDirections
+                    .actionOtherInfoFragmentToSpecificGuideFragment(otherViewModel.currentPlace.value!!)
+                findNavController().navigate(action)
+            }
         }
     }
 }
