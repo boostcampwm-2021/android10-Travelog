@@ -1,4 +1,4 @@
-package com.thequietz.travelog.schedule
+package com.thequietz.travelog.schedule.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleSelectBinding
+import com.thequietz.travelog.schedule.viewmodel.ScheduleSelectViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import java.util.Locale

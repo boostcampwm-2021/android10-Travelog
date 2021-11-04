@@ -1,4 +1,4 @@
-package com.thequietz.travelog.schedule
+package com.thequietz.travelog.schedule.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

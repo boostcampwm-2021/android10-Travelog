@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/scheduleSelectFragment"
-        android:name="com.thequietz.travelog.schedule.ScheduleSelectFragment"
+        android:name="com.thequietz.travelog.schedule.view.ScheduleSelectFragment"
         android:label="ScheduleSelectFragment" >
         <argument
             android:name="PlaceString"
