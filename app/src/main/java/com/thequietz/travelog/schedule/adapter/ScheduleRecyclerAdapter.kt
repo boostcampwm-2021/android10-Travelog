@@ -1,4 +1,4 @@
-package com.thequietz.travelog.schedule
+package com.thequietz.travelog.schedule.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.databinding.ItemRecyclerScheduleBinding
+import com.thequietz.travelog.schedule.Schedule
+import com.thequietz.travelog.schedule.ScheduleViewHolder
 
 class ScheduleRecyclerAdapter : ListAdapter<Schedule, RecyclerView.ViewHolder>(diffUtil) {
 

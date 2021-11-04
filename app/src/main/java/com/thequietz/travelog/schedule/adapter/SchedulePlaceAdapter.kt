@@ -7,22 +7,23 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thequietz.travelog.R
-import com.thequietz.travelog.databinding.ItemRecyclerSelectBinding
-import com.thequietz.travelog.schedule.model.SelectModel
+import com.thequietz.travelog.databinding.ItemRecyclerSchedulePlaceBinding
+import com.thequietz.travelog.schedule.model.PlaceModel
 
-class SelectAdapter(
-    private val areaList: List<SelectModel>,
+class SchedulePlaceAdapter(
+    private val placeList: List<PlaceModel>,
     private val listener: OnItemClickListener
 ) :
-    RecyclerView.Adapter<SelectAdapter.ViewHolder>() {
-    class ViewHolder(val binding: ItemRecyclerSelectBinding) : RecyclerView.ViewHolder(binding.root)
+    RecyclerView.Adapter<SchedulePlaceAdapter.ViewHolder>() {
+    class ViewHolder(val binding: ItemRecyclerSchedulePlaceBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-    private lateinit var binding: ItemRecyclerSelectBinding
+    private lateinit var binding: ItemRecyclerSchedulePlaceBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         binding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.item_recycler_select,
+            R.layout.item_recycler_schedule_place,
             parent,
             false
         )
@@ -32,12 +33,12 @@ class SelectAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.binding.let {
-            it.tvGuideItem.text = areaList[position].cityName
+            it.tvGuideItem.text = placeList[position].cityName
             it.ibGuideItem.setOnClickListener { v ->
                 listener.onItemClick(v, position)
             }
             Glide.with(it.ibGuideItem)
-                .load(areaList[position].thumbnail)
+                .load(placeList[position].thumbnail)
                 .centerCrop()
                 .override(it.ibGuideItem.measuredWidth, it.ibGuideItem.measuredHeight)
                 .into(it.ibGuideItem)
@@ -45,7 +46,7 @@ class SelectAdapter(
     }
 
     override fun getItemCount(): Int {
-        return areaList.size
+        return placeList.size
     }
 
     interface OnItemClickListener {
