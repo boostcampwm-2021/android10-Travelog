@@ -36,7 +36,7 @@ class AllPlaceAdapter(val type: FragmentType) : androidx.recyclerview.widget.Lis
                 when (type) {
                     FragmentType.DOSI -> {
                         val action = GuideFragmentDirections
-                            .actionGuideFragmentToSpecificGuideFragment(item!!)
+                            .actionGuideFragmentToSpecificGuideFragment(item!!.name)
                         it.findNavController().navigate(action)
                     }
                     FragmentType.SPECIFIC -> {

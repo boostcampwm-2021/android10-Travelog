@@ -23,7 +23,7 @@ interface BaseApiContract {
         suspend fun requestFood(@Query("areaCode") code: String): RecommendResponse
 
         @GET("/openapi/service/rest/KorService/searchFestival?ServiceKey=$SERVICE_KEY&MobileOS=ETC&MobileApp=Travlelog&_type=json&arrange=P")
-        suspend fun requestFestival(@Query("eventStartDate") startDate: String, @Query("areaCode") code: String): RecommendResponse
+        suspend fun requestFestival(@Query("eventStartDate") startDate: String, @Query("areacode") code: String): RecommendResponse
     }
 
     interface PlaceListApi {

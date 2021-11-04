@@ -7,6 +7,7 @@
         <variable
             name="viewModel"
             type="com.thequietz.travelog.guide.SpecificGuideViewModel" />
+        <import type="android.view.View"/>
     </data>
 
     <ScrollView
@@ -22,7 +23,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.currentPlace.name}"
+                android:text="@{viewModel.currentSearch}"
                 android:textStyle="bold"
                 android:textSize="40sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +31,19 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
                 android:id="@+id/tv_specific_place"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tv_noData"
+                android:visibility="@{viewModel.noData == true ? View.VISIBLE : View.GONE}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_specific_place"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:layout_marginTop="15dp"
                 />
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"

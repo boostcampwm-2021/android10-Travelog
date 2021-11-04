@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.thequietz.travelog.data.Repository
+import com.thequietz.travelog.data.RepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,26 +12,30 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class SpecificGuideViewModel @Inject constructor(
-    private val repository: Repository
+class SpecificGuideViewModel @Inject internal constructor(
+    val repository: RepositoryImpl
 ) : ViewModel() {
 
-    private val _allSpecificPlaceList = MutableLiveData<List<Place>>()
-    val allSpecificPlaceList: LiveData<List<Place>> = _allSpecificPlaceList
+    private val _currentPlaceList = MutableLiveData<List<Place>>()
+    val currentPlaceList: LiveData<List<Place>> = _currentPlaceList
 
-    private val _currentPlace = MutableLiveData<Place>()
-    val currentPlace: LiveData<Place> = _currentPlace
+    private val _currentSearch = MutableLiveData<String>()
+    val currentSearch: LiveData<String> = _currentSearch
 
-    fun initAllSpecificPlaceData() {
+    private val _noData = MutableLiveData<Boolean>()
+    val noData: LiveData<Boolean> = _noData
+
+    fun initCurrentArgs(args: SpecificGuideFragmentArgs) {
+        _currentSearch.value = args.item
+        initCurrentItem()
+    }
+    fun initCurrentItem() {
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO) {
-                repository.loadDoSiByCode(currentPlace.value!!.areaCode)
+                repository.loadDoSiByKeyword(_currentSearch.value!!)
             }
-            _allSpecificPlaceList.value = res
+            _currentPlaceList.value = res
+            _noData.value = currentPlaceList.value?.size == 0
         }
-    }
-
-    fun initCurrentItem(item: Place) {
-        _currentPlace.value = item
     }
 }

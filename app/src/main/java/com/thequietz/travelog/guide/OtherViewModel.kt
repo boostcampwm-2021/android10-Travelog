@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.thequietz.travelog.data.Repository
+import com.thequietz.travelog.data.RepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -12,8 +12,8 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class OtherViewModel @Inject constructor(
-    private val repository: Repository
+class OtherViewModel @Inject internal constructor(
+    val repository: RepositoryImpl
 ) : ViewModel() {
 
     private val _vacationSpotList = MutableLiveData<List<RecommendPlace>>()
@@ -47,7 +47,11 @@ class OtherViewModel @Inject constructor(
                 repository.loadVacationSpotData(currentPlace.value!!.areaCode)
             }
             _vacationSpotList.value = res
-            _vacationSpotList4.value = res.subList(0, 4)
+            if (vacationSpotList.value!!.size < 4) {
+                _vacationSpotList4.value = res.subList(0, vacationSpotList.value!!.size)
+            } else {
+                _vacationSpotList4.value = res.subList(0, 4)
+            }
         }
     }
 
@@ -57,7 +61,11 @@ class OtherViewModel @Inject constructor(
                 repository.loadFoodData(currentPlace.value!!.areaCode)
             }
             _foodList.value = res
-            _foodList4.value = res.subList(0, 4)
+            if (foodList.value!!.size < 4) {
+                _foodList4.value = res.subList(0, foodList.value!!.size)
+            } else {
+                _foodList4.value = res.subList(0, 4)
+            }
         }
     }
 
@@ -67,7 +75,11 @@ class OtherViewModel @Inject constructor(
                 repository.loadFestivalData(currentPlace.value!!.areaCode)
             }
             _festivalList.value = res
-            _festivalList4.value = res.subList(0, 4)
+            if (festivalList.value!!.size < 4) {
+                _festivalList4.value = res.subList(0, festivalList.value!!.size)
+            } else {
+                _festivalList4.value = res.subList(0, 4)
+            }
         }
     }
 }
