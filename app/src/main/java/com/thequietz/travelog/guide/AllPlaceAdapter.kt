@@ -2,7 +2,6 @@ package com.thequietz.travelog.guide
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -41,7 +40,9 @@ class AllPlaceAdapter(val type: FragmentType) : androidx.recyclerview.widget.Lis
                         it.findNavController().navigate(action)
                     }
                     FragmentType.SPECIFIC -> {
-                        Toast.makeText(itemView.context, "specific~~", Toast.LENGTH_SHORT).show()
+                        val action = SpecificGuideFragmentDirections
+                            .actionSpecificGuideFragmentToOtherInfoFragment(item!!)
+                        it.findNavController().navigate(action)
                     }
                 }
             }

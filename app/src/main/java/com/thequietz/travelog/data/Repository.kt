@@ -1,9 +1,12 @@
 package com.thequietz.travelog.data
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.thequietz.travelog.ApiFactory
 import com.thequietz.travelog.data.db.dao.ScheduleDao
+import com.thequietz.travelog.getTodayDate
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.RecommendPlace
 import com.thequietz.travelog.schedule.model.ScheduleModel
@@ -28,24 +31,21 @@ object RepositoryModule {
 }
 
 interface Repository {
-    suspend fun loadRecommendPlaceData(areaCode: String = "1", sigungucode: String = "10"): List<RecommendPlace>
     suspend fun loadAllPlaceData(): List<Place>
     suspend fun loadAllDoSi(): List<Place>
     suspend fun loadDoSiByCode(code: String = "3"): List<Place>
     suspend fun loadDoSiByKeyword(keyword: String = "서"): List<Place>
+
+    suspend fun loadRecommendPlaceData(areaCode: String = "1", sigungucode: String = "10"): List<RecommendPlace>
+
+    suspend fun loadVacationSpotData(areaCode: String): List<RecommendPlace>
+    suspend fun loadFoodData(areaCode: String): List<RecommendPlace>
+    suspend fun loadFestivalData(areaCode: String): List<RecommendPlace>
 }
 
 class RepositoryImpl : Repository {
     private val TourApi = ApiFactory.createTourApi()
     private val PlaceListApi = ApiFactory.createPlaceListApi()
-
-    override suspend fun loadRecommendPlaceData(
-        areaCode: String,
-        sigunguCode: String
-    ): List<RecommendPlace> {
-        val res = TourApi.requestRecommendPlace(areaCode, sigunguCode).response.body.items.item
-        return res
-    }
 
     override suspend fun loadAllPlaceData(): List<Place> {
         val result = PlaceListApi.requestAll()
@@ -65,6 +65,27 @@ class RepositoryImpl : Repository {
     override suspend fun loadDoSiByKeyword(keyword: String): List<Place> {
         val result = PlaceListApi.requestAllByKeyword(keyword)
         return result.data
+    }
+
+    override suspend fun loadRecommendPlaceData(areaCode: String, sigunguCode: String): List<RecommendPlace> {
+        val res = TourApi.requestRecommendPlace(areaCode, sigunguCode).response.body.items.item
+        return res
+    }
+
+    override suspend fun loadVacationSpotData(areaCode: String): List<RecommendPlace> {
+        val res = TourApi.requestVacationSpot(areaCode).response.body.items.item
+        return res
+    }
+
+    override suspend fun loadFoodData(areaCode: String): List<RecommendPlace> {
+        val res = TourApi.requestFood(areaCode).response.body.items.item
+        return res
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun loadFestivalData(areaCode: String): List<RecommendPlace> {
+        val res = TourApi.requestFestival(getTodayDate(), areaCode).response.body.items.item
+        return res
     }
 }
 
