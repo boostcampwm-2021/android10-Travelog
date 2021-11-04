@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="et_search">#B0B0B0</color>
+    <color name="light_gray">#B6B4B4</color>
 </resources>
