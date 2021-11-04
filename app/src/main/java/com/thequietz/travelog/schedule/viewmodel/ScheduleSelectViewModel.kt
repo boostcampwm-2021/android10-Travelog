@@ -3,14 +3,14 @@ package com.thequietz.travelog.schedule.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.thequietz.travelog.data.Repository
+import com.thequietz.travelog.data.RepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class ScheduleSelectViewModel @Inject constructor(
-    private val repository: Repository
+class ScheduleSelectViewModel @Inject internal constructor(
+    val repository: RepositoryImpl
 ) : ViewModel() {
 
     private val _travelName = MutableLiveData<String>()

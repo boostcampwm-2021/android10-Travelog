@@ -1,12 +1,16 @@
 package com.thequietz.travelog.guide.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.thequietz.travelog.FragmentType
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentGuideBinding
@@ -64,5 +68,29 @@ class GuideFragment : Fragment() {
                 it?.let { recommendPlaceAdapter.submitList(it) }
             })
         }
+        setClickListener()
+    }
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setClickListener() {
+        binding.etSearch.setOnTouchListener(
+            View.OnTouchListener { p0, p1 ->
+                val DRAWABLE_LEFT = 0
+                val DRAWABLE_TOP = 1
+                val DRAWABLE_RIGHT = 2
+                val DRAWABLE_BOTTOM = 3
+                if (p1?.action == MotionEvent.ACTION_UP) {
+                    if (p1.rawX >= binding.etSearch.right - binding.etSearch.compoundDrawables.get(DRAWABLE_RIGHT).bounds.width()) {
+                        if (binding.etSearch.text.toString() == "") {
+                            Toast.makeText(requireContext(), "검색어를 입력하세요!", Toast.LENGTH_SHORT).show()
+                        } else {
+                            val action = GuideFragmentDirections
+                                .actionGuideFragmentToSpecificGuideFragment(binding.etSearch.text.toString())
+                            findNavController().navigate(action)
+                        }
+                    }
+                }
+                false
+            }
+        )
     }
 }

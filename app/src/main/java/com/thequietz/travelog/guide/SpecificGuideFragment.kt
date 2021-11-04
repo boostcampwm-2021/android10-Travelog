@@ -37,9 +37,8 @@ class SpecificGuideFragment : Fragment() {
             viewModel = specificGuideViewModel
             rvSpecificPlace.adapter = adapter
         }
-        specificGuideViewModel.initCurrentItem(args.item)
-        specificGuideViewModel.initAllSpecificPlaceData()
-        specificGuideViewModel.allSpecificPlaceList.observe(viewLifecycleOwner, { it ->
+        specificGuideViewModel.initCurrentArgs(args)
+        specificGuideViewModel.currentPlaceList.observe(viewLifecycleOwner, { it ->
             it?.let { adapter.submitList(it) }
         })
     }

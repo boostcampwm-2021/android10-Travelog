@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.thequietz.travelog.R
@@ -94,7 +93,7 @@ class OtherInfoFragment : Fragment() {
             }
             tbOtherInfo.setNavigationOnClickListener {
                 val action = OtherInfoFragmentDirections
-                    .actionOtherInfoFragmentToSpecificGuideFragment(otherViewModel.currentPlace.value!!)
+                    .actionOtherInfoFragmentToSpecificGuideFragment(otherViewModel.currentPlace.value!!.name)
                 findNavController().navigate(action)
             }
         }
