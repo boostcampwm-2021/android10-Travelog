@@ -20,25 +20,26 @@
         android:focusable="true">
         tools:context=".schedule.view.ScheduleSelectFragment">
 
-        <androidx.appcompat.widget.AppCompatButton
+        <ImageButton
             android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:background="@color/white"
-            android:text="X"
+            android:background="@drawable/ic_close"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_next"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
+            android:background="@drawable/selector_btn_next"
             android:enabled="@{viewModel.btnEnable}"
-            android:text="다음"
+            android:text="@string/btn_next"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -88,6 +89,7 @@
             android:layout_marginBottom="24dp"
             android:clipToPadding="false"
             android:scrollbarStyle="outsideOverlay"
+            android:layout_marginTop="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
