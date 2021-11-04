@@ -19,6 +19,7 @@
     <string name="tv_schedule_desc">여행 일정</string>
     <string name="tv_recommend_place">추천 여행지역</string>
     <string name="tv_place_all">여행지역 전체 보기</string>
+    <string name="tb_other_info">일정 짜기</string>
 
     <!-- Schedule Select Fragment fragment_schedule_select.xml -->
     <string name="btn_search">다음</string>

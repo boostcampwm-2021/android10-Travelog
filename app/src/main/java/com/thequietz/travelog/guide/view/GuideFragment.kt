@@ -24,16 +24,12 @@ class GuideFragment : Fragment() {
     private val guideViewModel by viewModels<GuideViewModel>()
     lateinit var allPlaceAdapter: AllPlaceAdapter
     lateinit var recommendPlaceAdapter: RecommendPlaceAdapter
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_guide, container, false)
         return binding.root
     }
@@ -42,6 +38,7 @@ class GuideFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         allPlaceAdapter = AllPlaceAdapter(FragmentType.DOSI)
         recommendPlaceAdapter = RecommendPlaceAdapter()
+
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
             viewModel = guideViewModel
@@ -56,5 +53,16 @@ class GuideFragment : Fragment() {
         guideViewModel.allRecommendPlaceList.observe(viewLifecycleOwner, { it ->
             it?.let { recommendPlaceAdapter.submitList(it) }
         })
+
+        with(guideViewModel) {
+            initAllDoSiData()
+            // initRecommendPlaceData()
+            allDoSiList.observe(viewLifecycleOwner, { it ->
+                it?.let { allPlaceAdapter.submitList(it) }
+            })
+            allRecommendPlaceList.observe(viewLifecycleOwner, { it ->
+                it?.let { recommendPlaceAdapter.submitList(it) }
+            })
+        }
     }
 }

@@ -55,5 +55,16 @@
         <argument
             android:name="item"
             app:argType="com.thequietz.travelog.guide.Place" />
+        <action
+            android:id="@+id/action_specificGuideFragment_to_otherInfoFragment"
+            app:destination="@id/otherInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/otherInfoFragment"
+        android:name="com.thequietz.travelog.guide.OtherInfoFragment"
+        android:label="OtherInfoFragment" >
+        <argument
+            android:name="item"
+            app:argType="com.thequietz.travelog.guide.Place" />
     </fragment>
 </navigation>
