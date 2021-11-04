@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentSchedulePlaceBinding
+import com.thequietz.travelog.schedule.adapter.SchedulePlaceAdapter
+import com.thequietz.travelog.schedule.adapter.SchedulePlaceSelectedAdapter
 import com.thequietz.travelog.schedule.viewmodel.SchedulePlaceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -36,19 +38,19 @@ class SchedulePlaceFragment : Fragment() {
     private val viewModel: SchedulePlaceViewModel by viewModels()
 
     private fun Button.setEnable() {
-        this.isEnabled = true;
+        this.isEnabled = true
         this.isClickable = true
         this.alpha = 1F
     }
 
     private fun Button.setDisable() {
-        this.isEnabled = false;
+        this.isEnabled = false
         this.isClickable = false
         this.alpha = 0.4F
     }
 
     private fun View.handleClick() {
-        val view = this;
+        val view = this
         lifecycleScope.launch {
             view.alpha = 0.8F
             delay(400)

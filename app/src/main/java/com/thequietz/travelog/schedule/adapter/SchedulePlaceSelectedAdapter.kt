@@ -1,4 +1,4 @@
-package com.thequietz.travelog.schedule.view
+package com.thequietz.travelog.schedule.adapter
 
 import android.view.LayoutInflater
 import android.view.View

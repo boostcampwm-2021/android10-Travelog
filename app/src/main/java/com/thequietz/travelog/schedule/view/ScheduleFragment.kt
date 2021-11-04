@@ -10,7 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleBinding
-import com.thequietz.travelog.schedule.ScheduleViewModel
+import com.thequietz.travelog.schedule.adapter.ScheduleRecyclerAdapter
+import com.thequietz.travelog.schedule.viewmodel.ScheduleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
