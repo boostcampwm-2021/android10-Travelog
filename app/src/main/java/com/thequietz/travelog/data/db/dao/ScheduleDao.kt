@@ -8,5 +8,8 @@ import com.thequietz.travelog.schedule.Schedule
 @Dao
 abstract class ScheduleDao : BaseDao<Schedule> {
     @Query("SELECT * FROM Schedule")
-    abstract fun getAllSchedules(): LiveData<List<Schedule>>
+    abstract fun loadAllSchedules(): LiveData<List<Schedule>>
+
+    @Query("SELECT * FROM Schedule WHERE id =:id")
+    abstract fun loadScheduleById(id: Int): List<Schedule>
 }
