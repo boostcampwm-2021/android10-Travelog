@@ -1,9 +1,10 @@
-package com.thequietz.travelog.schedule
+package com.thequietz.travelog.schedule.viewmodel
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.ScheduleRepository
+import com.thequietz.travelog.schedule.model.ScheduleModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -12,7 +13,7 @@ import javax.inject.Inject
 class ScheduleViewModel @Inject internal constructor(
     repository: ScheduleRepository
 ) : ViewModel() {
-    val schedules: MediatorLiveData<List<Schedule>> = MediatorLiveData()
+    val schedules: MediatorLiveData<List<ScheduleModel>> = MediatorLiveData()
 
     init {
         schedules.value = null

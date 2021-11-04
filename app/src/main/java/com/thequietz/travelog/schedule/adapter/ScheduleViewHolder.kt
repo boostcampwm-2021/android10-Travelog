@@ -1,7 +1,8 @@
-package com.thequietz.travelog.schedule
+package com.thequietz.travelog.schedule.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.databinding.ItemRecyclerScheduleBinding
+import com.thequietz.travelog.schedule.model.ScheduleModel
 
 class ScheduleViewHolder(
     private val binding: ItemRecyclerScheduleBinding
@@ -12,7 +13,7 @@ class ScheduleViewHolder(
         }
     }
 
-    fun bind(item: Schedule) {
+    fun bind(item: ScheduleModel) {
         binding.apply {
             schedule = item
             executePendingBindings()

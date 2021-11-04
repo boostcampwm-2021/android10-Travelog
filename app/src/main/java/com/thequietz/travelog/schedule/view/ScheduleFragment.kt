@@ -1,4 +1,4 @@
-package com.thequietz.travelog.schedule
+package com.thequietz.travelog.schedule.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleBinding
+import com.thequietz.travelog.schedule.adapter.ScheduleRecyclerAdapter
+import com.thequietz.travelog.schedule.viewmodel.ScheduleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,7 +38,8 @@ class ScheduleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.btnAdd.setOnClickListener {
-            // TODO: 여행 지역 선택화면으로 연결
+            val action = ScheduleFragmentDirections.actionScheduleFragmentToSchedulePlaceFragment()
+            it.findNavController().navigate(action)
         }
     }
 

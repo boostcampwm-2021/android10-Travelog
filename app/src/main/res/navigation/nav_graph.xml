@@ -7,14 +7,18 @@
 
     <fragment
         android:id="@+id/guideFragment"
-        android:name="com.thequietz.travelog.guide.GuideFragment"
+        android:name="com.thequietz.travelog.guide.view.GuideFragment"
         android:label="GuideFragment"
         tools:layout="@layout/fragment_guide" />
     <fragment
         android:id="@+id/scheduleFragment"
-        android:name="com.thequietz.travelog.schedule.ScheduleFragment"
+        android:name="com.thequietz.travelog.schedule.view.ScheduleFragment"
         android:label="ScheduleFragment"
-        tools:layout="@layout/fragment_schedule" />
+        tools:layout="@layout/fragment_schedule" >
+        <action
+            android:id="@+id/action_scheduleFragment_to_schedulePlaceFragment"
+            app:destination="@id/schedulePlaceFragment" />
+    </fragment>
     <fragment
         android:id="@+id/recordFragment"
         android:name="com.thequietz.travelog.record.RecordFragment"
@@ -25,4 +29,20 @@
         android:name="com.thequietz.travelog.menu.MenuFragment"
         android:label="MenuFragment"
         tools:layout="@layout/fragment_menu" />
+    <fragment
+        android:id="@+id/schedulePlaceFragment"
+        android:name="com.thequietz.travelog.schedule.view.SchedulePlaceFragment"
+        android:label="SchedulePlaceFragment" >
+        <action
+            android:id="@+id/action_schedulePlaceFragment_to_scheduleSelectFragment"
+            app:destination="@id/scheduleSelectFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scheduleSelectFragment"
+        android:name="com.thequietz.travelog.schedule.view.ScheduleSelectFragment"
+        android:label="ScheduleSelectFragment" >
+        <argument
+            android:name="PlaceString"
+            app:argType="string" />
+    </fragment>
 </navigation>
