@@ -1,9 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".guide.GuideFragment">
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="20dp"
+            android:hint="여행지 검색"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:paddingStart="10dp"
+            android:background="@color/light_gray"
+            android:drawableEnd="@drawable/bg_search_btn"
+            android:id="@+id/et_search"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_recommend_place"
+            android:textColor="@color/black"
+            android:id="@+id/tv_recommend_place"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_search"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="30dp"
+            />
+        <androidx.recyclerview.widget.RecyclerView class="androidx.appcompat.app.AlertController$RecycleListView"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_recommend_place"
+            android:layout_marginTop="20dp"
+            tools:listitem="@layout/item_recycler_recommend_place"
+            tools:itemCount="3"
+            android:id="@+id/rv_recommend_place"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_recommend_place"
+            android:text="@string/tv_place_all"
+            android:id="@+id/tv_place_all"
+            />
+        <androidx.recyclerview.widget.RecyclerView
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            app:spanCount="2"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_place_all"
+            android:id="@+id/rv_place_all"
+            tools:listitem="@layout/item_recycler_place_all"
+            tools:itemCount="10"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>
