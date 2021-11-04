@@ -11,6 +11,7 @@
     <string name="tv_schedule">일정 화면</string>
     <string name="tv_menu">메뉴 화면</string>
 
+    <!-- Schedule Fragment - fragment_schedule.xml-->
     <string name="tv_title_schedule">지도를 보면서\n나만의 여행 일정을 짜보세요!</string>
     <string name="tv_subtitle_schedule">내 여행 일정</string>
     <string name="btn_add_schedule">+ 새 일정 추가</string>
@@ -26,5 +27,7 @@
     <!-- Schedule Select Fragment fragment_schedule_select.xml -->
     <string name="tv_travel_name">여행 이름</string>
     <string name="tv_select_date">날짜 선택</string>
+    <string name="tv_no_schedule">아직 여행 일정이 없어요!\n새 일정을 추가해 보세요!</string>
+
 
 </resources>

@@ -45,7 +45,12 @@ class ScheduleFragment : Fragment() {
 
     private fun subscribeUi(adapter: ScheduleRecyclerAdapter) {
         viewModel.schedules.observe(viewLifecycleOwner) { schedules ->
-            adapter.submitList(schedules)
+            if (schedules.isEmpty())
+                binding.tvNoSchedule.visibility = View.VISIBLE
+            else {
+                binding.tvNoSchedule.visibility = View.INVISIBLE
+                adapter.submitList(schedules)
+            }
         }
     }
 }
