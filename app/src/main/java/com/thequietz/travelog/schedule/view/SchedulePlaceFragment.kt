@@ -102,6 +102,12 @@ class SchedulePlaceFragment : Fragment() {
 
         viewModel.placeList.observe(viewLifecycleOwner, {
 
+            binding.tvEmptyResult.visibility = if (it.isEmpty()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
             schedulePlaceAdapter = SchedulePlaceAdapter(
                 it,
                 object : SchedulePlaceAdapter.OnItemClickListener {
@@ -131,9 +137,9 @@ class SchedulePlaceFragment : Fragment() {
                     }
                 }
             )
-            binding.rlSelectItem.layoutManager =
+            binding.rvSelectItem.layoutManager =
                 LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
-            binding.rlSelectItem.adapter = schedulePlaceSelectedAdapter
+            binding.rvSelectItem.adapter = schedulePlaceSelectedAdapter
         })
 
         viewModel.loadPlaceList()
