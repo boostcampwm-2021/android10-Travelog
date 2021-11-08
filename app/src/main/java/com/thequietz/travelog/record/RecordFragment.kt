@@ -4,25 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class RecordFragment : Fragment() {
-    private var _binding: FragmentRecordBinding? = null
-    private val binding get() = _binding!!
+@AndroidEntryPoint
+class RecordFragment : Fragment(R.layout.fragment_record) {
+    private lateinit var binding: FragmentRecordBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val viewModel by viewModels<RecordViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_record, container, false)
+        binding = FragmentRecordBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 }
