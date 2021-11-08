@@ -98,15 +98,14 @@
             android:layout_marginTop="15dp"
             android:id="@+id/tv_record_view_one_reduce"
             />
-        <ImageView
+        <androidx.viewpager2.widget.ViewPager2
             android:layout_width="385dp"
             android:layout_height="400dp"
-            android:background="@color/light_gray"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
             app:layout_constraintTop_toBottomOf="@id/tv_record_view_one_place"
             android:layout_marginTop="15dp"
-            android:id="@+id/iv_review_view_one"
+            android:id="@+id/vp_review_view_one"
             />
         <EditText
             android:layout_width="0dp"
@@ -114,7 +113,7 @@
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
             tools:text="여행 너무 좋았다"
-            app:layout_constraintTop_toBottomOf="@id/iv_review_view_one"
+            app:layout_constraintTop_toBottomOf="@id/vp_review_view_one"
             android:layout_marginTop="15dp"
             android:textSize="15sp"
             android:id="@+id/et_record_view_one"
