@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.thequietz.travelog.record.RecordViewOneViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +45,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="경주 여행"
+            android:text="경주 여행"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
@@ -55,7 +57,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="21:10.26 ~ 10.27"
+            android:text="21:10.26 ~ 10.27"
             android:textSize="18sp"
             android:textColor="@color/black"
             android:layout_marginEnd="60dp"
@@ -77,11 +79,23 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Day1 - 불국사, 석굴암"
+            android:text="@{viewModel.currentImage.schedule}"
             android:maxLines="1"
             android:ellipsize="end"
             app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
+            android:textSize="20sp"
+            android:id="@+id/tv_record_view_one_schedule"
+            android:layout_marginTop="15dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{`-`+ viewModel.currentImage.place}"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one"
+            app:layout_constraintStart_toEndOf="@id/tv_record_view_one_schedule"
             android:textSize="20sp"
             android:id="@+id/tv_record_view_one_place"
             android:layout_marginTop="15dp"
@@ -89,7 +103,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="⋮"
+            android:text="⋮"
             android:textSize="24sp"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
@@ -112,7 +126,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
-            tools:text="여행 너무 좋았다"
+            android:text="@{viewModel.currentImage.comment}"
             app:layout_constraintTop_toBottomOf="@id/vp_review_view_one"
             android:layout_marginTop="15dp"
             android:textSize="15sp"
