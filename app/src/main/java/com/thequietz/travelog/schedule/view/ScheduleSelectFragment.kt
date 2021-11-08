@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleSelectBinding
 import com.thequietz.travelog.schedule.viewmodel.ScheduleSelectViewModel
@@ -36,6 +37,7 @@ class ScheduleSelectFragment : Fragment() {
         initEditText()
         initDatePicker()
         initHideKeyboard()
+        initNextButton()
         return binding.root
     }
 
@@ -43,6 +45,13 @@ class ScheduleSelectFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = scheduleSelectViewModel
+    }
+
+    private fun initNextButton() {
+        binding.btnNext.setOnClickListener {
+            val action = ScheduleSelectFragmentDirections.actionScheduleSelectFragmentToScheduleDetailFragment()
+            it.findNavController().navigate(action)
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

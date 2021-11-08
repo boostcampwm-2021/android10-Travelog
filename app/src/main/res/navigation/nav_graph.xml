@@ -51,7 +51,15 @@
         <argument
             android:name="PlaceString"
             app:argType="string" />
+        <action
+            android:id="@+id/action_scheduleSelectFragment_to_scheduleDetailFragment"
+            app:destination="@id/scheduleDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/scheduleDetailFragment"
+        android:name="com.thequietz.travelog.schedule.view.ScheduleDetailFragment"
+        android:label="ScheduleDetailFragment" />
+
     <fragment
         android:id="@+id/specificGuideFragment"
         android:name="com.thequietz.travelog.guide.SpecificGuideFragment"

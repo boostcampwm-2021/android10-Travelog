@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ScheduleDetailFragment : Fragment() {
     lateinit var binding: FragmentScheduleDetailBinding
-    private val layoutId = R.layout.fragment_schedule
+    private val layoutId = R.layout.fragment_schedule_detail
     private val viewModel by viewModels<ScheduleDetailViewModel>()
 
     override fun onCreateView(
