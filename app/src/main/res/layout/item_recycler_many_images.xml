@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="imageItem"
+            type="com.thequietz.travelog.record.RecordImage" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+            android:layout_width="110dp"
+            android:layout_height="80dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/iv_item_image"
+            android:layout_marginStart="15dp"
+            app:setImage="@{imageItem.img}"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

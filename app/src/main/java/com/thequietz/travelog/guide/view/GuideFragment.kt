@@ -49,14 +49,6 @@ class GuideFragment : Fragment() {
             rvPlaceAll.adapter = allPlaceAdapter
             rvRecommendPlace.adapter = recommendPlaceAdapter
         }
-        guideViewModel.initAllDoSiData()
-        // guideViewModel.initRecommendPlaceData()
-        guideViewModel.allDoSiList.observe(viewLifecycleOwner, { it ->
-            it?.let { allPlaceAdapter.submitList(it) }
-        })
-        guideViewModel.allRecommendPlaceList.observe(viewLifecycleOwner, { it ->
-            it?.let { recommendPlaceAdapter.submitList(it) }
-        })
 
         with(guideViewModel) {
             initAllDoSiData()

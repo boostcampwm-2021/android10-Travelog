@@ -9,7 +9,7 @@
         android:enabled="true"
         android:title="@string/menu_schedule"/>
     <item
-        android:id="@+id/recordFragment"
+        android:id="@+id/recordViewOneFragment"
         android:enabled="true"
         android:title="@string/menu_record"/>
     <item
