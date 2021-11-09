@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordViewOneBinding
@@ -14,8 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RecordViewOneFragment : Fragment() {
-    private var _binding: FragmentRecordViewOneBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var _binding: FragmentRecordViewOneBinding
+    private val binding get() = _binding
     private val recordViewOneViewModel by viewModels<RecordViewOneViewModel>()
     lateinit var adapter: ImageViewPagerAdapter
 
@@ -54,5 +55,10 @@ class RecordViewOneFragment : Fragment() {
                 }
             }
         )
+        binding.ibRecordViewOne.setOnClickListener {
+            val action = RecordViewOneFragmentDirections
+                .actionRecordViewOneFragmentToRecordViewManyFragment()
+            findNavController().navigate(action)
+        }
     }
 }

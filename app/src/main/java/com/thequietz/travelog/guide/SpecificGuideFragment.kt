@@ -15,8 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SpecificGuideFragment : Fragment() {
-    private var _binding: FragmentSpecificGuideBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var _binding: FragmentSpecificGuideBinding
+    private val binding get() = _binding
     private val specificGuideViewModel by viewModels<SpecificGuideViewModel>()
     private val args: SpecificGuideFragmentArgs by navArgs()
     lateinit var adapter: AllPlaceAdapter

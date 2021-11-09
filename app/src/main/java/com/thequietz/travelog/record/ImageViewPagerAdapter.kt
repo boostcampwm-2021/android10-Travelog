@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.ItemViewpagerImageBinding
 
-class ImageViewPagerAdapter : ListAdapter<MyImage, ImageViewPagerAdapter.ViewPagerImageViewHolder>(
+class ImageViewPagerAdapter : ListAdapter<RecordImage, ImageViewPagerAdapter.ViewPagerImageViewHolder>(
     diffUtil
 ) {
     override fun onCreateViewHolder(
@@ -29,19 +29,19 @@ class ImageViewPagerAdapter : ListAdapter<MyImage, ImageViewPagerAdapter.ViewPag
         holder.bind(getItem(position))
     }
 
-    class ViewPagerImageViewHolder(val binding: ItemViewpagerImageBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item: MyImage) {
+    class ViewPagerImageViewHolder(val binding: ItemViewpagerImageBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: RecordImage) {
             binding.item = item
             binding.executePendingBindings()
         }
     }
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<MyImage>() {
-            override fun areItemsTheSame(oldItem: MyImage, newItem: MyImage): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<RecordImage>() {
+            override fun areItemsTheSame(oldItem: RecordImage, newItem: RecordImage): Boolean {
                 return oldItem === newItem
             }
 
-            override fun areContentsTheSame(oldItem: MyImage, newItem: MyImage): Boolean {
+            override fun areContentsTheSame(oldItem: RecordImage, newItem: RecordImage): Boolean {
                 return oldItem == newItem
             }
         }

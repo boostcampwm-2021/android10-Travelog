@@ -4,6 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable
+            name="viewModel"
+            type="com.thequietz.travelog.record.RecordViewManyViewModel" />
 
     </data>
 
@@ -43,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="경주 여행"
+            android:text="경주 여행"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_many"
@@ -55,7 +58,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="21:10.26 ~ 10.27"
+            android:text="21:10.26 ~ 10.27"
             android:textSize="18sp"
             android:textColor="@color/black"
             android:layout_marginEnd="60dp"
@@ -75,12 +78,13 @@
             android:id="@+id/ib_record_view_many"
             />
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_many"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_many"
             app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_many"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/rv_record_view_many"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"

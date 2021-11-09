@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordFragment"
-        android:name="com.thequietz.travelog.record.RecordViewOneFragment"
+        android:name="com.thequietz.travelog.record.RecordFragment"
         android:label="RecordFragment"
         tools:layout="@layout/fragment_record" />
     <fragment
@@ -77,4 +77,12 @@
         android:id="@+id/recordViewManyFragment"
         android:name="com.thequietz.travelog.record.RecordViewManyFragment"
         android:label="RecordViewManyFragment" />
+    <fragment
+        android:id="@+id/recordViewOneFragment"
+        android:name="com.thequietz.travelog.record.RecordViewOneFragment"
+        android:label="RecordViewOneFragment" >
+        <action
+            android:id="@+id/action_recordViewOneFragment_to_recordViewManyFragment"
+            app:destination="@id/recordViewManyFragment" />
+    </fragment>
 </navigation>

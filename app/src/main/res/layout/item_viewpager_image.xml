@@ -5,7 +5,7 @@
     <data>
         <variable
             name="item"
-            type="com.thequietz.travelog.record.MyImage" />
+            type="com.thequietz.travelog.record.RecordImage" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,13 +13,14 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/iv_item_viewPager_image"
             android:layout_width="385dp"
             android:layout_height="400dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/iv_item_viewPager_image"
-            app:setImage="@{item.img}"/>
+            app:setImage="@{item.img}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
