@@ -16,7 +16,7 @@ class RecordPhotoAdapter : ListAdapter<String, RecordPhotoAdapter.RecordPhotoVie
         fun bind(url: String) {
             Glide.with(itemView)
                 .load(url)
-                .fallback(R.drawable.bg_photo_fallback)
+                .placeholder(R.drawable.bg_photo_placeholder)
                 .into(binding.ivItemRecordPhoto)
         }
     }
