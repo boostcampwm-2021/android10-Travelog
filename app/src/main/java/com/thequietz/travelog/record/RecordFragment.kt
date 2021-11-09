@@ -23,6 +23,13 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
     ): View {
         binding = FragmentRecordBinding.inflate(inflater, container, false)
 
+        val adapter = RecordAdapter()
+        binding.rvRecord.adapter = adapter
+
+        viewModel.recordList.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
+
         return binding.root
     }
 }
