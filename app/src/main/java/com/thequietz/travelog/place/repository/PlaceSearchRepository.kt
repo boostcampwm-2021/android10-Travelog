@@ -1,6 +1,5 @@
 package com.thequietz.travelog.place.repository
 
-import com.thequietz.travelog.BuildConfig
 import com.thequietz.travelog.api.PlaceSearchService
 import com.thequietz.travelog.place.model.PlaceSearchModel
 import retrofit2.awaitResponse
@@ -10,7 +9,7 @@ class PlaceSearchRepository @Inject constructor(
     private val service: PlaceSearchService,
 ) {
     suspend fun loadPlaceList(query: String): List<PlaceSearchModel> {
-        val apiKey: String = BuildConfig.GOOGLE_MAP_KEY
+        val apiKey = "" // BuildConfig.GOOGLE_MAP_KEY
         val call = service.searchPlaceList(query, apiKey)
         val response = call.awaitResponse()
         if (!response.isSuccessful || response.body() == null) {
