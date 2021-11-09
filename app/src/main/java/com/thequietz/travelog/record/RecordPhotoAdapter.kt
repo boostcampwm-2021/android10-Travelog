@@ -5,11 +5,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.thequietz.travelog.databinding.ItemRecyclerRecordPhotoBinding
 
 class RecordPhotoAdapter : ListAdapter<String, RecordPhotoAdapter.RecordPhotoViewHolder>(diffUtil) {
     class RecordPhotoViewHolder(private val binding: ItemRecyclerRecordPhotoBinding) :
-        RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(url: String) {
+            Glide.with(itemView)
+                .load(url)
+                .into(binding.ivItemRecordPhoto)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordPhotoViewHolder {
         return RecordPhotoViewHolder(
@@ -22,19 +30,20 @@ class RecordPhotoAdapter : ListAdapter<String, RecordPhotoAdapter.RecordPhotoVie
     }
 
     override fun onBindViewHolder(holder: RecordPhotoViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val imageUrl = currentList[position]
+
+        holder.bind(imageUrl)
     }
 
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<String>() {
             override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-                TODO("Not yet implemented")
+                return oldItem.hashCode() == newItem.hashCode()
             }
 
             override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-                TODO("Not yet implemented")
+                return oldItem == newItem
             }
-
         }
     }
 }
