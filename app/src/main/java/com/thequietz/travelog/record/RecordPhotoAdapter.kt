@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.ItemRecyclerRecordPhotoBinding
 
 class RecordPhotoAdapter : ListAdapter<String, RecordPhotoAdapter.RecordPhotoViewHolder>(diffUtil) {
@@ -15,6 +16,7 @@ class RecordPhotoAdapter : ListAdapter<String, RecordPhotoAdapter.RecordPhotoVie
         fun bind(url: String) {
             Glide.with(itemView)
                 .load(url)
+                .fallback(R.drawable.bg_photo_fallback)
                 .into(binding.ivItemRecordPhoto)
         }
     }
