@@ -16,8 +16,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class OtherInfoFragment : Fragment() {
-    private var _binding: FragmentOtherInfoBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var _binding: FragmentOtherInfoBinding
+    private val binding get() = _binding
     private val otherViewModel by viewModels<OtherViewModel>()
     private val args: OtherInfoFragmentArgs by navArgs()
     lateinit var vacationAdapter: OtherInfoAdapter
