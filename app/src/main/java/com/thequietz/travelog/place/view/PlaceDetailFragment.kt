@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceDetailBinding
+import com.thequietz.travelog.place.adapter.PlaceDetailAdapter
 import com.thequietz.travelog.place.model.PlaceSearchModel
 import com.thequietz.travelog.place.viewmodel.PlaceDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +24,7 @@ class PlaceDetailFragment : Fragment() {
     private val navArgs: PlaceDetailFragmentArgs by navArgs()
     private val viewModel: PlaceDetailViewModel by viewModels()
 
+    private lateinit var imageAdapter: PlaceDetailAdapter
     private lateinit var model: PlaceSearchModel
     private lateinit var gson: Gson
 
@@ -45,6 +47,15 @@ class PlaceDetailFragment : Fragment() {
 
         gson = Gson()
         model = gson.fromJson(navArgs.param, PlaceSearchModel::class.java)
+        imageAdapter = PlaceDetailAdapter()
+
+        binding.viewModel = viewModel
+        binding.rvPlaceDetail.adapter = imageAdapter
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        viewModel.detail.observe(viewLifecycleOwner, {
+            (binding.rvPlaceDetail.adapter as PlaceDetailAdapter).submitList(it.photos)
+        })
         viewModel.loadPlaceDetail(model.placeId)
     }
 }

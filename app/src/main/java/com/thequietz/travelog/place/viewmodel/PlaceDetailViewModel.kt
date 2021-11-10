@@ -1,6 +1,5 @@
 package com.thequietz.travelog.place.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,15 +18,13 @@ class PlaceDetailViewModel @Inject constructor(
     private var _detail = MutableLiveData<PlaceDetailModel>()
     val detail: LiveData<PlaceDetailModel> get() = _detail
 
-    private var _name = MutableLiveData<String>()
-    val name: LiveData<String> get() = _name
-
     fun loadPlaceDetail(placeId: String) {
         viewModelScope.launch {
             val data = repository.loadPlaceDetail(placeId)
 
-            Log.d(TAG, data?.name ?: "NONE")
-            _name.postValue(data?.name)
+            data.let { it ->
+                _detail.value = it
+            }
         }
     }
 }

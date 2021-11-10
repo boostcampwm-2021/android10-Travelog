@@ -46,22 +46,52 @@
             android:orientation="vertical"
             android:paddingHorizontal="20dp"
             android:paddingVertical="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/btn_place_add"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_max="200dp"
             app:layout_constraintHeight_min="50dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_google_map_detail">
+            app:layout_constraintTop_toBottomOf="@id/ll_google_map_detail"
+            app:layout_constraintVertical_chainStyle="packed">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.name}"
+                android:text="@{viewModel.detail.name}"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 tools:text="@string/tv_place_detail_name" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_place_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_recycler_place_detail" />
+
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_place_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginVertical="8dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/purple_500"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:text="@string/btn_place_add"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_place_detail" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
