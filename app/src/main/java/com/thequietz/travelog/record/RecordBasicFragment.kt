@@ -23,6 +23,20 @@ class RecordBasicFragment : Fragment() {
 
         binding.rvRecordBasic.adapter = adapter
 
+        subscribeUi()
+
         return binding.root
+    }
+
+    private fun subscribeUi() {
+        viewModel.title.observe(viewLifecycleOwner) { title ->
+            binding.tvRecordBasicTitle.text = title
+        }
+        viewModel.date.observe(viewLifecycleOwner) { date ->
+            binding.tvRecordBasicSchedule.text = date
+        }
+        viewModel.travelDestinations.observe(viewLifecycleOwner) { travelDestinations ->
+            adapter.submitList(travelDestinations)
+        }
     }
 }
