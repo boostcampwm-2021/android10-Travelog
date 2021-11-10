@@ -18,7 +18,7 @@ class RecordViewManyViewModel @Inject constructor(
     private val _dataList = MutableLiveData<List<MyRecord>>()
     val dataList: LiveData<List<MyRecord>> = _dataList
 
-    fun initData(innerViewModel: InnerViewModel) {
+    init {
         viewModelScope.launch {
             with(Dispatchers.IO) {
                 val list = mutableListOf<MyRecord>()

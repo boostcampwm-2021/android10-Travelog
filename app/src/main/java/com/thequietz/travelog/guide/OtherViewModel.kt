@@ -37,6 +37,12 @@ class OtherViewModel @Inject internal constructor(
     private val _festivalList4 = MutableLiveData<List<RecommendPlace>>()
     val festivalList4: LiveData<List<RecommendPlace>> = _festivalList4
 
+    /*init {
+        initCurrenetItem()
+        initVacationSpotData()
+        initFoodData()
+        initFestivalData()
+    }*/
     fun initCurrenetItem(item: Place) {
         _currentPlace.value = item
     }
@@ -58,9 +64,12 @@ class OtherViewModel @Inject internal constructor(
     fun initFoodData() {
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO) {
-                repository.loadFoodData(currentPlace.value!!.areaCode)
+                currentPlace.value?.let {
+                    repository.loadFoodData(it.areaCode)
+                }
+                // repository.loadFoodData(currentPlace.value!!.areaCode)
             }
-            _foodList.value = res
+            _foodList.value = res!!
             if (foodList.value!!.size < 4) {
                 _foodList4.value = res.subList(0, foodList.value!!.size)
             } else {

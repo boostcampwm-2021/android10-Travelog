@@ -39,7 +39,6 @@ class RecordViewOneFragment : Fragment() {
         }
         with(recordViewOneViewModel) {
             // 아이템 초기화
-            initImage()
             tempList.observe(viewLifecycleOwner, { it ->
                 it?.let { adapter.submitList(it) }
             })

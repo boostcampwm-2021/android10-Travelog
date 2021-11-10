@@ -51,7 +51,6 @@ class GuideFragment : Fragment() {
         }
 
         with(guideViewModel) {
-            initAllDoSiData()
             // initRecommendPlaceData()
             allDoSiList.observe(viewLifecycleOwner, { it ->
                 it?.let { allPlaceAdapter.submitList(it) }

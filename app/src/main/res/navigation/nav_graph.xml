@@ -76,7 +76,13 @@
     <fragment
         android:id="@+id/recordViewManyFragment"
         android:name="com.thequietz.travelog.record.RecordViewManyFragment"
-        android:label="RecordViewManyFragment" />
+        android:label="RecordViewManyFragment" >
+        <action
+            android:id="@+id/action_recordViewManyFragment_to_recordViewOneFragment"
+            app:popUpTo="@id/recordViewOneFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/recordViewOneFragment" />
+    </fragment>
     <fragment
         android:id="@+id/recordViewOneFragment"
         android:name="com.thequietz.travelog.record.RecordViewOneFragment"

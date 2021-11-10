@@ -21,8 +21,8 @@ class RecordViewOneViewModel @Inject constructor(
     private val _currentImage = MutableLiveData<RecordImage>()
     val currentImage: LiveData<RecordImage> = _currentImage
 
-    fun initImage() {
-        var list = mutableListOf<RecordImage>()
+    init {
+        val list = mutableListOf<RecordImage>()
         list.add(
             RecordImage().copy(
                 schedule = "Day1",

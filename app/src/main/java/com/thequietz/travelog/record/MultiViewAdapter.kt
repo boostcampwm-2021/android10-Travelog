@@ -12,10 +12,9 @@ import com.thequietz.travelog.databinding.ItemRecyclerManyImagesBinding
 import com.thequietz.travelog.databinding.ItemRecyclerManyPlaceBinding
 import com.thequietz.travelog.databinding.ItemRecyclerRecyclerBinding
 
-class MultiViewAdapter(val innerViewModel: InnerViewModel) : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
+class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
     diffUtil
 ) {
-    private val viewPool = RecyclerView.RecycledViewPool()
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -46,7 +45,7 @@ class MultiViewAdapter(val innerViewModel: InnerViewModel) : ListAdapter<MyRecor
                     parent,
                     false
                 ) as ItemRecyclerRecyclerBinding
-                RecordImageViewHolder(bindingImage, innerViewModel)
+                RecordImageViewHolder(bindingImage)
             }
         }
     }
@@ -68,9 +67,7 @@ class MultiViewAdapter(val innerViewModel: InnerViewModel) : ListAdapter<MyRecor
                 (holder as RecordPlaceViewHolder).bind(getItem(position) as MyRecord.RecordPlace)
             }
             is MyRecord.RecordImageList -> {
-                val temp = getItem(position) as MyRecord.RecordImageList
-                innerViewModel.setCurrentData(temp.list)
-                (holder as RecordImageViewHolder).bind()
+                (holder as RecordImageViewHolder).bind(getItem(position) as MyRecord.RecordImageList)
             }
         }
     }
@@ -85,18 +82,14 @@ class MultiViewAdapter(val innerViewModel: InnerViewModel) : ListAdapter<MyRecor
         }
     }
     class RecordImageViewHolder(
-        val binding: ItemRecyclerRecyclerBinding,
-        val innerViewModel: InnerViewModel,
+        val binding: ItemRecyclerRecyclerBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        var adapter = MultiViewImageAdapter2(mutableListOf<RecordImage>())
+        val adapter = MultiViewImageAdapter()
         init {
             binding.rvItemManyImage.adapter = adapter
         }
-        fun bind() {
-            innerViewModel.currentList.value?.let {
-                adapter.data = it.toMutableList()
-            }
-            adapter.notifyDataSetChanged()
+        fun bind(imageList: MyRecord.RecordImageList) {
+            adapter.submitList(imageList.list)
         }
     }
     companion object {
@@ -148,32 +141,6 @@ class MultiViewImageAdapter : ListAdapter<RecordImage, MultiViewImageAdapter.Mul
             ): Boolean {
                 return oldItem == newItem
             }
-        }
-    }
-}
-
-class MultiViewImageAdapter2(var data: MutableList<RecordImage>) : RecyclerView.Adapter<MultiViewImageAdapter2.MultiViewImageAdapter2ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MultiViewImageAdapter2ViewHolder {
-        val binding = DataBindingUtil.inflate(
-            LayoutInflater.from(parent.context),
-            R.layout.item_recycler_many_images,
-            parent,
-            false
-        ) as ItemRecyclerManyImagesBinding
-        return MultiViewImageAdapter2ViewHolder(binding)
-    }
-
-    override fun getItemCount(): Int {
-        return data.size
-    }
-
-    override fun onBindViewHolder(holder: MultiViewImageAdapter2ViewHolder, position: Int) {
-        holder.bind(data.get(position))
-    }
-    class MultiViewImageAdapter2ViewHolder(val binding: ItemRecyclerManyImagesBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(image: RecordImage) {
-            println(image.toString())
-            binding.imageItem = image
         }
     }
 }
