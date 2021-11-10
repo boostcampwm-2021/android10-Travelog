@@ -10,72 +10,72 @@ val SAMPLE_SCHEDULES = listOf(
 )
 val SAMPLE_RECORD_IMAGES = listOf(
     RecordImage().copy(
-        schedule = "Day1",
-        place = "석굴암, 불국사",
+        schedule = "1",
+        place = listOf("석굴암", "불국사"),
         img = "https://tong.visitkorea.or.kr/cms/resource/67/2558467_image2_1.jpg",
         comment = "comment11",
         group = 0,
         id = 0
     ),
     RecordImage().copy(
-        schedule = "Day1",
-        place = "석굴암, 불국사",
+        schedule = "1",
+        place = listOf("석굴암", "불국사"),
         img = "https://tong.visitkorea.or.kr/cms/resource/21/2689521_image2_1.jpg",
         comment = "comment12",
         group = 0,
         id = 1
     ),
     RecordImage().copy(
-        schedule = "Day1",
-        place = "석굴암, 불국사",
+        schedule = "1",
+        place = listOf("석굴암", "불국사"),
         img = "https://tong.visitkorea.or.kr/cms/resource/53/1253553_image2_1.jpg",
         comment = "comment13",
         group = 0,
         id = 2
     ),
     RecordImage().copy(
-        schedule = "Day1",
-        place = "석굴암, 불국사",
+        schedule = "1",
+        place = listOf("석굴암", "불국사"),
         img = "http://tong.visitkorea.or.kr/cms/resource/22/2654222_image2_1.jpg",
         comment = "comment21",
         group = 0,
         id = 3
     ),
     RecordImage().copy(
-        schedule = "Day2",
-        place = "강릉",
+        schedule = "2",
+        place = listOf("강릉"),
         img = "http://tong.visitkorea.or.kr/cms/resource/56/2736256_image2_1.jpg",
         comment = "comment23",
         group = 0,
         id = 4
     ),
     RecordImage().copy(
-        schedule = "Day2",
-        place = "강릉",
+        schedule = "2",
+        place = listOf("강릉"),
         img = "http://tong.visitkorea.or.kr/cms/resource/54/644554_image2_1.jpg",
         comment = "comment22",
         group = 1,
         id = 5
     ),
     RecordImage().copy(
-        schedule = "Day3",
-        place = "제주도",
+        schedule = "3",
+        place = listOf("제주도"),
         img = "http://tong.visitkorea.or.kr/cms/resource/60/489560_image2_1.jpg",
         comment = "comment31",
         group = 2,
         id = 6
     ),
     RecordImage().copy(
-        schedule = "Day3",
-        place = "한라산",
+        schedule = "3",
+        place = listOf("한라산"),
         img = "http://tong.visitkorea.or.kr/cms/resource/28/2735328_image2_1.png",
         comment = "comment32",
         group = 2,
         id = 7
     ),
     RecordImage().copy(
-        schedule = "Day3",
-        place = "서울, 혿대",
+        schedule = "3",
+        place = listOf("서울", "혿대"),
         img = "http://tong.visitkorea.or.kr/cms/resource/46/2628546_image2_1.jpg",
         comment = "comment33",
         group = 2,

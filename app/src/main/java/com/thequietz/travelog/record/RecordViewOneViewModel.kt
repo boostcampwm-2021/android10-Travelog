@@ -39,6 +39,7 @@ class RecordViewOneViewModel @Inject constructor(
     fun setCurrentImage(position: Int) {
         _currentImage.value = _imageList.value?.get(position)
     }
+
     fun createRecord() {
         /*tempData.forEach{
             repository.createRecordImage(it)
