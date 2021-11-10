@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordViewOneBinding
@@ -18,6 +19,7 @@ class RecordViewOneFragment : Fragment() {
     private lateinit var _binding: FragmentRecordViewOneBinding
     private val binding get() = _binding
     private val recordViewOneViewModel by viewModels<RecordViewOneViewModel>()
+    private val args: RecordViewOneFragmentArgs by navArgs()
     lateinit var adapter: ImageViewPagerAdapter
 
     override fun onCreateView(
@@ -36,16 +38,23 @@ class RecordViewOneFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             viewModel = recordViewOneViewModel
             vpReviewViewOne.adapter = adapter
+            vpReviewViewOne.post {
+                vpReviewViewOne.setCurrentItem(args.index, false)
+            }
         }
         with(recordViewOneViewModel) {
             // 아이템 초기화
             // createRecord()
             // loadRecord()
+
             this.imageList.observe(viewLifecycleOwner, { it ->
                 it?.let { adapter.submitList(it) }
             })
         }
         setListener()
+        /*binding.vpReviewViewOne.post{
+            binding.vpReviewViewOne.setCurrentItem(args.index, true)
+        }*/
     }
     fun setListener() {
         binding.vpReviewViewOne.registerOnPageChangeCallback(object :

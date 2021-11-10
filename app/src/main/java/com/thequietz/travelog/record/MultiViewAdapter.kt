@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -44,11 +46,13 @@ class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
         val binding: ItemRecyclerRecyclerBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         val adapter = MultiViewImageAdapter(object : MultiViewImageAdapter.OnItemClickListener {
-            override fun onItemClick(view: View, position: Int, groupPosition: Int) {
+            override fun onItemClick(view: View, ind: Int) {
                 /*val action = RecordViewManyFragmentDirections
                     .actionRecordViewManyFragmentToRecordViewOneFragment()
                 findNavController().navigate(action)*/
-                println("position $position  $groupPosition")
+                val action = RecordViewManyFragmentDirections
+                    .actionRecordViewManyFragmentToRecordViewOneFragment(ind)
+                itemView.findNavController().navigate(action)
             }
         })
         init {
@@ -121,7 +125,7 @@ class MultiViewImageAdapter(private val onItemClickListener: OnItemClickListener
     diffUtil
 ) {
     interface OnItemClickListener {
-        fun onItemClick(view: View, position: Int, groupPosition: Int)
+        fun onItemClick(view: View, ind: Int)
     }
 
     companion object {
@@ -160,7 +164,7 @@ class MultiViewImageAdapter(private val onItemClickListener: OnItemClickListener
     override fun onBindViewHolder(holder: MultiViewImageViewHolder, position: Int) {
         holder.bind(getItem(position))
         holder.binding.ivItemImage.setOnClickListener { view ->
-            onItemClickListener.onItemClick(view, position, getItem(position).group)
+            onItemClickListener.onItemClick(view, getItem(position).id)
         }
     }
 }

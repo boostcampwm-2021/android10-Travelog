@@ -32,11 +32,7 @@ class RecordViewOneViewModel @Inject constructor(
                 val res = repository.loadRecordImages()
                 withContext(Dispatchers.Main) {
                     _imageList.value = res
-                    setCurrentImage(0)
                 }
-                val tt = repository.loadRecordImages()
-                println("loadRecordImages")
-                tt.forEach { println(it.toString()) }
             }
         }
     }
