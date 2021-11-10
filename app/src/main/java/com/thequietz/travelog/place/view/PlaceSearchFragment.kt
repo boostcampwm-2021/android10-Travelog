@@ -2,7 +2,6 @@ package com.thequietz.travelog.place.view
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
@@ -54,7 +54,11 @@ class PlaceSearchFragment : Fragment() {
         adapter = PlaceSearchAdapter(object : PlaceSearchAdapter.OnItemClickListener {
             override fun onClickItem(model: PlaceSearchModel, position: Int): Boolean {
                 val param = gson.toJson(model)
-                Log.d("Place", param)
+                val action =
+                    PlaceSearchFragmentDirections.actionPlaceSearchFragmentToPlaceDetailFragment(
+                        param
+                    )
+                view.findNavController().navigate(action)
                 return true
             }
         })
