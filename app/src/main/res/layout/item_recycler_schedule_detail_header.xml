@@ -14,12 +14,26 @@
         android:layout_height="50dp">
 
         <TextView
+            android:id="@+id/tv_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="day 1"
+            android:text="Day 1"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12.18 일"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_day"
+            app:layout_constraintStart_toEndOf="@id/tv_day"
+            app:layout_constraintTop_toTopOf="@id/tv_day" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

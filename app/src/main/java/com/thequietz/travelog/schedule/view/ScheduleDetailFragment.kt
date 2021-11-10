@@ -45,6 +45,10 @@ class ScheduleDetailFragment : Fragment() {
             add(ScheduleDetailItem(2))
             add(ScheduleDetailItem(2))
             add(ScheduleDetailItem(3))
+            add(ScheduleDetailItem(1))
+            add(ScheduleDetailItem(2))
+            add(ScheduleDetailItem(2))
+            add(ScheduleDetailItem(3))
         }
         adapter.notifyDataSetChanged()
     }
