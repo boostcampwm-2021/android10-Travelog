@@ -100,6 +100,11 @@ class SchedulePlaceFragment : Fragment() {
             it.findNavController().navigate(action)
         }
 
+        binding.btnSearchPlace.setOnClickListener {
+            val action = SchedulePlaceFragmentDirections.actionSchedulePlaceFragmentToPlaceSearchFragment()
+            it.findNavController().navigate(action)
+        }
+
         viewModel.placeList.observe(viewLifecycleOwner, {
 
             binding.tvEmptyResult.visibility = if (it.isEmpty()) {
