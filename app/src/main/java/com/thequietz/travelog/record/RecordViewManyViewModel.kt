@@ -4,15 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.thequietz.travelog.data.RepositoryImpl
+import com.thequietz.travelog.data.RecordRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RecordViewManyViewModel @Inject constructor(
-    val repository: RepositoryImpl
+    val repository: RecordRepository
 ) : ViewModel() {
 
     private val _dataList = MutableLiveData<List<MyRecord>>()
@@ -20,6 +19,10 @@ class RecordViewManyViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+            val res = repository.loadRecordImages()
+            // _dataList.value = res
+        }
+        /*viewModelScope.launch {
             with(Dispatchers.IO) {
                 val list = mutableListOf<MyRecord>()
                 list.add(
@@ -38,27 +41,32 @@ class RecordViewManyViewModel @Inject constructor(
                             RecordImage().copy(
                                 img = "https://tong.visitkorea.or.kr/cms/resource/67/2558467_image2_1.jpg",
                                 comment = "comment11",
-                                group = 0
+                                group = 0,
+                                id = 0
                             ),
                             RecordImage().copy(
                                 img = "https://tong.visitkorea.or.kr/cms/resource/21/2689521_image2_1.jpg",
                                 comment = "comment12",
-                                group = 0
+                                group = 0,
+                                id = 1
                             ),
                             RecordImage().copy(
                                 img = "https://tong.visitkorea.or.kr/cms/resource/53/1253553_image2_1.jpg",
                                 comment = "comment13",
-                                group = 0
+                                group = 0,
+                                id = 2
                             ),
                             RecordImage().copy(
                                 img = "http://tong.visitkorea.or.kr/cms/resource/22/2654222_image2_1.jpg",
                                 comment = "comment21",
-                                group = 0
+                                group = 0,
+                                id = 3
                             ),
                             RecordImage().copy(
                                 img = "http://tong.visitkorea.or.kr/cms/resource/56/2736256_image2_1.jpg",
                                 comment = "comment23",
-                                group = 1
+                                group = 0,
+                                id = 4
                             ),
                         )
                     )
@@ -79,7 +87,8 @@ class RecordViewManyViewModel @Inject constructor(
                             RecordImage().copy(
                                 img = "http://tong.visitkorea.or.kr/cms/resource/54/644554_image2_1.jpg",
                                 comment = "comment22",
-                                group = 1
+                                group = 1,
+                                id = 5
                             )
                         )
                     )
@@ -100,23 +109,26 @@ class RecordViewManyViewModel @Inject constructor(
                             RecordImage().copy(
                                 img = "http://tong.visitkorea.or.kr/cms/resource/60/489560_image2_1.jpg",
                                 comment = "comment31",
-                                group = 2
+                                group = 2,
+                                id = 6
                             ),
                             RecordImage().copy(
                                 img = "http://tong.visitkorea.or.kr/cms/resource/28/2735328_image2_1.png",
                                 comment = "comment32",
-                                group = 2
+                                group = 2,
+                                id = 7
                             ),
                             RecordImage().copy(
                                 img = "http://tong.visitkorea.or.kr/cms/resource/46/2628546_image2_1.jpg",
                                 comment = "comment33",
-                                group = 2
+                                group = 2,
+                                id = 8
                             )
                         )
                     )
                 )
                 _dataList.value = list
             }
-        }
+        }*/
     }
 }

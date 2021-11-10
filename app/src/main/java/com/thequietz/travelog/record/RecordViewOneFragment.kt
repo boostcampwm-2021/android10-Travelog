@@ -24,7 +24,7 @@ class RecordViewOneFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_record_view_one, container, false)
         return binding.root
     }
@@ -39,7 +39,9 @@ class RecordViewOneFragment : Fragment() {
         }
         with(recordViewOneViewModel) {
             // 아이템 초기화
-            tempList.observe(viewLifecycleOwner, { it ->
+            // createRecord()
+            // loadRecord()
+            this.imageList.observe(viewLifecycleOwner, { it ->
                 it?.let { adapter.submitList(it) }
             })
         }

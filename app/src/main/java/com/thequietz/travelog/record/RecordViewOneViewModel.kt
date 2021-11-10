@@ -3,62 +3,60 @@ package com.thequietz.travelog.record
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.thequietz.travelog.data.RepositoryImpl
+import androidx.lifecycle.viewModelScope
+import com.thequietz.travelog.data.RecordRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class RecordViewOneViewModel @Inject constructor(
-    val repository: RepositoryImpl
+    val repository: RecordRepository
 ) : ViewModel() {
 
     private val _imageList = MutableLiveData<List<RecordImage>>()
-    val imageList: LiveData<List<RecordImage>> = _imageList
-
-    private val _tempList = MutableLiveData<List<RecordImage>>()
-    val tempList: LiveData<List<RecordImage>> = _tempList
+    val imageList: LiveData<List<RecordImage>> = this._imageList
 
     private val _currentImage = MutableLiveData<RecordImage>()
     val currentImage: LiveData<RecordImage> = _currentImage
 
     init {
-        val list = mutableListOf<RecordImage>()
-        list.add(
-            RecordImage().copy(
-                schedule = "Day1",
-                place = "석굴암",
-                img = "https://tong.visitkorea.or.kr/cms/resource/67/2558467_image2_1.jpg",
-                comment = "comment1"
-            )
-        )
-        list.add(
-            RecordImage().copy(
-                schedule = "Day1",
-                place = "제주도",
-                img = "https://tong.visitkorea.or.kr/cms/resource/21/2689521_image2_1.jpg",
-                comment = "comment2"
-            )
-        )
-        list.add(
-            RecordImage().copy(
-                schedule = "Day2",
-                place = "부산",
-                img = "https://tong.visitkorea.or.kr/cms/resource/53/1253553_image2_1.jpg",
-                comment = "comment3"
-            )
-        )
-        list.add(
-            RecordImage().copy(
-                schedule = "Day3",
-                place = "거제도",
-                img = "https://tong.visitkorea.or.kr/cms/resource/22/1195422_image2_1.jpg",
-                comment = "comment4"
-            )
-        )
-        _tempList.value = list.toList()
-        _currentImage.value = list.get(0)
+        // createRecord()
+        loadRecord()
+    }
+    fun loadRecord() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val res = repository.loadRecordImages()
+                withContext(Dispatchers.Main) {
+                    _imageList.value = res
+                    setCurrentImage(0)
+                }
+                val tt = repository.loadRecordImages()
+                println("loadRecordImages")
+                tt.forEach { println(it.toString()) }
+            }
+        }
     }
     fun setCurrentImage(position: Int) {
-        _currentImage.value = _tempList.value?.get(position)
+        _currentImage.value = _imageList.value?.get(position)
+    }
+    fun createRecord() {
+        /*tempData.forEach{
+            repository.createRecordImage(it)
+        }*/
+        /*tempData.forEach{
+            println(it.toString())
+            //repository.createRecordImage(it)
+        }*/
+
+        /*viewModelScope.launch {
+            withContext(Dispatchers.IO){
+
+            }
+            loadRecord()
+        }*/
     }
 }

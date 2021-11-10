@@ -6,7 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.thequietz.travelog.data.db.AppDatabase
+import com.thequietz.travelog.data.db.dao.RecordImageDao
 import com.thequietz.travelog.data.db.dao.ScheduleDao
+import com.thequietz.travelog.util.SAMPLE_RECORD_IMAGES
 import com.thequietz.travelog.util.SAMPLE_SCHEDULES
 import dagger.Module
 import dagger.Provides
@@ -37,6 +39,8 @@ object DatabaseModule {
                         provideScheduleDao(provideDatabase(appContext))
                             .insert(*SAMPLE_SCHEDULES.toTypedArray())
                         Log.d("InitDB", "OK")
+                        provideRecordImageDao(provideDatabase(appContext))
+                            .insert(*SAMPLE_RECORD_IMAGES.toTypedArray())
                     }
                 }
             }
@@ -46,6 +50,11 @@ object DatabaseModule {
     @Provides
     fun provideScheduleDao(appDatabase: AppDatabase): ScheduleDao {
         return appDatabase.scheduleDao()
+    }
+
+    @Provides
+    fun provideRecordImageDao(appDatabase: AppDatabase): RecordImageDao {
+        return appDatabase.recordImageDao()
     }
 
     @Provides
