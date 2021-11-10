@@ -25,9 +25,9 @@
             app:layout_constraintEnd_toStartOf="@id/tv_place"/>
 
         <View
+            android:id="@+id/view_circle"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:backgroundTint="@color/purple_200"
             android:background="@drawable/shape_circle"
             android:layout_marginStart="37dp"
             app:layout_constraintTop_toTopOf="parent"
@@ -39,7 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/bt_tv_place"
-            android:text="content"
+            android:text="@{item.name}"
             android:gravity="center_vertical"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="37dp"

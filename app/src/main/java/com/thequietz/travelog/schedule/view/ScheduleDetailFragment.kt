@@ -41,14 +41,14 @@ class ScheduleDetailFragment : Fragment() {
         adapter = ScheduleDetailAdapter()
         binding.rvSchedule.adapter = adapter
         adapter.item.apply {
-            add(ScheduleDetailItem(1))
-            add(ScheduleDetailItem(2))
-            add(ScheduleDetailItem(2))
-            add(ScheduleDetailItem(3))
-            add(ScheduleDetailItem(1))
-            add(ScheduleDetailItem(2))
-            add(ScheduleDetailItem(2))
-            add(ScheduleDetailItem(3))
+            add(ScheduleDetailItem(1, null, null))
+            add(ScheduleDetailItem(2, R.color.purple_200, "placeName"))
+            add(ScheduleDetailItem(2, R.color.purple_500, "placeName"))
+            add(ScheduleDetailItem(3, null, null))
+            add(ScheduleDetailItem(1, null, null))
+            add(ScheduleDetailItem(2, R.color.gray, "placeName"))
+            add(ScheduleDetailItem(2, R.color.gray, "placeName"))
+            add(ScheduleDetailItem(3, null, null))
         }
         adapter.notifyDataSetChanged()
     }
