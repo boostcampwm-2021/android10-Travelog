@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="model"
-            type="com.thequietz.travelog.place.model.PlaceSearchModel" />
+            name="viewModel"
+            type="com.thequietz.travelog.place.viewmodel.PlaceDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,13 +49,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_max="200dp"
+            app:layout_constraintHeight_min="50dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll_google_map_detail">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{model.name}" />
+                android:text="@{viewModel.name}"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="@string/tv_place_detail_name" />
 
         </LinearLayout>
 

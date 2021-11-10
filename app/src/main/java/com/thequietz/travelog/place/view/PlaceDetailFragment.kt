@@ -6,17 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceDetailBinding
 import com.thequietz.travelog.place.model.PlaceSearchModel
+import com.thequietz.travelog.place.viewmodel.PlaceDetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PlaceDetailFragment : Fragment() {
 
     private var _binding: FragmentPlaceDetailBinding? = null
     private val binding get() = _binding!!
     private val navArgs: PlaceDetailFragmentArgs by navArgs()
+    private val viewModel: PlaceDetailViewModel by viewModels()
 
     private lateinit var model: PlaceSearchModel
     private lateinit var gson: Gson
@@ -40,6 +45,6 @@ class PlaceDetailFragment : Fragment() {
 
         gson = Gson()
         model = gson.fromJson(navArgs.param, PlaceSearchModel::class.java)
-        binding.model = model
+        viewModel.loadPlaceDetail(model.placeId)
     }
 }

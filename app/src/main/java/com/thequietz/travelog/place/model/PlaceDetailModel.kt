@@ -73,7 +73,7 @@ data class PlaceDetailModel(
 
 data class PlaceDetailModelResponse(
     @SerializedName("result")
-    val result: PlaceSearchModel,
+    val result: PlaceDetailModel,
 
     @SerializedName("status")
     val status: String,

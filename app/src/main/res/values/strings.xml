@@ -45,5 +45,6 @@
     <string name="tv_place_search_item">스타벅스</string>
     <string name="btn_search_place">장소</string>
     <string name="tv_google_map_view">구글 맵</string>
+    <string name="tv_place_detail_name">스타벅스</string>
 
 </resources>

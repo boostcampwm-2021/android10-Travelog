@@ -2,20 +2,22 @@ package com.thequietz.travelog.place.repository
 
 import com.thequietz.travelog.BuildConfig
 import com.thequietz.travelog.api.PlaceSearchService
-import com.thequietz.travelog.place.model.PlaceSearchModel
+import com.thequietz.travelog.place.model.PlaceDetailModel
 import retrofit2.awaitResponse
 import javax.inject.Inject
 
-class PlaceSearchRepository @Inject constructor(
-    private val service: PlaceSearchService,
+class PlaceDetailRepository @Inject constructor(
+    private val service: PlaceSearchService
 ) {
-    suspend fun loadPlaceList(query: String): List<PlaceSearchModel> {
+
+    suspend fun loadPlaceDetail(placeId: String): PlaceDetailModel? {
         val apiKey = BuildConfig.GOOGLE_MAP_KEY
-        val call = service.loadPlaceList(query, apiKey)
+        val call = service.loadPlaceDetail(placeId, apiKey)
         val response = call.awaitResponse()
         if (!response.isSuccessful || response.body() == null) {
-            return listOf()
+            return null
         }
-        return response.body()?.results ?: listOf()
+
+        return response.body()?.result
     }
 }
