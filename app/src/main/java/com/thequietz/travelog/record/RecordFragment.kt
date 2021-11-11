@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +24,7 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
     ): View {
         binding = FragmentRecordBinding.inflate(inflater, container, false)
 
-        val adapter = RecordAdapter()
+        val adapter = RecordAdapter(::navigateToRecordBasicUi)
         binding.rvRecord.adapter = adapter
 
         viewModel.recordList.observe(viewLifecycleOwner) {
@@ -31,5 +32,11 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
         }
 
         return binding.root
+    }
+
+    private fun navigateToRecordBasicUi() {
+        val action = RecordFragmentDirections.actionRecordFragmentToRecordBasicFragment()
+
+        findNavController().navigate(action)
     }
 }

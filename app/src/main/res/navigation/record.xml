@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/record"
+    app:startDestination="@id/recordFragment">
+
+    <fragment
+        android:id="@+id/recordFragment"
+        android:name="com.thequietz.travelog.record.RecordFragment"
+        android:label="RecordFragment"
+        tools:layout="@layout/fragment_record" >
+        <action
+            android:id="@+id/action_recordFragment_to_recordBasicFragment"
+            app:destination="@id/recordBasicFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordBasicFragment"
+        android:name="com.thequietz.travelog.record.RecordBasicFragment"
+        android:label="RecordBasicFragment" >
+        <action
+            android:id="@+id/action_recordBasicFragment_to_recordViewOneFragment"
+            app:destination="@id/recordViewOneFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordViewOneFragment"
+        android:name="com.thequietz.travelog.record.RecordViewOneFragment"
+        android:label="RecordViewOneFragment">
+        <action
+            android:id="@+id/action_recordViewOneFragment_to_recordViewManyFragment"
+            app:destination="@id/recordViewManyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordViewManyFragment"
+        android:name="com.thequietz.travelog.record.RecordViewManyFragment"
+        android:label="RecordViewManyFragment" />
+
+</navigation>
