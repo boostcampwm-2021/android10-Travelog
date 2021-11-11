@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 sealed class MyRecord {
     data class RecordSchedule(val date: Int = 0) : MyRecord()
     data class RecordPlace(
-        val place: List<String> = listOf()
+        val place: String = ""
     ) : MyRecord()
     data class RecordImageList(
         var list: MutableList<RecordImage> = mutableListOf()
@@ -18,9 +18,9 @@ enum class ViewType {
 @Entity(tableName = "RecordImage")
 data class RecordImage(
     val schedule: String = "",
-    val place: List<String> = listOf(),
+    val place: String = "",
     val img: String = "",
     var comment: String = "",
     var group: Int = 0,
-    @PrimaryKey val id: Int = 0
+    @PrimaryKey(autoGenerate = true) val id: Int = 0
 )

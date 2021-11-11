@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
+import com.thequietz.travelog.util.SAMPLE_RECORD_IMAGES
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,8 +32,9 @@ class RecordViewOneViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 val res = repository.loadRecordImages()
                 withContext(Dispatchers.Main) {
-                    _imageList.value = res
+                    _imageList.postValue(res)
                 }
+                imageList.value?.forEach { println(it.toString()) }
             }
         }
     }
@@ -41,6 +43,20 @@ class RecordViewOneViewModel @Inject constructor(
     }
 
     fun createRecord() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                SAMPLE_RECORD_IMAGES.forEach {
+                    repository.createRecordImage(it)
+                }
+            }
+            withContext(Dispatchers.IO) {
+                val res = repository.loadRecordImages()
+                viewModelScope.launch {
+                    _imageList.postValue(res)
+                }
+            }
+        }
+
         /*tempData.forEach{
             repository.createRecordImage(it)
         }*/
@@ -55,5 +71,34 @@ class RecordViewOneViewModel @Inject constructor(
             }
             loadRecord()
         }*/
+    }
+
+    fun isCommentChanged(str: String): Boolean {
+        if (currentImage.value?.comment != str) {
+            return true
+        }
+        return false
+    }
+
+    fun updateComment(comment: String, currentId: Int?) {
+        var temp = currentImage.value?.id
+        currentId?.let {
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    repository.updateRecordImageComment(comment, it)
+                }
+                withContext(Dispatchers.IO) {
+                    loadRecord()
+                }
+            }
+        }
+    }
+
+    fun getId(): Int? {
+        return currentImage.value?.id
+    }
+
+    fun resetComment() {
+        _currentImage.value = _currentImage.value
     }
 }

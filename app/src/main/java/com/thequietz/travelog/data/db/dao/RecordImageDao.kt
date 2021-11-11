@@ -11,4 +11,7 @@ abstract class RecordImageDao : BaseDao<RecordImage> {
 
     @Query("SELECT * FROM RecordImage WHERE id =:id")
     abstract fun loadRecordImageById(id: Int): RecordImage
+
+    @Query("UPDATE RecordImage SET comment =:comment WHERE id =:id")
+    abstract fun updateRecordImageCommentById(comment: String, id: Int)
 }

@@ -33,7 +33,7 @@ class RecordViewManyViewModel @Inject constructor(
                 )
                 res.add(
                     MyRecord.RecordPlace().copy(
-                        place = currentPlace.toList()
+                        place = currentPlace
                     )
                 )
                 var currentImageList = mutableListOf<RecordImage>()
@@ -55,7 +55,7 @@ class RecordViewManyViewModel @Inject constructor(
                         currentPlace = it.place // 장소 갱신해주고
                         res.add( // res에 Place넣어주고
                             MyRecord.RecordPlace().copy(
-                                place = currentPlace.toList()
+                                place = currentPlace
                             )
                         )
                         currentImageList.add(it) // 이미지 리스트에 현재 data 넣기
@@ -70,7 +70,7 @@ class RecordViewManyViewModel @Inject constructor(
                             currentPlace = it.place // 현재 place 갱신하고
                             res.add( // res에 현재 place 넣어주거
                                 MyRecord.RecordPlace().copy(
-                                    place = currentPlace.toList()
+                                    place = currentPlace
                                 )
                             )
                             currentImageList.add(it) // 이미지 리스트에 현재 data 넣기

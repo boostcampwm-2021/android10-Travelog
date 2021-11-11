@@ -47,9 +47,6 @@ class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
     ) : RecyclerView.ViewHolder(binding.root) {
         val adapter = MultiViewImageAdapter(object : MultiViewImageAdapter.OnItemClickListener {
             override fun onItemClick(view: View, ind: Int) {
-                /*val action = RecordViewManyFragmentDirections
-                    .actionRecordViewManyFragmentToRecordViewOneFragment()
-                findNavController().navigate(action)*/
                 val action = RecordViewManyFragmentDirections
                     .actionRecordViewManyFragmentToRecordViewOneFragment(ind)
                 itemView.findNavController().navigate(action)
