@@ -7,7 +7,7 @@ import com.thequietz.travelog.data.db.dao.ScheduleDao
 import com.thequietz.travelog.getTodayDate
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.RecommendPlace
-import com.thequietz.travelog.record.RecordImage
+import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

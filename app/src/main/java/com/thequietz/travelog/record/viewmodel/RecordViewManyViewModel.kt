@@ -1,10 +1,12 @@
-package com.thequietz.travelog.record
+package com.thequietz.travelog.record.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
+import com.thequietz.travelog.record.model.MyRecord
+import com.thequietz.travelog.record.model.RecordImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

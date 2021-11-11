@@ -1,10 +1,11 @@
-package com.thequietz.travelog.record
+package com.thequietz.travelog.record.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
+import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.util.SAMPLE_RECORD_IMAGES
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -31,10 +32,12 @@ class RecordViewOneViewModel @Inject constructor(
         loadRecord()
         _currentPosition.value = 0
     }
+
     companion object {
         private val _currentPosition = MutableLiveData<Int>()
         val currentPosition: LiveData<Int> = _currentPosition
     }
+
     fun loadRecord() {
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO) {
@@ -45,6 +48,7 @@ class RecordViewOneViewModel @Inject constructor(
             }
         }
     }
+
     fun setCurrentImage(position: Int) {
         _currentImage.value = _imageList.value?.get(position)
     }

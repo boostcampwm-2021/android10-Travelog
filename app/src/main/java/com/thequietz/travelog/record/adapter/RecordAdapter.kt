@@ -1,4 +1,4 @@
-package com.thequietz.travelog.record
+package com.thequietz.travelog.record.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,11 +6,20 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.databinding.ItemRecyclerRecordBinding
+import com.thequietz.travelog.record.model.Record
 
-class RecordAdapter : ListAdapter<Record, RecordAdapter.RecordViewHolder>(diffUtil) {
-    class RecordViewHolder(private val binding: ItemRecyclerRecordBinding) :
+class RecordAdapter(
+    private val onClick: () -> Unit
+) : ListAdapter<Record, RecordAdapter.RecordViewHolder>(diffUtil) {
+    inner class RecordViewHolder(private val binding: ItemRecyclerRecordBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private val adapter = RecordPhotoAdapter()
+
+        init {
+            binding.root.setOnClickListener {
+                onClick.invoke()
+            }
+        }
 
         fun bind(item: Record) = with(binding) {
             tvItemRecordTitle.text = item.title

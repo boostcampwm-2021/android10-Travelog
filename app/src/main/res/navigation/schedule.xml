@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/schedule"
+    app:startDestination="@id/scheduleFragment">
+
+    <fragment
+        android:id="@+id/scheduleFragment"
+        android:name="com.thequietz.travelog.schedule.view.ScheduleFragment"
+        android:label="ScheduleFragment"
+        tools:layout="@layout/fragment_schedule">
+        <action
+            android:id="@+id/action_scheduleFragment_to_schedulePlaceFragment"
+            app:destination="@id/schedulePlaceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/schedulePlaceFragment"
+        android:name="com.thequietz.travelog.schedule.view.SchedulePlaceFragment"
+        android:label="SchedulePlaceFragment">
+        <action
+            android:id="@+id/action_schedulePlaceFragment_to_scheduleSelectFragment"
+            app:destination="@id/scheduleSelectFragment" />
+        <action
+            android:id="@+id/action_schedulePlaceFragment_to_placeSearchFragment"
+            app:destination="@id/placeSearchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scheduleSelectFragment"
+        android:name="com.thequietz.travelog.schedule.view.ScheduleSelectFragment"
+        android:label="ScheduleSelectFragment">
+        <argument
+            android:name="PlaceString"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_scheduleSelectFragment_to_scheduleDetailFragment"
+            app:destination="@id/scheduleDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scheduleDetailFragment"
+        android:name="com.thequietz.travelog.schedule.view.ScheduleDetailFragment"
+        android:label="ScheduleDetailFragment" >
+        <argument
+            android:name="startDate"
+            app:argType="string" />
+        <argument
+            android:name="endDate"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeSearchFragment"
+        android:name="com.thequietz.travelog.place.view.PlaceSearchFragment"
+        android:label="PlaceSearchFragment" >
+        <action
+            android:id="@+id/action_placeSearchFragment_to_placeDetailFragment"
+            app:destination="@id/placeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeDetailFragment"
+        android:name="com.thequietz.travelog.place.view.PlaceDetailFragment"
+        android:label="PlaceDetailFragment" >
+        <argument
+            android:name="param"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

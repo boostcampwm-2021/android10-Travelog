@@ -2,7 +2,7 @@ package com.thequietz.travelog.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.thequietz.travelog.record.RecordImage
+import com.thequietz.travelog.record.model.RecordImage
 
 @Dao
 abstract class RecordImageDao : BaseDao<RecordImage> {

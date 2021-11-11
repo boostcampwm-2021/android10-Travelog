@@ -6,7 +6,7 @@
     <data>
         <variable
             name="placeItem"
-            type="com.thequietz.travelog.record.MyRecord.RecordPlace" />
+            type="com.thequietz.travelog.record.model.MyRecord.RecordPlace" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

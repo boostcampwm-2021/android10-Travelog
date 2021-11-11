@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/guide"
+    app:startDestination="@id/guideFragment">
+
+    <fragment
+        android:id="@+id/guideFragment"
+        android:name="com.thequietz.travelog.guide.view.GuideFragment"
+        android:label="GuideFragment"
+        tools:layout="@layout/fragment_guide">
+        <action
+            android:id="@+id/action_guideFragment_to_specificGuideFragment"
+            app:destination="@id/specificGuideFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/specificGuideFragment"
+        android:name="com.thequietz.travelog.guide.SpecificGuideFragment"
+        android:label="SpecificGuideFragment">
+        <argument
+            android:name="item"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_specificGuideFragment_to_otherInfoFragment"
+            app:destination="@id/otherInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/otherInfoFragment"
+        android:name="com.thequietz.travelog.guide.OtherInfoFragment"
+        android:label="OtherInfoFragment">
+        <argument
+            android:name="item"
+            app:argType="com.thequietz.travelog.guide.Place" />
+        <action
+            android:id="@+id/action_otherInfoFragment_to_specificGuideFragment"
+            app:destination="@id/specificGuideFragment"
+            app:popUpTo="@id/specificGuideFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+</navigation>

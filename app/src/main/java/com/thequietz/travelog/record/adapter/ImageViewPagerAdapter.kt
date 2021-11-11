@@ -1,4 +1,4 @@
-package com.thequietz.travelog.record
+package com.thequietz.travelog.record.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.ItemViewpagerImageBinding
+import com.thequietz.travelog.record.model.RecordImage
 
 class ImageViewPagerAdapter : ListAdapter<RecordImage, ImageViewPagerAdapter.ViewPagerImageViewHolder>(
     diffUtil
@@ -15,7 +16,7 @@ class ImageViewPagerAdapter : ListAdapter<RecordImage, ImageViewPagerAdapter.Vie
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ImageViewPagerAdapter.ViewPagerImageViewHolder {
+    ): ViewPagerImageViewHolder {
         val binding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.item_viewpager_image,
@@ -25,7 +26,7 @@ class ImageViewPagerAdapter : ListAdapter<RecordImage, ImageViewPagerAdapter.Vie
         return ViewPagerImageViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ImageViewPagerAdapter.ViewPagerImageViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewPagerImageViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 

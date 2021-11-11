@@ -1,4 +1,4 @@
-package com.thequietz.travelog.record
+package com.thequietz.travelog.record.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

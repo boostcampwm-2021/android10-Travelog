@@ -1,6 +1,6 @@
 package com.thequietz.travelog.util
 
-import com.thequietz.travelog.record.RecordImage
+import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.schedule.model.ScheduleModel
 
 val SAMPLE_SCHEDULES = listOf(

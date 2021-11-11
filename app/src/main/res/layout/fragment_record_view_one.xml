@@ -1,165 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="com.thequietz.travelog.record.RecordViewOneViewModel" />
+            type="com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_record_view_one"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/layout_record_view_one"
-        tools:context=".record.RecordViewOneFragment">
+        tools:context=".record.view.RecordViewOneFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_record_view_one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/top_gl_record_view_one"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.12"
-            android:id="@+id/top_gl_record_view_one"
-            />
+            app:layout_constraintGuide_percent="0.12" />
+
         <androidx.constraintlayout.widget.Guideline
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.03"
             android:id="@+id/left_gl_record_view_one"
-            />
-        <androidx.constraintlayout.widget.Guideline
             android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.97"
+            app:layout_constraintGuide_percent="0.03" />
+
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/right_gl_record_view_one"
-            />
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.97" />
+
         <TextView
+            android:id="@+id/tv_record_view_one_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.currentImage.title}"
+            android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/tb_record_view_one"
             app:layout_constraintBottom_toBottomOf="@id/top_gl_record_view_one"
-            android:textColor="@color/black"
-            android:id="@+id/tv_record_view_one_title"
-            />
+            app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
+            app:layout_constraintTop_toBottomOf="@id/tb_record_view_one" />
+
         <TextView
+            android:id="@+id/tv_record_view_one_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.currentImage.startDate+` ~ `+viewModel.currentImage.endDate}"
-            android:textSize="18sp"
-            android:textColor="@color/black"
             android:layout_marginEnd="60dp"
-            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/tb_record_view_one"
+            android:text="@{viewModel.currentImage.startDate+` ~ `+viewModel.currentImage.endDate}"
+            android:textColor="@color/black"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/top_gl_record_view_one"
-            android:id="@+id/tv_record_view_one_date"
-            />
+            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
+            app:layout_constraintTop_toBottomOf="@id/tb_record_view_one" />
+
         <ImageButton
+            android:id="@+id/ib_record_view_one"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/tb_record_view_one"
-            app:layout_constraintBottom_toBottomOf="@id/top_gl_record_view_one"
             android:background="@drawable/img_grid"
             android:scaleType="fitXY"
-            android:id="@+id/ib_record_view_one"
-            />
+            app:layout_constraintBottom_toBottomOf="@id/top_gl_record_view_one"
+            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
+            app:layout_constraintTop_toBottomOf="@id/tb_record_view_one" />
+
         <TextView
+            android:id="@+id/tv_record_view_one_schedule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="@{viewModel.currentImage.schedule}"
             android:textColor="@color/black"
-            android:maxLines="1"
-            android:ellipsize="end"
-            app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one"
-            app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
             android:textSize="20sp"
-            android:id="@+id/tv_record_view_one_schedule"
-            android:layout_marginTop="15dp"
-            />
+            app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
+            app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one" />
+
         <TextView
+            android:id="@+id/tv_record_view_one_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="@{` - `+ viewModel.currentImage.place}"
             android:textColor="@color/black"
-            android:maxLines="1"
-            android:ellipsize="end"
-            app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one"
-            app:layout_constraintStart_toEndOf="@id/tv_record_view_one_schedule"
             android:textSize="20sp"
-            android:id="@+id/tv_record_view_one_place"
-            android:layout_marginTop="15dp"
-            />
+            app:layout_constraintStart_toEndOf="@id/tv_record_view_one_schedule"
+            app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one" />
+
         <TextView
+            android:id="@+id/tv_record_view_one_reduce"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:text="⋮"
             android:textAlignment="center"
-            android:textSize="24sp"
             android:textColor="@color/black"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one"
-            android:layout_marginTop="15dp"
-            android:id="@+id/tv_record_view_one_reduce"
-            />
+            app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one" />
+
         <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_review_view_one"
             android:layout_width="385dp"
             android:layout_height="400dp"
-            app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
-            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/tv_record_view_one_place"
             android:layout_marginTop="15dp"
-            android:id="@+id/vp_review_view_one"
-            />
+            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
+            app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
+            app:layout_constraintTop_toBottomOf="@id/tv_record_view_one_place" />
+
         <EditText
+            android:id="@+id/et_record_view_one"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
-            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
-            android:text="@{viewModel.currentImage.comment}"
-            app:layout_constraintTop_toBottomOf="@id/vp_review_view_one"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="50dp"
-            android:maxLines="5"
-            android:textSize="15sp"
-            android:enabled="false"
-            android:id="@+id/et_record_view_one"
             android:background="@android:color/transparent"
-            android:layout_marginStart="10dp"
-            />
+            android:enabled="false"
+            android:maxLines="5"
+            android:text="@{viewModel.currentImage.comment}"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
+            app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
+            app:layout_constraintTop_toBottomOf="@id/vp_review_view_one" />
+
         <ImageButton
+            android:id="@+id/ib_record_view_one_edit_comment"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="15dp"
-            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/vp_review_view_one"
             android:background="@drawable/img_pencil"
             android:scaleType="fitXY"
-            android:id="@+id/ib_record_view_one_edit_comment"
-            />
+            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
+            app:layout_constraintTop_toBottomOf="@id/vp_review_view_one" />
+
         <TextView
+            android:id="@+id/tv_record_view_one_save"
             android:layout_width="30dp"
             android:layout_height="20dp"
             android:layout_marginTop="15dp"
-            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/vp_review_view_one"
             android:text="저장"
             android:textAlignment="center"
-            android:id="@+id/tv_record_view_one_save"
             android:visibility="gone"
-            />
+            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
+            app:layout_constraintTop_toBottomOf="@id/vp_review_view_one" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

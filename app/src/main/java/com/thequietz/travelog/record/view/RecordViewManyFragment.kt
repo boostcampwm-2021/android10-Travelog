@@ -1,4 +1,4 @@
-package com.thequietz.travelog.record
+package com.thequietz.travelog.record.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordViewManyBinding
+import com.thequietz.travelog.record.adapter.MultiViewAdapter
+import com.thequietz.travelog.record.viewmodel.RecordViewManyViewModel
+import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,7 +26,8 @@ class RecordViewManyFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_record_view_many, container, false)
+        _binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_record_view_many, container, false)
         return binding.root
     }
 
@@ -42,6 +46,7 @@ class RecordViewManyFragment : Fragment() {
         }
         setListener()
     }
+
     fun setListener() {
         binding.ibRecordViewMany.setOnClickListener {
             val action = RecordViewOneViewModel.currentPosition.value?.let { it ->

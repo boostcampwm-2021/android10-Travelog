@@ -1,4 +1,4 @@
-package com.thequietz.travelog.record
+package com.thequietz.travelog.record.view
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -16,6 +16,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordViewOneBinding
+import com.thequietz.travelog.record.adapter.ImageViewPagerAdapter
+import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
