@@ -43,6 +43,9 @@
         <argument
             android:name="schedule"
             app:argType="com.thequietz.travelog.schedule.model.ScheduleModel" />
+        <action
+            android:id="@+id/action_placeDetailFragment_to_placeSearchFragment"
+            app:destination="@id/placeSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/placeSearchFragment"

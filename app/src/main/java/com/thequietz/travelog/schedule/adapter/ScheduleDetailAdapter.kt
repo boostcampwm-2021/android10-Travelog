@@ -14,7 +14,7 @@ import com.thequietz.travelog.schedule.data.TYPE_CONTENT
 import com.thequietz.travelog.schedule.data.TYPE_HEADER
 import com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel
 
-class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel) :
+class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: () -> (Unit)) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(),
     ScheduleTouchHelperCallback.OnItemMoveListener {
     var item = listOf<ScheduleDetailItem>()
@@ -83,6 +83,13 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel) :
         fun bind(item: ScheduleDetailItem) {
             binding.item = item
             binding.viewModel = viewModel
+            binding.setOnAddClickListener {
+                if (item.index != null && item.name != null) {
+                    viewModel.addSchedule(item.index.minus(1), item.name)
+                    onAdd()
+                }
+                (bindingAdapter as ScheduleDetailAdapter).onAdd
+            }
         }
     }
 

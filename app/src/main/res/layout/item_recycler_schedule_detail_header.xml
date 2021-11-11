@@ -11,6 +11,10 @@
         <variable
             name="viewModel"
             type="com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel" />
+
+        <variable
+            name="onAddClickListener"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,11 +44,12 @@
             app:layout_constraintTop_toTopOf="@id/tv_day" />
 
         <Button
+            android:id="@+id/btn_add"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/bg_btn_add"
-            android:onClick="@{()-> viewModel.addSchedule(item.index-1, item.name)}"
+            android:onClick="@{onAddClickListener}"
             android:text="+ 추가하기"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

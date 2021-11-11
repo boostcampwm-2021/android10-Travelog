@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class OtherViewModel @Inject internal constructor(
+class OtherInfoViewModel @Inject internal constructor(
     val repository: RepositoryImpl
 ) : ViewModel() {
 
@@ -45,7 +45,7 @@ class OtherViewModel @Inject internal constructor(
         initFoodData()
         initFestivalData()
     }*/
-    fun initCurrenetItem(item: Place) {
+    fun initCurrentItem(item: Place) {
         _currentPlace.value = item
     }
 
