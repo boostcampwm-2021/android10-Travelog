@@ -16,39 +16,50 @@ class RecordBasicViewModel @Inject constructor() : ViewModel() {
     private val _date = MutableLiveData<String>()
     val date: LiveData<String> = _date
 
-    private val _travelDestinations = MutableLiveData<List<TravelDestination>>()
-    val travelDestinations: LiveData<List<TravelDestination>> = _travelDestinations
+    private val _recordBasicItemList = MutableLiveData<List<RecordBasicItem>>()
+    val recordBasicItemList: LiveData<List<RecordBasicItem>> = _recordBasicItemList
 
     init {
         // TODO:
         //  1. 여행 기록 목록 화면으로부터 데이터(제목, 기간)를 전달받고,
         //  2. DB로부터 기록 데이터 로드
-        // 임시 데이터 사용
         viewModelScope.launch {
-            _title.value = "경주 여행"
-            _date.value = "21.10.26 ~ 10.27"
-            _travelDestinations.value = listOf(
-                TravelDestination(
-                    "불국사, 석굴암",
-                    "2021.10.26",
-                    listOf("", "", "")
-                ),
-                TravelDestination(
-                    "첨성대",
-                    "2021.10.26",
-                    listOf("", "", "")
-                ),
-                TravelDestination(
-                    "황리단길",
-                    "2021.10.27",
-                    listOf("", "", "")
-                ),
-                TravelDestination(
-                    "보문단지",
-                    "2021.10.27",
-                    listOf("", "", "")
+            // 임시 데이터 사용
+            val temp = RecordBasic(
+                "경주 여행",
+                "21.10.26",
+                "21.10.28",
+                listOf(
+                    RecordBasicItem.TravelDestination("불국사, 석굴암", "2021.10.26", listOf("", "", "")),
+                    RecordBasicItem.TravelDestination("첨성대", "2021.10.26", listOf("", "", "")),
+                    RecordBasicItem.TravelDestination("황리단길", "2021.10.27", listOf("", "", "")),
+                    RecordBasicItem.TravelDestination("보문단지", "2021.10.27", listOf("", "", "")),
+                    RecordBasicItem.TravelDestination("황리단길2", "2021.10.28", listOf("", "", "")),
+                    RecordBasicItem.TravelDestination("보문단지2", "2021.10.28", listOf("", "", ""))
                 )
             )
+
+            _title.value = temp.title
+            _date.value = temp.startDate
+            _recordBasicItemList.value =
+                createListOfRecyclerViewAdapterItem(temp.travelDestinations)
         }
+    }
+
+    private fun createListOfRecyclerViewAdapterItem(travelDestinations: List<RecordBasicItem.TravelDestination>): List<RecordBasicItem> {
+        val list = mutableListOf<RecordBasicItem>()
+        var currDate = ""
+        var day = 0
+
+        for (travelDestination in travelDestinations) {
+            if (currDate != travelDestination.date) {
+                currDate = travelDestination.date
+                day++
+                list.add(RecordBasicItem.RecordBasicHeader("Day$day"))
+            }
+            list.add(travelDestination)
+        }
+
+        return list.toList()
     }
 }

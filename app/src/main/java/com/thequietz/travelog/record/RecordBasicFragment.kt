@@ -35,8 +35,8 @@ class RecordBasicFragment : Fragment() {
         viewModel.date.observe(viewLifecycleOwner) { date ->
             binding.tvRecordBasicSchedule.text = date
         }
-        viewModel.travelDestinations.observe(viewLifecycleOwner) { travelDestinations ->
-            adapter.submitList(travelDestinations)
+        viewModel.recordBasicItemList.observe(viewLifecycleOwner) { recordBasicItemList ->
+            adapter.submitList(recordBasicItemList)
         }
     }
 }
