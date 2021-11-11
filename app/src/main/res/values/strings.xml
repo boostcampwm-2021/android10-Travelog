@@ -38,6 +38,10 @@
     <string name="btn_next">다음</string>
     <string name="tv_no_schedule">아직 여행 일정이 없어요!\n새 일정을 추가해 보세요!</string>
 
+    <!-- Schedule Detail Fragment fragment_schedule_detail.xml -->
+    <string name="tv_schedule_setting">일정 설정</string>
+    <string name="btn_done">완료</string>
+
     <string name="tv_noData">해당 데이터가 없습니다</string>
     <string name="tv_empty_result">여행지가 없습니다.</string>
     <!-- TODO: Remove or change this placeholder text -->
