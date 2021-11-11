@@ -24,6 +24,10 @@ class PlaceDetailAdapter : ListAdapter<PlaceDetailPhoto, PlaceDetailAdapter.View
             Glide.with(binding.root)
                 .load(imageUrl)
                 .centerCrop()
+                .override(
+                    binding.ivItemPlaceDetailPhoto.measuredWidth,
+                    binding.ivItemPlaceDetailPhoto.measuredHeight
+                )
                 .into(binding.ivItemPlaceDetailPhoto)
             binding.executePendingBindings()
         }

@@ -10,6 +10,12 @@ data class PlaceDetailPhoto(
 data class PlaceDetailReview(
     @SerializedName("author_name")
     val author: String,
+    @SerializedName("profile_photo_url")
+    val authorImage: String,
+    @SerializedName("rating")
+    val rating: Int,
+    @SerializedName("relative_time_description")
+    val timeDescription: String,
     @SerializedName("text")
     val text: String,
     @SerializedName("time")
@@ -29,17 +35,12 @@ data class PlaceDetailGeometry(
     val location: PlaceDetailLocation
 )
 
-data class PlaceDetailOperationText(
-    @SerializedName("weekday_text")
-    val text: List<String>
-)
-
 data class PlaceDetailOperation(
     @SerializedName("open_now")
     val isOpened: Boolean,
 
-    @SerializedName("opening_hours")
-    val operation: PlaceDetailOperationText,
+    @SerializedName("weekday_text")
+    val operation: List<String>,
 )
 
 data class PlaceDetailModel(
@@ -54,6 +55,9 @@ data class PlaceDetailModel(
 
     @SerializedName("name")
     val name: String,
+
+    @SerializedName("opening_hours")
+    val operation: PlaceDetailOperation,
 
     @SerializedName("geometry")
     val geometry: PlaceDetailGeometry,
