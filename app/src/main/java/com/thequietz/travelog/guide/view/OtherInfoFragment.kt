@@ -13,14 +13,14 @@ import androidx.navigation.fragment.navArgs
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentOtherInfoBinding
 import com.thequietz.travelog.guide.adapter.OtherInfoAdapter
-import com.thequietz.travelog.guide.viewmodel.OtherViewModel
+import com.thequietz.travelog.guide.viewmodel.OtherInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class OtherInfoFragment : Fragment() {
     private lateinit var _binding: FragmentOtherInfoBinding
     private val binding get() = _binding
-    private val otherViewModel by viewModels<OtherViewModel>()
+    private val otherInfoViewModel by viewModels<OtherInfoViewModel>()
     private val args: OtherInfoFragmentArgs by navArgs()
     lateinit var vacationAdapter: OtherInfoAdapter
     lateinit var festivalAdapter: OtherInfoAdapter
@@ -44,14 +44,14 @@ class OtherInfoFragment : Fragment() {
 
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
-            viewModel = otherViewModel
+            viewModel = otherInfoViewModel
             rvVacationSpot.adapter = vacationAdapter
             rvFood.adapter = foodAdapter
             rvFestival.adapter = festivalAdapter
         }
 
-        with(otherViewModel) {
-            initCurrenetItem(args.item)
+        with(otherInfoViewModel) {
+            initCurrentItem(args.item)
             initVacationSpotData()
             initFoodData()
             initFestivalData()
@@ -68,6 +68,7 @@ class OtherInfoFragment : Fragment() {
         initToolbar()
         setClickListener()
     }
+
     private fun initToolbar() {
         with(activity as AppCompatActivity) {
             setSupportActionBar(binding.tbOtherInfo)
@@ -76,6 +77,7 @@ class OtherInfoFragment : Fragment() {
             supportActionBar?.setHomeAsUpIndicator(R.drawable.img_leftarrow)
         }
     }
+
     private fun setClickListener() {
         with(binding) {
             tvVacationSpotMore.setOnClickListener {
@@ -95,7 +97,7 @@ class OtherInfoFragment : Fragment() {
             }
             tbOtherInfo.setNavigationOnClickListener {
                 val action = OtherInfoFragmentDirections
-                    .actionOtherInfoFragmentToSpecificGuideFragment(otherViewModel.currentPlace.value!!.name)
+                    .actionOtherInfoFragmentToSpecificGuideFragment(otherInfoViewModel.currentPlace.value!!.name)
                 findNavController().navigate(action)
             }
         }

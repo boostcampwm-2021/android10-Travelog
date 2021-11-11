@@ -3,6 +3,8 @@ package com.thequietz.travelog.schedule.view
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.gms.maps.model.LatLng
@@ -36,7 +38,11 @@ class ScheduleDetailFragment :
         val startDate = args.schedule.date.split("~")[0]
         val endDate = args.schedule.date.split("~")[1]
         viewModel.initItemList(startDate, endDate)
-        adapter = ScheduleDetailAdapter(viewModel)
+        adapter = ScheduleDetailAdapter(viewModel) {
+            val action =
+                ScheduleDetailFragmentDirections.actionPlaceDetailFragmentToPlaceSearchFragment()
+            this.findNavController().navigate(action)
+        }
         val callback = ScheduleTouchHelperCallback(adapter)
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(binding.rvSchedule)

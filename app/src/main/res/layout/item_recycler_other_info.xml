@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="item"
             type="com.thequietz.travelog.guide.RecommendPlace" />
@@ -12,42 +13,44 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="20dp"
-        android:paddingEnd="20dp">
+        android:paddingEnd="20dp"
+        android:paddingBottom="20dp">
+
         <ImageView
+            android:id="@+id/iv_grid_item"
             android:layout_width="170dp"
             android:layout_height="150dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/iv_grid_item"
-            app:setImage="@{item.url}"
-            />
+            app:setImage="@{item.url}" />
+
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_grid_item"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="강화야영장"
-            android:text="@{item.name}"
-            android:textSize="17sp"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="@id/iv_grid_item"
-            app:layout_constraintTop_toTopOf="@id/iv_grid_item"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:id="@+id/tv_grid_item"
-            />
+            android:text="@{item.name}"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="@id/iv_grid_item"
+            app:layout_constraintStart_toStartOf="@id/iv_grid_item"
+            app:layout_constraintTop_toTopOf="@id/iv_grid_item"
+            tools:text="강화야영장" />
+
         <TextView
+            android:id="@+id/tv_grid_readcount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="202022"
+            android:layout_marginStart="10dp"
             android:text="@{item.readCount}"
             android:textColor="@color/white"
             android:textSize="15sp"
+            app:drawableStartCompat="@drawable/bg_star"
             app:layout_constraintStart_toStartOf="@id/iv_grid_item"
             app:layout_constraintTop_toBottomOf="@id/tv_grid_item"
-            android:layout_marginStart="10dp"
-            android:id="@+id/tv_grid_readcount"
-            app:drawableStartCompat="@drawable/bg_star" />
+            tools:text="202022" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
