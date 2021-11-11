@@ -41,8 +41,8 @@ class ScheduleDetailFragment :
     }
 
     private fun initRecycler() {
-        val startDate = args.schedule.date.substring(5, 10)
-        val endDate = args.schedule.date.substring(15)
+        val startDate = args.schedule.date.split("~")[0]
+        val endDate = args.schedule.date.split("~")[1]
         viewModel.initItemList(startDate, endDate)
         adapter = ScheduleDetailAdapter(viewModel)
         val callback = ScheduleTouchHelperCallback(adapter)

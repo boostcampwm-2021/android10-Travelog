@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -51,12 +52,13 @@ class ScheduleSelectFragment : Fragment() {
     }
 
     private fun initNextButton() {
-        val schedule = ScheduleModel(
-            name = scheduleSelectViewModel.travelName.value ?: "",
-            place = args.placeList.toList(),
-            date = scheduleSelectViewModel.startDate.value.toString() + scheduleSelectViewModel.endDate.value.toString()
-        )
         binding.btnNext.setOnClickListener {
+            Log.d("Next", scheduleSelectViewModel.startDate.value.toString() + "~" + scheduleSelectViewModel.endDate.value.toString())
+            val schedule = ScheduleModel(
+                name = scheduleSelectViewModel.travelName.value ?: "",
+                place = args.placeList.toList(),
+                date = scheduleSelectViewModel.startDate.value.toString() + "~" + scheduleSelectViewModel.endDate.value.toString()
+            )
             val action =
                 ScheduleSelectFragmentDirections.actionScheduleSelectFragmentToScheduleDetailFragment(
                     schedule
