@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/recordFragment"
-        android:name="com.thequietz.travelog.record.RecordFragment"
+        android:name="com.thequietz.travelog.record.view.RecordFragment"
         android:label="RecordFragment"
         tools:layout="@layout/fragment_record" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordBasicFragment"
-        android:name="com.thequietz.travelog.record.RecordBasicFragment"
+        android:name="com.thequietz.travelog.record.view.RecordBasicFragment"
         android:label="RecordBasicFragment" >
         <action
             android:id="@+id/action_recordBasicFragment_to_recordViewOneFragment"
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordViewOneFragment"
-        android:name="com.thequietz.travelog.record.RecordViewOneFragment"
+        android:name="com.thequietz.travelog.record.view.RecordViewOneFragment"
         android:label="RecordViewOneFragment">
         <action
             android:id="@+id/action_recordViewOneFragment_to_recordViewManyFragment"
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordViewManyFragment"
-        android:name="com.thequietz.travelog.record.RecordViewManyFragment"
+        android:name="com.thequietz.travelog.record.view.RecordViewManyFragment"
         android:label="RecordViewManyFragment" />
 
 </navigation>

@@ -1,4 +1,4 @@
-package com.thequietz.travelog.record
+package com.thequietz.travelog.record.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +14,10 @@ import com.thequietz.travelog.databinding.ItemRecyclerManyDateBinding
 import com.thequietz.travelog.databinding.ItemRecyclerManyImagesBinding
 import com.thequietz.travelog.databinding.ItemRecyclerManyPlaceBinding
 import com.thequietz.travelog.databinding.ItemRecyclerRecyclerBinding
+import com.thequietz.travelog.record.model.MyRecord
+import com.thequietz.travelog.record.model.RecordImage
+import com.thequietz.travelog.record.model.ViewType
+import com.thequietz.travelog.record.viewmodel.InnerViewModel
 
 class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
     diffUtil

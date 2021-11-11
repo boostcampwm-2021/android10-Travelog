@@ -6,14 +6,14 @@
     <data>
         <variable
             name="viewModel"
-            type="com.thequietz.travelog.record.RecordViewManyViewModel" />
+            type="com.thequietz.travelog.record.viewmodel.RecordViewManyViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".record.RecordViewManyFragment">
+        tools:context=".record.view.RecordViewManyFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_record_view_many"

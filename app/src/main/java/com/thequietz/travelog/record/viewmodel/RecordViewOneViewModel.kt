@@ -1,11 +1,16 @@
-package com.thequietz.travelog.record
+package com.thequietz.travelog.record.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+<<<<<<< HEAD:app/src/main/java/com/thequietz/travelog/record/RecordViewOneViewModel.kt
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
 import com.thequietz.travelog.util.SAMPLE_RECORD_IMAGES
+=======
+import com.thequietz.travelog.data.RepositoryImpl
+import com.thequietz.travelog.record.model.RecordImage
+>>>>>>> #34 [Chore] 패키지 구조 변경:app/src/main/java/com/thequietz/travelog/record/viewmodel/RecordViewOneViewModel.kt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

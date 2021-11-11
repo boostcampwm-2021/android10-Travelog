@@ -1,4 +1,4 @@
-package com.thequietz.travelog.record
+package com.thequietz.travelog.record.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordViewManyBinding
+import com.thequietz.travelog.record.adapter.MultiViewAdapter
+import com.thequietz.travelog.record.viewmodel.InnerViewModel
+import com.thequietz.travelog.record.viewmodel.RecordViewManyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.thequietz.travelog.record
+package com.thequietz.travelog.record.model
 
 data class RecordBasic(
     val title: String,

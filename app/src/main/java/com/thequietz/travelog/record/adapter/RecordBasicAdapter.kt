@@ -1,4 +1,4 @@
-package com.thequietz.travelog.record
+package com.thequietz.travelog.record.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.databinding.ItemRecyclerRecordBasicBinding
 import com.thequietz.travelog.databinding.ItemRecyclerRecordBasicHeaderBinding
+import com.thequietz.travelog.record.model.RecordBasicItem
 
 sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     class RecordBasicHeaderViewHolder(private val binding: ItemRecyclerRecordBasicHeaderBinding) :

@@ -1,4 +1,4 @@
-package com.thequietz.travelog.record
+package com.thequietz.travelog.record.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

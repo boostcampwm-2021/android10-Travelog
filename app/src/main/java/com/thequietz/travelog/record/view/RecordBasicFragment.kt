@@ -1,4 +1,4 @@
-package com.thequietz.travelog.record
+package com.thequietz.travelog.record.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.thequietz.travelog.databinding.FragmentRecordBasicBinding
+import com.thequietz.travelog.record.adapter.RecordBasicAdapter
+import com.thequietz.travelog.record.viewmodel.RecordBasicViewModel
 
 class RecordBasicFragment : Fragment() {
     private val viewModel by viewModels<RecordBasicViewModel>()
