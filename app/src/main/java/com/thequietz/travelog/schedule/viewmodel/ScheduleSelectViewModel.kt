@@ -5,23 +5,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.thequietz.travelog.data.RepositoryImpl
+import com.thequietz.travelog.util.dateToString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
 class ScheduleSelectViewModel @Inject internal constructor(
-    val repository: RepositoryImpl
+    val repository: RepositoryImpl,
 ) : ViewModel() {
 
     private val _travelName = MutableLiveData<String?>()
     val travelName: LiveData<String?> = _travelName
 
-    private val _startDate = MutableLiveData<Date?>()
-    val startDate: LiveData<Date?> = _startDate
+    private val _startDate = MutableLiveData<String?>()
+    val startDate: LiveData<String?> = _startDate
 
-    private val _endDate = MutableLiveData<Date?>()
-    val endDate: LiveData<Date?> = _endDate
+    private val _endDate = MutableLiveData<String?>()
+    val endDate: LiveData<String?> = _endDate
 
     private val _btnEnable = MutableLiveData<Boolean>()
     val btnEnable: LiveData<Boolean> = _btnEnable
@@ -35,12 +36,11 @@ class ScheduleSelectViewModel @Inject internal constructor(
 
     private fun checkNextButtonEnable() {
         _btnEnable.postValue(!(travelName.value.isNullOrBlank() || startDate.value == null || endDate.value == null))
-        Log.e("button", travelName.value.toString())
     }
 
     fun setScheduleRange(startDate: Date, endDate: Date) {
-        _startDate.postValue(startDate)
-        _endDate.postValue(endDate)
+        _startDate.postValue(dateToString(startDate))
+        _endDate.postValue(dateToString(endDate))
         checkNextButtonEnable()
     }
 

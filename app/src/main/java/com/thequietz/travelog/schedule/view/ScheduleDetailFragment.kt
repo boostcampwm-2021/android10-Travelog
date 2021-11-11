@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleDetailBinding
 import com.thequietz.travelog.schedule.adapter.ScheduleDetailAdapter
-import com.thequietz.travelog.schedule.data.ScheduleDetailItem
 import com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,6 +20,7 @@ class ScheduleDetailFragment : Fragment() {
     private val layoutId = R.layout.fragment_schedule_detail
     private val viewModel by viewModels<ScheduleDetailViewModel>()
     lateinit var adapter: ScheduleDetailAdapter
+    private val args: ScheduleDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,21 +36,20 @@ class ScheduleDetailFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         initRecycler()
+        initItemObserver()
     }
 
     private fun initRecycler() {
-        adapter = ScheduleDetailAdapter()
+        viewModel.initItemList(args.startDate, args.endDate)
+        adapter = ScheduleDetailAdapter(viewModel)
         binding.rvSchedule.adapter = adapter
-        adapter.item.apply {
-            add(ScheduleDetailItem(1, null, null))
-            add(ScheduleDetailItem(2, R.color.purple_200, "placeName"))
-            add(ScheduleDetailItem(2, R.color.purple_500, "placeName"))
-            add(ScheduleDetailItem(3, null, null))
-            add(ScheduleDetailItem(1, null, null))
-            add(ScheduleDetailItem(2, R.color.gray, "placeName"))
-            add(ScheduleDetailItem(2, R.color.gray, "placeName"))
-            add(ScheduleDetailItem(3, null, null))
-        }
+        viewModel.itemList.value?.let { adapter.item = it }
         adapter.notifyDataSetChanged()
+    }
+
+    private fun initItemObserver() {
+        viewModel.itemList.observe(viewLifecycleOwner, {
+            adapter.notifyDataSetChanged()
+        })
     }
 }

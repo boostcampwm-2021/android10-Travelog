@@ -58,7 +58,14 @@
     <fragment
         android:id="@+id/scheduleDetailFragment"
         android:name="com.thequietz.travelog.schedule.view.ScheduleDetailFragment"
-        android:label="ScheduleDetailFragment" />
+        android:label="ScheduleDetailFragment" >
+        <argument
+            android:name="startDate"
+            app:argType="string" />
+        <argument
+            android:name="endDate"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/specificGuideFragment"

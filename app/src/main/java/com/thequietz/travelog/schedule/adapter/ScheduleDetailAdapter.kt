@@ -1,10 +1,10 @@
 package com.thequietz.travelog.schedule.adapter
 
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.databinding.ItemRecyclerScheduleDetailAddBinding
 import com.thequietz.travelog.databinding.ItemRecyclerScheduleDetailContentBinding
@@ -12,9 +12,11 @@ import com.thequietz.travelog.databinding.ItemRecyclerScheduleDetailHeaderBindin
 import com.thequietz.travelog.schedule.data.ScheduleDetailItem
 import com.thequietz.travelog.schedule.data.TYPE_CONTENT
 import com.thequietz.travelog.schedule.data.TYPE_HEADER
+import com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel
 
-class ScheduleDetailAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var item = mutableListOf<ScheduleDetailItem>()
+class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var item = listOf<ScheduleDetailItem>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View?
         return when (viewType) {
@@ -71,6 +73,7 @@ class ScheduleDetailAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ScheduleDetailItem) {
             binding.item = item
+            binding.viewModel = viewModel
         }
     }
 
@@ -80,7 +83,7 @@ class ScheduleDetailAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             binding.item = item
             item.color?.let {
                 binding.viewCircle.backgroundTintList =
-                    ColorStateList.valueOf(ContextCompat.getColor(binding.viewCircle.context, it))
+                    ColorStateList.valueOf(Color.rgb(it.r, it.g, it.b))
             }
         }
     }

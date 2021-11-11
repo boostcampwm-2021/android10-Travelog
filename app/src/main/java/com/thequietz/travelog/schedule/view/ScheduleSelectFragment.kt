@@ -49,7 +49,11 @@ class ScheduleSelectFragment : Fragment() {
 
     private fun initNextButton() {
         binding.btnNext.setOnClickListener {
-            val action = ScheduleSelectFragmentDirections.actionScheduleSelectFragmentToScheduleDetailFragment()
+            val action =
+                ScheduleSelectFragmentDirections.actionScheduleSelectFragmentToScheduleDetailFragment(
+                    scheduleSelectViewModel.startDate.value.toString(),
+                    scheduleSelectViewModel.endDate.value.toString()
+                )
             it.findNavController().navigate(action)
         }
     }

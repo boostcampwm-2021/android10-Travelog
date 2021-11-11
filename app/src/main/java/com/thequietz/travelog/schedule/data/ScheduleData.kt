@@ -7,5 +7,11 @@ data class Schedule(
 
 data class SchedulePlace(
     val name: String,
-    val color: Int,
+    val color: ColorRGB,
+)
+
+data class ColorRGB(
+    val r: Int,
+    val g: Int,
+    val b: Int,
 )

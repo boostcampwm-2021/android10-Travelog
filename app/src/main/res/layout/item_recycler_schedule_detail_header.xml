@@ -7,6 +7,10 @@
         <variable
             name="item"
             type="com.thequietz.travelog.schedule.data.ScheduleDetailItem" />
+
+        <variable
+            name="viewModel"
+            type="com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,10 +21,10 @@
             android:id="@+id/tv_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Day 1"
+            android:layout_marginStart="10dp"
+            android:text='@{"Day " + item.index.toString()}'
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,12 +32,24 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12.18 일"
-            android:textColor="@color/black"
             android:layout_marginStart="10dp"
+            android:text="@{item.name}"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@id/tv_day"
             app:layout_constraintStart_toEndOf="@id/tv_day"
             app:layout_constraintTop_toTopOf="@id/tv_day" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bg_btn_add"
+            android:onClick="@{()-> viewModel.addSchedule(item.index-1, item.name)}"
+            android:text="+ 추가하기"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
