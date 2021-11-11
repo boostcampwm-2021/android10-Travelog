@@ -1,32 +1,41 @@
-package com.thequietz.travelog.guide
+package com.thequietz.travelog.guide.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.R
-import com.thequietz.travelog.databinding.ItemRecyclerOtherInfoBinding
+import com.thequietz.travelog.databinding.ItemRecyclerRecommendPlaceBinding
+import com.thequietz.travelog.guide.RecommendPlace
 
-class OtherInfoAdapter : androidx.recyclerview.widget.ListAdapter<RecommendPlace, OtherInfoAdapter.OtherInfoViewHolder>(
+class RecommendPlaceAdapter : ListAdapter<RecommendPlace, RecommendPlaceAdapter.RecommendPlaceViewHolder>(
     diffUtil
 ) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OtherInfoViewHolder {
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecommendPlaceViewHolder {
         val binding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.item_recycler_other_info,
+            R.layout.item_recycler_recommend_place,
             parent,
             false
-        ) as ItemRecyclerOtherInfoBinding
-        return OtherInfoViewHolder(binding)
+        ) as ItemRecyclerRecommendPlaceBinding
+        return RecommendPlaceViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: OtherInfoViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: RecommendPlaceViewHolder,
+        position: Int
+    ) {
         holder.bind(getItem(position))
     }
 
-    class OtherInfoViewHolder(val binding: ItemRecyclerOtherInfoBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: RecommendPlace) {
+    class RecommendPlaceViewHolder(val binding: ItemRecyclerRecommendPlaceBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: RecommendPlace?) {
             binding.item = item
             binding.executePendingBindings()
         }

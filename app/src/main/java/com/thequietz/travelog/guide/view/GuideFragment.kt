@@ -14,9 +14,9 @@ import androidx.navigation.fragment.findNavController
 import com.thequietz.travelog.FragmentType
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentGuideBinding
-import com.thequietz.travelog.guide.AllPlaceAdapter
-import com.thequietz.travelog.guide.GuideViewModel
-import com.thequietz.travelog.guide.RecommendPlaceAdapter
+import com.thequietz.travelog.guide.adapter.AllPlaceAdapter
+import com.thequietz.travelog.guide.adapter.RecommendPlaceAdapter
+import com.thequietz.travelog.guide.viewmodel.GuideViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val TAG = "AREA_LIST"

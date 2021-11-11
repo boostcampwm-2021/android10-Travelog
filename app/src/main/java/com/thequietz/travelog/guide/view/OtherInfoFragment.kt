@@ -1,4 +1,4 @@
-package com.thequietz.travelog.guide
+package com.thequietz.travelog.guide.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentOtherInfoBinding
+import com.thequietz.travelog.guide.adapter.OtherInfoAdapter
+import com.thequietz.travelog.guide.viewmodel.OtherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
