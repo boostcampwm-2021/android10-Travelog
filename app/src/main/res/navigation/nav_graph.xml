@@ -79,7 +79,13 @@
     <fragment
         android:id="@+id/recordViewManyFragment"
         android:name="com.thequietz.travelog.record.RecordViewManyFragment"
-        android:label="RecordViewManyFragment" />
+        android:label="RecordViewManyFragment" >
+        <action
+            android:id="@+id/action_recordViewManyFragment_to_recordViewOneFragment"
+            app:popUpTo="@id/recordViewOneFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/recordViewOneFragment" />
+    </fragment>
     <fragment
         android:id="@+id/recordViewOneFragment"
         android:name="com.thequietz.travelog.record.RecordViewOneFragment"
@@ -87,6 +93,10 @@
         <action
             android:id="@+id/action_recordViewOneFragment_to_recordViewManyFragment"
             app:destination="@id/recordViewManyFragment" />
+        <argument
+            android:name="index"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/placeSearchFragment"
