@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.thequietz.travelog.guide.GuideViewModel" />
+            type="com.thequietz.travelog.guide.viewmodel.GuideViewModel" />
     </data>
     <ScrollView
         android:layout_width="match_parent"

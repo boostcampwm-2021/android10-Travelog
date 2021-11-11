@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/specificGuideFragment"
-        android:name="com.thequietz.travelog.guide.SpecificGuideFragment"
+        android:name="com.thequietz.travelog.guide.view.SpecificGuideFragment"
         android:label="SpecificGuideFragment">
         <argument
             android:name="item"
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/otherInfoFragment"
-        android:name="com.thequietz.travelog.guide.OtherInfoFragment"
+        android:name="com.thequietz.travelog.guide.view.OtherInfoFragment"
         android:label="OtherInfoFragment">
         <argument
             android:name="item"
