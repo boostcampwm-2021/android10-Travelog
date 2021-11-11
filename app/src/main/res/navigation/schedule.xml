@@ -30,8 +30,8 @@
         android:name="com.thequietz.travelog.schedule.view.ScheduleSelectFragment"
         android:label="ScheduleSelectFragment">
         <argument
-            android:name="PlaceString"
-            app:argType="string" />
+            android:name="placeList"
+            app:argType="com.thequietz.travelog.schedule.model.PlaceModel[]" />
         <action
             android:id="@+id/action_scheduleSelectFragment_to_scheduleDetailFragment"
             app:destination="@id/scheduleDetailFragment" />
@@ -41,11 +41,8 @@
         android:name="com.thequietz.travelog.schedule.view.ScheduleDetailFragment"
         android:label="ScheduleDetailFragment" >
         <argument
-            android:name="startDate"
-            app:argType="string" />
-        <argument
-            android:name="endDate"
-            app:argType="string" />
+            android:name="schedule"
+            app:argType="com.thequietz.travelog.schedule.model.ScheduleModel" />
     </fragment>
     <fragment
         android:id="@+id/placeSearchFragment"

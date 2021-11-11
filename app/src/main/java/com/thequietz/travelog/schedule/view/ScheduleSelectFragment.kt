@@ -14,8 +14,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleSelectBinding
+import com.thequietz.travelog.schedule.model.ScheduleModel
 import com.thequietz.travelog.schedule.viewmodel.ScheduleSelectViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
@@ -26,6 +28,7 @@ import java.util.TimeZone
 class ScheduleSelectFragment : Fragment() {
     private lateinit var binding: FragmentScheduleSelectBinding
     private val scheduleSelectViewModel by viewModels<ScheduleSelectViewModel>()
+    private val args: ScheduleSelectFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,11 +51,15 @@ class ScheduleSelectFragment : Fragment() {
     }
 
     private fun initNextButton() {
+        val schedule = ScheduleModel(
+            name = scheduleSelectViewModel.travelName.value ?: "",
+            place = args.placeList.toList(),
+            date = scheduleSelectViewModel.startDate.value.toString() + scheduleSelectViewModel.endDate.value.toString()
+        )
         binding.btnNext.setOnClickListener {
             val action =
                 ScheduleSelectFragmentDirections.actionScheduleSelectFragmentToScheduleDetailFragment(
-                    scheduleSelectViewModel.startDate.value.toString(),
-                    scheduleSelectViewModel.endDate.value.toString()
+                    schedule
                 )
             it.findNavController().navigate(action)
         }

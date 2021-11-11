@@ -8,5 +8,4 @@
     <include app:graph="@navigation/schedule" />
     <include app:graph="@navigation/record" />
     <include app:graph="@navigation/menu" />
-
 </navigation>
