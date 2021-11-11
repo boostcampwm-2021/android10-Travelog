@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.thequietz.travelog.data.db.dao.RecordImageDao
 import com.thequietz.travelog.data.db.dao.ScheduleDao
-import com.thequietz.travelog.record.RecordImage
+import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.schedule.model.ScheduleModel
 
 @Database(entities = [ScheduleModel::class, RecordImage::class], version = 1)

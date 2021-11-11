@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -17,7 +16,7 @@ import com.thequietz.travelog.databinding.ItemRecyclerRecyclerBinding
 import com.thequietz.travelog.record.model.MyRecord
 import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.record.model.ViewType
-import com.thequietz.travelog.record.viewmodel.InnerViewModel
+import com.thequietz.travelog.record.view.RecordViewManyFragmentDirections
 
 class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
     diffUtil
@@ -34,13 +33,16 @@ class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
             }
         }
     }
-    class RecordScheduleViewHolder(val binding: ItemRecyclerManyDateBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    class RecordScheduleViewHolder(val binding: ItemRecyclerManyDateBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MyRecord.RecordSchedule) {
             binding.scheduleItem = item
         }
     }
 
-    class RecordPlaceViewHolder(val binding: ItemRecyclerManyPlaceBinding) : RecyclerView.ViewHolder(binding.root) {
+    class RecordPlaceViewHolder(val binding: ItemRecyclerManyPlaceBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MyRecord.RecordPlace) {
             binding.placeItem = item
         }
@@ -56,9 +58,11 @@ class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
                 itemView.findNavController().navigate(action)
             }
         })
+
         init {
             binding.rvItemManyImage.adapter = adapter
         }
+
         fun bind(imageList: MyRecord.RecordImageList) {
             adapter.submitList(imageList.list)
         }
@@ -122,9 +126,10 @@ class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
     }
 }
 
-class MultiViewImageAdapter(private val onItemClickListener: OnItemClickListener) : ListAdapter<RecordImage, MultiViewImageAdapter.MultiViewImageViewHolder>(
-    diffUtil
-) {
+class MultiViewImageAdapter(private val onItemClickListener: OnItemClickListener) :
+    ListAdapter<RecordImage, MultiViewImageAdapter.MultiViewImageViewHolder>(
+        diffUtil
+    ) {
     interface OnItemClickListener {
         fun onItemClick(view: View, ind: Int)
     }
@@ -146,7 +151,9 @@ class MultiViewImageAdapter(private val onItemClickListener: OnItemClickListener
             }
         }
     }
-    class MultiViewImageViewHolder(val binding: ItemRecyclerManyImagesBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    class MultiViewImageViewHolder(val binding: ItemRecyclerManyImagesBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: RecordImage) {
             binding.imageItem = item
         }

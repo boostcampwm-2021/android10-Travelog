@@ -4,13 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-<<<<<<< HEAD:app/src/main/java/com/thequietz/travelog/record/RecordViewManyViewModel.kt
 import com.thequietz.travelog.data.RecordRepository
-=======
-import com.thequietz.travelog.data.RepositoryImpl
 import com.thequietz.travelog.record.model.MyRecord
 import com.thequietz.travelog.record.model.RecordImage
->>>>>>> #34 [Chore] 패키지 구조 변경:app/src/main/java/com/thequietz/travelog/record/viewmodel/RecordViewManyViewModel.kt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
