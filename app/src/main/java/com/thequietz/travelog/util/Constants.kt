@@ -40,7 +40,8 @@ val SAMPLE_SCHEDULES = listOf(
         "2021.10.05 ~ 2021.10.20"
     ),
     ScheduleModel(
-        0, "강릉 여행", listOf(
+        0, "강릉 여행",
+        listOf(
             PlaceModel(
                 thumbnail = "",
                 areaCode = 0,
