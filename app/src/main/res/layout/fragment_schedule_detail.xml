@@ -13,15 +13,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".schedule.view.ScheduleDetailFragment">
+        tools:context=".map.ScheduleDetailFragment">
 
         <Button
             android:id="@+id/btn_back"
             android:layout_width="36dp"
             android:layout_height="36dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/bg_btn_back"
-            android:layout_marginStart="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,32 +29,35 @@
             android:id="@+id/tv_schedule_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="@color/black"
             android:text="@string/tv_schedule_setting"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/btn_back"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/btn_back"
-            app:layout_constraintBottom_toBottomOf="@id/btn_back"/>
+            app:layout_constraintTop_toTopOf="@id/btn_back" />
 
         <Button
             android:id="@+id/btn_next"
             android:layout_width="72dp"
             android:layout_height="36dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/selector_btn_next"
             android:text="@string/btn_done"
             android:textColor="@color/white"
-            android:background="@drawable/selector_btn_next"
-            android:layout_marginEnd="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/btn_back" />
 
-        <View
-            android:id="@+id/map"
+        <fragment
+            android:id="@+id/fragment_map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="0dp"
             android:layout_height="300dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_next" />
+            app:layout_constraintTop_toBottomOf="@id/btn_next"
+            tools:layout="@layout/abc_search_view" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_schedule"
@@ -62,11 +65,10 @@
             android:layout_height="0dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/map"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
+            app:layout_constraintTop_toBottomOf="@id/fragment_map" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

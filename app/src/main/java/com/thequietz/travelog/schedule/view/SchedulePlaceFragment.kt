@@ -91,11 +91,10 @@ class SchedulePlaceFragment : Fragment() {
         }
 
         binding.btnSelectDate.setOnClickListener {
-            val placeList = viewModel.placeSelectedList.value
-            val placeString = gson.toJson(placeList)
+            val placeList = viewModel.selectedPlaces.value
             val action =
                 SchedulePlaceFragmentDirections.actionSchedulePlaceFragmentToScheduleSelectFragment(
-                    placeString
+                    placeList?.toTypedArray() ?: arrayOf()
                 )
             it.findNavController().navigate(action)
         }

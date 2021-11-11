@@ -4,6 +4,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.ScheduleRepository
+import com.thequietz.travelog.schedule.model.PlaceModel
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -27,7 +28,22 @@ class ScheduleViewModel @Inject internal constructor(
         repository.createSchedules(
             ScheduleModel(
                 name = "Sample",
-                place = listOf("Place 1", "Place 2"),
+                place = listOf(
+                    PlaceModel(
+                        thumbnail = "",
+                        areaCode = 0,
+                        mapX = 35.241615f,
+                        mapY = 128.695587f,
+                        "Place1"
+                    ),
+                    PlaceModel(
+                        thumbnail = "",
+                        areaCode = 0,
+                        mapX = 35.241615f,
+                        mapY = 128.695587f,
+                        "Place2"
+                    )
+                ),
                 date = "2021.01.01 ~ 2021.01.02"
             )
         )

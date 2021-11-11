@@ -1,48 +1,41 @@
 package com.thequietz.travelog.schedule.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.google.android.gms.maps.model.LatLng
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleDetailBinding
+import com.thequietz.travelog.map.GoogleMapFragment
 import com.thequietz.travelog.schedule.adapter.ScheduleDetailAdapter
 import com.thequietz.travelog.schedule.adapter.ScheduleTouchHelperCallback
 import com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ScheduleDetailFragment : Fragment() {
-    lateinit var binding: FragmentScheduleDetailBinding
-    private val layoutId = R.layout.fragment_schedule_detail
-    private val viewModel by viewModels<ScheduleDetailViewModel>()
+class ScheduleDetailFragment :
+    GoogleMapFragment<FragmentScheduleDetailBinding, ScheduleDetailViewModel>() {
+    override val layoutId = R.layout.fragment_schedule_detail
+    override val viewModel by viewModels<ScheduleDetailViewModel>()
     lateinit var adapter: ScheduleDetailAdapter
     private val args: ScheduleDetailFragmentArgs by navArgs()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner = viewLifecycleOwner
+    }
+
+    override fun initViewModel() {
         binding.viewModel = viewModel
         initRecycler()
         initItemObserver()
     }
 
     private fun initRecycler() {
-        viewModel.initItemList(args.startDate, args.endDate)
+        val startDate = args.schedule.date.split("~")[0]
+        val endDate = args.schedule.date.split("~")[1]
+        viewModel.initItemList(startDate, endDate)
         adapter = ScheduleDetailAdapter(viewModel)
         val callback = ScheduleTouchHelperCallback(adapter)
         val itemTouchHelper = ItemTouchHelper(callback)
@@ -56,5 +49,14 @@ class ScheduleDetailFragment : Fragment() {
         viewModel.itemList.observe(viewLifecycleOwner, {
             adapter.notifyDataSetChanged()
         })
+    }
+
+    override fun initTargetList() {
+        targetList = args.schedule.place.map { LatLng(it.mapY.toDouble(), it.mapX.toDouble()) }
+            .toMutableList()
+    }
+
+    override fun addMapComponents() {
+        createMarker(*targetList.toTypedArray(), isNumbered = true)
     }
 }

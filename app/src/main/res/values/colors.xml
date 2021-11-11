@@ -10,4 +10,6 @@
     <color name="gray">#D3D3D3</color>
     <color name="et_search">#B0B0B0</color>
     <color name="light_gray">#B6B4B4</color>
+    <color name="blue_travelog">#3C95FF</color>
+    <color name="green_travelog">#02C58D</color>
 </resources>
