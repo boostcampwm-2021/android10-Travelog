@@ -19,7 +19,8 @@ interface PlaceSearchService {
     @GET("maps/api/place/details/json")
     fun loadPlaceDetail(
         @Query("place_id") placeId: String,
-        @Query("key") key: String
+        @Query("key") key: String,
+        @Query("language") language: String? = "ko"
     ): Call<PlaceDetailModelResponse>
 
     companion object {
