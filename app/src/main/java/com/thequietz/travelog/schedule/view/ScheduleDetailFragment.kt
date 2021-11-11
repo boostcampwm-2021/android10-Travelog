@@ -8,9 +8,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleDetailBinding
 import com.thequietz.travelog.schedule.adapter.ScheduleDetailAdapter
+import com.thequietz.travelog.schedule.adapter.ScheduleTouchHelperCallback
 import com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,6 +44,9 @@ class ScheduleDetailFragment : Fragment() {
     private fun initRecycler() {
         viewModel.initItemList(args.startDate, args.endDate)
         adapter = ScheduleDetailAdapter(viewModel)
+        val callback = ScheduleTouchHelperCallback(adapter)
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(binding.rvSchedule)
         binding.rvSchedule.adapter = adapter
         viewModel.itemList.value?.let { adapter.item = it }
         adapter.notifyDataSetChanged()

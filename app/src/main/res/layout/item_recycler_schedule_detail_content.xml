@@ -5,6 +5,9 @@
     <data>
 
         <variable
+            name="viewModel"
+            type="com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel" />
+        <variable
             name="item"
             type="com.thequietz.travelog.schedule.data.ScheduleDetailItem" />
     </data>
@@ -51,6 +54,17 @@
             app:layout_constraintStart_toEndOf="@id/view_line"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/ic_delete"
+            android:layout_marginEnd="10dp"
+            android:onClick="@{()->viewModel.deleteSchedule(item.id)}"
+            app:layout_constraintTop_toTopOf="@id/tv_place"
+            app:layout_constraintBottom_toBottomOf="@id/tv_place"
+            app:layout_constraintRight_toRightOf="@id/tv_place"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

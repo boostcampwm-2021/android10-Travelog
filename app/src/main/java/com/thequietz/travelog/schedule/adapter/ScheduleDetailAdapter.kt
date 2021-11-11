@@ -15,8 +15,17 @@ import com.thequietz.travelog.schedule.data.TYPE_HEADER
 import com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel
 
 class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+    ScheduleTouchHelperCallback.OnItemMoveListener {
     var item = listOf<ScheduleDetailItem>()
+
+    override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        if (toPosition != 0) {
+            viewModel.itemMove(fromPosition, toPosition)
+            notifyItemMoved(fromPosition, toPosition)
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View?
         return when (viewType) {
@@ -81,6 +90,7 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ScheduleDetailItem) {
             binding.item = item
+            binding.viewModel = viewModel
             item.color?.let {
                 binding.viewCircle.backgroundTintList =
                     ColorStateList.valueOf(Color.rgb(it.r, it.g, it.b))
