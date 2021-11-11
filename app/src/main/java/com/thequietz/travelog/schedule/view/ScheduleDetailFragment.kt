@@ -24,14 +24,6 @@ class ScheduleDetailFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.btnBack.setOnClickListener {
-            changeMarkerOrder(3, 5, true)
-        }
-
-        binding.btnNext.setOnClickListener {
-            deleteMarker(0)
-        }
     }
 
     override fun initViewModel() {
