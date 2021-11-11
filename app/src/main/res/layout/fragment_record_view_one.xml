@@ -46,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="경주 여행"
+            android:text="@{viewModel.currentImage.title}"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
@@ -58,7 +58,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="21:10.26 ~ 10.27"
+            android:text="@{viewModel.currentImage.startDate+` ~ `+viewModel.currentImage.endDate}"
             android:textSize="18sp"
             android:textColor="@color/black"
             android:layout_marginEnd="60dp"
@@ -80,7 +80,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{`Day`+viewModel.currentImage.schedule}"
+            android:text="@{viewModel.currentImage.schedule}"
             android:textColor="@color/black"
             android:maxLines="1"
             android:ellipsize="end"
@@ -93,7 +93,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{`-`+ viewModel.currentImage.place}"
+            android:text="@{` - `+ viewModel.currentImage.place}"
             android:textColor="@color/black"
             android:maxLines="1"
             android:ellipsize="end"

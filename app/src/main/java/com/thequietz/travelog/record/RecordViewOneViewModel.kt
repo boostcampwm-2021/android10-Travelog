@@ -37,11 +37,11 @@ class RecordViewOneViewModel @Inject constructor(
     }
     fun loadRecord() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val res = repository.loadRecordImages()
-                withContext(Dispatchers.Main) {
-                    _imageList.postValue(res)
-                }
+            val res = withContext(Dispatchers.IO) {
+                repository.loadRecordImages()
+            }
+            withContext(Dispatchers.Main) {
+                _imageList.postValue(res)
             }
         }
     }

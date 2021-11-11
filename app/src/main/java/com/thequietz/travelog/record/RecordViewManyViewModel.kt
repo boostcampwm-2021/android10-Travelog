@@ -28,7 +28,7 @@ class RecordViewManyViewModel @Inject constructor(
                 var currentPlace = loadData.get(0).place
                 res.add(
                     MyRecord.RecordSchedule().copy(
-                        date = currentSchedule.toInt()
+                        date = currentSchedule
                     )
                 )
                 res.add(
@@ -36,7 +36,7 @@ class RecordViewManyViewModel @Inject constructor(
                         place = currentPlace
                     )
                 )
-                var currentImageList = mutableListOf<RecordImage>()
+                val currentImageList = mutableListOf<RecordImage>()
                 loadData.forEach {
                     if (currentSchedule != it.schedule) { // 일정 다르면
                         res.add( // 이전 이미지 res에 넣어주고
@@ -49,7 +49,7 @@ class RecordViewManyViewModel @Inject constructor(
                         currentSchedule = it.schedule // 일정 갱신해주고
                         res.add( // res에 schedule넣어주고
                             MyRecord.RecordSchedule().copy(
-                                date = currentSchedule.toInt()
+                                date = currentSchedule
                             )
                         )
                         currentPlace = it.place // 장소 갱신해주고

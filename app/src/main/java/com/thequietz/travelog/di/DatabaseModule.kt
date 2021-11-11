@@ -9,7 +9,6 @@ import com.thequietz.travelog.data.db.AppDatabase
 import com.thequietz.travelog.data.db.dao.RecordImageDao
 import com.thequietz.travelog.data.db.dao.ScheduleDao
 import com.thequietz.travelog.util.SAMPLE_RECORD_IMAGES
-import com.thequietz.travelog.util.SAMPLE_SCHEDULES
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,8 +35,8 @@ object DatabaseModule {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
                     CoroutineScope(Dispatchers.IO).launch {
-                        provideScheduleDao(provideDatabase(appContext))
-                            .insert(*SAMPLE_SCHEDULES.toTypedArray())
+                        /*provideScheduleDao(provideDatabase(appContext))
+                            .insert(*SAMPLE_SCHEDULES.toTypedArray())*/
                         Log.d("InitDB", "OK")
                         provideRecordImageDao(provideDatabase(appContext))
                             .insert(*SAMPLE_RECORD_IMAGES.toTypedArray())

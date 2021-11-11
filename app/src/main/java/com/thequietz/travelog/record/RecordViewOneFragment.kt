@@ -46,7 +46,6 @@ class RecordViewOneFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             viewModel = recordViewOneViewModel
             vpReviewViewOne.adapter = adapter
-            println("args  ${args.index}")
             vpReviewViewOne.post {
                 vpReviewViewOne.setCurrentItem(args.index - 1, false)
             }
