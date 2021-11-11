@@ -25,11 +25,17 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    class RecordBasicItemViewHolder(private val binding: ItemRecyclerRecordBasicBinding) :
-        RecordBasicViewHolder(binding.root) {
+    class RecordBasicItemViewHolder(
+        private val binding: ItemRecyclerRecordBasicBinding,
+        onClick: () -> Unit
+    ) : RecordBasicViewHolder(binding.root) {
         private val adapter = RecordPhotoAdapter()
 
         init {
+            binding.root.setOnClickListener {
+                onClick.invoke()
+            }
+
             binding.btnItemRecordBasicMore.setOnClickListener {
                 // TODO: 더보기 버튼 클릭 이벤트
             }
@@ -46,8 +52,9 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     abstract fun <T : RecordBasicItem> bind(item: T)
 }
 
-class RecordBasicAdapter :
-    ListAdapter<RecordBasicItem, RecordBasicViewHolder>(diffUtil) {
+class RecordBasicAdapter(
+    private val onClick: () -> Unit
+) : ListAdapter<RecordBasicItem, RecordBasicViewHolder>(diffUtil) {
     override fun getItemViewType(position: Int): Int {
         return when (currentList[position]) {
             is RecordBasicItem.RecordBasicHeader -> HEADER_TYPE
@@ -72,7 +79,8 @@ class RecordBasicAdapter :
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    )
+                    ),
+                    onClick
                 )
             }
         }

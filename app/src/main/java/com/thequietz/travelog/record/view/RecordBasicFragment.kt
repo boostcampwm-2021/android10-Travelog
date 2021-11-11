@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.thequietz.travelog.databinding.FragmentRecordBasicBinding
 import com.thequietz.travelog.record.adapter.RecordBasicAdapter
 import com.thequietz.travelog.record.viewmodel.RecordBasicViewModel
 
 class RecordBasicFragment : Fragment() {
     private val viewModel by viewModels<RecordBasicViewModel>()
-    private val adapter by lazy { RecordBasicAdapter() }
+    private val adapter by lazy { RecordBasicAdapter(::navigateToRecordViewUi) }
 
     private lateinit var binding: FragmentRecordBasicBinding
 
@@ -40,5 +41,11 @@ class RecordBasicFragment : Fragment() {
         viewModel.recordBasicItemList.observe(viewLifecycleOwner) { recordBasicItemList ->
             adapter.submitList(recordBasicItemList)
         }
+    }
+
+    private fun navigateToRecordViewUi() {
+        val action = RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordViewOneFragment()
+
+        findNavController().navigate(action)
     }
 }
