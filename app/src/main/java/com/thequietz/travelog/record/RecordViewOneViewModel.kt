@@ -23,9 +23,17 @@ class RecordViewOneViewModel @Inject constructor(
     private val _currentImage = MutableLiveData<RecordImage>()
     val currentImage: LiveData<RecordImage> = _currentImage
 
+    private val _islistUpdate = MutableLiveData<Boolean>()
+    val islistUpdate: LiveData<Boolean> = _islistUpdate
+
     init {
         // createRecord()
         loadRecord()
+        _currentPosition.value = 0
+    }
+    companion object {
+        private val _currentPosition = MutableLiveData<Int>()
+        val currentPosition: LiveData<Int> = _currentPosition
     }
     fun loadRecord() {
         viewModelScope.launch {
@@ -34,7 +42,6 @@ class RecordViewOneViewModel @Inject constructor(
                 withContext(Dispatchers.Main) {
                     _imageList.postValue(res)
                 }
-                imageList.value?.forEach { println(it.toString()) }
             }
         }
     }
@@ -56,21 +63,6 @@ class RecordViewOneViewModel @Inject constructor(
                 }
             }
         }
-
-        /*tempData.forEach{
-            repository.createRecordImage(it)
-        }*/
-        /*tempData.forEach{
-            println(it.toString())
-            //repository.createRecordImage(it)
-        }*/
-
-        /*viewModelScope.launch {
-            withContext(Dispatchers.IO){
-
-            }
-            loadRecord()
-        }*/
     }
 
     fun isCommentChanged(str: String): Boolean {
@@ -80,25 +72,44 @@ class RecordViewOneViewModel @Inject constructor(
         return false
     }
 
-    fun updateComment(comment: String, currentId: Int?) {
-        var temp = currentImage.value?.id
-        currentId?.let {
-            viewModelScope.launch {
-                withContext(Dispatchers.IO) {
+    fun updateComment(comment: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                viewModelScope.launch {
+                    _islistUpdate.value = true
+                }
+                currentImage.value?.id?.let {
                     repository.updateRecordImageComment(comment, it)
                 }
-                withContext(Dispatchers.IO) {
-                    loadRecord()
-                }
+            }
+            withContext(Dispatchers.IO) {
+                loadRecord()
             }
         }
     }
 
-    fun getId(): Int? {
-        return currentImage.value?.id
+    fun delete() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                viewModelScope.launch {
+                    _islistUpdate.value = true
+                    currentPosition.value?.let { setCurrentPosition(it - 1) }
+                }
+                currentImage.value?.id?.let {
+                    repository.deleteRecordImage(it)
+                }
+            }
+            withContext(Dispatchers.IO) {
+                loadRecord()
+            }
+        }
     }
 
-    fun resetComment() {
-        _currentImage.value = _currentImage.value
+    fun setCurrentPosition(position: Int) {
+        _currentPosition.value = position
+    }
+
+    fun resetIsListUpdate() {
+        _islistUpdate.value = false
     }
 }

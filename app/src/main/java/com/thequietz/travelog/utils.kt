@@ -32,3 +32,6 @@ fun getTodayDate(): String {
 enum class FragmentType {
     DOSI, SPECIFIC
 }
+enum class ActionType {
+    UPDATE, DELETE
+}
