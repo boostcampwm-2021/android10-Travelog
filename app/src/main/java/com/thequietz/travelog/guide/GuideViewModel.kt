@@ -22,7 +22,7 @@ class GuideViewModel @Inject internal constructor(
     private val _allRecommendPlaceList = MutableLiveData<List<RecommendPlace>>()
     val allRecommendPlaceList: LiveData<List<RecommendPlace>> = _allRecommendPlaceList
 
-    fun initAllDoSiData() {
+    init {
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO) {
                 repository.loadAllDoSi()

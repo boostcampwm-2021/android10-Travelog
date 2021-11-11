@@ -21,6 +21,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // buildConfigField "String", "GOOGLE_MAP_KEY", properties["google_map_key"]
         // buildConfigField "String", "TOUR_API_KEY", properties["tour_api_key"]
     }
 

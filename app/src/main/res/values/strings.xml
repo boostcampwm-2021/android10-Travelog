@@ -40,5 +40,18 @@
 
     <string name="tv_noData">해당 데이터가 없습니다</string>
     <string name="tv_empty_result">여행지가 없습니다.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_place_search_item">스타벅스</string>
+    <string name="btn_search_place">장소</string>
+    <string name="tv_google_map_view">구글 맵</string>
+    <string name="tv_place_detail_name">스타벅스</string>
+    <string name="btn_place_add">추가</string>
+    <string name="tv_place_detail_type">Restaurant</string>
+    <string name="tv_place_detail_address">상세 주소</string>
+    <string name="tv_place_detail_review">주요 리뷰</string>
+    <string name="tv_place_detail_review_sample">3층의 뷰~. 해변을 보면서 맛과 향이 좋은 콜롬비아 드립커피를 마시면 잠시 여유로움 속으로 행복이 스며듭니다</string>
+    <string name="tv_place_detail_phone_title">전화번호</string>
+    <string name="tv_place_detail_phone_number">033-653-0931</string>
 
 </resources>

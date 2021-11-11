@@ -12,6 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/layout_record_view_one"
         tools:context=".record.RecordViewOneFragment">
 
         <androidx.appcompat.widget.Toolbar
@@ -45,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="경주 여행"
+            android:text="@{viewModel.currentImage.title}"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
@@ -57,7 +58,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="21:10.26 ~ 10.27"
+            android:text="@{viewModel.currentImage.startDate+` ~ `+viewModel.currentImage.endDate}"
             android:textSize="18sp"
             android:textColor="@color/black"
             android:layout_marginEnd="60dp"
@@ -80,6 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.currentImage.schedule}"
+            android:textColor="@color/black"
             android:maxLines="1"
             android:ellipsize="end"
             app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one"
@@ -91,7 +93,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{`-`+ viewModel.currentImage.place}"
+            android:text="@{` - `+ viewModel.currentImage.place}"
+            android:textColor="@color/black"
             android:maxLines="1"
             android:ellipsize="end"
             app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one"
@@ -101,14 +104,14 @@
             android:layout_marginTop="15dp"
             />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:text="⋮"
+            android:textAlignment="center"
             android:textSize="24sp"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
             app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one"
-            android:layout_marginEnd="10dp"
             android:layout_marginTop="15dp"
             android:id="@+id/tv_record_view_one_reduce"
             />
@@ -129,10 +132,34 @@
             android:text="@{viewModel.currentImage.comment}"
             app:layout_constraintTop_toBottomOf="@id/vp_review_view_one"
             android:layout_marginTop="15dp"
+            android:layout_marginEnd="50dp"
+            android:maxLines="5"
             android:textSize="15sp"
+            android:enabled="false"
             android:id="@+id/et_record_view_one"
             android:background="@android:color/transparent"
             android:layout_marginStart="10dp"
+            />
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
+            app:layout_constraintTop_toBottomOf="@id/vp_review_view_one"
+            android:background="@drawable/img_pencil"
+            android:scaleType="fitXY"
+            android:id="@+id/ib_record_view_one_edit_comment"
+            />
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
+            app:layout_constraintTop_toBottomOf="@id/vp_review_view_one"
+            android:text="저장"
+            android:textAlignment="center"
+            android:id="@+id/tv_record_view_one_save"
+            android:visibility="gone"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
