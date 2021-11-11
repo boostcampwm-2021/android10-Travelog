@@ -10,7 +10,7 @@ class PlaceSearchRepository @Inject constructor(
 ) {
     suspend fun loadPlaceList(query: String): List<PlaceSearchModel> {
         val apiKey = "" // BuildConfig.GOOGLE_MAP_KEY
-        val call = service.searchPlaceList(query, apiKey)
+        val call = service.loadPlaceList(query, apiKey)
         val response = call.awaitResponse()
         if (!response.isSuccessful || response.body() == null) {
             return listOf()

@@ -91,5 +91,17 @@
     <fragment
         android:id="@+id/placeSearchFragment"
         android:name="com.thequietz.travelog.place.view.PlaceSearchFragment"
-        android:label="PlaceSearchFragment" />
+        android:label="PlaceSearchFragment" >
+        <action
+            android:id="@+id/action_placeSearchFragment_to_placeDetailFragment"
+            app:destination="@id/placeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeDetailFragment"
+        android:name="com.thequietz.travelog.place.view.PlaceDetailFragment"
+        android:label="PlaceDetailFragment" >
+        <argument
+            android:name="param"
+            app:argType="string" />
+    </fragment>
 </navigation>
