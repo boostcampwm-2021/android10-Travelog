@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         >
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_guide"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -29,6 +30,7 @@
             android:layout_marginEnd="15dp"
             android:layout_marginTop="20dp"
             android:hint="여행지 검색"
+            android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:paddingStart="10dp"
