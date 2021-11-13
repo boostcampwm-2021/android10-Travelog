@@ -5,8 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RepositoryImpl
-import com.thequietz.travelog.guide.Place
-import com.thequietz.travelog.guide.RecommendPlace
+import com.thequietz.travelog.guide.model.Guide
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,27 +17,47 @@ class GuideViewModel @Inject internal constructor(
     val repository: RepositoryImpl
 ) : ViewModel() {
 
-    private val _allDoSiList = MutableLiveData<List<Place>>()
-    val allDoSiList: LiveData<List<Place>> = _allDoSiList
-
-    private val _allRecommendPlaceList = MutableLiveData<List<RecommendPlace>>()
-    val allRecommendPlaceList: LiveData<List<RecommendPlace>> = _allRecommendPlaceList
+    private val _dataList = MutableLiveData<List<Guide>>()
+    val dataList: LiveData<List<Guide>> = _dataList
 
     init {
-        viewModelScope.launch {
-            val res = withContext(Dispatchers.IO) {
-                repository.loadAllDoSi()
-            }
-            _allDoSiList.value = res
-        }
+        change2MyGuide()
     }
 
-    fun initRecommendPlaceData() {
+    private fun change2MyGuide() {
         viewModelScope.launch {
-            val res = withContext(Dispatchers.IO) {
-                repository.loadRecommendPlaceData()
+            withContext(Dispatchers.IO) {
+                val res = mutableListOf<Guide>()
+                res.add(
+                    Guide.Header().copy(
+                        title = "추천 여행지역"
+                    )
+                )
+                val recommendList = withContext(Dispatchers.IO) {
+                    repository.loadRecommendPlaceData()
+                }
+                res.add(
+                    Guide.SpecificRecommend().copy(
+                        specificRecommendList = recommendList.toMutableList()
+                    )
+                )
+                res.add(
+                    Guide.Header().copy(
+                        title = "여행지역 전체 보기"
+                    )
+                )
+                val allDoSiList = withContext(Dispatchers.IO) {
+                    repository.loadAllDoSi()
+                }
+                res.add(
+                    Guide.Dosi().copy(
+                        specificDOSIList = allDoSiList.toMutableList()
+                    )
+                )
+                withContext(Dispatchers.Main) {
+                    _dataList.value = res
+                }
             }
-            _allRecommendPlaceList.value = res
         }
     }
 }

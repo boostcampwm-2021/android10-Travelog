@@ -3,16 +3,14 @@ package com.thequietz.travelog.record.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.thequietz.travelog.R
-import com.thequietz.travelog.databinding.ItemRecyclerManyDateBinding
-import com.thequietz.travelog.databinding.ItemRecyclerManyImagesBinding
-import com.thequietz.travelog.databinding.ItemRecyclerManyPlaceBinding
-import com.thequietz.travelog.databinding.ItemRecyclerRecyclerBinding
+import com.thequietz.travelog.databinding.ItemRecyclerRecordManyDateBinding
+import com.thequietz.travelog.databinding.ItemRecyclerRecordManyImagesBinding
+import com.thequietz.travelog.databinding.ItemRecyclerRecordManyPlaceBinding
+import com.thequietz.travelog.databinding.RecyclerRecordManyImageBinding
 import com.thequietz.travelog.record.model.MyRecord
 import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.record.model.ViewType
@@ -34,14 +32,14 @@ class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
         }
     }
 
-    class RecordScheduleViewHolder(val binding: ItemRecyclerManyDateBinding) :
+    class RecordScheduleViewHolder(val binding: ItemRecyclerRecordManyDateBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MyRecord.RecordSchedule) {
             binding.scheduleItem = item
         }
     }
 
-    class RecordPlaceViewHolder(val binding: ItemRecyclerManyPlaceBinding) :
+    class RecordPlaceViewHolder(val binding: ItemRecyclerRecordManyPlaceBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MyRecord.RecordPlace) {
             binding.placeItem = item
@@ -49,7 +47,7 @@ class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
     }
 
     class RecordImageViewHolder(
-        val binding: ItemRecyclerRecyclerBinding
+        val binding: RecyclerRecordManyImageBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         val adapter = MultiViewImageAdapter(object : MultiViewImageAdapter.OnItemClickListener {
             override fun onItemClick(view: View, ind: Int) {
@@ -74,31 +72,46 @@ class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
     ): RecyclerView.ViewHolder {
         return when (ViewType.values().get(viewType)) {
             ViewType.DATE -> {
-                val bindingSchedule = DataBindingUtil.inflate(
+                RecordScheduleViewHolder(
+                    ItemRecyclerRecordManyDateBinding.inflate(
+                        LayoutInflater.from(parent.context), parent, false
+                    )
+                )
+                /*val bindingSchedule = DataBindingUtil.inflate(
                     LayoutInflater.from(parent.context),
                     R.layout.item_recycler_many_date,
                     parent,
                     false
                 ) as ItemRecyclerManyDateBinding
-                RecordScheduleViewHolder(bindingSchedule)
+                RecordScheduleViewHolder(bindingSchedule)*/
             }
             ViewType.PLACE -> {
-                val bindingPlace = DataBindingUtil.inflate(
+                RecordPlaceViewHolder(
+                    ItemRecyclerRecordManyPlaceBinding.inflate(
+                        LayoutInflater.from(parent.context), parent, false
+                    )
+                )
+                /*val bindingPlace = DataBindingUtil.inflate(
                     LayoutInflater.from(parent.context),
                     R.layout.item_recycler_many_place,
                     parent,
                     false
                 ) as ItemRecyclerManyPlaceBinding
-                RecordPlaceViewHolder(bindingPlace)
+                RecordPlaceViewHolder(bindingPlace)*/
             }
             ViewType.IMAGE -> {
-                val bindingImage = DataBindingUtil.inflate(
+                RecordImageViewHolder(
+                    RecyclerRecordManyImageBinding.inflate(
+                        LayoutInflater.from(parent.context), parent, false
+                    )
+                )
+                /*val bindingImage = DataBindingUtil.inflate(
                     LayoutInflater.from(parent.context),
                     R.layout.item_recycler_recycler,
                     parent,
                     false
                 ) as ItemRecyclerRecyclerBinding
-                RecordImageViewHolder(bindingImage)
+                RecordImageViewHolder(bindingImage)*/
             }
         }
     }
@@ -152,7 +165,7 @@ class MultiViewImageAdapter(private val onItemClickListener: OnItemClickListener
         }
     }
 
-    class MultiViewImageViewHolder(val binding: ItemRecyclerManyImagesBinding) :
+    class MultiViewImageViewHolder(val binding: ItemRecyclerRecordManyImagesBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: RecordImage) {
             binding.imageItem = item
@@ -160,13 +173,18 @@ class MultiViewImageAdapter(private val onItemClickListener: OnItemClickListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MultiViewImageViewHolder {
-        val binding = DataBindingUtil.inflate(
+        /*val binding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.item_recycler_many_images,
             parent,
             false
         ) as ItemRecyclerManyImagesBinding
-        return MultiViewImageViewHolder(binding)
+        return MultiViewImageViewHolder(binding)*/
+        return MultiViewImageViewHolder(
+            ItemRecyclerRecordManyImagesBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: MultiViewImageViewHolder, position: Int) {

@@ -10,15 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.thequietz.travelog.FragmentType
-import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentGuideBinding
-import com.thequietz.travelog.guide.adapter.AllPlaceAdapter
-import com.thequietz.travelog.guide.adapter.RecommendPlaceAdapter
+import com.thequietz.travelog.guide.adapter.GuideMultiViewAdapter
 import com.thequietz.travelog.guide.viewmodel.GuideViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,37 +23,29 @@ class GuideFragment : Fragment() {
     private var _binding: FragmentGuideBinding? = null
     private val binding get() = _binding!!
     private val guideViewModel by viewModels<GuideViewModel>()
-    lateinit var allPlaceAdapter: AllPlaceAdapter
-    lateinit var recommendPlaceAdapter: RecommendPlaceAdapter
+    private val adapter by lazy { GuideMultiViewAdapter(this) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_guide, container, false)
+        _binding = FragmentGuideBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        allPlaceAdapter = AllPlaceAdapter(FragmentType.DOSI)
-        recommendPlaceAdapter = RecommendPlaceAdapter()
 
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
             viewModel = guideViewModel
-            rvPlaceAll.adapter = allPlaceAdapter
-            rvRecommendPlace.adapter = recommendPlaceAdapter
+            rvGuide.adapter = adapter
         }
 
         with(guideViewModel) {
-            // initRecommendPlaceData()
-            allDoSiList.observe(viewLifecycleOwner, { it ->
-                it?.let { allPlaceAdapter.submitList(it) }
-            })
-            allRecommendPlaceList.observe(viewLifecycleOwner, { it ->
-                it?.let { recommendPlaceAdapter.submitList(it) }
+            dataList.observe(viewLifecycleOwner, { it ->
+                it?.let { adapter.submitList(it) }
             })
         }
         setClickListener()

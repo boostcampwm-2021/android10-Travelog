@@ -8,10 +8,6 @@
             name="viewModel"
             type="com.thequietz.travelog.guide.viewmodel.GuideViewModel" />
     </data>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_guide"
         android:layout_width="match_parent"
@@ -20,7 +16,6 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         tools:context=".guide.GuideFragment">
-
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,6 +33,19 @@
             android:drawableEnd="@drawable/bg_search_btn"
             android:id="@+id/et_search"
             />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/rv_guide"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            />
+
+    <!--
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,6 +91,6 @@
             tools:listitem="@layout/item_recycler_place_all"
             tools:itemCount="10"
             />
+            -->
     </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
 </layout>

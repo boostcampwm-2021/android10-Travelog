@@ -54,7 +54,7 @@
                 app:spanCount="2"
                 android:orientation="vertical"
                 android:layout_marginTop="15dp"
-                tools:listitem="@layout/item_recycler_place_all"
+                tools:listitem="@layout/item_recycler_guide_place_all"
                 android:id="@+id/rv_specific_place"
                 tools:itemCount="10"
                 />
