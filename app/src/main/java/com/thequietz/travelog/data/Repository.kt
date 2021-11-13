@@ -1,7 +1,8 @@
 package com.thequietz.travelog.data
 
 import android.util.Log
-import com.thequietz.travelog.ApiFactory
+import com.thequietz.travelog.api.PlaceRecommend
+import com.thequietz.travelog.api.PlaceService
 import com.thequietz.travelog.data.db.dao.RecordImageDao
 import com.thequietz.travelog.data.db.dao.ScheduleDao
 import com.thequietz.travelog.getTodayDate
@@ -15,47 +16,48 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RepositoryImpl @Inject constructor() {
-    private val TourApi = ApiFactory.createTourApi()
-    private val PlaceListApi = ApiFactory.createPlaceListApi()
+class RepositoryImpl @Inject constructor(
+    private val placeService: PlaceService,
+    private val placeRecommend: PlaceRecommend
+) {
 
     suspend fun loadAllPlaceData(): List<Place> {
-        val result = PlaceListApi.requestAll()
+        val result = placeService.requestAll()
         return result.data
     }
 
     suspend fun loadAllDoSi(): List<Place> {
-        val result = PlaceListApi.requestALLDoSi()
+        val result = placeService.requestALLDoSi()
         return result.data
     }
 
     suspend fun loadDoSiByCode(code: String = "3"): List<Place> {
-        val result = PlaceListApi.requestDoSiByCode(code)
+        val result = placeService.requestDoSiByCode(code)
         return result.data
     }
 
     suspend fun loadDoSiByKeyword(keyword: String = "서"): List<Place> {
-        val result = PlaceListApi.requestAllByKeyword(keyword)
+        val result = placeService.requestAllByKeyword(keyword)
         return result.data
     }
 
     suspend fun loadRecommendPlaceData(areaCode: String = "1", sigunguCode: String = "10"): List<RecommendPlace> {
-        val res = TourApi.requestRecommendPlace(areaCode, sigunguCode).response.body.items.item
+        val res = placeRecommend.requestRecommendPlace(areaCode, sigunguCode).response.body.items.item
         return res
     }
 
     suspend fun loadVacationSpotData(areaCode: String): List<RecommendPlace> {
-        val res = TourApi.requestVacationSpot(areaCode).response.body.items.item
+        val res = placeRecommend.requestVacationSpot(areaCode).response.body.items.item
         return res
     }
 
     suspend fun loadFoodData(areaCode: String): List<RecommendPlace> {
-        val res = TourApi.requestFood(areaCode).response.body.items.item
+        val res = placeRecommend.requestFood(areaCode).response.body.items.item
         return res
     }
 
     suspend fun loadFestivalData(areaCode: String): List<RecommendPlace> {
-        val res = TourApi.requestFestival(getTodayDate(), areaCode).response.body.items.item
+        val res = placeRecommend.requestFestival(getTodayDate(), areaCode).response.body.items.item
         return res
     }
 }
