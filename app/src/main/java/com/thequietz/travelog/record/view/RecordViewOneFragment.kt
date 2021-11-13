@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -29,21 +28,19 @@ class RecordViewOneFragment : Fragment() {
     private val binding get() = _binding
     private val recordViewOneViewModel by viewModels<RecordViewOneViewModel>()
     private val args: RecordViewOneFragmentArgs by navArgs()
-    lateinit var adapter: ImageViewPagerAdapter
+    private val adapter by lazy { ImageViewPagerAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_record_view_one, container, false)
+        _binding = FragmentRecordViewOneBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ImageViewPagerAdapter()
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
             viewModel = recordViewOneViewModel
@@ -57,7 +54,7 @@ class RecordViewOneFragment : Fragment() {
             // createRecord()
             // loadRecord()
 
-            this.imageList.observe(viewLifecycleOwner, { it ->
+            imageList.observe(viewLifecycleOwner, { it ->
                 it?.let { adapter.submitList(it) }
             })
         }

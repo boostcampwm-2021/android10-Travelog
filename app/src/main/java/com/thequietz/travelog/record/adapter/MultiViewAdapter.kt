@@ -19,19 +19,6 @@ import com.thequietz.travelog.record.view.RecordViewManyFragmentDirections
 class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
     diffUtil
 ) {
-
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<MyRecord>() {
-            override fun areItemsTheSame(oldItem: MyRecord, newItem: MyRecord): Boolean {
-                return oldItem === newItem
-            }
-
-            override fun areContentsTheSame(oldItem: MyRecord, newItem: MyRecord): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }
-
     class RecordScheduleViewHolder(val binding: ItemRecyclerRecordManyDateBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MyRecord.RecordSchedule) {
@@ -66,6 +53,14 @@ class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
         }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is MyRecord.RecordSchedule -> 0
+            is MyRecord.RecordPlace -> 1
+            is MyRecord.RecordImageList -> 2
+        }
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -77,13 +72,6 @@ class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
                         LayoutInflater.from(parent.context), parent, false
                     )
                 )
-                /*val bindingSchedule = DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context),
-                    R.layout.item_recycler_many_date,
-                    parent,
-                    false
-                ) as ItemRecyclerManyDateBinding
-                RecordScheduleViewHolder(bindingSchedule)*/
             }
             ViewType.PLACE -> {
                 RecordPlaceViewHolder(
@@ -91,13 +79,6 @@ class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
                         LayoutInflater.from(parent.context), parent, false
                     )
                 )
-                /*val bindingPlace = DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context),
-                    R.layout.item_recycler_many_place,
-                    parent,
-                    false
-                ) as ItemRecyclerManyPlaceBinding
-                RecordPlaceViewHolder(bindingPlace)*/
             }
             ViewType.IMAGE -> {
                 RecordImageViewHolder(
@@ -105,22 +86,7 @@ class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
                         LayoutInflater.from(parent.context), parent, false
                     )
                 )
-                /*val bindingImage = DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context),
-                    R.layout.item_recycler_recycler,
-                    parent,
-                    false
-                ) as ItemRecyclerRecyclerBinding
-                RecordImageViewHolder(bindingImage)*/
             }
-        }
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
-            is MyRecord.RecordSchedule -> 0
-            is MyRecord.RecordPlace -> 1
-            is MyRecord.RecordImageList -> 2
         }
     }
 
@@ -137,6 +103,17 @@ class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
             }
         }
     }
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<MyRecord>() {
+            override fun areItemsTheSame(oldItem: MyRecord, newItem: MyRecord): Boolean {
+                return oldItem === newItem
+            }
+
+            override fun areContentsTheSame(oldItem: MyRecord, newItem: MyRecord): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
 }
 
 class MultiViewImageAdapter(private val onItemClickListener: OnItemClickListener) :
@@ -145,6 +122,29 @@ class MultiViewImageAdapter(private val onItemClickListener: OnItemClickListener
     ) {
     interface OnItemClickListener {
         fun onItemClick(view: View, ind: Int)
+    }
+
+    class MultiViewImageViewHolder(val binding: ItemRecyclerRecordManyImagesBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: RecordImage) {
+            binding.imageItem = item
+            binding.executePendingBindings()
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MultiViewImageViewHolder {
+        return MultiViewImageViewHolder(
+            ItemRecyclerRecordManyImagesBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
+    }
+
+    override fun onBindViewHolder(holder: MultiViewImageViewHolder, position: Int) {
+        holder.bind(getItem(position))
+        holder.binding.ivItemImage.setOnClickListener { view ->
+            onItemClickListener.onItemClick(view, getItem(position).id)
+        }
     }
 
     companion object {
@@ -162,35 +162,6 @@ class MultiViewImageAdapter(private val onItemClickListener: OnItemClickListener
             ): Boolean {
                 return oldItem == newItem
             }
-        }
-    }
-
-    class MultiViewImageViewHolder(val binding: ItemRecyclerRecordManyImagesBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: RecordImage) {
-            binding.imageItem = item
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MultiViewImageViewHolder {
-        /*val binding = DataBindingUtil.inflate(
-            LayoutInflater.from(parent.context),
-            R.layout.item_recycler_many_images,
-            parent,
-            false
-        ) as ItemRecyclerManyImagesBinding
-        return MultiViewImageViewHolder(binding)*/
-        return MultiViewImageViewHolder(
-            ItemRecyclerRecordManyImagesBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
-        )
-    }
-
-    override fun onBindViewHolder(holder: MultiViewImageViewHolder, position: Int) {
-        holder.bind(getItem(position))
-        holder.binding.ivItemImage.setOnClickListener { view ->
-            onItemClickListener.onItemClick(view, getItem(position).id)
         }
     }
 }

@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordViewManyBinding
 import com.thequietz.travelog.record.adapter.MultiViewAdapter
 import com.thequietz.travelog.record.viewmodel.RecordViewManyViewModel
@@ -20,20 +18,18 @@ class RecordViewManyFragment : Fragment() {
     private lateinit var _binding: FragmentRecordViewManyBinding
     private val binding get() = _binding
     private val recordViewManyViewModel by viewModels<RecordViewManyViewModel>()
-    lateinit var adapter: MultiViewAdapter
+    private val adapter by lazy { MultiViewAdapter() }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_record_view_many, container, false)
+        _binding = FragmentRecordViewManyBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = MultiViewAdapter()
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
             viewModel = recordViewManyViewModel
