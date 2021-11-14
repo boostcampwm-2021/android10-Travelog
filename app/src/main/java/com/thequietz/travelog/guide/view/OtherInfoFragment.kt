@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -22,25 +21,21 @@ class OtherInfoFragment : Fragment() {
     private val binding get() = _binding
     private val otherInfoViewModel by viewModels<OtherInfoViewModel>()
     private val args: OtherInfoFragmentArgs by navArgs()
-    lateinit var vacationAdapter: OtherInfoAdapter
-    lateinit var festivalAdapter: OtherInfoAdapter
-    lateinit var foodAdapter: OtherInfoAdapter
+    private val vacationAdapter by lazy { OtherInfoAdapter() }
+    private val festivalAdapter by lazy { OtherInfoAdapter() }
+    private val foodAdapter by lazy { OtherInfoAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_other_info, container, false)
-
+        _binding = FragmentOtherInfoBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vacationAdapter = OtherInfoAdapter()
-        foodAdapter = OtherInfoAdapter()
-        festivalAdapter = OtherInfoAdapter()
 
         with(binding) {
             lifecycleOwner = viewLifecycleOwner

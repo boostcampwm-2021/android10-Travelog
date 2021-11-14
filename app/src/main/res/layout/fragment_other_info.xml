@@ -90,8 +90,6 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             app:layout_constraintTop_toBottomOf="@id/tv_vacation_spot"
             android:layout_marginTop="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -127,8 +125,6 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/tv_food"
             android:id="@+id/rv_food"
@@ -164,8 +160,6 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/tv_fesetival"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

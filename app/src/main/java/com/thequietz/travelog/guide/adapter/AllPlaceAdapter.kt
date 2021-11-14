@@ -2,54 +2,38 @@ package com.thequietz.travelog.guide.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.thequietz.travelog.FragmentType
-import com.thequietz.travelog.R
-import com.thequietz.travelog.databinding.ItemRecyclerPlaceAllBinding
+import com.thequietz.travelog.databinding.ItemRecyclerGuidePlaceAllBinding
 import com.thequietz.travelog.guide.Place
-import com.thequietz.travelog.guide.view.GuideFragmentDirections
 import com.thequietz.travelog.guide.view.SpecificGuideFragmentDirections
 
-class AllPlaceAdapter(val type: FragmentType) : androidx.recyclerview.widget.ListAdapter<Place, AllPlaceAdapter.AllPlaceViewHolder>(
+class AllPlaceAdapter() : androidx.recyclerview.widget.ListAdapter<Place, AllPlaceAdapter.AllPlaceViewHolder>(
     diffUtil
 ) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllPlaceViewHolder {
-        val binding = DataBindingUtil.inflate(
-            LayoutInflater.from(parent.context),
-            R.layout.item_recycler_place_all,
-            parent,
-            false
-        ) as ItemRecyclerPlaceAllBinding
-        return AllPlaceViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: AllPlaceViewHolder, position: Int) {
-        holder.bind(getItem(position), type)
-    }
-
-    class AllPlaceViewHolder(val binding: ItemRecyclerPlaceAllBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Place?, type: FragmentType) {
+    class AllPlaceViewHolder(val binding: ItemRecyclerGuidePlaceAllBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: Place?) {
             binding.item = item
             binding.executePendingBindings()
             itemView.setOnClickListener {
-                when (type) {
-                    FragmentType.DOSI -> {
-                        val action = GuideFragmentDirections
-                            .actionGuideFragmentToSpecificGuideFragment(item!!.name)
-                        it.findNavController().navigate(action)
-                    }
-                    FragmentType.SPECIFIC -> {
-                        val action = SpecificGuideFragmentDirections
-                            .actionSpecificGuideFragmentToOtherInfoFragment(item!!)
-                        it.findNavController().navigate(action)
-                    }
-                }
+                val action = SpecificGuideFragmentDirections
+                    .actionSpecificGuideFragmentToOtherInfoFragment(item!!)
+                it.findNavController().navigate(action)
             }
         }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllPlaceViewHolder {
+        return AllPlaceViewHolder(
+            ItemRecyclerGuidePlaceAllBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
+    }
+
+    override fun onBindViewHolder(holder: AllPlaceViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
     companion object {

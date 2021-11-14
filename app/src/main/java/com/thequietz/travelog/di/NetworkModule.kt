@@ -1,5 +1,6 @@
 package com.thequietz.travelog.di
 
+import com.thequietz.travelog.api.PlaceRecommend
 import com.thequietz.travelog.api.PlaceSearchService
 import com.thequietz.travelog.api.PlaceService
 import dagger.Module
@@ -11,6 +12,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
+
+    @Singleton
+    @Provides
+    fun providePlaceRecommendService(): PlaceRecommend {
+        return PlaceRecommend.create()
+    }
 
     @Singleton
     @Provides

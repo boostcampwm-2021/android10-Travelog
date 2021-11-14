@@ -29,6 +29,3 @@ fun getTodayDate(): String {
     val dateFormat = SimpleDateFormat("yyyyMMdd", Locale("ko", "KR"))
     return dateFormat.format(date)
 }
-enum class FragmentType {
-    DOSI, SPECIFIC
-}

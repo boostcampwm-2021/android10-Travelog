@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
 import com.thequietz.travelog.record.model.RecordImage
-import com.thequietz.travelog.util.SAMPLE_RECORD_IMAGES
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,6 +16,11 @@ import javax.inject.Inject
 class RecordViewOneViewModel @Inject constructor(
     val repository: RecordRepository
 ) : ViewModel() {
+
+    companion object {
+        private val _currentPosition = MutableLiveData<Int>()
+        val currentPosition: LiveData<Int> = _currentPosition
+    }
 
     private val _imageList = MutableLiveData<List<RecordImage>>()
     val imageList: LiveData<List<RecordImage>> = this._imageList
@@ -31,11 +35,6 @@ class RecordViewOneViewModel @Inject constructor(
         // createRecord()
         loadRecord()
         _currentPosition.value = 0
-    }
-
-    companion object {
-        private val _currentPosition = MutableLiveData<Int>()
-        val currentPosition: LiveData<Int> = _currentPosition
     }
 
     fun loadRecord() {
@@ -53,27 +52,19 @@ class RecordViewOneViewModel @Inject constructor(
         _currentImage.value = _imageList.value?.get(position)
     }
 
-    fun createRecord() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                SAMPLE_RECORD_IMAGES.forEach {
-                    repository.createRecordImage(it)
-                }
-            }
-            withContext(Dispatchers.IO) {
-                val res = repository.loadRecordImages()
-                viewModelScope.launch {
-                    _imageList.postValue(res)
-                }
-            }
-        }
-    }
-
     fun isCommentChanged(str: String): Boolean {
         if (currentImage.value?.comment != str) {
             return true
         }
         return false
+    }
+
+    fun setCurrentPosition(position: Int) {
+        _currentPosition.value = position
+    }
+
+    fun resetIsListUpdate() {
+        _islistUpdate.value = false
     }
 
     fun updateComment(comment: String) {
@@ -107,13 +98,5 @@ class RecordViewOneViewModel @Inject constructor(
                 loadRecord()
             }
         }
-    }
-
-    fun setCurrentPosition(position: Int) {
-        _currentPosition.value = position
-    }
-
-    fun resetIsListUpdate() {
-        _islistUpdate.value = false
     }
 }
