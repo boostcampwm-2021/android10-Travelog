@@ -10,7 +10,6 @@ import com.thequietz.travelog.place.repository.PlaceDetailRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 
@@ -29,6 +28,8 @@ class PlaceDetailViewModel @Inject constructor(
     private var _review = MutableLiveData<String>()
     val review: LiveData<String> get() = _review
 
+    var isLoaded = MutableLiveData(false)
+
     fun loadPlaceDetail(placeId: String) {
         viewModelScope.launch {
             val data = repository.loadPlaceDetail(placeId)
@@ -41,9 +42,9 @@ class PlaceDetailViewModel @Inject constructor(
                 val newValue = acc + value + "\n"
                 newValue
             })
-            _review.value = data?.reviews?.fold("", { acc, value ->
+            /*_review.value = data?.reviews?.fold("", { acc, value ->
                 acc + value.text + "\n" + converter.format(Date(value.time * 1000)) + "\n\n"
-            })
+            })*/
         }
     }
 }
