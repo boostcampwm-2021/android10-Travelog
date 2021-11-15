@@ -10,7 +10,7 @@ import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.view.SpecificGuideFragmentDirections
 
 class AllPlaceAdapter() : androidx.recyclerview.widget.ListAdapter<Place, AllPlaceAdapter.AllPlaceViewHolder>(
-    diffUtil
+    PlaceDiffUtilCallback()
 ) {
     class AllPlaceViewHolder(val binding: ItemRecyclerGuidePlaceAllBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Place) {
@@ -64,16 +64,13 @@ class AllPlaceAdapter() : androidx.recyclerview.widget.ListAdapter<Place, AllPla
     override fun onBindViewHolder(holder: AllPlaceViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
+}
+class PlaceDiffUtilCallback : DiffUtil.ItemCallback<Place>() {
+    override fun areItemsTheSame(oldItem: Place, newItem: Place): Boolean {
+        return oldItem.name == newItem.name
+    }
 
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Place>() {
-            override fun areItemsTheSame(oldItem: Place, newItem: Place): Boolean {
-                return oldItem === newItem
-            }
-
-            override fun areContentsTheSame(oldItem: Place, newItem: Place): Boolean {
-                return oldItem == newItem
-            }
-        }
+    override fun areContentsTheSame(oldItem: Place, newItem: Place): Boolean {
+        return oldItem == newItem
     }
 }
