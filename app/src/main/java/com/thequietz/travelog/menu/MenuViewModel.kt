@@ -9,13 +9,24 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MenuViewModel @Inject internal constructor(
-    val repository: RepositoryImpl
+    val repository: RepositoryImpl,
 ) : ViewModel() {
 
-    private val _toastMessage = MutableLiveData<String>()
-    val toastMessage: LiveData<String> = _toastMessage
+    private val _locationPermission = MutableLiveData<Boolean>()
+    val locationPermission: LiveData<Boolean> = _locationPermission
 
-    fun setToastMessage(msg: String) {
-        _toastMessage.value = msg
-    }
+    private val _alarmPermission = MutableLiveData<Boolean>()
+    val alarmPermission: LiveData<Boolean> = _alarmPermission
+
+    private val _scheduleAlarm = MutableLiveData<Boolean>()
+    val scheduleAlarm: LiveData<Boolean> = _scheduleAlarm
+
+    private val _recordAlarm = MutableLiveData<Boolean>()
+    val recordAlarm: LiveData<Boolean> = _recordAlarm
+
+    private val _scheduleAlarmTime = MutableLiveData<Int>()
+    val scheduleAlarmTime: LiveData<Int> = _scheduleAlarmTime
+
+    private val _recordAlarmTime = MutableLiveData<Int>()
+    val recordAlarmTime: LiveData<Int> = _recordAlarmTime
 }

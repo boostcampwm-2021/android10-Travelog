@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="schedule_array">
+        <item>오전 6시 00분</item>
+        <item>오전 7시 00분</item>
+        <item>오전 8시 00분</item>
+        <item>오전 9시 00분</item>
+        <item>오전 10시 00분</item>
+        <item>오전 11시 00분</item>
+    </string-array>
+    <string-array name="record_array">
+        <item>오후 6시 00분</item>
+        <item>오후 7시 00분</item>
+        <item>오후 8시 00분</item>
+        <item>오후 9시 00분</item>
+        <item>오후 10시 00분</item>
+        <item>오후 11시 00분</item>
+    </string-array>
+</resources>
