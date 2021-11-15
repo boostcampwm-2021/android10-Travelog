@@ -116,16 +116,27 @@
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
             app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one" />
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vp_review_view_one"
+        <FrameLayout
             android:layout_width="385dp"
             android:layout_height="400dp"
-            android:layout_marginTop="15dp"
-            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/tv_record_view_one_place" />
-
+            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
+            app:layout_constraintTop_toBottomOf="@id/tv_record_view_one_place"
+            android:layout_marginTop="15dp"
+            android:id="@+id/fl_record_view_one"
+            >
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_review_view_one"
+                android:layout_width="385dp"
+                android:layout_height="400dp" />
+            <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:id="@+id/ci_review_view_one"
+                android:layout_gravity="bottom|center"
+                app:spi_visibleDotCount="5"
+                />
+        </FrameLayout>
         <EditText
             android:id="@+id/et_record_view_one"
             android:layout_width="0dp"
@@ -140,7 +151,7 @@
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/vp_review_view_one" />
+            app:layout_constraintTop_toBottomOf="@id/fl_record_view_one" />
 
         <ImageButton
             android:id="@+id/ib_record_view_one_edit_comment"
@@ -150,7 +161,7 @@
             android:background="@drawable/img_pencil"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/vp_review_view_one" />
+            app:layout_constraintTop_toBottomOf="@id/fl_record_view_one" />
 
         <TextView
             android:id="@+id/tv_record_view_one_save"
@@ -161,6 +172,6 @@
             android:textAlignment="center"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/vp_review_view_one" />
+            app:layout_constraintTop_toBottomOf="@id/fl_record_view_one" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

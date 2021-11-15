@@ -2,6 +2,7 @@ package com.thequietz.travelog.guide.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.databinding.ItemRecyclerOtherInfoBinding
@@ -14,6 +15,9 @@ class OtherInfoAdapter : androidx.recyclerview.widget.ListAdapter<RecommendPlace
         fun bind(item: RecommendPlace) {
             binding.item = item
             binding.executePendingBindings()
+            itemView.setOnClickListener {
+                Toast.makeText(itemView.context, "${item.name}", Toast.LENGTH_SHORT).show()
+            }
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OtherInfoViewHolder {

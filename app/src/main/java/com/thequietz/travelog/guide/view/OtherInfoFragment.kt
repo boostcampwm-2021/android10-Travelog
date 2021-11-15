@@ -9,9 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentOtherInfoBinding
 import com.thequietz.travelog.guide.adapter.OtherInfoAdapter
+import com.thequietz.travelog.guide.adapter.OtherInfoViewPagerAdapter
 import com.thequietz.travelog.guide.viewmodel.OtherInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +24,7 @@ class OtherInfoFragment : Fragment() {
     private val binding get() = _binding
     private val otherInfoViewModel by viewModels<OtherInfoViewModel>()
     private val args: OtherInfoFragmentArgs by navArgs()
+    private val viewPagerAdapter by lazy { OtherInfoViewPagerAdapter() }
     private val vacationAdapter by lazy { OtherInfoAdapter() }
     private val festivalAdapter by lazy { OtherInfoAdapter() }
     private val foodAdapter by lazy { OtherInfoAdapter() }
@@ -43,13 +47,16 @@ class OtherInfoFragment : Fragment() {
             rvVacationSpot.adapter = vacationAdapter
             rvFood.adapter = foodAdapter
             rvFestival.adapter = festivalAdapter
+            vpOtherInfo.adapter = viewPagerAdapter
+            vpOtherInfo.setCurrentItem(0, false)
+            ciOtherInto.attachToRecyclerView(binding.vpOtherInfo.getChildAt(0) as RecyclerView)
         }
 
         with(otherInfoViewModel) {
-            initCurrentItem(args.item)
-            initVacationSpotData()
-            initFoodData()
-            initFestivalData()
+            initPlaceList(args.item)
+            placeList.observe(viewLifecycleOwner, { it ->
+                it?.let { viewPagerAdapter.submitList(it) }
+            })
             vacationSpotList4.observe(viewLifecycleOwner, { it ->
                 it?.let { vacationAdapter.submitList(it) }
             })
@@ -61,7 +68,7 @@ class OtherInfoFragment : Fragment() {
             })
         }
         initToolbar()
-        setClickListener()
+        setListener()
     }
 
     private fun initToolbar() {
@@ -73,21 +80,29 @@ class OtherInfoFragment : Fragment() {
         }
     }
 
-    private fun setClickListener() {
+    private fun setListener() {
         with(binding) {
+            vpOtherInfo.registerOnPageChangeCallback(object :
+                    ViewPager2.OnPageChangeCallback() {
+                    override fun onPageSelected(position: Int) {
+                        super.onPageSelected(position)
+                        viewModel!!.setCurrentInd(position)
+                    }
+                }
+            )
             tvVacationSpotMore.setOnClickListener {
                 viewModel!!.vacationSpotList.observe(viewLifecycleOwner, { it ->
-                    it?.let { vacationAdapter.submitList(it) }
+                    it?.let { vacationAdapter.submitList(it.get(otherInfoViewModel.currentInd.value!!)) }
                 })
             }
             tvFoodMore.setOnClickListener {
                 viewModel!!.foodList.observe(viewLifecycleOwner, { it ->
-                    it?.let { foodAdapter.submitList(it) }
+                    it?.let { foodAdapter.submitList(it.get(otherInfoViewModel.currentInd.value!!)) }
                 })
             }
             tvFestivalMore.setOnClickListener {
                 viewModel!!.festivalList.observe(viewLifecycleOwner, { it ->
-                    it?.let { festivalAdapter.submitList(it) }
+                    it?.let { festivalAdapter.submitList(it.get(otherInfoViewModel.currentInd.value!!)) }
                 })
             }
             tbOtherInfo.setNavigationOnClickListener {

@@ -34,7 +34,7 @@ class SpecificGuideViewModel @Inject internal constructor(
     fun initCurrentItem() {
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO) {
-                repository.loadDoSiByKeyword(_currentSearch.value!!)
+                repository.loadDoSiByKeyword(currentSearch.value!!)
             }
             _currentPlaceList.value = res
             _noData.value = currentPlaceList.value?.size == 0
