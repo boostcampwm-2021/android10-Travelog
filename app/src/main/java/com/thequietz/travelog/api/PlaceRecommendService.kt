@@ -1,6 +1,5 @@
 package com.thequietz.travelog.api
 
-import com.thequietz.travelog.BuildConfig
 import com.thequietz.travelog.place.model.PlaceRecommendResponse
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -13,7 +12,7 @@ interface PlaceRecommendService {
     @GET("openapi/service/rest/KorService/areaBasedList")
     fun loadRecommendPlace(
         @Query("contentTypeId") typeId: Int,
-        @Query("ServiceKey") apiKey: String = BuildConfig.TOUR_API_KEY,
+        @Query("ServiceKey") apiKey: String,
         @Query("listYN") isList: String = "Y",
         @Query("MobileOS") os: String = "AND",
         @Query("MobileApp") appName: String = "Travelog",
