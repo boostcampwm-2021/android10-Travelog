@@ -57,7 +57,7 @@ class PlaceDetailFragment : Fragment() {
         viewModel.detail.observe(viewLifecycleOwner, {
             (binding.rvPlaceDetail.adapter as PlaceDetailAdapter).submitList(it.photos)
             if (viewModel.isLoaded.value == false) {
-
+                val len = it.reviews.size
                 val parentContext = requireContext()
                 it.reviews.forEachIndexed { idx, review ->
                     Log.d("IS_LOADED", viewModel.isLoaded.value.toString())
@@ -68,6 +68,12 @@ class PlaceDetailFragment : Fragment() {
                     reviewLayout.id = idx * 31
                     binding.llPlaceDetail.addView(
                         reviewLayout
+                    )
+                    if (idx == len - 1) {
+                        return@forEachIndexed
+                    }
+                    binding.llPlaceDetail.addView(
+                        PlaceReviewDividerLayout(parentContext)
                     )
                 }
                 viewModel.isLoaded.value = true
