@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="item"
             type="com.thequietz.travelog.guide.Place" />
@@ -13,25 +14,24 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/iv_item_viewpager_other_info"
             android:layout_width="380dp"
             android:layout_height="290dp"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="25dp"
-            android:id="@+id/iv_item_viewpager_other_info"
-            app:setImage="@{item.url}"
-            />
+            app:layout_constraintTop_toTopOf="parent"
+            app:setImage="@{item.url}" />
+
         <TextView
+            android:id="@+id/tv_item_viewpager_other_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:text="@{item.name}"
             android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:id="@+id/tv_item_viewpager_other_info"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
