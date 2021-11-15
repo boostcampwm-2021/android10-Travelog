@@ -17,7 +17,7 @@ import com.thequietz.travelog.record.model.ViewType
 import com.thequietz.travelog.record.view.RecordViewManyFragmentDirections
 
 class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
-    diffUtil
+    MyRecordDiffUtilCallback()
 ) {
     class RecordScheduleViewHolder(val binding: ItemRecyclerRecordManyDateBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -103,22 +103,11 @@ class MultiViewAdapter : ListAdapter<MyRecord, RecyclerView.ViewHolder>(
             }
         }
     }
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<MyRecord>() {
-            override fun areItemsTheSame(oldItem: MyRecord, newItem: MyRecord): Boolean {
-                return oldItem === newItem
-            }
-
-            override fun areContentsTheSame(oldItem: MyRecord, newItem: MyRecord): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }
 }
 
 class MultiViewImageAdapter(private val onItemClickListener: OnItemClickListener) :
     ListAdapter<RecordImage, MultiViewImageAdapter.MultiViewImageViewHolder>(
-        diffUtil
+        RecordImageDiffUtilCallback()
     ) {
     interface OnItemClickListener {
         fun onItemClick(view: View, ind: Int)
@@ -146,22 +135,13 @@ class MultiViewImageAdapter(private val onItemClickListener: OnItemClickListener
             onItemClickListener.onItemClick(view, getItem(position).id)
         }
     }
+}
+class MyRecordDiffUtilCallback : DiffUtil.ItemCallback<MyRecord>() {
+    override fun areItemsTheSame(oldItem: MyRecord, newItem: MyRecord): Boolean {
+        return oldItem.hashCode() == newItem.hashCode()
+    }
 
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<RecordImage>() {
-            override fun areItemsTheSame(
-                oldItem: RecordImage,
-                newItem: RecordImage
-            ): Boolean {
-                return oldItem === newItem
-            }
-
-            override fun areContentsTheSame(
-                oldItem: RecordImage,
-                newItem: RecordImage
-            ): Boolean {
-                return oldItem == newItem
-            }
-        }
+    override fun areContentsTheSame(oldItem: MyRecord, newItem: MyRecord): Boolean {
+        return oldItem == newItem
     }
 }
