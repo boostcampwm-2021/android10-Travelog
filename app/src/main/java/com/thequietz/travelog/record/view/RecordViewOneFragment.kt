@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
 import com.thequietz.travelog.R
@@ -48,6 +49,7 @@ class RecordViewOneFragment : Fragment() {
             vpReviewViewOne.post {
                 vpReviewViewOne.setCurrentItem(args.index - 1, false)
             }
+            ciReviewViewOne.attachToRecyclerView(binding.vpReviewViewOne.getChildAt(0) as RecyclerView)
         }
         with(recordViewOneViewModel) {
             // 아이템 초기화
