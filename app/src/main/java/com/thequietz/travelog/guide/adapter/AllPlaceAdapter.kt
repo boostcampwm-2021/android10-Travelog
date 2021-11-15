@@ -13,33 +13,36 @@ class AllPlaceAdapter() : androidx.recyclerview.widget.ListAdapter<Place, AllPla
     diffUtil
 ) {
     class AllPlaceViewHolder(val binding: ItemRecyclerGuidePlaceAllBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Place?) {
+        fun bind(item: Place) {
+            println(item.toString())
             binding.item = item
             binding.executePendingBindings()
             val temp = mutableListOf<Place>()
-            item?.let {
-                temp.add(
-                    it.copy(
-                        areaCode = "31",
-                        url = "http://tong.visitkorea.or.kr/cms/resource/36/2364836_image2_1.jpg",
-                        name = "고양시"
-                    )
+            temp.add(item)
+            temp.add(
+                item.copy(
+                    areaCode = "31",
+                    url = "http://tong.visitkorea.or.kr/cms/resource/36/2364836_image2_1.jpg",
+                    name = "고양시",
+                    stateName = "가평군"
                 )
-                temp.add(
-                    it.copy(
-                        areaCode = "6",
-                        url = "http://tong.visitkorea.or.kr/cms/resource/43/2757743_image2_1.jpg",
-                        name = "부산"
-                    )
+            )
+            temp.add(
+                item.copy(
+                    areaCode = "6",
+                    url = "http://tong.visitkorea.or.kr/cms/resource/43/2757743_image2_1.jpg",
+                    name = "부산",
+                    stateName = "부산시"
                 )
-                temp.add(
-                    it.copy(
-                        areaCode = "7",
-                        url = "http://tong.visitkorea.or.kr/cms/resource/67/2558467_image2_1.jpg",
-                        name = "울산"
-                    )
+            )
+            temp.add(
+                item.copy(
+                    areaCode = "7",
+                    url = "http://tong.visitkorea.or.kr/cms/resource/67/2558467_image2_1.jpg",
+                    name = "울산",
+                    stateName = "울산시"
                 )
-            }
+            )
 
             itemView.setOnClickListener {
                 val action = SpecificGuideFragmentDirections

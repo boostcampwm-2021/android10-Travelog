@@ -20,8 +20,7 @@
         android:label="SpecificGuideFragment">
         <argument
             android:name="item"
-            app:argType="string"
-            android:defaultValue="서"/>
+            app:argType="string" />
         <action
             android:id="@+id/action_specificGuideFragment_to_otherInfoFragment"
             app:destination="@id/otherInfoFragment" />
