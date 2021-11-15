@@ -1,6 +1,7 @@
 package com.thequietz.travelog.place.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,6 +56,22 @@ class PlaceDetailFragment : Fragment() {
 
         viewModel.detail.observe(viewLifecycleOwner, {
             (binding.rvPlaceDetail.adapter as PlaceDetailAdapter).submitList(it.photos)
+            if (viewModel.isLoaded.value == false) {
+
+                val parentContext = requireContext()
+                it.reviews.forEachIndexed { idx, review ->
+                    Log.d("IS_LOADED", viewModel.isLoaded.value.toString())
+                    val reviewLayout = PlaceReviewLayout(
+                        parentContext,
+                        review
+                    )
+                    reviewLayout.id = idx * 31
+                    binding.llPlaceDetail.addView(
+                        reviewLayout
+                    )
+                }
+                viewModel.isLoaded.value = true
+            }
         })
         viewModel.loadPlaceDetail(model.placeId)
     }

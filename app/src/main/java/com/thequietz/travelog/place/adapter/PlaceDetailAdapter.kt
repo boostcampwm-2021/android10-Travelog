@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.thequietz.travelog.BuildConfig
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.ItemRecyclerPlaceDetailBinding
 import com.thequietz.travelog.place.model.PlaceDetailPhoto
@@ -18,7 +17,7 @@ class PlaceDetailAdapter : ListAdapter<PlaceDetailPhoto, PlaceDetailAdapter.View
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: PlaceDetailPhoto) {
-            val apiKey = BuildConfig.GOOGLE_MAP_KEY
+            val apiKey = "" // BuildConfig.GOOGLE_MAP_KEY
             val imageUrl =
                 "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${model.photoId}&key=$apiKey"
             binding.model = model
