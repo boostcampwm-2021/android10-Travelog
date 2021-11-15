@@ -32,7 +32,7 @@
         android:label="OtherInfoFragment">
         <argument
             android:name="item"
-            app:argType="com.thequietz.travelog.guide.Place" />
+            app:argType="com.thequietz.travelog.guide.Place[]" />
         <action
             android:id="@+id/action_otherInfoFragment_to_specificGuideFragment"
             app:destination="@id/specificGuideFragment"

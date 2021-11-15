@@ -16,9 +16,35 @@ class AllPlaceAdapter() : androidx.recyclerview.widget.ListAdapter<Place, AllPla
         fun bind(item: Place?) {
             binding.item = item
             binding.executePendingBindings()
+            val temp = mutableListOf<Place>()
+            item?.let {
+                temp.add(
+                    it.copy(
+                        areaCode = "31",
+                        url = "http://tong.visitkorea.or.kr/cms/resource/36/2364836_image2_1.jpg",
+                        name = "고양시"
+                    )
+                )
+                temp.add(
+                    it.copy(
+                        areaCode = "6",
+                        url = "http://tong.visitkorea.or.kr/cms/resource/43/2757743_image2_1.jpg",
+                        name = "부산"
+                    )
+                )
+                temp.add(
+                    it.copy(
+                        areaCode = "7",
+                        url = "http://tong.visitkorea.or.kr/cms/resource/67/2558467_image2_1.jpg",
+                        name = "울산"
+                    )
+                )
+            }
+
             itemView.setOnClickListener {
                 val action = SpecificGuideFragmentDirections
-                    .actionSpecificGuideFragmentToOtherInfoFragment(item!!)
+                    // .actionSpecificGuideFragmentToOtherInfoFragment(arrayOf(item!!))
+                    .actionSpecificGuideFragmentToOtherInfoFragment(temp.toTypedArray())
                 it.findNavController().navigate(action)
             }
         }

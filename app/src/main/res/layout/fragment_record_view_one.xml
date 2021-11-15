@@ -134,11 +134,7 @@
                 android:layout_height="40dp"
                 android:id="@+id/ci_review_view_one"
                 android:layout_gravity="bottom|center"
-                app:spi_visibleDotCount="7"
-                app:spi_orientation="horizontal"
-                app:spi_dotColor="@color/light_gray"
-                app:spi_dotSelectedColor="@color/black"
-                android:visibility="visible"
+                app:spi_visibleDotCount="5"
                 />
         </FrameLayout>
         <EditText
