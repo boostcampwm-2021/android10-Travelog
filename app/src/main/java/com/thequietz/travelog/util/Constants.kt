@@ -4,6 +4,7 @@ import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.schedule.model.PlaceModel
 import com.thequietz.travelog.schedule.model.ScheduleModel
 
+const val requestImage = 99
 val SAMPLE_SCHEDULES = listOf(
     ScheduleModel(
         0,

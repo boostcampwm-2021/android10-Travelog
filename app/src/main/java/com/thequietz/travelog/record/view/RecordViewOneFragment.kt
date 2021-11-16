@@ -111,6 +111,11 @@ class RecordViewOneFragment : Fragment() {
                         R.id.imageDelete -> {
                             showDeleteDialog()
                         }
+                        R.id.imageAdd -> {
+                            val action = RecordViewOneFragmentDirections
+                                .actionRecordViewOneFragmentToRecordAddImageFragment()
+                            findNavController().navigate(action)
+                        }
                     }
                     false
                 }
