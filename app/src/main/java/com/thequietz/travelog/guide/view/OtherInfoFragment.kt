@@ -35,6 +35,7 @@ class OtherInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentOtherInfoBinding.inflate(inflater, container, false)
+        initToolbar()
         return binding.root
     }
 
@@ -67,7 +68,6 @@ class OtherInfoFragment : Fragment() {
                 it?.let { festivalAdapter.submitList(it) }
             })
         }
-        initToolbar()
         setListener()
     }
 
@@ -86,7 +86,7 @@ class OtherInfoFragment : Fragment() {
                     ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
-                        viewModel!!.setCurrentInd(position)
+                        otherInfoViewModel.setCurrentInd(position)
                     }
                 }
             )
