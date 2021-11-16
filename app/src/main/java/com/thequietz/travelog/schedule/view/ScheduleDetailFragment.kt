@@ -40,7 +40,7 @@ class ScheduleDetailFragment :
         viewModel.initItemList(startDate, endDate)
         adapter = ScheduleDetailAdapter(viewModel) {
             val action =
-                ScheduleDetailFragmentDirections.actionPlaceDetailFragmentToPlaceSearchFragment()
+                ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToPlaceSearchFragment()
             this.findNavController().navigate(action)
         }
         val callback = ScheduleTouchHelperCallback(adapter)
