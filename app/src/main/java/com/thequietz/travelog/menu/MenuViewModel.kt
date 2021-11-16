@@ -29,4 +29,50 @@ class MenuViewModel @Inject internal constructor(
 
     private val _recordAlarmTime = MutableLiveData<Int>()
     val recordAlarmTime: LiveData<Int> = _recordAlarmTime
+
+    init {
+        permissionSetting()
+    }
+
+    private fun permissionSetting() {
+        _locationPermission.postValue(false)
+        _alarmPermission.postValue(false)
+        _scheduleAlarm.postValue(false)
+        _recordAlarm.postValue(false)
+    }
+
+    fun locationPermissionChange(isChecked: Boolean) {
+        _locationPermission.postValue(isChecked)
+    }
+
+    fun alarmPermissionChange(isChecked: Boolean) {
+        if (!isChecked) {
+            _alarmPermission.postValue(false)
+            _scheduleAlarm.postValue(false)
+            _recordAlarm.postValue(false)
+        } else {
+            _alarmPermission.postValue(true)
+        }
+    }
+
+    fun schedulePermissionChange(isChecked: Boolean) {
+        _scheduleAlarm.postValue(isChecked)
+    }
+
+    fun recordPermissionChange(isChecked: Boolean) {
+        _recordAlarm.postValue(isChecked)
+    }
+
+    fun scheduleTimeChange(index: Int) {
+        _scheduleAlarmTime.postValue(getTimeFromSpinner(0, index))
+    }
+
+    fun recordTimeChange(index: Int) {
+        _recordAlarmTime.postValue(getTimeFromSpinner(1, index))
+    }
+
+    private fun getTimeFromSpinner(flag: Int, index: Int): Int {
+        return if (flag == 0) index + 6
+        else index + 6 + 12
+    }
 }
