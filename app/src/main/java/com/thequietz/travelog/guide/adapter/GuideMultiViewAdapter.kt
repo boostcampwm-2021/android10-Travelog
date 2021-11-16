@@ -20,7 +20,7 @@ import com.thequietz.travelog.guide.model.GuideViewType
 import com.thequietz.travelog.guide.view.GuideFragmentDirections
 
 class GuideMultiViewAdapter(val frag: Fragment) : ListAdapter<Guide, RecyclerView.ViewHolder>(
-    diffUtil
+    GuideDiffUtilCallback()
 ) {
     class GuideTitleViewHolder(val binding: ItemRecyclerTitleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(header: Guide.Header) {
@@ -119,7 +119,7 @@ class GuideMultiViewAdapter(val frag: Fragment) : ListAdapter<Guide, RecyclerVie
 }
 
 class RecommendMultiViewImageAdapter(private val onItemClickListener: OnItemClickListener) : ListAdapter<RecommendPlace, RecommendMultiViewImageAdapter.RecommendMultiViewImageViewHolder>(
-    diffUtil
+    RecommendPlaceDiffUtilCallback()
 ) {
     interface OnItemClickListener {
         fun onItemClick(item: RecommendPlace)
@@ -150,29 +150,11 @@ class RecommendMultiViewImageAdapter(private val onItemClickListener: OnItemClic
             onItemClickListener.onItemClick(getItem(position))
         }
     }
-
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<RecommendPlace>() {
-            override fun areItemsTheSame(
-                oldItem: RecommendPlace,
-                newItem: RecommendPlace
-            ): Boolean {
-                return oldItem === newItem
-            }
-
-            override fun areContentsTheSame(
-                oldItem: RecommendPlace,
-                newItem: RecommendPlace
-            ): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }
 }
 class AllPlaceMultiViewImageAdapter(
     private val onItemClickListener: OnItemClickListener
 ) : ListAdapter<Place, AllPlaceMultiViewImageAdapter.AllPlaceMultiImageViewHolder>(
-    diffUtil
+    PlaceDiffUtilCallback()
 ) {
     interface OnItemClickListener {
         fun onItemClick(item: Place)
@@ -202,16 +184,22 @@ class AllPlaceMultiViewImageAdapter(
             onItemClickListener.onItemClick(getItem(position))
         }
     }
+}
+class GuideDiffUtilCallback : DiffUtil.ItemCallback<Guide>() {
+    override fun areItemsTheSame(oldItem: Guide, newItem: Guide): Boolean {
+        return oldItem.hashCode() == newItem.hashCode()
+    }
 
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Place>() {
-            override fun areItemsTheSame(oldItem: Place, newItem: Place): Boolean {
-                return oldItem === newItem
-            }
+    override fun areContentsTheSame(oldItem: Guide, newItem: Guide): Boolean {
+        return oldItem == newItem
+    }
+}
+class RecommendPlaceDiffUtilCallback : DiffUtil.ItemCallback<RecommendPlace>() {
+    override fun areItemsTheSame(oldItem: RecommendPlace, newItem: RecommendPlace): Boolean {
+        return oldItem.name == newItem.name
+    }
 
-            override fun areContentsTheSame(oldItem: Place, newItem: Place): Boolean {
-                return oldItem == newItem
-            }
-        }
+    override fun areContentsTheSame(oldItem: RecommendPlace, newItem: RecommendPlace): Boolean {
+        return oldItem == newItem
     }
 }

@@ -44,54 +44,5 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
             />
-
-    <!--
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tv_recommend_place"
-            android:textColor="@color/black"
-            android:id="@+id/tv_recommend_place"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_search"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="10dp"
-            />
-        <androidx.recyclerview.widget.RecyclerView
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_recommend_place"
-            android:layout_marginTop="15dp"
-            tools:listitem="@layout/item_recycler_recommend_place"
-            tools:itemCount="3"
-            android:id="@+id/rv_recommend_place"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_recommend_place"
-            android:text="@string/tv_place_all"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="15dp"
-            android:id="@+id/tv_place_all"
-            />
-        <androidx.recyclerview.widget.RecyclerView
-            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-            app:spanCount="2"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_place_all"
-            android:layout_marginTop="15dp"
-            android:id="@+id/rv_place_all"
-            tools:listitem="@layout/item_recycler_place_all"
-            tools:itemCount="10"
-            />
-            -->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

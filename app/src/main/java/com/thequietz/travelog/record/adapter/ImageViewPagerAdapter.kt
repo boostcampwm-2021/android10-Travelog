@@ -9,7 +9,7 @@ import com.thequietz.travelog.databinding.ItemViewpagerImageBinding
 import com.thequietz.travelog.record.model.RecordImage
 
 class ImageViewPagerAdapter : ListAdapter<RecordImage, ImageViewPagerAdapter.ViewPagerImageViewHolder>(
-    diffUtil
+    RecordImageDiffUtilCallback()
 ) {
     class ViewPagerImageViewHolder(val binding: ItemViewpagerImageBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: RecordImage) {
@@ -32,16 +32,13 @@ class ImageViewPagerAdapter : ListAdapter<RecordImage, ImageViewPagerAdapter.Vie
     override fun onBindViewHolder(holder: ViewPagerImageViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
+}
+class RecordImageDiffUtilCallback : DiffUtil.ItemCallback<RecordImage>() {
+    override fun areItemsTheSame(oldItem: RecordImage, newItem: RecordImage): Boolean {
+        return oldItem.id == newItem.id
+    }
 
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<RecordImage>() {
-            override fun areItemsTheSame(oldItem: RecordImage, newItem: RecordImage): Boolean {
-                return oldItem === newItem
-            }
-
-            override fun areContentsTheSame(oldItem: RecordImage, newItem: RecordImage): Boolean {
-                return oldItem == newItem
-            }
-        }
+    override fun areContentsTheSame(oldItem: RecordImage, newItem: RecordImage): Boolean {
+        return oldItem == newItem
     }
 }

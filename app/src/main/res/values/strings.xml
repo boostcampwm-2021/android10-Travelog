@@ -57,5 +57,10 @@
     <string name="tv_place_detail_review_sample">3층의 뷰~. 해변을 보면서 맛과 향이 좋은 콜롬비아 드립커피를 마시면 잠시 여유로움 속으로 행복이 스며듭니다</string>
     <string name="tv_place_detail_phone_title">전화번호</string>
     <string name="tv_place_detail_phone_number">033-653-0931</string>
+    <string name="tv_place_review">운영자</string>
+    <string name="tv_place_review_rating">5점</string>
+    <string name="tv_place_review_relative_time">4일 전</string>
+    <string name="tv_item_place_review_time">2021년 11월 15일</string>
+    <string name="tv_item_recycler_place_recommend">관광지</string>
 
 </resources>

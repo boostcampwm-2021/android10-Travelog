@@ -100,7 +100,8 @@ class SchedulePlaceFragment : Fragment() {
         }
 
         binding.btnSearchPlace.setOnClickListener {
-            val action = SchedulePlaceFragmentDirections.actionSchedulePlaceFragmentToPlaceSearchFragment()
+            val action =
+                SchedulePlaceFragmentDirections.actionSchedulePlaceFragmentToPlaceRecommendFragment()
             it.findNavController().navigate(action)
         }
 
