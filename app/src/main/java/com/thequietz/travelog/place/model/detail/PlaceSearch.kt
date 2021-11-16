@@ -1,10 +1,12 @@
-package com.thequietz.travelog.place.model
+package com.thequietz.travelog.place.model.detail
 
 import com.google.gson.annotations.SerializedName
 
-data class PlaceDetailPhoto(
+data class PlaceDetailImage(
     @SerializedName("photo_reference")
-    val photoId: String,
+    val imageId: String,
+
+    val imageUrl: String = "",
 )
 
 data class PlaceDetailReview(
@@ -63,16 +65,18 @@ data class PlaceDetailModel(
     val geometry: PlaceDetailGeometry,
 
     @SerializedName("photos")
-    val photos: List<PlaceDetailPhoto>,
+    val images: List<PlaceDetailImage>,
 
     @SerializedName("reviews")
-    val reviews: List<PlaceDetailReview>,
+    val reviews: List<PlaceDetailReview>?,
 
     @SerializedName("types")
     val types: List<String>,
 
     @SerializedName("website")
     val website: String,
+
+    val overview: String? = ""
 )
 
 data class PlaceDetailModelResponse(

@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="model"
-            type="com.thequietz.travelog.place.model.PlaceDetailPhoto" />
+            name="imageId"
+            type="String" />
     </data>
 
     <ImageView
@@ -15,6 +15,6 @@
         android:layout_height="80dp"
         android:layout_marginEnd="10dp"
 
-        android:contentDescription="@{model.photoId}"
+        android:contentDescription="@{imageId}"
         tools:src="@tools:sample/avatars" />
 </layout>

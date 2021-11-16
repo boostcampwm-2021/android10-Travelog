@@ -7,20 +7,27 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.thequietz.travelog.BuildConfig
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.ItemRecyclerPlaceDetailBinding
-import com.thequietz.travelog.place.model.PlaceDetailPhoto
+import com.thequietz.travelog.place.model.detail.PlaceDetailImage
 
-class PlaceDetailAdapter : ListAdapter<PlaceDetailPhoto, PlaceDetailAdapter.ViewHolder>(diffUtil) {
+class PlaceDetailAdapter(private val isRecommended: Boolean) :
+    ListAdapter<PlaceDetailImage, PlaceDetailAdapter.ViewHolder>(
+        placeDetailDiffUtil
+    ) {
 
-    inner class ViewHolder(private val binding: ItemRecyclerPlaceDetailBinding) :
+    class ViewHolder(private val binding: ItemRecyclerPlaceDetailBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: PlaceDetailPhoto) {
-            val apiKey = "" // BuildConfig.GOOGLE_MAP_KEY
-            val imageUrl =
-                "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${model.photoId}&key=$apiKey"
-            binding.model = model
+        fun bind(model: PlaceDetailImage, isRecommended: Boolean) {
+            val imageUrl = if (isRecommended) {
+                model.imageUrl
+            } else {
+                val apiKey = BuildConfig.GOOGLE_MAP_KEY
+                "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${model.imageId}&key=$apiKey"
+            }
+            binding.imageId = model.imageId
             Glide.with(binding.root)
                 .load(imageUrl)
                 .centerCrop()
@@ -30,20 +37,6 @@ class PlaceDetailAdapter : ListAdapter<PlaceDetailPhoto, PlaceDetailAdapter.View
                 )
                 .into(binding.ivItemPlaceDetailPhoto)
             binding.executePendingBindings()
-        }
-    }
-
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<PlaceDetailPhoto>() {
-            override fun areItemsTheSame(
-                oldItem: PlaceDetailPhoto,
-                newItem: PlaceDetailPhoto
-            ) = oldItem.photoId == newItem.photoId
-
-            override fun areContentsTheSame(
-                oldItem: PlaceDetailPhoto,
-                newItem: PlaceDetailPhoto
-            ) = oldItem == newItem
         }
     }
 
@@ -59,6 +52,18 @@ class PlaceDetailAdapter : ListAdapter<PlaceDetailPhoto, PlaceDetailAdapter.View
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), isRecommended)
     }
+}
+
+private val placeDetailDiffUtil = object : DiffUtil.ItemCallback<PlaceDetailImage>() {
+    override fun areItemsTheSame(
+        oldItem: PlaceDetailImage,
+        newItem: PlaceDetailImage
+    ) = oldItem.imageId == newItem.imageId
+
+    override fun areContentsTheSame(
+        oldItem: PlaceDetailImage,
+        newItem: PlaceDetailImage
+    ) = oldItem == newItem
 }

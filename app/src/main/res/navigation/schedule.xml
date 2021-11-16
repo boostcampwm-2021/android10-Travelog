@@ -22,9 +22,6 @@
             android:id="@+id/action_schedulePlaceFragment_to_scheduleSelectFragment"
             app:destination="@id/scheduleSelectFragment" />
         <action
-            android:id="@+id/action_schedulePlaceFragment_to_placeSearchFragment"
-            app:destination="@id/placeSearchFragment" />
-        <action
             android:id="@+id/action_schedulePlaceFragment_to_placeRecommendFragment"
             app:destination="@id/placeRecommendFragment" />
     </fragment>
@@ -65,11 +62,17 @@
         <argument
             android:name="param"
             app:argType="string" />
+        <argument
+            android:name="isRecommended"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/placeRecommendFragment"
         android:name="com.thequietz.travelog.place.view.PlaceRecommendFragment"
         android:label="PlaceRecommendFragment" >
+        <action
+            android:id="@+id/action_placeRecommendFragment_to_placeDetailFragment"
+            app:destination="@id/placeDetailFragment" />
         <action
             android:id="@+id/action_placeRecommendFragment_to_placeSearchFragment"
             app:destination="@id/placeSearchFragment" />

@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         tools:context=".place.view.PlaceRecommendFragment">
 
-        <EditText
+        <TextView
             android:id="@+id/et_place_recommend_search"
             android:layout_width="0dp"
             android:layout_height="40dp"
@@ -17,7 +17,6 @@
             android:background="@color/et_search"
             android:drawableEnd="@drawable/ic_search"
             android:importantForAutofill="no"
-            android:inputType="text"
             android:singleLine="true"
             app:layout_constraintBottom_toTopOf="@id/rv_place_recommend"
             app:layout_constraintEnd_toEndOf="parent"

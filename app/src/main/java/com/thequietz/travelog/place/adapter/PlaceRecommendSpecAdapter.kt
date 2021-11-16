@@ -3,21 +3,30 @@ package com.thequietz.travelog.place.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.ItemRecyclerPlaceRecommendSpecBinding
 import com.thequietz.travelog.place.model.PlaceRecommendModel
+import com.thequietz.travelog.place.view.PlaceRecommendFragmentDirections
 
-class PlaceRecommendSpecAdapter :
+class PlaceRecommendSpecAdapter(private val parentFragment: Fragment) :
     ListAdapter<PlaceRecommendModel, PlaceRecommendSpecAdapter.ViewHolder>(
         PlaceRecommendSpecDiffUtil()
     ) {
-    class ViewHolder(private val binding: ItemRecyclerPlaceRecommendSpecBinding) :
+    private val gson = Gson()
+
+    class ViewHolder(
+        private val binding: ItemRecyclerPlaceRecommendSpecBinding,
+        private val gson: Gson
+    ) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(model: PlaceRecommendModel) {
+        fun bind(model: PlaceRecommendModel, fragment: Fragment) {
             Glide.with(binding.ivPlaceRecommendSpec)
                 .load(model.imageUrl)
                 .centerCrop()
@@ -26,6 +35,15 @@ class PlaceRecommendSpecAdapter :
                     binding.ivPlaceRecommendSpec.measuredHeight
                 )
                 .into(binding.ivPlaceRecommendSpec)
+
+            binding.ivPlaceRecommendSpec.setOnClickListener {
+                val param = gson.toJson(model)
+                val action =
+                    PlaceRecommendFragmentDirections.actionPlaceRecommendFragmentToPlaceDetailFragment(
+                        param, true,
+                    )
+                fragment.findNavController().navigate(action)
+            }
             binding.executePendingBindings()
         }
     }
@@ -37,12 +55,12 @@ class PlaceRecommendSpecAdapter :
             parent,
             false
         )
-        val viewHolder = ViewHolder(binding)
+        val viewHolder = ViewHolder(binding, gson)
         return viewHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), parentFragment)
     }
 }
 

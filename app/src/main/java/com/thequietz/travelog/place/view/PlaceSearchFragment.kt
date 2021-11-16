@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -30,6 +31,7 @@ class PlaceSearchFragment : Fragment() {
     private lateinit var adapter: PlaceSearchAdapter
     private lateinit var _context: Context
     private lateinit var gson: Gson
+    private lateinit var inputManager: InputMethodManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,15 +50,17 @@ class PlaceSearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        _context = requireContext()
         gson = Gson()
+        _context = requireContext()
+        inputManager = _context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         adapter = PlaceSearchAdapter(object : PlaceSearchAdapter.OnItemClickListener {
             override fun onClickItem(model: PlaceSearchModel, position: Int): Boolean {
                 val param = gson.toJson(model)
                 val action =
                     PlaceSearchFragmentDirections.actionPlaceSearchFragmentToPlaceDetailFragment(
-                        param
+                        param,
+                        false,
                     )
                 view.findNavController().navigate(action)
                 return true
@@ -83,6 +87,7 @@ class PlaceSearchFragment : Fragment() {
             (binding.rvPlaceSearch.adapter as PlaceSearchAdapter).submitList(it)
         })
 
+        binding.etPlaceSearch.requestFocus()
         viewModel.initPlaceList()
     }
 }
