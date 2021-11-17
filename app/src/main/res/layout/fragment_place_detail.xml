@@ -43,14 +43,14 @@
                     app:layout_constraintVertical_chainStyle="packed"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                    <TextView
+                    <!--<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/tv_google_map_view"
                         android:textColor="@color/black"
                         android:textSize="30sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold" />-->
 
                 </LinearLayout>
 
@@ -75,6 +75,7 @@
                 android:id="@+id/ll_place_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
                 android:orientation="vertical"
                 android:paddingHorizontal="20dp"
                 android:paddingTop="10dp"
@@ -137,6 +138,7 @@
                     tools:text="월요일: 오전 7:00 ~ 오후 7:00" />
 
                 <TextView
+                    android:id="@+id/tv_place_detail_phone_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="8dp"
@@ -152,6 +154,15 @@
                     android:text="@{viewModel.detail.phoneNumber}"
                     android:textSize="16sp"
                     tools:text="@string/tv_place_detail_phone_number" />
+
+                <TextView
+                    android:id="@+id/tv_place_detail_overview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="100dp"
+                    android:text="@{viewModel.detail.overview}"
+                    android:textSize="16sp" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
