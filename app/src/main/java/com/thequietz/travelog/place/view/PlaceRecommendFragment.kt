@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceRecommendBinding
@@ -43,9 +44,15 @@ class PlaceRecommendFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         _context = requireContext()
 
+        binding.etPlaceRecommendSearch.setOnClickListener {
+            val action =
+                PlaceRecommendFragmentDirections.actionPlaceRecommendFragmentToPlaceSearchFragment()
+            view.findNavController().navigate(action)
+        }
+
         viewModel.dataList.observe(viewLifecycleOwner, {
             binding.lifecycleOwner = viewLifecycleOwner
-            binding.rvPlaceRecommend.adapter = PlaceRecommendAdapter()
+            binding.rvPlaceRecommend.adapter = PlaceRecommendAdapter(this)
             binding.rvPlaceRecommend.layoutManager = LinearLayoutManager(_context)
 
             (binding.rvPlaceRecommend.adapter as PlaceRecommendAdapter).submitList(it)

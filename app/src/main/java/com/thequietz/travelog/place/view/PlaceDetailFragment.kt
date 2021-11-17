@@ -13,6 +13,7 @@ import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceDetailBinding
 import com.thequietz.travelog.place.adapter.PlaceDetailAdapter
+import com.thequietz.travelog.place.model.PlaceRecommendModel
 import com.thequietz.travelog.place.model.PlaceSearchModel
 import com.thequietz.travelog.place.viewmodel.PlaceDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,10 +24,14 @@ class PlaceDetailFragment : Fragment() {
     private var _binding: FragmentPlaceDetailBinding? = null
     private val binding get() = _binding!!
     private val navArgs: PlaceDetailFragmentArgs by navArgs()
-    private val viewModel: PlaceDetailViewModel by viewModels()
+    private val placeDetailViewModel: PlaceDetailViewModel by viewModels()
 
-    private lateinit var imageAdapter: PlaceDetailAdapter
-    private lateinit var model: PlaceSearchModel
+    private var isRecommended: Boolean = false
+    private lateinit var adapter: PlaceDetailAdapter
+
+    private var searchModel: PlaceSearchModel? = null
+    private var recommendModel: PlaceRecommendModel? = null
+
     private lateinit var gson: Gson
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,20 +52,40 @@ class PlaceDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         gson = Gson()
-        model = gson.fromJson(navArgs.param, PlaceSearchModel::class.java)
-        imageAdapter = PlaceDetailAdapter()
+        isRecommended = navArgs.isRecommended
 
-        binding.viewModel = viewModel
-        binding.rvPlaceDetail.adapter = imageAdapter
+        when (isRecommended) {
+            true -> recommendModel = gson.fromJson(navArgs.param, PlaceRecommendModel::class.java)
+            false -> searchModel = gson.fromJson(navArgs.param, PlaceSearchModel::class.java)
+        }
+
+        adapter = PlaceDetailAdapter(isRecommended)
+
+        binding.viewModel = placeDetailViewModel
+        binding.rvPlaceDetail.adapter = adapter
         binding.lifecycleOwner = viewLifecycleOwner
 
-        viewModel.detail.observe(viewLifecycleOwner, {
-            (binding.rvPlaceDetail.adapter as PlaceDetailAdapter).submitList(it.photos)
-            if (viewModel.isLoaded.value == false) {
-                val len = it.reviews.size
+        placeDetailViewModel.detail.observe(viewLifecycleOwner, {
+            (binding.rvPlaceDetail.adapter as PlaceDetailAdapter).submitList(it.images)
+
+            if (it.phoneNumber.isEmpty()) {
+                binding.tvPlaceDetailPhoneTitle.visibility = View.GONE
+                binding.tvPlaceDetailPhoneNumber.visibility = View.GONE
+            }
+
+            if (it.operation.operation.isEmpty()) {
+                binding.tvPlaceDetailOperation.visibility = View.GONE
+            }
+
+            if (it.overview == null || it.overview.isEmpty()) {
+                binding.tvPlaceDetailOverview.visibility = View.GONE
+            }
+
+            if (placeDetailViewModel.isLoaded.value == false) {
+                val len = it.reviews?.size ?: 0
                 val parentContext = requireContext()
-                it.reviews.forEachIndexed { idx, review ->
-                    Log.d("IS_LOADED", viewModel.isLoaded.value.toString())
+                it.reviews?.forEachIndexed { idx, review ->
+                    Log.d("IS_LOADED", placeDetailViewModel.isLoaded.value.toString())
                     val reviewLayout = PlaceReviewLayout(
                         parentContext,
                         review
@@ -76,9 +101,17 @@ class PlaceDetailFragment : Fragment() {
                         PlaceReviewDividerLayout(parentContext)
                     )
                 }
-                viewModel.isLoaded.value = true
+                placeDetailViewModel.isLoaded.value = true
             }
         })
-        viewModel.loadPlaceDetail(model.placeId)
+
+        if (!isRecommended) {
+            placeDetailViewModel.loadDetailBySearch(searchModel?.placeId ?: "")
+        } else {
+            placeDetailViewModel.loadDetailByRecommend(
+                recommendModel?.contentId ?: 0,
+                recommendModel?.contentTypeId ?: 0
+            )
+        }
     }
 }

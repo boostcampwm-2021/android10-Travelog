@@ -4,6 +4,7 @@ import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.schedule.model.PlaceModel
 import com.thequietz.travelog.schedule.model.ScheduleModel
 
+const val requestImage = 99
 val SAMPLE_SCHEDULES = listOf(
     ScheduleModel(
         0,
@@ -152,4 +153,23 @@ val SAMPLE_RECORD_IMAGES = listOf(
         comment = "comment33",
         group = 5
     )
+)
+val areaCodeList = hashMapOf<Int, String>(
+    1 to "서울특별시",
+    2 to "인천광역시",
+    3 to "대전광역시",
+    4 to "대구광역시",
+    5 to "광주광역시",
+    6 to "부산광역시",
+    7 to "울산광역시",
+    8 to "세종특별자치시",
+    31 to "경기도",
+    32 to "강원도",
+    33 to "충청북도",
+    34 to "충청남도",
+    35 to "경상북도",
+    36 to "경상남도",
+    37 to "전라북도",
+    38 to "전라남도",
+    39 to "제주도",
 )

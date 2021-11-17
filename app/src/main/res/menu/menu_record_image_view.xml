@@ -4,4 +4,8 @@
         android:id="@+id/imageDelete"
         android:title="이미지 삭제"
         />
+    <item
+        android:id="@+id/imageAdd"
+        android:title="이미지 추가"
+        />
 </menu>

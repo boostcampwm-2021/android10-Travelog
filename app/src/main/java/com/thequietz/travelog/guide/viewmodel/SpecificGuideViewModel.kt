@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RepositoryImpl
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.view.SpecificGuideFragmentArgs
+import com.thequietz.travelog.util.areaCodeList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,16 +28,13 @@ class SpecificGuideViewModel @Inject internal constructor(
     private val _noData = MutableLiveData<Boolean>()
     val noData: LiveData<Boolean> = _noData
 
-    fun initCurrentArgs(args: SpecificGuideFragmentArgs) {
-        _currentSearch.value = args.item
-        initCurrentItem()
-    }
-    fun initCurrentItem() {
+    fun initCurrentItem(args: SpecificGuideFragmentArgs) {
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO) {
-                repository.loadDoSiByKeyword(currentSearch.value!!)
+                repository.loadDoSiByCode(args.item)
             }
             _currentPlaceList.value = res
+            _currentSearch.value = areaCodeList.get(res.get(0).areaCode.toInt())
             _noData.value = currentPlaceList.value?.size == 0
         }
     }
