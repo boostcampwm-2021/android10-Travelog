@@ -20,7 +20,6 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:setImage="@{item.url}"
-            app:setBitmap="@{item.byteArray}" />
+            app:setImage="@{item.url}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

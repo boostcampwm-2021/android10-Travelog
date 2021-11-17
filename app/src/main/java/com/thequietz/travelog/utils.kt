@@ -1,6 +1,5 @@
 package com.thequietz.travelog
 
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.widget.ImageView
@@ -12,31 +11,15 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-@BindingAdapter("app:setImage", "app:setBitmap")
-fun loadImage(imageView: ImageView, url: String?, byteArray: ByteArray?) {
-    if (url == "" || url == null) {
-        byteArray?.let {
-            val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-            println(bitmap)
-            imageView.setImageBitmap(bitmap)
-        }
-    } else {
-        Glide.with(imageView.context)
-            .load(url)
-            .transform(CenterCrop(), RoundedCorners(20))
-            .into(imageView)
+@BindingAdapter("app:setImage")
+fun loadImage(imageView: ImageView, url: String?) {
+    url ?: return
+    Glide.with(imageView.context)
+        .load(url)
+        .transform(CenterCrop(), RoundedCorners(20))
+        .into(imageView)
 
-        imageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
-    }
-}
-@BindingAdapter("app:setBitmapImage")
-fun loadBitmap(imageView: ImageView, byteArray: ByteArray?) {
-    byteArray ?: return
-    byteArray.let {
-        val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-        println(bitmap)
-        imageView.setImageBitmap(bitmap)
-    }
+    imageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
 }
 fun getTodayDate(): String {
     val time = System.currentTimeMillis()

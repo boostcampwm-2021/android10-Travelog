@@ -21,8 +21,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/iv_item_image"
             android:layout_marginStart="15dp"
-            app:setImage="@{imageItem.url}"
-            app:setBitmap="@{imageItem.byteArray}"/>
+            app:setImage="@{imageItem.url}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -2,9 +2,7 @@ package com.thequietz.travelog.record.view
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -23,7 +21,6 @@ import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.record.viewmodel.RecordAddImageViewModel
 import com.thequietz.travelog.util.requestImage
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.ByteArrayOutputStream
 
 @AndroidEntryPoint
 class RecordAddImageFragment : Fragment() {
@@ -105,10 +102,6 @@ class RecordAddImageFragment : Fragment() {
         if (resultCode == RESULT_OK) {
             if (requestCode == requestImage) {
                 try {
-                    val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, data?.data)
-                    val stream = ByteArrayOutputStream()
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                    val data = stream.toByteArray()
                     recordAddImageViewModel.addImage(
                         RecordImage().copy(
                             title = "제주도 여행",
@@ -116,8 +109,7 @@ class RecordAddImageFragment : Fragment() {
                             endDate = "2021.10.29",
                             schedule = binding.tvSchedule.text.toString(),
                             place = binding.tvDestination.text.toString(),
-                            url = "",
-                            byteArray = data,
+                            url = data?.data.toString(),
                             comment = "test입니다~",
                             group = 6
                         )

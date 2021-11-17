@@ -21,7 +21,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:setImage="@{item.url}"
-            app:setBitmap="@{item.byteArray}"
             android:scaleType="fitXY"
             />
 

@@ -19,8 +19,7 @@
             android:layout_height="290dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:setImage="@{item.url}"
-            app:setBitmap="@{item.byteArray}" />
+            app:setImage="@{item.url}" />
 
         <TextView
             android:id="@+id/tv_item_viewpager_other_info"

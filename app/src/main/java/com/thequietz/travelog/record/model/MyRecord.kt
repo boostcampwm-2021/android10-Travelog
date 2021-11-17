@@ -26,6 +26,5 @@ data class RecordImage(
     val place: String = "",
     val url: String = "",
     var group: Int = 0,
-    var comment: String = "",
-    var byteArray: ByteArray = byteArrayOf()
+    var comment: String = ""
 )
