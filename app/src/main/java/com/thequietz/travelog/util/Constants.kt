@@ -56,7 +56,7 @@ val SAMPLE_SCHEDULES = listOf(
 )
 val SAMPLE_RECORD_IMAGES = listOf(
     RecordImage().copy(
-        travleId = 1,
+        travelId = 1,
         title = "제주도 여행",
         startDate = "2021.10.27",
         endDate = "2021.10.29",
@@ -67,7 +67,7 @@ val SAMPLE_RECORD_IMAGES = listOf(
         group = 0
     ),
     RecordImage().copy(
-        travleId = 1,
+        travelId = 1,
         title = "제주도 여행",
         startDate = "2021.10.27",
         endDate = "2021.10.29",
@@ -78,7 +78,7 @@ val SAMPLE_RECORD_IMAGES = listOf(
         group = 0
     ),
     RecordImage().copy(
-        travleId = 1,
+        travelId = 1,
         title = "제주도 여행",
         startDate = "2021.10.27",
         endDate = "2021.10.29",
@@ -89,7 +89,7 @@ val SAMPLE_RECORD_IMAGES = listOf(
         group = 1
     ),
     RecordImage().copy(
-        travleId = 1,
+        travelId = 1,
         title = "제주도 여행",
         startDate = "2021.10.27",
         endDate = "2021.10.29",
@@ -100,7 +100,7 @@ val SAMPLE_RECORD_IMAGES = listOf(
         group = 1
     ),
     RecordImage().copy(
-        travleId = 1,
+        travelId = 1,
         title = "제주도 여행",
         startDate = "2021.10.27",
         endDate = "2021.10.29",
@@ -111,7 +111,7 @@ val SAMPLE_RECORD_IMAGES = listOf(
         group = 2
     ),
     RecordImage().copy(
-        travleId = 1,
+        travelId = 1,
         title = "제주도 여행",
         startDate = "2021.10.27",
         endDate = "2021.10.29",
@@ -122,7 +122,7 @@ val SAMPLE_RECORD_IMAGES = listOf(
         group = 2
     ),
     RecordImage().copy(
-        travleId = 1,
+        travelId = 1,
         title = "제주도 여행",
         startDate = "2021.10.27",
         endDate = "2021.10.29",
@@ -143,7 +143,7 @@ val SAMPLE_RECORD_IMAGES = listOf(
         group = 4
     ),
     RecordImage().copy(
-        travleId = 1,
+        travelId = 1,
         title = "제주도 여행",
         startDate = "2021.10.27",
         endDate = "2021.10.29",

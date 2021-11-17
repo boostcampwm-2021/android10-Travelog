@@ -8,17 +8,20 @@ sealed class MyRecord {
     data class RecordPlace(
         val place: String = ""
     ) : MyRecord()
+
     data class RecordImageList(
         var list: MutableList<RecordImage> = mutableListOf()
     ) : MyRecord()
 }
+
 enum class ViewType {
     DATE, PLACE, IMAGE
 }
+
 @Entity(tableName = "RecordImage")
 data class RecordImage(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val travleId: Int = 1,
+    val travelId: Int = 1,
     val title: String = "",
     val startDate: String = "",
     val endDate: String = "",
