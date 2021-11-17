@@ -35,6 +35,7 @@ class RecordViewOneViewModel @Inject constructor(
         // createRecord()
         loadRecord()
         _currentPosition.value = 0
+        imageList.value?.forEach { println(it.toString()) }
     }
 
     fun loadRecord() {

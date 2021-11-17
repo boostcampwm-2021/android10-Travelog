@@ -21,6 +21,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/iv_item_place_all"
             app:setImage="@{item.url}"
+            app:setBitmap="@{item.byteArray}"
             android:layout_marginStart="18dp" />
 
         <TextView

@@ -1,11 +1,11 @@
 package com.thequietz.travelog.record.viewmodel
 
-import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
+import com.thequietz.travelog.record.model.RecordImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,15 +17,15 @@ class RecordAddImageViewModel @Inject constructor(
     val repository: RecordRepository
 ) : ViewModel() {
 
-    private val _imageList = MutableLiveData<List<NewImage>>()
-    val imageList: LiveData<List<NewImage>> = _imageList
+    private val _imageList = MutableLiveData<List<RecordImage>>()
+    val imageList: LiveData<List<RecordImage>> = _imageList
 
     init {
         _imageList.value = listOf()
     }
-    fun addImage(img: NewImage) {
+    fun addImage(img: RecordImage) {
         viewModelScope.launch {
-            var res = mutableListOf<NewImage>()
+            var res = mutableListOf<RecordImage>()
             imageList.value?.let {
                 withContext(Dispatchers.IO) {
                     res = it.toMutableList()
@@ -35,9 +35,13 @@ class RecordAddImageViewModel @Inject constructor(
             }
         }
     }
+    fun insertImage() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                imageList.value?.forEach {
+                    repository.createRecordImage(it)
+                }
+            }
+        }
+    }
 }
-data class NewImage(
-    val bitmap: Bitmap? = null,
-    val place: String = "",
-    val schedule: String = "",
-)
