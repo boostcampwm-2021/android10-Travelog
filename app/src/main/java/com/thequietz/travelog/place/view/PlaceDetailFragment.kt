@@ -2,16 +2,13 @@ package com.thequietz.travelog.place.view
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceDetailBinding
+import com.thequietz.travelog.map.GoogleMapFragment
 import com.thequietz.travelog.place.adapter.PlaceDetailAdapter
 import com.thequietz.travelog.place.model.PlaceRecommendModel
 import com.thequietz.travelog.place.model.PlaceSearchModel
@@ -19,10 +16,10 @@ import com.thequietz.travelog.place.viewmodel.PlaceDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PlaceDetailFragment : Fragment() {
+class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceDetailViewModel>() {
 
-    private var _binding: FragmentPlaceDetailBinding? = null
-    private val binding get() = _binding!!
+    override val layoutId = R.layout.fragment_place_detail
+    override val viewModel by viewModels<PlaceDetailViewModel>()
     private val navArgs: PlaceDetailFragmentArgs by navArgs()
     private val placeDetailViewModel: PlaceDetailViewModel by viewModels()
 
@@ -34,18 +31,8 @@ class PlaceDetailFragment : Fragment() {
 
     private lateinit var gson: Gson
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_place_detail, container, false)
-        return binding.root
+    override fun initViewModel() {
+        binding.viewModel = viewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
