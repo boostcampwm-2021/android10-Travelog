@@ -20,6 +20,8 @@ import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentMenuBinding
 import com.thequietz.travelog.menu.alarm.AlarmReceiver
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 @AndroidEntryPoint
 class MenuFragment : Fragment() {
@@ -93,6 +95,7 @@ class MenuFragment : Fragment() {
         val alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val intent = Intent(context, AlarmReceiver::class.java)
+        intent.putExtra("name", "무슨무슨여행~^^@/")
         val pendingIntent = PendingIntent.getBroadcast(
             context,
             AlarmReceiver.NOTIFICATION_ID,
@@ -100,13 +103,19 @@ class MenuFragment : Fragment() {
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
+        val calendar = Calendar.getInstance().apply {
+            val date = "2021-11-17 10:47:00"
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            time = dateFormat.parse(date)
+        }
+
         binding.btnAlarm.setOnCheckedChangeListener(
             CompoundButton.OnCheckedChangeListener { _, isChecked ->
                 val message = if (isChecked) {
                     val triggerTime = (SystemClock.elapsedRealtime() + 10 * 1000)
                     alarmManager.set(
-                        AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        triggerTime,
+                        AlarmManager.RTC,
+                        calendar.timeInMillis,
                         pendingIntent
                     )
                     "Alarm On"

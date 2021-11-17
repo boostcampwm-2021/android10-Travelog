@@ -26,10 +26,10 @@ class AlarmReceiver : BroadcastReceiver() {
         notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         createNotificationChannel()
-        deliverNotification(context)
+        deliverNotification(context, intent.extras?.getString("name"))
     }
 
-    private fun deliverNotification(context: Context) {
+    private fun deliverNotification(context: Context, content: String?) {
         val contentIntent = Intent(context, MainActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(
             context,
@@ -40,11 +40,12 @@ class AlarmReceiver : BroadcastReceiver() {
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_edit)
             .setContentTitle("Alert")
-            .setContentText("This is alarm")
+            .setContentText(content)
             .setContentIntent(contentPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
         notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
@@ -52,11 +53,11 @@ class AlarmReceiver : BroadcastReceiver() {
     fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
-                NotificationChannel(CHANNEL_ID, "알림", NotificationManager.IMPORTANCE_HIGH)
+                NotificationChannel(CHANNEL_ID, "일정 알림", NotificationManager.IMPORTANCE_HIGH)
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = R.color.green_travelog
             notificationChannel.enableVibration(true)
-            notificationChannel.description = "알람 테스트"
+            notificationChannel.description = "Travelog 일정 알림"
             notificationManager.createNotificationChannel(notificationChannel)
         }
     }
