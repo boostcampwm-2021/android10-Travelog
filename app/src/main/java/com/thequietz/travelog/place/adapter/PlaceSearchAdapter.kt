@@ -11,7 +11,7 @@ import com.thequietz.travelog.databinding.ItemRecyclerPlaceSearchBinding
 import com.thequietz.travelog.place.model.PlaceSearchModel
 
 class PlaceSearchAdapter(
-    private val listener: PlaceSearchAdapter.OnItemClickListener
+    private val listener: OnItemClickListener
 ) :
     ListAdapter<PlaceSearchModel, PlaceSearchAdapter.ViewHolder>(diffUtil) {
 

@@ -45,15 +45,22 @@ class SchedulePlaceViewModel @Inject constructor(
         val isExisted = placeSelectedList.value?.find { it.value == value.cityName }
         if (isExisted != null) return
 
-        val guideSelected = PlaceSelected(index, value.cityName)
+        val guideSelected = PlaceSelected(index, value.areaCode, value.cityName)
         _placeSelectedList.value?.add(guideSelected)
         _placeSelectedList.value = _placeSelectedList.value
         _selectedPlaces.value?.add(value)
         _selectedPlaces.value = _selectedPlaces.value
     }
 
-    fun removePlaceSelectedList(position: Int) {
-        val updated = _placeSelectedList.value?.filterIndexed { index, _ -> position != index }
+    fun removePlaceSelectedList(areaCode: Int) {
+        val updated = _placeSelectedList.value?.filter { it -> areaCode != it.code }
         _placeSelectedList.value = updated?.toMutableList()
+
+        _placeList.value?.forEach { it ->
+            if (it.areaCode == areaCode) {
+                it.isSelected = false
+            }
+        }
+        _placeList.value = _placeList.value
     }
 }
