@@ -75,4 +75,5 @@ class MenuViewModel @Inject internal constructor(
         return if (flag == 0) index + 6
         else index + 6 + 12
     }
+
 }
