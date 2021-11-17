@@ -11,7 +11,6 @@ import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,8 +21,6 @@ import com.thequietz.travelog.schedule.adapter.SchedulePlaceAdapter
 import com.thequietz.travelog.schedule.adapter.SchedulePlaceSelectedAdapter
 import com.thequietz.travelog.schedule.viewmodel.SchedulePlaceViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SchedulePlaceFragment : Fragment() {
@@ -47,15 +44,6 @@ class SchedulePlaceFragment : Fragment() {
         this.isEnabled = false
         this.isClickable = false
         this.alpha = 0.4F
-    }
-
-    private fun View.handleClick() {
-        val view = this
-        lifecycleScope.launch {
-            view.alpha = 0.8F
-            delay(400)
-            view.alpha = 0.4F
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,17 +102,20 @@ class SchedulePlaceFragment : Fragment() {
             }
 
             schedulePlaceAdapter = SchedulePlaceAdapter(
-                it,
                 object : SchedulePlaceAdapter.OnItemClickListener {
-                    override fun onItemClick(view: View, position: Int) {
-
-                        view.handleClick()
-                        viewModel.addPlaceSelectedList(position, it[position])
+                    override fun onItemClick(view: View, position: Int, toggle: Boolean) {
+                        when (toggle) {
+                            true -> viewModel.addPlaceSelectedList(position, it[position])
+                            false -> viewModel.removePlaceSelectedList(it[position].areaCode)
+                        }
                     }
                 }
             )
+
             binding.rvSelectSearch.layoutManager = GridLayoutManager(mContext, 2)
             binding.rvSelectSearch.adapter = schedulePlaceAdapter
+            binding.lifecycleOwner = viewLifecycleOwner
+            schedulePlaceAdapter.submitList(it)
         })
 
         viewModel.placeSelectedList.observe(viewLifecycleOwner, {
@@ -138,7 +129,7 @@ class SchedulePlaceFragment : Fragment() {
                 it,
                 object : SchedulePlaceSelectedAdapter.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int) {
-                        viewModel.removePlaceSelectedList(position)
+                        viewModel.removePlaceSelectedList(it[position].code)
                     }
                 }
             )

@@ -13,7 +13,7 @@ import javax.inject.Inject
 class PlaceRecommendRepository @Inject constructor(
     private val service: PlaceRecommendService,
 ) {
-    private val TAG = "RECOMMEND_REPOSITORY"
+    private val TAG = "PLACE_RECOMMEND"
 
     suspend fun loadPlaceData(typeId: Int): List<PlaceRecommendModel> {
         return withContext(Dispatchers.IO) {

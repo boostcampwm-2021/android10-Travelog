@@ -20,6 +20,8 @@ data class PlaceModel(
 
     @SerializedName("cityname")
     val cityName: String,
+
+    var isSelected: Boolean = false,
 ) : Parcelable {
     override fun toString(): String {
         return cityName
@@ -33,5 +35,6 @@ data class PlaceResponse(
 
 data class PlaceSelected(
     val index: Int,
+    val code: Int,
     val value: String,
 )

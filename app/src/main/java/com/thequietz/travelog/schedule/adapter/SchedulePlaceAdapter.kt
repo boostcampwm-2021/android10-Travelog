@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thequietz.travelog.R
@@ -11,17 +13,40 @@ import com.thequietz.travelog.databinding.ItemRecyclerSchedulePlaceBinding
 import com.thequietz.travelog.schedule.model.PlaceModel
 
 class SchedulePlaceAdapter(
-    private val placeList: List<PlaceModel>,
     private val listener: OnItemClickListener
 ) :
-    RecyclerView.Adapter<SchedulePlaceAdapter.ViewHolder>() {
+    ListAdapter<PlaceModel, SchedulePlaceAdapter.ViewHolder>(SchedulePlaceDiffUtil()) {
     class ViewHolder(val binding: ItemRecyclerSchedulePlaceBinding) :
-        RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root) {
 
-    private lateinit var binding: ItemRecyclerSchedulePlaceBinding
+        fun bind(model: PlaceModel, position: Int, listener: OnItemClickListener) {
+            binding.tvGuideItem.text = model.cityName
+            binding.ibGuideItem.setOnClickListener { v ->
+                when (model.isSelected) {
+                    true -> binding.ibGuideItem.alpha = 0.4F
+                    false -> binding.ibGuideItem.alpha = 0.9F
+                }
+                model.isSelected = !model.isSelected
+                listener.onItemClick(v, position, model.isSelected)
+            }
+            binding.ibGuideItem.let {
+                Glide.with(it)
+                    .load(model.thumbnail)
+                    .centerCrop()
+                    .override(it.measuredWidth, it.measuredHeight)
+                    .into(it)
+
+                when (model.isSelected) {
+                    true -> it.alpha = 0.9F
+                    false -> it.alpha = 0.4F
+                }
+            }
+            binding.executePendingBindings()
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        binding = DataBindingUtil.inflate(
+        val binding: ItemRecyclerSchedulePlaceBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.item_recycler_schedule_place,
             parent,
@@ -31,25 +56,20 @@ class SchedulePlaceAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        holder.binding.let {
-            it.tvGuideItem.text = placeList[position].cityName
-            it.ibGuideItem.setOnClickListener { v ->
-                listener.onItemClick(v, position)
-            }
-            Glide.with(it.ibGuideItem)
-                .load(placeList[position].thumbnail)
-                .centerCrop()
-                .override(it.ibGuideItem.measuredWidth, it.ibGuideItem.measuredHeight)
-                .into(it.ibGuideItem)
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return placeList.size
+        holder.bind(getItem(position), position, listener)
     }
 
     interface OnItemClickListener {
-        fun onItemClick(view: View, position: Int)
+        fun onItemClick(view: View, position: Int, toggle: Boolean)
+    }
+}
+
+private class SchedulePlaceDiffUtil : DiffUtil.ItemCallback<PlaceModel>() {
+    override fun areItemsTheSame(oldItem: PlaceModel, newItem: PlaceModel): Boolean {
+        return oldItem.cityName == newItem.cityName
+    }
+
+    override fun areContentsTheSame(oldItem: PlaceModel, newItem: PlaceModel): Boolean {
+        return oldItem == newItem
     }
 }

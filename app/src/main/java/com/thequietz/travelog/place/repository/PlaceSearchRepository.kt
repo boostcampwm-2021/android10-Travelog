@@ -13,7 +13,7 @@ import javax.inject.Inject
 class PlaceSearchRepository @Inject constructor(
     private val service: PlaceSearchService,
 ) {
-    private val TAG = "SEARCH_REPOSITORY"
+    private val TAG = "PLACE_SEARCH"
 
     suspend fun loadPlaceList(query: String): List<PlaceSearchModel> {
         return withContext(Dispatchers.IO) {

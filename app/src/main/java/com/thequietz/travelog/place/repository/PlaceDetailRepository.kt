@@ -17,7 +17,7 @@ class PlaceDetailRepository @Inject constructor(
     private val searchService: PlaceSearchService,
     private val recommendService: PlaceRecommendService,
 ) {
-    private val TAG = "DETAIL_REPOSITORY"
+    private val TAG = "PLACE_DETAIL"
 
     suspend fun loadPlaceDetail(placeId: String): PlaceDetailModel? {
         return withContext(Dispatchers.IO) {
