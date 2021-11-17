@@ -3,7 +3,6 @@ package com.thequietz.travelog.record.view
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -18,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordAddImageBinding
 import com.thequietz.travelog.record.adapter.RecordAddImageAdapter
-import com.thequietz.travelog.record.viewmodel.NewImage
+import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.record.viewmodel.RecordAddImageViewModel
 import com.thequietz.travelog.util.requestImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -62,7 +61,11 @@ class RecordAddImageFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_save -> {
+                recordAddImageViewModel.insertImage()
                 Toast.makeText(requireContext(), "저장 완료", Toast.LENGTH_SHORT).show()
+                val action = RecordAddImageFragmentDirections
+                    .actionRecordAddImageFragmentToRecordViewOneFragment()
+                findNavController().navigate(action)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -83,15 +86,6 @@ class RecordAddImageFragment : Fragment() {
                 .actionRecordAddImageFragmentToRecordViewOneFragment()
             findNavController().navigate(action)
         }
-        binding.tbRecordAddImage.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_save -> {
-                    Toast.makeText(requireContext(), "저장 완료", Toast.LENGTH_SHORT).show()
-                    true
-                }
-                else -> false
-            }
-        }
     }
 
     private fun initToolbar() {
@@ -109,10 +103,15 @@ class RecordAddImageFragment : Fragment() {
             if (requestCode == requestImage) {
                 try {
                     recordAddImageViewModel.addImage(
-                        NewImage().copy(
-                            bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, data?.data),
+                        RecordImage().copy(
+                            title = "제주도 여행",
+                            startDate = "2021.10.27",
+                            endDate = "2021.10.29",
+                            schedule = binding.tvSchedule.text.toString(),
                             place = binding.tvDestination.text.toString(),
-                            schedule = binding.tvSchedule.text.toString()
+                            url = data?.data.toString(),
+                            comment = "test입니다~",
+                            group = 6
                         )
                     )
                 } catch (e: Exception) {

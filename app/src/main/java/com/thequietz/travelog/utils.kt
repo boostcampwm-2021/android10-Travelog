@@ -1,6 +1,5 @@
 package com.thequietz.travelog
 
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.widget.ImageView
@@ -15,21 +14,12 @@ import java.util.Locale
 @BindingAdapter("app:setImage")
 fun loadImage(imageView: ImageView, url: String?) {
     url ?: return
-    if (url != "") {
-        Glide.with(imageView.context)
-            .load(url)
-            .transform(CenterCrop(), RoundedCorners(20))
-            .into(imageView)
+    Glide.with(imageView.context)
+        .load(url)
+        .transform(CenterCrop(), RoundedCorners(20))
+        .into(imageView)
 
-        imageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
-    }
-}
-@BindingAdapter("app:setBitmapImage")
-fun loadBitmap(imageView: ImageView, bitmap: Bitmap?) {
-    bitmap ?: return
-    bitmap.let {
-        imageView.setImageBitmap(bitmap)
-    }
+    imageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
 }
 fun getTodayDate(): String {
     val time = System.currentTimeMillis()

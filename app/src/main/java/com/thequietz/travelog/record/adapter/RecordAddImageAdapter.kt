@@ -2,17 +2,16 @@ package com.thequietz.travelog.record.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.databinding.ItemRecyclerRecordAddImageBinding
-import com.thequietz.travelog.record.viewmodel.NewImage
+import com.thequietz.travelog.record.model.RecordImage
 
-class RecordAddImageAdapter : ListAdapter<NewImage, RecordAddImageAdapter.RecordAddImageViewHolder>(
-    NewImageDiffUtilCallback()
+class RecordAddImageAdapter : ListAdapter<RecordImage, RecordAddImageAdapter.RecordAddImageViewHolder>(
+    RecordImageDiffUtilCallback()
 ) {
     class RecordAddImageViewHolder(val binding: ItemRecyclerRecordAddImageBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(img: NewImage) {
+        fun bind(img: RecordImage) {
             binding.item = img
         }
     }
@@ -27,14 +26,5 @@ class RecordAddImageAdapter : ListAdapter<NewImage, RecordAddImageAdapter.Record
 
     override fun onBindViewHolder(holder: RecordAddImageViewHolder, position: Int) {
         holder.bind(getItem(position))
-    }
-}
-class NewImageDiffUtilCallback : DiffUtil.ItemCallback<NewImage>() {
-    override fun areItemsTheSame(oldItem: NewImage, newItem: NewImage): Boolean {
-        return oldItem.bitmap == newItem.bitmap
-    }
-
-    override fun areContentsTheSame(oldItem: NewImage, newItem: NewImage): Boolean {
-        return oldItem == newItem
     }
 }

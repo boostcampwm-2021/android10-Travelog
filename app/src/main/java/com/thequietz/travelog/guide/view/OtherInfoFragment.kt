@@ -16,6 +16,7 @@ import com.thequietz.travelog.databinding.FragmentOtherInfoBinding
 import com.thequietz.travelog.guide.adapter.OtherInfoAdapter
 import com.thequietz.travelog.guide.adapter.OtherInfoViewPagerAdapter
 import com.thequietz.travelog.guide.viewmodel.OtherInfoViewModel
+import com.thequietz.travelog.guide.viewmodel.SpecificGuideViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -107,7 +108,7 @@ class OtherInfoFragment : Fragment() {
             }
             tbOtherInfo.setNavigationOnClickListener {
                 val action = OtherInfoFragmentDirections
-                    .actionOtherInfoFragmentToSpecificGuideFragment(otherInfoViewModel.currentPlace.value!!.name)
+                    .actionOtherInfoFragmentToSpecificGuideFragment(SpecificGuideViewModel.previousSearchCode)
                 findNavController().navigate(action)
             }
         }

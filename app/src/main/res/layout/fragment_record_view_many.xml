@@ -13,7 +13,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".record.view.RecordViewManyFragment">
+        tools:context=".record.view.RecordViewManyFragment"
+        android:id="@+id/cl_record_view_many"
+        >
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_record_view_many"
@@ -66,6 +68,17 @@
             app:layout_constraintTop_toBottomOf="@id/tb_record_view_many"
             app:layout_constraintBottom_toBottomOf="@id/top_gl_record_view_many"
             android:id="@+id/tv_record_view_many_date"
+            />
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintEnd_toStartOf="@id/ib_record_view_many"
+            app:layout_constraintTop_toBottomOf="@id/tb_record_view_many"
+            app:layout_constraintBottom_toBottomOf="@id/top_gl_record_view_many"
+            android:background="@android:drawable/ic_menu_share"
+            android:scaleType="fitXY"
+            android:id="@+id/ib_record_view_pdf"
+            android:layout_marginEnd="5dp"
             />
         <ImageButton
             android:layout_width="20dp"
