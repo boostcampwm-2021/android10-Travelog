@@ -68,7 +68,7 @@ class PlaceDetailFragment : Fragment() {
         placeDetailViewModel.detail.observe(viewLifecycleOwner, {
             (binding.rvPlaceDetail.adapter as PlaceDetailAdapter).submitList(it.images)
 
-            if (it.phoneNumber.isEmpty()) {
+            if (it.phoneNumber.trim().isEmpty()) {
                 binding.tvPlaceDetailPhoneTitle.visibility = View.GONE
                 binding.tvPlaceDetailPhoneNumber.visibility = View.GONE
             }
@@ -77,7 +77,7 @@ class PlaceDetailFragment : Fragment() {
                 binding.tvPlaceDetailOperation.visibility = View.GONE
             }
 
-            if (it.overview == null || it.overview.isEmpty()) {
+            if (it.overview == null || it.overview.trim().isEmpty()) {
                 binding.tvPlaceDetailOverview.visibility = View.GONE
             }
 

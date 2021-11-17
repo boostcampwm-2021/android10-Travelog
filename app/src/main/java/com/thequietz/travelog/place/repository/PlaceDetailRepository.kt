@@ -18,20 +18,24 @@ class PlaceDetailRepository @Inject constructor(
     private val searchService: PlaceSearchService,
     private val recommendService: PlaceRecommendService,
 ) {
-
+    private val TAG = "PLACE_DETAIL_REPOSITORY"
     private fun logIfError(msg: ResponseBody?) =
-        Log.e("PLACE_DETAIL_REPOSITORY", msg.toString())
+        Log.e(TAG, msg.toString())
 
     suspend fun loadPlaceDetail(placeId: String): PlaceDetailModel? {
         return withContext(Dispatchers.IO) {
-            val apiKey = BuildConfig.GOOGLE_MAP_KEY
-            val call = searchService.loadPlaceDetail(placeId, apiKey)
-            val response = call.awaitResponse()
-            if (!response.isSuccessful || response.body() == null) {
-                logIfError(response.errorBody())
+            try {
+                val apiKey = BuildConfig.GOOGLE_MAP_KEY
+                val call = searchService.loadPlaceDetail(placeId, apiKey)
+                val response = call.awaitResponse()
+                if (!response.isSuccessful || response.body() == null) {
+                    logIfError(response.errorBody())
+                }
+                response.body()?.result
+            } catch (e: Exception) {
+                Log.d(TAG, e.message.toString())
                 null
             }
-            response.body()?.result
         }
     }
 

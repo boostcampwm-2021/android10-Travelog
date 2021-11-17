@@ -6,6 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="18dp"
         android:orientation="vertical">
 
         <TextView
@@ -13,7 +14,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_marginTop="14dp"
             android:textSize="18sp"
             android:textStyle="bold"
             tools:text="@string/tv_item_recycler_place_recommend" />
