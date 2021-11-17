@@ -99,10 +99,14 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
             mapType = GoogleMap.MAP_TYPE_NORMAL
             setMinZoomPreference(6f)
             moveCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    mapViewBound.center,
-                    if (targetCount > 1) 7f else 10f
-                )
+                if (targetCount > 1)
+                    CameraUpdateFactory.newLatLngBounds(
+                        mapViewBound, 100
+                    )
+                else
+                    CameraUpdateFactory.newLatLngZoom(
+                        mapViewBound.center, 11f
+                    )
             )
             uiSettings.apply {
                 isZoomControlsEnabled = true
@@ -135,10 +139,14 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
 
     private fun initMapViewBound() {
         targetCount = targetList.size
-        mapViewBound = LatLngBounds(
-            LatLng(targetList.minOf { it.latitude }, targetList.minOf { it.longitude }),
-            LatLng(targetList.maxOf { it.latitude }, targetList.maxOf { it.longitude })
-        )
+        mapViewBound =
+            if (targetCount > 0)
+                LatLngBounds(
+                    LatLng(targetList.minOf { it.latitude }, targetList.minOf { it.longitude }),
+                    LatLng(targetList.maxOf { it.latitude }, targetList.maxOf { it.longitude })
+                )
+            else
+                LatLngBounds(LatLng(37.55, 126.99), LatLng(37.55, 126.99))
     }
 
     fun createMarker(
