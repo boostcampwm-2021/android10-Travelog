@@ -113,10 +113,11 @@ class SchedulePlaceFragment : Fragment() {
                 }
             )
 
-            binding.rvSelectSearch.layoutManager = GridLayoutManager(mContext, 2)
             binding.rvSelectSearch.adapter = schedulePlaceAdapter
-            binding.rvSelectSearch.adapter?.stateRestorationPolicy =
+            (binding.rvSelectSearch.adapter as SchedulePlaceAdapter).stateRestorationPolicy =
                 RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+
+            binding.rvSelectSearch.layoutManager = GridLayoutManager(mContext, 2)
             binding.lifecycleOwner = viewLifecycleOwner
             schedulePlaceAdapter.submitList(it)
         })
@@ -138,8 +139,6 @@ class SchedulePlaceFragment : Fragment() {
             binding.rvSelectItem.layoutManager =
                 LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
             binding.rvSelectItem.adapter = schedulePlaceSelectedAdapter
-            binding.rvSelectItem.adapter?.stateRestorationPolicy =
-                RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             binding.lifecycleOwner = viewLifecycleOwner
 
             schedulePlaceSelectedAdapter.submitList(it)
