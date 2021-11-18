@@ -3,13 +3,13 @@ package com.thequietz.travelog.menu
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.thequietz.travelog.data.RepositoryImpl
+import com.thequietz.travelog.data.GuideRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MenuViewModel @Inject internal constructor(
-    val repository: RepositoryImpl
+    val guideRepository: GuideRepository
 ) : ViewModel() {
 
     private val _toastMessage = MutableLiveData<String>()

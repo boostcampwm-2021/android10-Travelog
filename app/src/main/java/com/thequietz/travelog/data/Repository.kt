@@ -16,7 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RepositoryImpl @Inject constructor(
+class GuideRepository @Inject constructor(
     private val placeService: PlaceService,
     private val placeRecommend: PlaceRecommend
 ) {
@@ -46,7 +46,20 @@ class RepositoryImpl @Inject constructor(
         return res
     }
 
-    suspend fun loadVacationSpotData(areaCode: String): List<RecommendPlace> {
+    suspend fun loadAreaData(areaCode: String = "1", requestType: String = "A01", pageNo: Int): List<RecommendPlace> {
+        return try {
+            val res = placeRecommend.requestAreaBased(areaCode, requestType, pageNo)
+            val maxPage = (res.response.body.totalCnt / 10) + 1
+            if (maxPage < pageNo) {
+                return listOf()
+            } else {
+                return res.response.body.items.item
+            }
+        } catch (e: Exception) {
+            listOf()
+        }
+    }
+    /*suspend fun loadVacationSpotData(areaCode: String): List<RecommendPlace> {
         val res = placeRecommend.requestVacationSpot(areaCode).response.body.items.item
         return res
     }
@@ -55,10 +68,19 @@ class RepositoryImpl @Inject constructor(
         val res = placeRecommend.requestFood(areaCode).response.body.items.item
         return res
     }
-
-    suspend fun loadFestivalData(areaCode: String): List<RecommendPlace> {
-        val res = placeRecommend.requestFestival(getTodayDate(), areaCode).response.body.items.item
-        return res
+*/
+    suspend fun loadFestivalData(areaCode: String, pageNo: Int): List<RecommendPlace> {
+        return try {
+            val res = placeRecommend.requestFestival(getTodayDate(), areaCode, pageNo)
+            val maxPage = (res.response.body.totalCnt / 10) + 1
+            if (maxPage < pageNo) {
+                return listOf()
+            } else {
+                return res.response.body.items.item
+            }
+        } catch (e: Exception) {
+            listOf()
+        }
     }
 }
 

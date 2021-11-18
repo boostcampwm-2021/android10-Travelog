@@ -12,17 +12,20 @@ interface PlaceRecommend {
     @GET("/openapi/service/rest/KorService/areaBasedList?ServiceKey=$SERVICE_KEY&contentTypeid=15&MobileOS=AND&MobileApp=Travlelog&_type=json&arrange=P")
     suspend fun requestRecommendPlace(@Query("areaCode") area: String, @Query("sigunguCode") sigunguCode: String): RecommendResponse
 
-    @GET("/openapi/service/rest/KorService/areaBasedList?ServiceKey=$SERVICE_KEY&MobileOS=AND&MobileApp=Travlelog&cat1=A01&_type=json&arrange=P")
+    @GET("/openapi/service/rest/KorService/areaBasedList?ServiceKey=$SERVICE_KEY&MobileOS=AND&MobileApp=Travlelog&_type=json&arrange=P")
+    suspend fun requestAreaBased(@Query("areaCode") code: String, @Query("cat1") category: String, @Query("pageNo") pageNo: Int): RecommendResponse
+
+   /* @GET("/openapi/service/rest/KorService/areaBasedList?ServiceKey=$SERVICE_KEY&MobileOS=AND&MobileApp=Travlelog&cat1=A01&_type=json&arrange=P")
     suspend fun requestVacationSpot(@Query("areaCode") code: String): RecommendResponse
 
     @GET("/openapi/service/rest/KorService/areaBasedList?ServiceKey=$SERVICE_KEY&MobileOS=AND&MobileApp=Travlelog&cat1=A03&_type=json&arrange=P")
     suspend fun requestSports(@Query("areaCode") code: String): RecommendResponse
 
     @GET("/openapi/service/rest/KorService/areaBasedList?ServiceKey=$SERVICE_KEY&MobileOS=AND&MobileApp=Travlelog&cat1=A05&_type=json&arrange=P")
-    suspend fun requestFood(@Query("areaCode") code: String): RecommendResponse
+    suspend fun requestFood(@Query("areaCode") code: String): RecommendResponse*/
 
     @GET("/openapi/service/rest/KorService/searchFestival?ServiceKey=$SERVICE_KEY&MobileOS=ETC&MobileApp=Travlelog&_type=json&arrange=P")
-    suspend fun requestFestival(@Query("eventStartDate") startDate: String, @Query("areaCode") code: String): RecommendResponse
+    suspend fun requestFestival(@Query("eventStartDate") startDate: String, @Query("areaCode") code: String, @Query("pageNo") pageNo: Int): RecommendResponse
 
     companion object {
         private const val apiUrl = "http://api.visitkorea.or.kr"
