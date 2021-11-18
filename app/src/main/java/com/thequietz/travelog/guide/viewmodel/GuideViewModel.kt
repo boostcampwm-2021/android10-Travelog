@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GuideViewModel @Inject internal constructor(
-    val guideRepository: GuideRepository
+    val guideRepository: GuideRepository,
 ) : ViewModel() {
 
     private val _dataList = MutableLiveData<List<Guide>>()
@@ -34,11 +34,11 @@ class GuideViewModel @Inject internal constructor(
                     )
                 )
                 val recommendList = withContext(Dispatchers.IO) {
-                    // repository.loadRecommendPlaceData()
+                    guideRepository.loadRecommendPlaceData()
                 }
                 res.add(
                     Guide.SpecificRecommend().copy(
-                        // specificRecommendList = recommendList.toMutableList()
+                        specificRecommendList = recommendList.toMutableList()
                     )
                 )
                 res.add(
