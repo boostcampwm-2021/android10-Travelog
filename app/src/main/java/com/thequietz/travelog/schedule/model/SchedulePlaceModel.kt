@@ -32,9 +32,3 @@ data class PlaceResponse(
     @SerializedName("data")
     val data: List<PlaceModel>,
 )
-
-data class PlaceSelected(
-    val index: Int,
-    val code: Int,
-    val value: String,
-)

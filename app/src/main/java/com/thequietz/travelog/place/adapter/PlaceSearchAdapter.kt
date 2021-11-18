@@ -13,7 +13,7 @@ import com.thequietz.travelog.place.model.PlaceSearchModel
 class PlaceSearchAdapter(
     private val listener: OnItemClickListener
 ) :
-    ListAdapter<PlaceSearchModel, PlaceSearchAdapter.ViewHolder>(diffUtil) {
+    ListAdapter<PlaceSearchModel, PlaceSearchAdapter.ViewHolder>(PlaceSearchDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemRecyclerPlaceSearchBinding = DataBindingUtil.inflate(
@@ -43,17 +43,15 @@ class PlaceSearchAdapter(
         }
     }
 
-    companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<PlaceSearchModel>() {
-            override fun areItemsTheSame(oldItem: PlaceSearchModel, newItem: PlaceSearchModel) =
-                oldItem.placeId == newItem.placeId
-
-            override fun areContentsTheSame(oldItem: PlaceSearchModel, newItem: PlaceSearchModel) =
-                oldItem == newItem
-        }
-    }
-
     interface OnItemClickListener {
         fun onClickItem(model: PlaceSearchModel, position: Int): Boolean
     }
+}
+
+private class PlaceSearchDiffUtil : DiffUtil.ItemCallback<PlaceSearchModel>() {
+    override fun areItemsTheSame(oldItem: PlaceSearchModel, newItem: PlaceSearchModel) =
+        oldItem.placeId == newItem.placeId
+
+    override fun areContentsTheSame(oldItem: PlaceSearchModel, newItem: PlaceSearchModel) =
+        oldItem == newItem
 }

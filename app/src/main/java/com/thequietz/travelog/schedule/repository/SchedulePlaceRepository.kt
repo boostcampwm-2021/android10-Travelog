@@ -33,14 +33,18 @@ class SchedulePlaceRepository @Inject constructor(
     }
 
     suspend fun searchPlaceList(keyword: String): List<PlaceModel> {
-        val call = placeService.searchPlaceList(keyword)
-        val response = call.awaitResponse()
-        if (!response.isSuccessful || response.body() == null) {
-            return listOf()
+        return withContext(Dispatchers.IO) {
+            try {
+                val call = placeService.searchPlaceList(keyword)
+                val resp = call.awaitResponse()
+                if (!resp.isSuccessful || resp.body() == null) {
+                    Log.d(TAG, resp.errorBody().toString())
+                }
+                resp.body()?.data ?: listOf()
+            } catch (e: HttpException) {
+                Log.d(TAG, e.message())
+                listOf()
+            }
         }
-        val body = response.body()!!
-        val items = body.data
-        if (items.isEmpty()) return listOf()
-        return items
     }
 }

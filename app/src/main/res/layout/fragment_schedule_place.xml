@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_schedule_place"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingHorizontal="16dp"
@@ -59,24 +60,10 @@
             android:text="@string/tv_search"
             android:textColor="@color/black"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/rv_select_item"
+            app:layout_constraintBottom_toTopOf="@id/tv_empty_result"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_search"
             app:layout_constraintVertical_chainStyle="packed" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_select_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/tv_empty_result"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_search"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:listitem="@layout/item_recycler_schedule_place_selected" />
 
         <TextView
             android:id="@+id/tv_empty_result"
@@ -90,7 +77,7 @@
             app:layout_constraintBottom_toTopOf="@id/rv_select_search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_select_item"
+            app:layout_constraintTop_toBottomOf="@id/tv_search"
             tools:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -104,6 +91,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_empty_result"
             tools:listitem="@layout/item_recycler_schedule_place" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_select_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="4dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_select_search"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:listitem="@layout/item_recycler_schedule_place_selected" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

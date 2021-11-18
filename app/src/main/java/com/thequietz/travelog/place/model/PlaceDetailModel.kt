@@ -1,4 +1,4 @@
-package com.thequietz.travelog.place.model.detail
+package com.thequietz.travelog.place.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
