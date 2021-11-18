@@ -7,6 +7,7 @@
         <variable
             name="viewModel"
             type="com.thequietz.travelog.guide.viewmodel.OtherInfoViewModel" />
+        <import type="android.view.View"/>
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -84,6 +85,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="해당 데이터가 없습니다"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vacation_spot"
+            android:layout_marginStart="20dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:visibility="@{viewModel.vacationSpotList.size() == 0 ? View.VISIBLE : View.GONE}"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="먹거리"
             android:textStyle="bold"
             android:textSize="20sp"
@@ -106,6 +118,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="해당 데이터가 없습니다"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_food"
+            android:layout_marginStart="20dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:visibility="@{viewModel.foodList.size() == 0 ? View.VISIBLE : View.GONE}"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="행사/공연/축제"
             android:textStyle="bold"
             android:textSize="20sp"
@@ -124,6 +147,17 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
             android:id="@+id/rv_festival"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="해당 데이터가 없습니다"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_fesetival"
+            android:layout_marginStart="20dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:visibility="@{viewModel.festivalList.size() == 0 ? View.VISIBLE : View.GONE}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
