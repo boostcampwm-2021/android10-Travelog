@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -13,9 +14,140 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/tv_menu" />
+            android:id="@+id/tv_permission_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:text="서비스 권한 설정"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tv_loc_service"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
+        <TextView
+            android:id="@+id/tv_loc_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:text="위치 서비스 권한"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_alarm_setting"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_permission_setting" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:checked="@{viewModel.locationPermission}"
+            android:onCheckedChanged="@{(button, bool)->viewModel.locationPermissionChange(bool)}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_loc_service"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_loc_service" />
+
+        <TextView
+            android:id="@+id/tv_alarm_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:text="알림 권한"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_schedule_alarm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_loc_service" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:checked="@{viewModel.alarmPermission}"
+            android:onCheckedChanged="@{(button, bool)->viewModel.alarmPermissionChange(bool)}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_alarm_setting"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_alarm_setting" />
+
+        <TextView
+            android:id="@+id/tv_schedule_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:text="일정 알림"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_record_alarm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_alarm_setting" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:checked="@{viewModel.scheduleAlarm}"
+            android:enabled="@{viewModel.alarmPermission}"
+            android:onCheckedChanged="@{(button, bool)->viewModel.schedulePermissionChange(bool)}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_schedule_alarm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_schedule_alarm" />
+
+        <Spinner
+            android:id="@+id/spinner_schedule"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_record_alarm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_schedule_alarm" />
+
+        <TextView
+            android:id="@+id/tv_record_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:text="일정 기록 알림"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/spinner_record"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spinner_schedule" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:checked="@{viewModel.recordAlarm}"
+            android:enabled="@{viewModel.alarmPermission}"
+            android:onCheckedChanged="@{(button, bool)->viewModel.recordPermissionChange(bool)}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_record_alarm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_record_alarm" />
+
+        <Spinner
+            android:id="@+id/spinner_record"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_record_alarm" />
+
+
+        <ToggleButton
+            android:id="@+id/btn_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
