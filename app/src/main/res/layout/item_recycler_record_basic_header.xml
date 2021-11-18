@@ -19,6 +19,17 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Day1"/>
 
+        <TextView
+            android:id="@+id/tv_item_record_basic_header_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textSize="20sp"
+            app:layout_constraintTop_toTopOf="@id/tv_item_record_basic_header_title"
+            app:layout_constraintStart_toEndOf="@id/tv_item_record_basic_header_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_item_record_basic_header_title"
+            tools:text="12.26 (토)" />
+
         <ImageButton
             android:id="@+id/btn_item_record_basic_header_add_record"
             android:layout_width="30dp"
