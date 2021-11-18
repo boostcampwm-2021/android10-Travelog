@@ -7,6 +7,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -98,16 +99,18 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
         map.apply {
             mapType = GoogleMap.MAP_TYPE_NORMAL
             setMinZoomPreference(6f)
-            moveCamera(
-                if (targetCount > 1)
-                    CameraUpdateFactory.newLatLngBounds(
-                        mapViewBound, 100
-                    )
-                else
-                    CameraUpdateFactory.newLatLngZoom(
-                        mapViewBound.center, 11f
-                    )
-            )
+            setOnMapLoadedCallback {
+                moveCamera(
+                    if (targetCount > 1)
+                        CameraUpdateFactory.newLatLngBounds(
+                            mapViewBound, 100
+                        )
+                    else
+                        CameraUpdateFactory.newLatLngZoom(
+                            mapViewBound.center, 11f
+                        )
+                )
+            }
             uiSettings.apply {
                 isZoomControlsEnabled = true
             }
@@ -147,6 +150,7 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
                 )
             else
                 LatLngBounds(LatLng(37.55, 126.99), LatLng(37.55, 126.99))
+        Log.d("initMap", mapViewBound.center.toString())
     }
 
     fun createMarker(
