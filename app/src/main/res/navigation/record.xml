@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/record"
-    app:startDestination="@id/recordViewOneFragment">
+    app:startDestination="@id/recordFragment">
 
     <fragment
         android:id="@+id/recordFragment"
@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_recordBasicFragment_to_recordViewOneFragment"
             app:destination="@id/recordViewOneFragment" />
+        <action
+            android:id="@+id/action_recordBasicFragment_to_recordAddImageFragment"
+            app:destination="@id/recordAddImageFragment" />
     </fragment>
     <fragment
         android:id="@+id/recordViewOneFragment"

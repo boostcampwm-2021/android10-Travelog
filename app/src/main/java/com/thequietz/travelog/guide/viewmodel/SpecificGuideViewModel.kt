@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.thequietz.travelog.data.RepositoryImpl
+import com.thequietz.travelog.data.GuideRepository
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.view.SpecificGuideFragmentArgs
 import com.thequietz.travelog.util.areaCodeList
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SpecificGuideViewModel @Inject internal constructor(
-    val repository: RepositoryImpl
+    val guideRepository: GuideRepository
 ) : ViewModel() {
     companion object {
         var previousSearchCode = ""
@@ -34,7 +34,7 @@ class SpecificGuideViewModel @Inject internal constructor(
     fun initCurrentItem(args: SpecificGuideFragmentArgs) {
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO) {
-                repository.loadDoSiByCode(args.item)
+                guideRepository.loadDoSiByCode(args.item)
             }
             _currentPlaceList.value = res
             _currentSearch.value = areaCodeList.get(res.get(0).areaCode.toInt())

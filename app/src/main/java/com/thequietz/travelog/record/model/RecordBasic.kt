@@ -15,6 +15,7 @@ sealed class RecordBasicItem {
     ) : RecordBasicItem()
 
     class RecordBasicHeader(
-        val day: String
+        val day: String,
+        val date: String
     ) : RecordBasicItem()
 }

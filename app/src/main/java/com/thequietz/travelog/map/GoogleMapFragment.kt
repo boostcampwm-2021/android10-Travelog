@@ -19,6 +19,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -46,14 +47,17 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private val locationPermission = Manifest.permission.ACCESS_COARSE_LOCATION
 
-    private lateinit var map: GoogleMap
+    protected lateinit var map: GoogleMap
     private lateinit var mapViewBound: LatLngBounds
+    protected var zoomLevel: Float = 11f
 
-    lateinit var targetList: MutableList<LatLng>
+    var targetList: MutableLiveData<MutableList<LatLng>> = MutableLiveData(mutableListOf())
     private var targetCount: Int = 0
 
-    private var markerList: MutableList<Marker> = mutableListOf()
+    protected var markerList: MutableList<Marker> = mutableListOf()
     private var polylineList: MutableList<Polyline> = mutableListOf()
+
+    protected var isInitial: Boolean = true
 
     abstract fun initViewModel()
 
@@ -90,7 +94,7 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
     }
 
     open fun initTargetList() {
-        targetList = mutableListOf()
+        targetList.value = mutableListOf()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -100,16 +104,19 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
             mapType = GoogleMap.MAP_TYPE_NORMAL
             setMinZoomPreference(6f)
             setOnMapLoadedCallback {
-                moveCamera(
-                    if (targetCount > 1)
-                        CameraUpdateFactory.newLatLngBounds(
-                            mapViewBound, 100
-                        )
-                    else
-                        CameraUpdateFactory.newLatLngZoom(
-                            mapViewBound.center, 11f
-                        )
-                )
+                targetList.observe(viewLifecycleOwner, {
+                    initMapViewBound()
+                    map.moveCamera(
+                        if (targetCount > 1)
+                            CameraUpdateFactory.newLatLngBounds(
+                                mapViewBound, 100
+                            )
+                        else
+                            CameraUpdateFactory.newLatLngZoom(
+                                mapViewBound.center, zoomLevel
+                            )
+                    )
+                })
             }
             uiSettings.apply {
                 isZoomControlsEnabled = true
@@ -117,6 +124,7 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
         }
         setUserLocationAction()
         addMapComponents()
+        isInitial = false
     }
 
     open fun addMapComponents() {}
@@ -141,15 +149,21 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
     }
 
     private fun initMapViewBound() {
-        targetCount = targetList.size
-        mapViewBound =
-            if (targetCount > 0)
-                LatLngBounds(
-                    LatLng(targetList.minOf { it.latitude }, targetList.minOf { it.longitude }),
-                    LatLng(targetList.maxOf { it.latitude }, targetList.maxOf { it.longitude })
-                )
-            else
-                LatLngBounds(LatLng(37.55, 126.99), LatLng(37.55, 126.99))
+        targetList.value.let { list ->
+            if (list != null) {
+                targetCount = list.size
+
+                mapViewBound =
+                    if (targetCount > 0)
+                        LatLngBounds(
+                            LatLng(list.minOf { it.latitude }, list.minOf { it.longitude }),
+                            LatLng(list.maxOf { it.latitude }, list.maxOf { it.longitude })
+                        )
+                    else
+                        LatLngBounds(LatLng(37.55, 126.99), LatLng(37.55, 126.99))
+            }
+        }
+
         Log.d("initMap", mapViewBound.center.toString())
     }
 
@@ -158,9 +172,9 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
         colorId: Int = R.color.blue_travelog,
         isNumbered: Boolean = false
     ) {
-        markerPos.forEachIndexed { index, position ->
+        markerPos.forEach { position ->
             val markerView = if (isNumbered)
-                createMarkerView(colorId, index + 1)
+                createMarkerView(colorId, markerList.size + 1)
             else createMarkerView(colorId)
             val markerOption = MarkerOptions().position(position)
                 .icon((markerView)?.let { BitmapDescriptorFactory.fromBitmap(it) })

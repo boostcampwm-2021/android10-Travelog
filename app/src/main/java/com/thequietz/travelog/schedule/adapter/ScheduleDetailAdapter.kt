@@ -85,10 +85,9 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: (
             binding.viewModel = viewModel
             binding.setOnAddClickListener {
                 if (item.index != null && item.name != null) {
-                    viewModel.addSchedule(item.index.minus(1), item.name)
                     onAdd()
+                    viewModel.selectedIndex = item.index - 1
                 }
-                (bindingAdapter as ScheduleDetailAdapter).onAdd
             }
         }
     }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.thequietz.travelog.data.ScheduleRepository
+import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.schedule.data.ColorRGB
 import com.thequietz.travelog.schedule.data.ScheduleDetailItem
 import com.thequietz.travelog.schedule.model.PlaceModel
@@ -21,15 +22,21 @@ class ScheduleDetailViewModel @Inject internal constructor(
     private val repository: ScheduleRepository,
 ) : ViewModel() {
 
+    var selectedIndex = 0
+
     val item = mutableListOf<ScheduleDetailItem>()
     private val _itemList = MutableLiveData<List<ScheduleDetailItem>>()
     val itemList: LiveData<List<ScheduleDetailItem>> = _itemList
+
+    private val _placeDetailList = MutableLiveData<MutableList<PlaceDetailModel>>()
+    val placeDetailList: LiveData<MutableList<PlaceDetailModel>> = _placeDetailList
 
     private val indexList = mutableListOf<Int>()
     private var id = 0
 
     init {
         _itemList.value = item
+        _placeDetailList.value = mutableListOf()
     }
 
     fun initItemList(startDate: String, endDate: String) {
@@ -54,6 +61,22 @@ class ScheduleDetailViewModel @Inject internal constructor(
         repository.createSchedules(
             ScheduleModel(name = name, place = places, date = date)
         )
+    }
+
+    fun addSchedule(placeDetail: PlaceDetailModel) {
+        val color = getRandomColor()
+        var temp = 0
+        for (i in 0..selectedIndex) {
+            temp += indexList[i]
+        }
+        val position = selectedIndex + temp + 1
+        item.add(position, ScheduleDetailItem(id++, 2, color, placeDetail.name, selectedIndex))
+        _itemList.value = item
+        indexList[selectedIndex]++
+
+        _placeDetailList.value = _placeDetailList.value.apply {
+            this?.add(placeDetail)
+        }
     }
 
     fun addSchedule(index: Int, name: String) {

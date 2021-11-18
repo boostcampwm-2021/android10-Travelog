@@ -7,6 +7,7 @@
         <variable
             name="viewModel"
             type="com.thequietz.travelog.guide.viewmodel.OtherInfoViewModel" />
+        <import type="android.view.View"/>
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -72,19 +73,6 @@
             android:layout_marginTop="25dp"
             android:id="@+id/tv_vacation_spot"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tv_vacation_spot_more"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fl_other_info"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="#532F95"
-            android:textStyle="bold"
-            android:id="@+id/tv_vacation_spot_more"
-            android:clickable="true"
-            />
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,6 +81,17 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
             android:id="@+id/rv_vacation_spot"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="해당 데이터가 없습니다"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vacation_spot"
+            android:layout_marginStart="20dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:visibility="@{viewModel.vacationSpotList.size() == 0 ? View.VISIBLE : View.GONE}"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -107,19 +106,6 @@
             android:layout_marginTop="30dp"
             android:id="@+id/tv_food"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tv_food_more"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_vacation_spot"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="#532F95"
-            android:textStyle="bold"
-            android:id="@+id/tv_food_more"
-            android:clickable="true"
-            />
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -128,6 +114,17 @@
             android:id="@+id/rv_food"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="해당 데이터가 없습니다"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_food"
+            android:layout_marginStart="20dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:visibility="@{viewModel.foodList.size() == 0 ? View.VISIBLE : View.GONE}"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -142,19 +139,6 @@
             android:layout_marginTop="30dp"
             android:id="@+id/tv_fesetival"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tv_festival_more"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_food"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="#532F95"
-            android:textStyle="bold"
-            android:id="@+id/tv_festival_more"
-            android:clickable="true"
-            />
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -163,6 +147,17 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
             android:id="@+id/rv_festival"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="해당 데이터가 없습니다"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_fesetival"
+            android:layout_marginStart="20dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:visibility="@{viewModel.festivalList.size() == 0 ? View.VISIBLE : View.GONE}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

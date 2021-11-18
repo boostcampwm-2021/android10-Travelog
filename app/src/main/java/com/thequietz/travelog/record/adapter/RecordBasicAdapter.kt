@@ -11,33 +11,37 @@ import com.thequietz.travelog.databinding.ItemRecyclerRecordBasicHeaderBinding
 import com.thequietz.travelog.record.model.RecordBasicItem
 
 sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    class RecordBasicHeaderViewHolder(private val binding: ItemRecyclerRecordBasicHeaderBinding) :
-        RecordBasicViewHolder(binding.root) {
+    class RecordBasicHeaderViewHolder(
+        private val binding: ItemRecyclerRecordBasicHeaderBinding,
+        navigateToRecordAddUi: () -> Unit
+    ) : RecordBasicViewHolder(binding.root) {
         init {
-            binding.btnItemRecordBasicHeaderEdit.setOnClickListener {
-                // TODO: 수정 버튼 클릭 이벤트
+            binding.btnItemRecordBasicHeaderAddRecord.setOnClickListener {
+                navigateToRecordAddUi.invoke()
             }
         }
 
         override fun <T : RecordBasicItem> bind(item: T) {
             item as RecordBasicItem.RecordBasicHeader
             binding.tvItemRecordBasicHeaderTitle.text = item.day
+            binding.tvItemRecordBasicHeaderDate.text = item.date
         }
     }
 
     class RecordBasicItemViewHolder(
         private val binding: ItemRecyclerRecordBasicBinding,
-        onClick: () -> Unit
+        navigateToRecordViewUi: () -> Unit,
+        showMenu: (View, Int) -> Unit
     ) : RecordBasicViewHolder(binding.root) {
         private val adapter = RecordPhotoAdapter()
 
         init {
             binding.root.setOnClickListener {
-                onClick.invoke()
+                navigateToRecordViewUi.invoke()
             }
 
             binding.btnItemRecordBasicMore.setOnClickListener {
-                // TODO: 더보기 버튼 클릭 이벤트
+                showMenu.invoke(it, absoluteAdapterPosition)
             }
         }
 
@@ -53,7 +57,9 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 }
 
 class RecordBasicAdapter(
-    private val onClick: () -> Unit
+    private val navigateToRecordViewUi: () -> Unit,
+    private val navigateToRecordAddUi: () -> Unit,
+    private val showMenu: (View, Int) -> Unit
 ) : ListAdapter<RecordBasicItem, RecordBasicViewHolder>(diffUtil) {
     override fun getItemViewType(position: Int): Int {
         return when (currentList[position]) {
@@ -70,7 +76,8 @@ class RecordBasicAdapter(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    )
+                    ),
+                    navigateToRecordAddUi
                 )
             }
             else -> {
@@ -80,7 +87,8 @@ class RecordBasicAdapter(
                         parent,
                         false
                     ),
-                    onClick
+                    navigateToRecordViewUi,
+                    showMenu
                 )
             }
         }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -59,13 +60,13 @@ class OtherInfoFragment : Fragment() {
             placeList.observe(viewLifecycleOwner, { it ->
                 it?.let { viewPagerAdapter.submitList(it) }
             })
-            vacationSpotList4.observe(viewLifecycleOwner, { it ->
+            currentVacationSpotList.observe(viewLifecycleOwner, { it ->
                 it?.let { vacationAdapter.submitList(it) }
             })
-            foodList4.observe(viewLifecycleOwner, { it ->
+            currentFoodList.observe(viewLifecycleOwner, { it ->
                 it?.let { foodAdapter.submitList(it) }
             })
-            festivalList4.observe(viewLifecycleOwner, { it ->
+            currentFestivalList.observe(viewLifecycleOwner, { it ->
                 it?.let { festivalAdapter.submitList(it) }
             })
         }
@@ -91,26 +92,44 @@ class OtherInfoFragment : Fragment() {
                     }
                 }
             )
-            tvVacationSpotMore.setOnClickListener {
-                viewModel!!.vacationSpotList.observe(viewLifecycleOwner, { it ->
-                    it?.let { vacationAdapter.submitList(it.get(otherInfoViewModel.currentInd.value!!)) }
-                })
-            }
-            tvFoodMore.setOnClickListener {
-                viewModel!!.foodList.observe(viewLifecycleOwner, { it ->
-                    it?.let { foodAdapter.submitList(it.get(otherInfoViewModel.currentInd.value!!)) }
-                })
-            }
-            tvFestivalMore.setOnClickListener {
-                viewModel!!.festivalList.observe(viewLifecycleOwner, { it ->
-                    it?.let { festivalAdapter.submitList(it.get(otherInfoViewModel.currentInd.value!!)) }
-                })
-            }
             tbOtherInfo.setNavigationOnClickListener {
                 val action = OtherInfoFragmentDirections
                     .actionOtherInfoFragmentToSpecificGuideFragment(SpecificGuideViewModel.previousSearchCode)
                 findNavController().navigate(action)
             }
+            rvVacationSpot.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (!binding.rvVacationSpot.canScrollHorizontally(1)) {
+                        otherInfoViewModel.addVacationData()
+                        if (otherInfoViewModel.vacationPageEnd.value == true) {
+                            Toast.makeText(requireContext(), "마지막 페이지입니다", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            })
+            rvFood.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (!binding.rvFood.canScrollHorizontally(1)) {
+                        otherInfoViewModel.addFoodData()
+                        if (otherInfoViewModel.foodPageEnd.value == true) {
+                            Toast.makeText(requireContext(), "마지막 페이지입니다", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            })
+            rvFestival.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (!binding.rvFestival.canScrollHorizontally(1)) {
+                        otherInfoViewModel.addFestivalData()
+                        if (otherInfoViewModel.festivalPageEnd.value == true) {
+                            Toast.makeText(requireContext(), "마지막 페이지입니다", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            })
         }
     }
 }
