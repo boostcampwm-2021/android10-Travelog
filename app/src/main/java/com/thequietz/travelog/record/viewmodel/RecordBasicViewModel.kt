@@ -68,12 +68,11 @@ class RecordBasicViewModel @Inject constructor() : ViewModel() {
 
     fun addImage(uri: Uri, position: Int) {
         val tempRecordBasicItemList = _recordBasicItemList.value ?: return
+        tempRecordBasicItemList.getOrNull(position) ?: return
+
         val tempRecordBasicItem = tempRecordBasicItemList[position] as RecordBasicItem.TravelDestination
-
         val tempImageList = tempRecordBasicItem.images.toMutableList()
-
-        val uriPath = uri.toString()
-        tempImageList.add(uriPath)
+        tempImageList.add(uri.toString())
 
         val item = RecordBasicItem.TravelDestination(
             tempRecordBasicItem.name,
@@ -83,6 +82,16 @@ class RecordBasicViewModel @Inject constructor() : ViewModel() {
 
         val tempRecordBasicItemMutableList = tempRecordBasicItemList.toMutableList()
         tempRecordBasicItemMutableList[position] = item
+        _recordBasicItemList.value = tempRecordBasicItemMutableList.toList()
+    }
+
+    fun deleteRecord(position: Int) {
+        val tempRecordBasicItemList = _recordBasicItemList.value ?: return
+        val tempRecordBasicItemMutableList = tempRecordBasicItemList.toMutableList()
+
+        tempRecordBasicItemMutableList.getOrNull(position) ?: return
+        tempRecordBasicItemMutableList.removeAt(position)
+
         _recordBasicItemList.value = tempRecordBasicItemMutableList.toList()
     }
 }

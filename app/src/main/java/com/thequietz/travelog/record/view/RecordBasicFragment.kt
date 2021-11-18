@@ -84,7 +84,7 @@ class RecordBasicFragment : Fragment() {
                         getImageUri.launch("image/*")
                     }
                     R.id.delete_record -> {
-                        TODO("기록 삭제")
+                        viewModel.deleteRecord(position)
                     }
                 }
                 true
