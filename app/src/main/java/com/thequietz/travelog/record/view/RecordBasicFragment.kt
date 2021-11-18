@@ -17,14 +17,21 @@ import com.thequietz.travelog.record.viewmodel.RecordBasicViewModel
 
 class RecordBasicFragment : Fragment() {
     private val viewModel by viewModels<RecordBasicViewModel>()
-    private val adapter by lazy { RecordBasicAdapter(::navigateToRecordViewUi, ::showMenu) }
+    private val adapter by lazy {
+        RecordBasicAdapter(
+            ::navigateToRecordViewUi,
+            ::navigateToRecordAddUi,
+            ::showMenu
+        )
+    }
 
     // TODO("아래 코드는 ViewModel로 이동 예정")
     private var position = 0
-    private val getImageUri: ActivityResultLauncher<String> = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri ?: return@registerForActivityResult
-        viewModel.addImage(uri, position)
-    }
+    private val getImageUri: ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri ?: return@registerForActivityResult
+            viewModel.addImage(uri, position)
+        }
 
     private lateinit var binding: FragmentRecordBasicBinding
 
@@ -55,7 +62,15 @@ class RecordBasicFragment : Fragment() {
     }
 
     private fun navigateToRecordViewUi() {
-        val action = RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordViewOneFragment()
+        val action =
+            RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordViewOneFragment()
+
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToRecordAddUi() {
+        val action =
+            RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordAddImageFragment()
 
         findNavController().navigate(action)
     }

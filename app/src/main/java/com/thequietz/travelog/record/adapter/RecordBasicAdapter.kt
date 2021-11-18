@@ -11,11 +11,13 @@ import com.thequietz.travelog.databinding.ItemRecyclerRecordBasicHeaderBinding
 import com.thequietz.travelog.record.model.RecordBasicItem
 
 sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    class RecordBasicHeaderViewHolder(private val binding: ItemRecyclerRecordBasicHeaderBinding) :
-        RecordBasicViewHolder(binding.root) {
+    class RecordBasicHeaderViewHolder(
+        private val binding: ItemRecyclerRecordBasicHeaderBinding,
+        navigateToRecordAddUi: () -> Unit
+    ) : RecordBasicViewHolder(binding.root) {
         init {
             binding.btnItemRecordBasicHeaderAddRecord.setOnClickListener {
-                // TODO: 기록 추가 버튼 클릭 이벤트
+                navigateToRecordAddUi.invoke()
             }
         }
 
@@ -56,6 +58,7 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
 class RecordBasicAdapter(
     private val navigateToRecordViewUi: () -> Unit,
+    private val navigateToRecordAddUi: () -> Unit,
     private val showMenu: (View, Int) -> Unit
 ) : ListAdapter<RecordBasicItem, RecordBasicViewHolder>(diffUtil) {
     override fun getItemViewType(position: Int): Int {
@@ -73,7 +76,8 @@ class RecordBasicAdapter(
                         LayoutInflater.from(parent.context),
                         parent,
                         false
-                    )
+                    ),
+                    navigateToRecordAddUi
                 )
             }
             else -> {
