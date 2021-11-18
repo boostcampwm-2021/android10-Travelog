@@ -23,7 +23,8 @@ jobs:
       - name: Access google_map_key
         env:
           google_map_key: ${{ secrets.google_map_key }}
-        run: echo google_map_key=\"$google_map_key\" > ./local.properties
+          tour_api_key: ${{ secrets.tour_api_key }}
+        run: echo google_map_key=\"$google_map_key\" \n tour_api_key=\"$tour_api_key\" > ./local.properties
         
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
@@ -44,8 +45,9 @@ jobs:
         
     - name: Access google_map_key
       env:
-        google_map_key: ${{ secrets.google_map_key }}
-      run: echo google_map_key=\"$google_map_key\" > ./local.properties
+         google_map_key: ${{ secrets.google_map_key }}
+         tour_api_key: ${{ secrets.tour_api_key }}
+      run: echo google_map_key=\"$google_map_key\" \n tour_api_key=\"$tour_api_key\" > ./local.properties
         
     - name: Grant execute permission for gradlew
       run: chmod +x ./gradlew
