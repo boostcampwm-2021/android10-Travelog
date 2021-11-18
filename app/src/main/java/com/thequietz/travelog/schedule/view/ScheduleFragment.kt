@@ -39,7 +39,6 @@ class ScheduleFragment : Fragment() {
         binding.btnAdd.setOnClickListener {
             val action = ScheduleFragmentDirections.actionScheduleFragmentToSchedulePlaceFragment()
             it.findNavController().navigate(action)
-            viewModel.createSchedule()
         }
     }
 

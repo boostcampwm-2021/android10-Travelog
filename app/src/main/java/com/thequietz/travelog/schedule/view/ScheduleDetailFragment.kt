@@ -26,6 +26,15 @@ class ScheduleDetailFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.btnNext.setOnClickListener {
+            args.schedule.apply {
+                viewModel.createSchedule(name, place, date)
+                val action =
+                    ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToScheduleFragment()
+                findNavController().navigate(action)
+            }
+        }
     }
 
     override fun initViewModel() {
