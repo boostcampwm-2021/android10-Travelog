@@ -9,7 +9,7 @@ import com.thequietz.travelog.databinding.ItemRecyclerScheduleBinding
 import com.thequietz.travelog.schedule.model.ScheduleModel
 
 class ScheduleRecyclerAdapter(
-    val onClick: (Int) -> (Unit),
+    val onClick: (ScheduleModel) -> (Unit),
     val onDelete: (Int) -> (Unit)
 ) : ListAdapter<ScheduleModel, RecyclerView.ViewHolder>(diffUtil) {
 
