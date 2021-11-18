@@ -3,7 +3,7 @@ package com.thequietz.travelog.schedule.model
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.thequietz.travelog.place.model.detail.PlaceDetailModel
+import com.thequietz.travelog.place.model.PlaceDetailModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

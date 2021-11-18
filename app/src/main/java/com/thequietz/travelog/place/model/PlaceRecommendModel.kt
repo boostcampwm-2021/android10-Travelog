@@ -20,7 +20,7 @@ data class PlaceRecommendItems(
 
 data class PlaceRecommendItem(
     @SerializedName("item")
-    val items: List<PlaceRecommendModel>
+    val item: List<PlaceRecommendModel>
 )
 
 data class PlaceRecommendModel(

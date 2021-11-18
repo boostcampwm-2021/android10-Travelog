@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentSchedulePlaceBinding
@@ -114,6 +115,8 @@ class SchedulePlaceFragment : Fragment() {
 
             binding.rvSelectSearch.layoutManager = GridLayoutManager(mContext, 2)
             binding.rvSelectSearch.adapter = schedulePlaceAdapter
+            binding.rvSelectSearch.adapter?.stateRestorationPolicy =
+                RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             binding.lifecycleOwner = viewLifecycleOwner
             schedulePlaceAdapter.submitList(it)
         })
@@ -135,6 +138,8 @@ class SchedulePlaceFragment : Fragment() {
             binding.rvSelectItem.layoutManager =
                 LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
             binding.rvSelectItem.adapter = schedulePlaceSelectedAdapter
+            binding.rvSelectItem.adapter?.stateRestorationPolicy =
+                RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             binding.lifecycleOwner = viewLifecycleOwner
 
             schedulePlaceSelectedAdapter.submitList(it)

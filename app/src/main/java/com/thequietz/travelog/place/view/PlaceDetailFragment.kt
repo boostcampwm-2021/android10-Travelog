@@ -3,8 +3,10 @@ package com.thequietz.travelog.place.view
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceDetailBinding
@@ -47,6 +49,11 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
         }
 
         adapter = PlaceDetailAdapter(isRecommended)
+
+        val params = binding.ablPlaceDetail.layoutParams as CoordinatorLayout.LayoutParams
+        val newBehavior = AppBarLayout.Behavior()
+        newBehavior.setDragCallback(newCallback())
+        params.behavior = newBehavior
 
         binding.viewModel = placeDetailViewModel
         binding.rvPlaceDetail.adapter = adapter
@@ -100,5 +107,11 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
                 recommendModel?.contentTypeId ?: 0
             )
         }
+    }
+}
+
+private class newCallback : AppBarLayout.Behavior.DragCallback() {
+    override fun canDrag(appBarLayout: AppBarLayout): Boolean {
+        return false
     }
 }

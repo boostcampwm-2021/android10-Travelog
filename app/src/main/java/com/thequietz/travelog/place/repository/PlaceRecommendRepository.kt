@@ -21,11 +21,13 @@ class PlaceRecommendRepository @Inject constructor(
                 val apiKey = BuildConfig.TOUR_API_KEY
                 val call = service.loadRecommendPlace(typeId, apiKey)
                 val resp = call.awaitResponse()
+
                 if (!resp.isSuccessful || resp.body() == null) {
                     Log.d(TAG, resp.errorBody().toString())
                     listOf<PlaceRecommendModel>()
                 }
-                resp.body()?.response?.body?.items?.items ?: listOf()
+                val items = resp.body()?.response?.body?.items
+                items?.item ?: listOf()
             } catch (e: HttpException) {
                 listOf()
             }
