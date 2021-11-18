@@ -18,8 +18,8 @@ import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceSearchBinding
 import com.thequietz.travelog.place.adapter.PlaceSearchAdapter
+import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.place.model.PlaceSearchModel
-import com.thequietz.travelog.place.model.detail.PlaceDetailModel
 import com.thequietz.travelog.place.viewmodel.PlaceSearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

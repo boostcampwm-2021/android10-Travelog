@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.thequietz.travelog.data.ScheduleRepository
-import com.thequietz.travelog.place.model.detail.PlaceDetailModel
+import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.schedule.data.ColorRGB
 import com.thequietz.travelog.schedule.data.ScheduleDetailItem
 import com.thequietz.travelog.schedule.model.PlaceModel
