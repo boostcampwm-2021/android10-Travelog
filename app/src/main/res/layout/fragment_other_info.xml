@@ -91,7 +91,7 @@
             android:layout_marginStart="20dp"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:visibility="@{viewModel.vacationSpotList.size() == 0 ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.currentVacationSpotList.size() == 0 ? View.VISIBLE : View.GONE}"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -124,7 +124,7 @@
             android:layout_marginStart="20dp"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:visibility="@{viewModel.foodList.size() == 0 ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.currentFoodList.size() == 0 ? View.VISIBLE : View.GONE}"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -157,7 +157,7 @@
             android:layout_marginStart="20dp"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:visibility="@{viewModel.festivalList.size() == 0 ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.currentFestivalList.size() == 0 ? View.VISIBLE : View.GONE}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

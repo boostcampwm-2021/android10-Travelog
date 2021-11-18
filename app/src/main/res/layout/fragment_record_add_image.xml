@@ -50,7 +50,7 @@
             android:layout_height="150dp"
             app:layout_constraintStart_toStartOf="@id/gl_left_record_add_image"
             app:layout_constraintTop_toBottomOf="@id/tb_record_add_image"
-            android:layout_marginTop="30dp"
+            app:layout_constraintBottom_toTopOf="@+id/gl_top_record_add_image"
             android:id="@+id/iv_record_add_image"
             android:src="@color/black"
             />
@@ -123,10 +123,11 @@
             />
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"
-            android:layout_height="380dp"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="@id/gl_left_record_add_image"
             app:layout_constraintEnd_toEndOf="@id/gl_right_record_add_image"
             app:layout_constraintTop_toBottomOf="@id/tv_image_title"
+            app:layout_constraintBottom_toTopOf="@+id/btn_add_image"
             android:layout_marginTop="15dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="3"
@@ -134,10 +135,9 @@
             />
         <Button
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/gl_left_record_add_image"
             app:layout_constraintEnd_toEndOf="@id/gl_right_record_add_image"
-            app:layout_constraintTop_toBottomOf="@id/rv_record_add_image"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="이미지 추가하기"
             android:textSize="18sp"
