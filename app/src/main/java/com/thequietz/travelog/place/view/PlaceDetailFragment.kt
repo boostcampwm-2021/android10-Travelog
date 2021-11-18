@@ -14,6 +14,7 @@ import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceDetailBinding
 import com.thequietz.travelog.map.GoogleMapFragment
 import com.thequietz.travelog.place.adapter.PlaceDetailAdapter
+import com.thequietz.travelog.place.model.PlaceDetailLocation
 import com.thequietz.travelog.place.model.PlaceRecommendModel
 import com.thequietz.travelog.place.model.PlaceSearchModel
 import com.thequietz.travelog.place.viewmodel.PlaceDetailViewModel
@@ -45,13 +46,13 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
         when (isRecommended) {
             true -> {
                 recommendModel = gson.fromJson(navArgs.param, PlaceRecommendModel::class.java)
-                targetList =
+                targetList.value =
                     mutableListOf(LatLng(recommendModel.latitude, recommendModel.longitude))
             }
             false -> {
                 searchModel =
                     gson.fromJson(navArgs.param, PlaceSearchModel::class.java) as PlaceSearchModel
-                targetList = mutableListOf(
+                targetList.value = mutableListOf(
                     LatLng(
                         searchModel.geometry.location.latitude,
                         searchModel.geometry.location.longitude
@@ -63,7 +64,7 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
 
     override fun addMapComponents() {
         zoomLevel = 15f
-        createMarker(*targetList.toTypedArray())
+        targetList.value?.let { createMarker(*it.toTypedArray()) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,16 +92,16 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
         viewModel.detail.observe(viewLifecycleOwner, {
             (binding.rvPlaceDetail.adapter as PlaceDetailAdapter).submitList(it.images)
 
-            if (it.phoneNumber.trim().isEmpty()) {
+            if (it.phoneNumber.isNullOrEmpty()) {
                 binding.tvPlaceDetailPhoneTitle.visibility = View.GONE
                 binding.tvPlaceDetailPhoneNumber.visibility = View.GONE
             }
 
-            if (it.operation.operation.isEmpty()) {
+            if (it.operation == null || it.operation.operation.isNullOrEmpty()) {
                 binding.tvPlaceDetailOperation.visibility = View.GONE
             }
 
-            if (it.overview == null || it.overview.trim().isEmpty()) {
+            if (it.overview.isNullOrEmpty()) {
                 binding.tvPlaceDetailOverview.visibility = View.GONE
             }
 
@@ -142,7 +143,19 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
                 findNavController().apply {
                     previousBackStackEntry?.savedStateHandle?.set(
                         "result",
-                        viewModel.detail.value
+                        viewModel.detail.value.apply {
+                            this?.geometry?.location =
+                                if (isRecommended)
+                                    PlaceDetailLocation(
+                                        recommendModel.latitude,
+                                        recommendModel.longitude
+                                    )
+                                else
+                                    PlaceDetailLocation(
+                                        searchModel.geometry.location.latitude,
+                                        searchModel.geometry.location.longitude
+                                    )
+                        }
                     )
                     popBackStack()
                 }

@@ -1,7 +1,6 @@
 package com.thequietz.travelog.schedule.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -42,6 +41,22 @@ class ScheduleDetailFragment :
                 viewLifecycleOwner,
                 {
                     viewModel.addSchedule(it)
+
+                    val newTarget =
+                        LatLng(it.geometry.location.latitude, it.geometry.location.longitude)
+
+                    if (viewModel.placeDetailList.value?.size ?: 0 < 2)
+                        targetList.value = mutableListOf(newTarget)
+                    else
+                        targetList.value = targetList.value.apply {
+                            this?.add(newTarget)
+                        }
+
+                    createMarker(newTarget, isNumbered = true)
+                    markerList.forEachIndexed { index, marker ->
+                        if (index + 1 < markerList.size)
+                            createPolyline(marker, markerList[index + 1])
+                    }
                 }
             )
     }
@@ -76,12 +91,9 @@ class ScheduleDetailFragment :
     }
 
     override fun initTargetList() {
-        targetList = args.schedule.place.map { LatLng(it.mapY.toDouble(), it.mapX.toDouble()) }
-            .toMutableList()
-        Log.d("initTarget", targetList.size.toString())
-    }
-
-    override fun addMapComponents() {
-        createMarker(*targetList.toTypedArray(), isNumbered = true)
+        if (isInitial)
+            targetList.value =
+                args.schedule.place.map { LatLng(it.mapY.toDouble(), it.mapX.toDouble()) }
+                    .toMutableList()
     }
 }

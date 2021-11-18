@@ -22,6 +22,8 @@ class ScheduleDetailViewModel @Inject internal constructor(
     private val repository: ScheduleRepository,
 ) : ViewModel() {
 
+    var selectedIndex = 0
+
     val item = mutableListOf<ScheduleDetailItem>()
     private val _itemList = MutableLiveData<List<ScheduleDetailItem>>()
     val itemList: LiveData<List<ScheduleDetailItem>> = _itemList
@@ -64,14 +66,13 @@ class ScheduleDetailViewModel @Inject internal constructor(
     fun addSchedule(placeDetail: PlaceDetailModel) {
         val color = getRandomColor()
         var temp = 0
-        val index = (placeDetailList.value?.size ?: 0)
-        for (i in 0..index) {
+        for (i in 0..selectedIndex) {
             temp += indexList[i]
         }
-        val position = index + temp + 1
-        item.add(position, ScheduleDetailItem(id++, 2, color, placeDetail.name, index))
+        val position = selectedIndex + temp + 1
+        item.add(position, ScheduleDetailItem(id++, 2, color, placeDetail.name, selectedIndex))
         _itemList.value = item
-        indexList[index]++
+        indexList[selectedIndex]++
 
         _placeDetailList.value = _placeDetailList.value.apply {
             this?.add(placeDetail)

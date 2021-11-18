@@ -40,7 +40,7 @@ data class PlaceDetailLocation(
 @Parcelize
 data class PlaceDetailGeometry(
     @SerializedName("location")
-    val location: PlaceDetailLocation
+    var location: PlaceDetailLocation
 ) : Parcelable
 
 @Parcelize
