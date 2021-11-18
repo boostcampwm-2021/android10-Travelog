@@ -9,7 +9,8 @@ data class rResponse(
     @SerializedName("body") val body: rBody
 )
 data class rBody(
-    @SerializedName("items") val items: rItems
+    @SerializedName("items") val items: rItems,
+    @SerializedName("totalCount") val totalCnt: Int
 )
 data class rItems(
     @SerializedName("item") val item: List<RecommendPlace>

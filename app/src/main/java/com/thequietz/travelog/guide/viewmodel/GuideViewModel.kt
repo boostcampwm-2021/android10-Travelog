@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.thequietz.travelog.data.RepositoryImpl
+import com.thequietz.travelog.data.GuideRepository
 import com.thequietz.travelog.guide.model.Guide
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GuideViewModel @Inject internal constructor(
-    val repository: RepositoryImpl
+    val guideRepository: GuideRepository
 ) : ViewModel() {
 
     private val _dataList = MutableLiveData<List<Guide>>()
@@ -34,11 +34,11 @@ class GuideViewModel @Inject internal constructor(
                     )
                 )
                 val recommendList = withContext(Dispatchers.IO) {
-                    repository.loadRecommendPlaceData()
+                    // repository.loadRecommendPlaceData()
                 }
                 res.add(
                     Guide.SpecificRecommend().copy(
-                        specificRecommendList = recommendList.toMutableList()
+                        // specificRecommendList = recommendList.toMutableList()
                     )
                 )
                 res.add(
@@ -47,7 +47,7 @@ class GuideViewModel @Inject internal constructor(
                     )
                 )
                 val allDoSiList = withContext(Dispatchers.IO) {
-                    repository.loadAllDoSi()
+                    guideRepository.loadAllDoSi()
                 }
                 res.add(
                     Guide.Dosi().copy(
