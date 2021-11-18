@@ -33,7 +33,7 @@ data class PlaceDetailLocation(
     @SerializedName("lat")
     val latitude: Double,
 
-    @SerializedName("lon")
+    @SerializedName("lng")
     val longitude: Double,
 ) : Parcelable
 
