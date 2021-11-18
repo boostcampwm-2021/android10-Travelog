@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
@@ -18,6 +19,7 @@ import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceSearchBinding
 import com.thequietz.travelog.place.adapter.PlaceSearchAdapter
 import com.thequietz.travelog.place.model.PlaceSearchModel
+import com.thequietz.travelog.place.model.detail.PlaceDetailModel
 import com.thequietz.travelog.place.viewmodel.PlaceSearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -89,5 +91,16 @@ class PlaceSearchFragment : Fragment() {
 
         binding.etPlaceSearch.requestFocus()
         viewModel.initPlaceList()
+
+        findNavController().apply {
+            currentBackStackEntry?.savedStateHandle
+                ?.getLiveData<PlaceDetailModel>("result")?.observe(
+                    viewLifecycleOwner,
+                    {
+                        previousBackStackEntry?.savedStateHandle?.set("result", it)
+                        popBackStack()
+                    }
+                )
+        }
     }
 }

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -12,6 +11,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleDetailBinding
 import com.thequietz.travelog.map.GoogleMapFragment
+import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.schedule.adapter.ScheduleDetailAdapter
 import com.thequietz.travelog.schedule.adapter.ScheduleTouchHelperCallback
 import com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel
@@ -36,6 +36,14 @@ class ScheduleDetailFragment :
                 findNavController().navigate(action)
             }
         }
+
+        findNavController().currentBackStackEntry?.savedStateHandle
+            ?.getLiveData<PlaceDetailModel>("result")?.observe(
+                viewLifecycleOwner,
+                {
+                    viewModel.addSchedule(it)
+                }
+            )
     }
 
     override fun initViewModel() {
