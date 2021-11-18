@@ -46,8 +46,9 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private val locationPermission = Manifest.permission.ACCESS_COARSE_LOCATION
 
-    private lateinit var map: GoogleMap
+    protected lateinit var map: GoogleMap
     private lateinit var mapViewBound: LatLngBounds
+    protected var zoomLevel: Float = 11f
 
     lateinit var targetList: MutableList<LatLng>
     private var targetCount: Int = 0
@@ -107,7 +108,7 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
                         )
                     else
                         CameraUpdateFactory.newLatLngZoom(
-                            mapViewBound.center, 11f
+                            mapViewBound.center, zoomLevel
                         )
                 )
             }
