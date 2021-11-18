@@ -1,6 +1,7 @@
 package com.thequietz.travelog.schedule.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -26,6 +27,15 @@ class ScheduleDetailFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.btnNext.setOnClickListener {
+            args.schedule.apply {
+                viewModel.createSchedule(name, place, date)
+                val action =
+                    ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToScheduleFragment()
+                findNavController().navigate(action)
+            }
+        }
     }
 
     override fun initViewModel() {
@@ -60,6 +70,7 @@ class ScheduleDetailFragment :
     override fun initTargetList() {
         targetList = args.schedule.place.map { LatLng(it.mapY.toDouble(), it.mapX.toDouble()) }
             .toMutableList()
+        Log.d("initTarget", targetList.size.toString())
     }
 
     override fun addMapComponents() {

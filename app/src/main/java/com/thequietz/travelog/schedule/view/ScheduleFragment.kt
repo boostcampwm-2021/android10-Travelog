@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleBinding
 import com.thequietz.travelog.schedule.adapter.ScheduleRecyclerAdapter
@@ -39,7 +40,6 @@ class ScheduleFragment : Fragment() {
         binding.btnAdd.setOnClickListener {
             val action = ScheduleFragmentDirections.actionScheduleFragmentToSchedulePlaceFragment()
             it.findNavController().navigate(action)
-            viewModel.createSchedule()
         }
     }
 
@@ -47,6 +47,8 @@ class ScheduleFragment : Fragment() {
         val adapter = ScheduleRecyclerAdapter(
             {
                 // TODO: 세부 일정 설정 화면 Navigation 연결
+                val action = ScheduleFragmentDirections.actionScheduleFragmentToScheduleDetailFragment(it)
+                findNavController().navigate(action)
             },
             {
                 Log.d("Loaded Data", it.toString())

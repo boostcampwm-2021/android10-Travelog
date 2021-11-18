@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.thequietz.travelog.data.ScheduleRepository
 import com.thequietz.travelog.schedule.data.ColorRGB
 import com.thequietz.travelog.schedule.data.ScheduleDetailItem
+import com.thequietz.travelog.schedule.model.PlaceModel
+import com.thequietz.travelog.schedule.model.ScheduleModel
 import com.thequietz.travelog.util.dateFormat
 import com.thequietz.travelog.util.dateToString
 import com.thequietz.travelog.util.stringToDate
@@ -46,6 +48,12 @@ class ScheduleDetailViewModel @Inject internal constructor(
             indexList.add(0)
             _itemList.value = item
         }
+    }
+
+    fun createSchedule(name: String, places: List<PlaceModel>, date: String) {
+        repository.createSchedules(
+            ScheduleModel(name = name, place = places, date = date)
+        )
     }
 
     fun addSchedule(index: Int, name: String) {

@@ -19,7 +19,7 @@ class ScheduleViewHolder(
                 if (btnRemove.visibility == View.VISIBLE)
                     btnRemove.visibility = View.GONE
                 else
-                    id?.let { adapter.onClick(it) }
+                    id?.let { adapter.onClick(schedule as ScheduleModel) }
             }
 
             setLongClickListener {
