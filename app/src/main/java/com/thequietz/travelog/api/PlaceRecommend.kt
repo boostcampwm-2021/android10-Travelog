@@ -12,7 +12,7 @@ const val NEW_SERVICE_KEY =
     "I2sJCPNlcsGIrgvauH84inSBsYebWCZnQpOVmzsR0bn%2B%2BuxZH%2Fqvq91QvQ02xehxqC6OBdprA1b0CVkrGxjOWw%3D%3D"
 
 interface PlaceRecommend {
-    @GET("/openapi/service/rest/KorService/areaBasedList?ServiceKey=$NEW_SERVICE_KEY&contentTypeid=15&MobileOS=AND&MobileApp=Travlelog&_type=json&arrange=P")
+    @GET("/openapi/service/rest/KorService/areaBasedList?ServiceKey=$NEW_SERVICE_KEY&contentTypeId=15&MobileOS=AND&MobileApp=Travlelog&_type=json&arrange=P")
     suspend fun requestRecommendPlace(
         @Query("areaCode") area: String,
         @Query("sigunguCode") sigunguCode: String
