@@ -16,19 +16,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 11
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
           java-version: 11
+          distribution: 'adopt'
+          cache: gradle
                   
-      - name: Access google_map_key
-        env:
-          google_map_key: ${{ secrets.google_map_key }}
-          tour_api_key: ${{ secrets.tour_api_key }}
-        run: echo google_map_key=\"$google_map_key\" >> ./local.properties
-             echo tour_api_key=\"$tour_api_key\" >> ./local.properties
-        
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
+        
+      - name: Access secret keys
+        env:
+          google_map_key: ${{ secrets.GOOGLE_MAP_KEY }}
+          tour_api_key: ${{ secrets.TOUR_API_KEY }}
+        run: echo google_map_key=\"$google_map_key\" >> ./local.properties
+             echo tour_api_key=\"$tour_api_key\" >> ./local.properties
         
       - name: Unit tests
         run: ./gradlew test --stacktrace
@@ -40,19 +42,21 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
-      uses: actions/setup-java@v1
+      uses: actions/setup-java@v2
       with:
         java-version: 11
-        
-    - name: Access google_map_key
-      env:
-         google_map_key: ${{ secrets.google_map_key }}
-         tour_api_key: ${{ secrets.tour_api_key }}
-      run: echo google_map_key=\"$google_map_key\" >> ./local.properties
-           echo tour_api_key=\"$tour_api_key\" >> ./local.properties
+        distribution: 'adopt'
+        cache: gradle
         
     - name: Grant execute permission for gradlew
       run: chmod +x ./gradlew
+      
+    - name: Access secret keys
+      env:
+         google_map_key: ${{ secrets.GOOGLE_MAP_KEY }}
+         tour_api_key: ${{ secrets.TOUR_API_KEY }}
+      run: echo google_map_key=\"$google_map_key\" >> ./local.properties
+           echo tour_api_key=\"$tour_api_key\" >> ./local.properties
       
     - name: Build with Gradle
       run: ./gradlew build
