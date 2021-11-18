@@ -54,6 +54,7 @@ class MenuFragment : Fragment() {
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.spinnerSchedule.adapter = adapter
+            viewModel.scheduleAlarmTime.value?.let { binding.spinnerSchedule.setSelection(it) }
         }
 
         binding.spinnerSchedule.onItemSelectedListener =
@@ -78,11 +79,13 @@ class MenuFragment : Fragment() {
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.spinnerRecord.adapter = adapter
+            viewModel.recordAlarmTime.value?.let { binding.spinnerRecord.setSelection(it, false) }
         }
 
         binding.spinnerRecord.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                 viewModel.recordTimeChange(position)
+
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
