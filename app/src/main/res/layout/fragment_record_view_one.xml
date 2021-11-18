@@ -50,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.currentImage.title}"
+            tools:text="제주도여행"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -63,19 +64,20 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="60dp"
             android:text="@{viewModel.currentImage.startDate+` ~ `+viewModel.currentImage.endDate}"
+            tools:text="2021.10.11 ~ 2021.11.12"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@id/top_gl_record_view_one"
-            app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/tb_record_view_one" />
+            app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
+            app:layout_constraintTop_toBottomOf="@id/tv_record_view_one_title" />
 
         <ImageButton
             android:id="@+id/ib_record_view_one"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/img_grid"
             android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="@id/top_gl_record_view_one"
+            android:layout_marginTop="3dp"
+            app:layout_constraintBottom_toTopOf="@id/tv_record_view_one_reduce"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
             app:layout_constraintTop_toBottomOf="@id/tb_record_view_one" />
 
@@ -83,46 +85,48 @@
             android:id="@+id/tv_record_view_one_schedule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{viewModel.currentImage.schedule}"
+            tools:text="Day1"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one" />
+            app:layout_constraintTop_toBottomOf="@id/tv_record_view_one_date"
+            app:layout_constraintBottom_toTopOf="@id/fl_record_view_one"/>
 
         <TextView
             android:id="@+id/tv_record_view_one_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{` - `+ viewModel.currentImage.place}"
+            tools:text=" - 석굴암"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@id/tv_record_view_one_schedule"
-            app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one" />
+            app:layout_constraintTop_toBottomOf="@id/tv_record_view_one_date"
+            app:layout_constraintBottom_toTopOf="@id/fl_record_view_one" />
 
         <TextView
             android:id="@+id/tv_record_view_one_reduce"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:text="⋮"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one" />
+            app:layout_constraintTop_toBottomOf="@id/tv_record_view_one_date"
+            app:layout_constraintBottom_toTopOf="@id/fl_record_view_one" />
         <FrameLayout
             android:layout_width="385dp"
             android:layout_height="400dp"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/tv_record_view_one_place"
-            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@id/top_gl_record_view_one"
+            android:layout_marginTop="60dp"
             android:id="@+id/fl_record_view_one"
             >
             <androidx.viewpager2.widget.ViewPager2
