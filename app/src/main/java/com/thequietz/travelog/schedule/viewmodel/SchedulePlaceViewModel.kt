@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.schedule.model.PlaceModel
-import com.thequietz.travelog.schedule.model.PlaceSelected
 import com.thequietz.travelog.schedule.repository.SchedulePlaceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,8 +20,8 @@ class SchedulePlaceViewModel @Inject constructor(
     private var _selectedPlaces = MutableLiveData<MutableList<PlaceModel>>()
     val selectedPlaces: LiveData<MutableList<PlaceModel>> = _selectedPlaces
 
-    private var _placeSelectedList = MutableLiveData<MutableList<PlaceSelected>>()
-    val placeSelectedList: LiveData<MutableList<PlaceSelected>> = _placeSelectedList
+    private var _placeSelectedList = MutableLiveData<MutableList<PlaceModel>>()
+    val placeSelectedList: LiveData<MutableList<PlaceModel>> = _placeSelectedList
 
     fun loadPlaceList() {
         viewModelScope.launch {
@@ -41,19 +40,25 @@ class SchedulePlaceViewModel @Inject constructor(
         _selectedPlaces.value = mutableListOf()
     }
 
-    fun addPlaceSelectedList(index: Int, value: PlaceModel) {
-        val isExisted = placeSelectedList.value?.find { it.value == value.cityName }
+    fun addPlaceSelectedList(value: PlaceModel) {
+        val isExisted = placeSelectedList.value?.find { it.cityName == value.cityName }
         if (isExisted != null) return
 
-        val guideSelected = PlaceSelected(index, value.cityName)
-        _placeSelectedList.value?.add(guideSelected)
+        _placeSelectedList.value?.add(value)
         _placeSelectedList.value = _placeSelectedList.value
         _selectedPlaces.value?.add(value)
         _selectedPlaces.value = _selectedPlaces.value
     }
 
-    fun removePlaceSelectedList(position: Int) {
-        val updated = _placeSelectedList.value?.filterIndexed { index, _ -> position != index }
+    fun removePlaceSelectedList(cityName: String) {
+        val updated = _placeSelectedList.value?.filter { it -> cityName != it.cityName }
         _placeSelectedList.value = updated?.toMutableList()
+
+        _placeList.value?.forEach { it ->
+            if (it.cityName == cityName) {
+                it.isSelected = false
+            }
+        }
+        _placeList.value = _placeList.value
     }
 }

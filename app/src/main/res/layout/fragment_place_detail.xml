@@ -11,12 +11,14 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/cl_place_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         tools:context=".place.view.PlaceDetailFragment">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/abl_place_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true">
@@ -43,14 +45,13 @@
                     app:layout_constraintVertical_chainStyle="packed"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                    <!--<TextView
+                    <fragment
+                        android:id="@+id/fragment_map"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/tv_google_map_view"
-                        android:textColor="@color/black"
-                        android:textSize="30sp"
-                        android:textStyle="bold" />-->
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        tools:layout="@layout/abc_search_view" />
 
                 </LinearLayout>
 

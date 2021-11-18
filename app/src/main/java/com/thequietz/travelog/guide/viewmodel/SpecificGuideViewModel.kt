@@ -18,6 +18,9 @@ import javax.inject.Inject
 class SpecificGuideViewModel @Inject internal constructor(
     val repository: RepositoryImpl
 ) : ViewModel() {
+    companion object {
+        var previousSearchCode = ""
+    }
 
     private val _currentPlaceList = MutableLiveData<List<Place>>()
     val currentPlaceList: LiveData<List<Place>> = _currentPlaceList
@@ -35,6 +38,7 @@ class SpecificGuideViewModel @Inject internal constructor(
             }
             _currentPlaceList.value = res
             _currentSearch.value = areaCodeList.get(res.get(0).areaCode.toInt())
+            previousSearchCode = res.get(0).areaCode
             _noData.value = currentPlaceList.value?.size == 0
         }
     }

@@ -36,7 +36,8 @@ class PlaceRecommendSpecAdapter(private val parentFragment: Fragment) :
                 )
                 .into(binding.ivPlaceRecommendSpec)
 
-            binding.ivPlaceRecommendSpec.setOnClickListener {
+            binding.model = model
+            binding.root.setOnClickListener {
                 val param = gson.toJson(model)
                 val action =
                     PlaceRecommendFragmentDirections.actionPlaceRecommendFragmentToPlaceDetailFragment(

@@ -18,5 +18,6 @@ data class RecommendPlace(
     @SerializedName("title") val name: String = "",
     @SerializedName("firstimage") val url: String = "",
     @SerializedName("addr1") val description: String = "",
-    @SerializedName("readcount") val readCount: String
+    @SerializedName("readcount") val readCount: String,
+    val byteArray: ByteArray? = null
 )

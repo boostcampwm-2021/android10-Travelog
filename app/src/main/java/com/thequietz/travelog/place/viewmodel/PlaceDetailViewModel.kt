@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.thequietz.travelog.place.model.detail.PlaceDetailGeometry
-import com.thequietz.travelog.place.model.detail.PlaceDetailImage
-import com.thequietz.travelog.place.model.detail.PlaceDetailLocation
-import com.thequietz.travelog.place.model.detail.PlaceDetailModel
-import com.thequietz.travelog.place.model.detail.PlaceDetailOperation
+import com.thequietz.travelog.place.model.PlaceDetailGeometry
+import com.thequietz.travelog.place.model.PlaceDetailImage
+import com.thequietz.travelog.place.model.PlaceDetailLocation
+import com.thequietz.travelog.place.model.PlaceDetailModel
+import com.thequietz.travelog.place.model.PlaceDetailOperation
 import com.thequietz.travelog.place.repository.PlaceDetailRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

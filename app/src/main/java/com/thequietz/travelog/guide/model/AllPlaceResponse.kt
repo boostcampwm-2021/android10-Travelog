@@ -16,4 +16,5 @@ data class Place(
     @SerializedName("sigungucode") val sigunguCode: String,
     @SerializedName("title") val title: String,
     @SerializedName("statename") val stateName: String,
+    val byteArray: ByteArray? = null
 ) : Serializable, Parcelable

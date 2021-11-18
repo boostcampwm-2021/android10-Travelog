@@ -2,16 +2,15 @@ package com.thequietz.travelog.place.view
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceDetailBinding
+import com.thequietz.travelog.map.GoogleMapFragment
 import com.thequietz.travelog.place.adapter.PlaceDetailAdapter
 import com.thequietz.travelog.place.model.PlaceRecommendModel
 import com.thequietz.travelog.place.model.PlaceSearchModel
@@ -19,10 +18,10 @@ import com.thequietz.travelog.place.viewmodel.PlaceDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PlaceDetailFragment : Fragment() {
+class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceDetailViewModel>() {
 
-    private var _binding: FragmentPlaceDetailBinding? = null
-    private val binding get() = _binding!!
+    override val layoutId = R.layout.fragment_place_detail
+    override val viewModel by viewModels<PlaceDetailViewModel>()
     private val navArgs: PlaceDetailFragmentArgs by navArgs()
     private val placeDetailViewModel: PlaceDetailViewModel by viewModels()
 
@@ -34,18 +33,8 @@ class PlaceDetailFragment : Fragment() {
 
     private lateinit var gson: Gson
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_place_detail, container, false)
-        return binding.root
+    override fun initViewModel() {
+        binding.viewModel = viewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,6 +50,11 @@ class PlaceDetailFragment : Fragment() {
 
         adapter = PlaceDetailAdapter(isRecommended)
 
+        val params = binding.ablPlaceDetail.layoutParams as CoordinatorLayout.LayoutParams
+        val newBehavior = AppBarLayout.Behavior()
+        newBehavior.setDragCallback(newCallback())
+        params.behavior = newBehavior
+
         binding.viewModel = placeDetailViewModel
         binding.rvPlaceDetail.adapter = adapter
         binding.lifecycleOwner = viewLifecycleOwner
@@ -68,7 +62,7 @@ class PlaceDetailFragment : Fragment() {
         placeDetailViewModel.detail.observe(viewLifecycleOwner, {
             (binding.rvPlaceDetail.adapter as PlaceDetailAdapter).submitList(it.images)
 
-            if (it.phoneNumber.isEmpty()) {
+            if (it.phoneNumber.trim().isEmpty()) {
                 binding.tvPlaceDetailPhoneTitle.visibility = View.GONE
                 binding.tvPlaceDetailPhoneNumber.visibility = View.GONE
             }
@@ -77,7 +71,7 @@ class PlaceDetailFragment : Fragment() {
                 binding.tvPlaceDetailOperation.visibility = View.GONE
             }
 
-            if (it.overview == null || it.overview.isEmpty()) {
+            if (it.overview == null || it.overview.trim().isEmpty()) {
                 binding.tvPlaceDetailOverview.visibility = View.GONE
             }
 
@@ -113,5 +107,11 @@ class PlaceDetailFragment : Fragment() {
                 recommendModel?.contentTypeId ?: 0
             )
         }
+    }
+}
+
+private class newCallback : AppBarLayout.Behavior.DragCallback() {
+    override fun canDrag(appBarLayout: AppBarLayout): Boolean {
+        return false
     }
 }

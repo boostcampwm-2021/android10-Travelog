@@ -19,7 +19,7 @@ data class RecommendItems(
 
 data class RecommendItem(
     @SerializedName("item")
-    val info: RecommendInfo
+    val info: RecommendInfo? = null
 )
 
 data class RecommendInfo(
@@ -57,12 +57,17 @@ data class RecommendImageBody(
 
 data class RecommendImageItems(
     @SerializedName("items")
-    val items: RecommendImageItem
+    val items: Any
 )
 
 data class RecommendImageItem(
     @SerializedName("item")
-    val images: List<RecommendImage> = listOf()
+    val images: List<RecommendImage>
+)
+
+data class RecommendImageObject(
+    @SerializedName("item")
+    val image: RecommendImage
 )
 
 data class RecommendImage(

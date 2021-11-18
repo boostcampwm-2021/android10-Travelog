@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.thequietz.travelog.R
-import com.thequietz.travelog.place.model.detail.PlaceDetailReview
+import com.thequietz.travelog.place.model.PlaceDetailReview
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

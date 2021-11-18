@@ -14,13 +14,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <ImageButton
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ib_guide_item"
-            android:layout_width="105dp"
-            android:layout_height="105dp"
-            android:layout_marginHorizontal="32dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginHorizontal="18dp"
             android:layout_marginVertical="8dp"
-            android:alpha="0.2"
+            android:alpha="0.4"
             android:background="?android:selectableItemBackground"
             tools:src="@tools:sample/avatars" />
 
@@ -33,11 +33,11 @@
             android:layout_alignEnd="@id/ib_guide_item"
             android:layout_alignBottom="@id/ib_guide_item"
             android:gravity="center"
-            android:textColor="@color/white"
             android:shadowColor="#4C4C4C"
-            android:shadowRadius="5.0"
             android:shadowDx="5.0"
             android:shadowDy="5.0"
+            android:shadowRadius="5.0"
+            android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
             tools:text="@string/tv_guide_item" />

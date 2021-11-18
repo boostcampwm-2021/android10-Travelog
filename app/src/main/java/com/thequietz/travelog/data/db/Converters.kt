@@ -2,6 +2,7 @@ package com.thequietz.travelog.data.db
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
+import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.schedule.model.PlaceModel
 
 class Converters {
@@ -18,4 +19,11 @@ class Converters {
     @TypeConverter
     fun jsonToPlaceList(value: String): List<PlaceModel> =
         Gson().fromJson(value, Array<PlaceModel>::class.java).toList()
+
+    @TypeConverter
+    fun placeDetailListToJson(value: List<PlaceDetailModel>): String = Gson().toJson(value)
+
+    @TypeConverter
+    fun jsonToPlaceDetailList(value: String): List<PlaceDetailModel> =
+        Gson().fromJson(value, Array<PlaceDetailModel>::class.java).toList()
 }
