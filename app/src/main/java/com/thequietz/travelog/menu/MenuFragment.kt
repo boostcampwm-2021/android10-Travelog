@@ -90,9 +90,11 @@ class MenuFragment : Fragment() {
         binding.btnAlarm.setOnCheckedChangeListener(
             CompoundButton.OnCheckedChangeListener { _, isChecked ->
                 when (isChecked) {
-                    true -> registerAlarm(requireContext(),
+                    true -> registerAlarm(
+                        requireContext(),
                         AlarmType.Schedule,
-                        null)
+                        null
+                    )
                     else -> cancelAlarm()
                 }
             }
