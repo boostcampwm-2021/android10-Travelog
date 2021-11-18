@@ -10,11 +10,11 @@ import com.bumptech.glide.Glide
 import com.thequietz.travelog.BuildConfig
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.ItemRecyclerPlaceDetailBinding
-import com.thequietz.travelog.place.model.detail.PlaceDetailImage
+import com.thequietz.travelog.place.model.PlaceDetailImage
 
 class PlaceDetailAdapter(private val isRecommended: Boolean) :
     ListAdapter<PlaceDetailImage, PlaceDetailAdapter.ViewHolder>(
-        placeDetailDiffUtil
+        PlaceDetailDiffUtil()
     ) {
 
     class ViewHolder(private val binding: ItemRecyclerPlaceDetailBinding) :
@@ -56,7 +56,7 @@ class PlaceDetailAdapter(private val isRecommended: Boolean) :
     }
 }
 
-private val placeDetailDiffUtil = object : DiffUtil.ItemCallback<PlaceDetailImage>() {
+private class PlaceDetailDiffUtil : DiffUtil.ItemCallback<PlaceDetailImage>() {
     override fun areItemsTheSame(
         oldItem: PlaceDetailImage,
         newItem: PlaceDetailImage

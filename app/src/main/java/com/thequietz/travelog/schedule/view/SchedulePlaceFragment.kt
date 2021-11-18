@@ -105,8 +105,8 @@ class SchedulePlaceFragment : Fragment() {
                 object : SchedulePlaceAdapter.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int, toggle: Boolean) {
                         when (toggle) {
-                            true -> viewModel.addPlaceSelectedList(position, it[position])
-                            false -> viewModel.removePlaceSelectedList(it[position].areaCode)
+                            true -> viewModel.addPlaceSelectedList(it[position])
+                            false -> viewModel.removePlaceSelectedList(it[position].cityName)
                         }
                     }
                 }
@@ -126,16 +126,18 @@ class SchedulePlaceFragment : Fragment() {
             }
 
             schedulePlaceSelectedAdapter = SchedulePlaceSelectedAdapter(
-                it,
                 object : SchedulePlaceSelectedAdapter.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int) {
-                        viewModel.removePlaceSelectedList(it[position].code)
+                        viewModel.removePlaceSelectedList(it[position].cityName)
                     }
                 }
             )
             binding.rvSelectItem.layoutManager =
                 LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)
             binding.rvSelectItem.adapter = schedulePlaceSelectedAdapter
+            binding.lifecycleOwner = viewLifecycleOwner
+
+            schedulePlaceSelectedAdapter.submitList(it)
         })
 
         viewModel.loadPlaceList()

@@ -4,7 +4,7 @@ import android.util.Log
 import com.thequietz.travelog.BuildConfig
 import com.thequietz.travelog.api.PlaceRecommendService
 import com.thequietz.travelog.api.PlaceSearchService
-import com.thequietz.travelog.place.model.detail.PlaceDetailModel
+import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.place.model.detail.RecommendImage
 import com.thequietz.travelog.place.model.detail.RecommendInfo
 import kotlinx.coroutines.Dispatchers
