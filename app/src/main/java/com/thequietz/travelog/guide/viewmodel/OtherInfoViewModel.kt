@@ -77,6 +77,12 @@ class OtherInfoViewModel @Inject internal constructor(
         viewModelScope.launch {
             _currentInd.value = ind
             _currentPlace.value = placeList.value?.get(ind)
+            _vacationPageEnd.value = false
+            _foodPageEnd.value = false
+            _festivalPageEnd.value = false
+            vacationPageInd = 0
+            foodPageInd = 0
+            festivalPageInd = 0
             val vacationRes = vacationSpotList.value?.get(ind)
             vacationRes?.let {
                 _currentVacationSpotList.value = it
@@ -94,8 +100,6 @@ class OtherInfoViewModel @Inject internal constructor(
 
     fun initVacationSpotData() {
         viewModelScope.launch {
-            _vacationPageEnd.value = false
-            vacationPageInd = 0
             vacationPageInd++
             val vacationRes = mutableListOf<List<RecommendPlace>>()
             placeList.value?.forEach {
@@ -118,8 +122,6 @@ class OtherInfoViewModel @Inject internal constructor(
 
     fun initFoodData() {
         viewModelScope.launch {
-            _foodPageEnd.value = false
-            foodPageInd = 0
             foodPageInd++
             val foodRes = mutableListOf<List<RecommendPlace>>()
             placeList.value?.forEach {
@@ -143,8 +145,6 @@ class OtherInfoViewModel @Inject internal constructor(
 
     fun initFestivalData() {
         viewModelScope.launch {
-            _festivalPageEnd.value = false
-            festivalPageInd = 0
             festivalPageInd++
             val festivalRes = mutableListOf<List<RecommendPlace>>()
             placeList.value?.forEach {
