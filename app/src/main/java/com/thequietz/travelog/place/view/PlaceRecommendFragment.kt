@@ -9,10 +9,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceRecommendBinding
 import com.thequietz.travelog.place.adapter.PlaceRecommendAdapter
+import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.place.viewmodel.PlaceRecommendViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,6 +45,17 @@ class PlaceRecommendFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _context = requireContext()
+
+        findNavController().apply {
+            currentBackStackEntry?.savedStateHandle
+                ?.getLiveData<PlaceDetailModel>("result")?.observe(
+                    viewLifecycleOwner,
+                    {
+                        previousBackStackEntry?.savedStateHandle?.set("result", it)
+                        popBackStack()
+                    }
+                )
+        }
 
         binding.etPlaceRecommendSearch.setOnClickListener {
             val action =

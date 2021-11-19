@@ -80,17 +80,11 @@ class SchedulePlaceFragment : Fragment() {
         }
 
         binding.btnSelectDate.setOnClickListener {
-            val placeList = viewModel.selectedPlaces.value
+            val placeList = viewModel.placeSelectedList.value
             val action =
                 SchedulePlaceFragmentDirections.actionSchedulePlaceFragmentToScheduleSelectFragment(
                     placeList?.toTypedArray() ?: arrayOf()
                 )
-            it.findNavController().navigate(action)
-        }
-
-        binding.btnSearchPlace.setOnClickListener {
-            val action =
-                SchedulePlaceFragmentDirections.actionSchedulePlaceFragmentToPlaceRecommendFragment()
             it.findNavController().navigate(action)
         }
 

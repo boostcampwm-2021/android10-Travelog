@@ -35,21 +35,8 @@
             android:layout_marginStart="10dp"
             android:text="@string/btn_search"
             app:layout_constraintBottom_toBottomOf="@id/et_search"
-            app:layout_constraintEnd_toEndOf="@id/btn_search_place"
-            app:layout_constraintStart_toEndOf="@id/et_search"
-            app:layout_constraintTop_toTopOf="@id/et_search" />
-
-        <Button
-            android:id="@+id/btn_search_place"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:minWidth="0dp"
-            android:paddingHorizontal="12dp"
-            android:text="@string/btn_search_place"
-            app:layout_constraintBottom_toBottomOf="@id/et_search"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btn_select_date"
+            app:layout_constraintStart_toEndOf="@id/et_search"
             app:layout_constraintTop_toTopOf="@id/et_search" />
 
         <TextView

@@ -24,9 +24,6 @@
         <action
             android:id="@+id/action_schedulePlaceFragment_to_scheduleSelectFragment"
             app:destination="@id/scheduleSelectFragment" />
-        <action
-            android:id="@+id/action_schedulePlaceFragment_to_placeRecommendFragment"
-            app:destination="@id/placeRecommendFragment" />
     </fragment>
     <fragment
         android:id="@+id/scheduleSelectFragment"
@@ -47,13 +44,13 @@
             android:name="schedule"
             app:argType="com.thequietz.travelog.schedule.model.ScheduleModel" />
         <action
-            android:id="@+id/action_scheduleDetailFragment_to_placeSearchFragment"
-            app:destination="@id/placeSearchFragment" />
-        <action
             android:id="@+id/action_scheduleDetailFragment_to_scheduleFragment"
             app:destination="@id/scheduleFragment"
             app:popUpTo="@id/scheduleFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_scheduleDetailFragment_to_placeRecommendFragment"
+            app:destination="@id/placeRecommendFragment" />
     </fragment>
     <fragment
         android:id="@+id/placeSearchFragment"
