@@ -1,6 +1,6 @@
 package com.thequietz.travelog.di
 
-import com.thequietz.travelog.api.PlaceRecommend
+import com.thequietz.travelog.api.GuideRecommendService
 import com.thequietz.travelog.api.PlaceRecommendService
 import com.thequietz.travelog.api.PlaceSearchService
 import com.thequietz.travelog.api.PlaceService
@@ -16,8 +16,8 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun providePlaceRecommend(): PlaceRecommend {
-        return PlaceRecommend.create()
+    fun providePlaceRecommend(): GuideRecommendService {
+        return GuideRecommendService.create()
     }
 
     @Singleton

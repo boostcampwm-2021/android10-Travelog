@@ -1,7 +1,8 @@
 package com.thequietz.travelog.data
 
 import android.util.Log
-import com.thequietz.travelog.api.PlaceRecommend
+import com.thequietz.travelog.BuildConfig
+import com.thequietz.travelog.api.GuideRecommendService
 import com.thequietz.travelog.api.PlaceService
 import com.thequietz.travelog.data.db.dao.RecordImageDao
 import com.thequietz.travelog.data.db.dao.ScheduleDao
@@ -18,8 +19,10 @@ import javax.inject.Singleton
 @Singleton
 class GuideRepository @Inject constructor(
     private val placeService: PlaceService,
-    private val placeRecommend: PlaceRecommend
+    private val guideRecommendService: GuideRecommendService
 ) {
+
+    private val TOUR_API_KEY = BuildConfig.TOUR_API_KEY
 
     suspend fun loadAllPlaceData(): List<Place> {
         val result = placeService.requestAll()
@@ -42,13 +45,13 @@ class GuideRepository @Inject constructor(
     }
 
     suspend fun loadRecommendPlaceData(areaCode: String = "1", sigunguCode: String = "10"): List<RecommendPlace> {
-        val res = placeRecommend.requestRecommendPlace(areaCode, sigunguCode).response.body.items.item
+        val res = guideRecommendService.requestRecommendPlace(areaCode, sigunguCode, TOUR_API_KEY).response.body.items.item
         return res
     }
 
     suspend fun loadAreaData(areaCode: String = "1", requestType: String = "A01", pageNo: Int): List<RecommendPlace> {
         return try {
-            val res = placeRecommend.requestAreaBased(areaCode, requestType, pageNo)
+            val res = guideRecommendService.requestAreaBased(TOUR_API_KEY, areaCode, requestType, pageNo)
             val maxPage = (res.response.body.totalCnt / 10) + 1
             if (maxPage < pageNo) {
                 return listOf()
@@ -71,7 +74,7 @@ class GuideRepository @Inject constructor(
 */
     suspend fun loadFestivalData(areaCode: String, pageNo: Int): List<RecommendPlace> {
         return try {
-            val res = placeRecommend.requestFestival(getTodayDate(), areaCode, pageNo)
+            val res = guideRecommendService.requestFestival(TOUR_API_KEY, getTodayDate(), areaCode, pageNo)
             val maxPage = (res.response.body.totalCnt / 10) + 1
             if (maxPage < pageNo) {
                 return listOf()

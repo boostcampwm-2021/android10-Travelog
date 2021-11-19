@@ -17,8 +17,8 @@ class SchedulePlaceViewModel @Inject constructor(
     private var _placeList = MutableLiveData<List<PlaceModel>>()
     val placeList: LiveData<List<PlaceModel>> = _placeList
 
-    private var _selectedPlaces = MutableLiveData<MutableList<PlaceModel>>()
-    val selectedPlaces: LiveData<MutableList<PlaceModel>> = _selectedPlaces
+    /*private var _selectedPlaces = MutableLiveData<MutableList<PlaceModel>>()
+    val selectedPlaces: LiveData<MutableList<PlaceModel>> = _selectedPlaces*/
 
     private var _placeSelectedList = MutableLiveData<MutableList<PlaceModel>>()
     val placeSelectedList: LiveData<MutableList<PlaceModel>> = _placeSelectedList
@@ -37,7 +37,6 @@ class SchedulePlaceViewModel @Inject constructor(
 
     fun initPlaceSelectedList() {
         _placeSelectedList.value = mutableListOf()
-        _selectedPlaces.value = mutableListOf()
     }
 
     fun addPlaceSelectedList(value: PlaceModel) {
@@ -46,8 +45,6 @@ class SchedulePlaceViewModel @Inject constructor(
 
         _placeSelectedList.value?.add(value)
         _placeSelectedList.value = _placeSelectedList.value
-        _selectedPlaces.value?.add(value)
-        _selectedPlaces.value = _selectedPlaces.value
     }
 
     fun removePlaceSelectedList(cityName: String) {

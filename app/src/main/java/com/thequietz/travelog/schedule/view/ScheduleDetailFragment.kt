@@ -36,29 +36,31 @@ class ScheduleDetailFragment :
             }
         }
 
-        findNavController().currentBackStackEntry?.savedStateHandle
-            ?.getLiveData<PlaceDetailModel>("result")?.observe(
-                viewLifecycleOwner,
-                {
-                    viewModel.addSchedule(it)
+        val stateHandle = findNavController().currentBackStackEntry?.savedStateHandle
 
-                    val newTarget =
-                        LatLng(it.geometry.location.latitude, it.geometry.location.longitude)
+        stateHandle?.getLiveData<PlaceDetailModel>("result")?.observe(
+            viewLifecycleOwner,
+            {
+                viewModel.addSchedule(it)
 
-                    if (viewModel.placeDetailList.value?.size ?: 0 < 2)
-                        targetList.value = mutableListOf(newTarget)
-                    else
-                        targetList.value = targetList.value.apply {
-                            this?.add(newTarget)
-                        }
+                val newTarget =
+                    LatLng(it.geometry.location.latitude, it.geometry.location.longitude)
 
-                    createMarker(newTarget, isNumbered = true)
-                    markerList.forEachIndexed { index, marker ->
-                        if (index + 1 < markerList.size)
-                            createPolyline(marker, markerList[index + 1])
+                if (viewModel.placeDetailList.value?.size ?: 0 < 2)
+                    targetList.value = mutableListOf(newTarget)
+                else
+                    targetList.value = targetList.value.apply {
+                        this?.add(newTarget)
                     }
+
+                createMarker(newTarget, isNumbered = true)
+                markerList.forEachIndexed { index, marker ->
+                    if (index + 1 < markerList.size)
+                        createPolyline(marker, markerList[index + 1])
                 }
-            )
+                stateHandle.remove<PlaceDetailModel>("result")
+            }
+        )
     }
 
     override fun initViewModel() {
@@ -73,7 +75,7 @@ class ScheduleDetailFragment :
         viewModel.initItemList(startDate, endDate)
         adapter = ScheduleDetailAdapter(viewModel) {
             val action =
-                ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToPlaceSearchFragment()
+                ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToPlaceRecommendFragment()
             this.findNavController().navigate(action)
         }
         val callback = ScheduleTouchHelperCallback(adapter)
