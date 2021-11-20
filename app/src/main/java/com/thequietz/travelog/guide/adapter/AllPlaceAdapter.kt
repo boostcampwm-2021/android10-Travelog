@@ -14,7 +14,6 @@ class AllPlaceAdapter() : androidx.recyclerview.widget.ListAdapter<Place, AllPla
 ) {
     class AllPlaceViewHolder(val binding: ItemRecyclerGuideSpecificPlaceBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Place) {
-            println(item.toString())
             binding.item = item
             binding.executePendingBindings()
             val temp = mutableListOf<Place>()
