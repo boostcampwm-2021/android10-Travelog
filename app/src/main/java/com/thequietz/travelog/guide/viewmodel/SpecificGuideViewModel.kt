@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.NumberFormatException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +20,7 @@ class SpecificGuideViewModel @Inject internal constructor(
     val guideRepository: GuideRepository
 ) : ViewModel() {
     companion object {
-        var previousSearchCode = ""
+        var previousSearch = ""
     }
 
     private val _currentPlaceList = MutableLiveData<List<Place>>()
@@ -33,13 +34,28 @@ class SpecificGuideViewModel @Inject internal constructor(
 
     fun initCurrentItem(args: SpecificGuideFragmentArgs) {
         viewModelScope.launch {
-            val res = withContext(Dispatchers.IO) {
-                guideRepository.loadDoSiByCode(args.item)
+            try {
+                val code = args.item.toInt()
+                val res = withContext(Dispatchers.IO) {
+                    guideRepository.loadDoSiByCode(code.toString())
+                }
+                _currentPlaceList.value = res
+                _currentSearch.value = areaCodeList.get(res.get(0).areaCode.toInt())
+                previousSearch = res.get(0).areaCode
+                _noData.value = currentPlaceList.value?.size == 0
+            } catch (e: NumberFormatException) {
+                val res = withContext(Dispatchers.IO) {
+                    guideRepository.loadDoSiByKeyword(args.item)
+                }
+                _currentPlaceList.value = res
+                if (res.size == 0) {
+                    _currentSearch.value = args.item
+                } else {
+                    _currentSearch.value = areaCodeList.get(res.get(0).areaCode.toInt())
+                }
+                previousSearch = args.item
+                _noData.value = currentPlaceList.value?.size == 0
             }
-            _currentPlaceList.value = res
-            _currentSearch.value = areaCodeList.get(res.get(0).areaCode.toInt())
-            previousSearchCode = res.get(0).areaCode
-            _noData.value = currentPlaceList.value?.size == 0
         }
     }
 }

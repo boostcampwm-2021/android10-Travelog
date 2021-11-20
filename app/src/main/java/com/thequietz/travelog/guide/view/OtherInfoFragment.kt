@@ -94,7 +94,7 @@ class OtherInfoFragment : Fragment() {
             )
             tbOtherInfo.setNavigationOnClickListener {
                 val action = OtherInfoFragmentDirections
-                    .actionOtherInfoFragmentToSpecificGuideFragment(SpecificGuideViewModel.previousSearchCode)
+                    .actionOtherInfoFragmentToSpecificGuideFragment(SpecificGuideViewModel.previousSearch)
                 findNavController().navigate(action)
             }
             rvVacationSpot.addOnScrollListener(object : RecyclerView.OnScrollListener() {
