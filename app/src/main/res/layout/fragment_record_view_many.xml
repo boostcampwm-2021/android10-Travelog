@@ -71,6 +71,17 @@
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
+            app:layout_constraintEnd_toStartOf="@id/ib_record_view_pdf"
+            app:layout_constraintTop_toBottomOf="@id/tb_record_view_many"
+            app:layout_constraintBottom_toTopOf="@id/rv_record_view_many"
+            android:background="@drawable/img_camera"
+            android:scaleType="fitXY"
+            android:id="@+id/ib_record_camera"
+            android:layout_marginEnd="5dp"
+            />
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             app:layout_constraintEnd_toStartOf="@id/ib_record_view_many"
             app:layout_constraintTop_toBottomOf="@id/tb_record_view_many"
             app:layout_constraintBottom_toTopOf="@id/rv_record_view_many"
