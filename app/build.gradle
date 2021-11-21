@@ -23,6 +23,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "GOOGLE_MAP_KEY", properties["google_map_key"]
         buildConfigField "String", "TOUR_API_KEY", properties["tour_api_key"]
+        buildConfigField "String", "NEW_TOUR_API_KEY", properties["new_tour_api_key"]
     }
 
     buildTypes {
@@ -101,4 +102,7 @@ dependencies {
 
     // pdf
     implementation 'com.itextpdf:itextpdf:5.0.6'
+
+    // swipe refresh
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 }

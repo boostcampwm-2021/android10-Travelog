@@ -34,11 +34,11 @@ class GuideViewModel @Inject internal constructor(
                     )
                 )
                 val recommendList = withContext(Dispatchers.IO) {
-                    guideRepository.loadRecommendPlaceData()
+                    // guideRepository.loadRecommendPlaceData()
                 }
                 res.add(
                     Guide.SpecificRecommend().copy(
-                        specificRecommendList = recommendList.toMutableList()
+                        // specificRecommendList = recommendList.toMutableList()
                     )
                 )
                 res.add(

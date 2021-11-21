@@ -22,10 +22,6 @@ import com.thequietz.travelog.record.adapter.MultiViewAdapter
 import com.thequietz.travelog.record.viewmodel.RecordViewManyViewModel
 import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -37,6 +33,7 @@ class RecordViewManyFragment : Fragment() {
     private val binding get() = _binding
     private val recordViewManyViewModel by viewModels<RecordViewManyViewModel>()
     private val adapter by lazy { MultiViewAdapter() }
+    val byteList = mutableListOf<ByteArrayOutputStream>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -78,54 +75,60 @@ class RecordViewManyFragment : Fragment() {
                 findNavController().navigate(action)
             }
         }
+        binding.ibRecordCamera.setOnClickListener {
+            val bm = Bitmap.createBitmap(screenShot(binding.clRecordViewMany)!!)
+            val canvas = Canvas(bm)
+            val bgDrawable = binding.clRecordViewMany.background
+            canvas.drawColor(Color.WHITE)
+            binding.clRecordViewMany.draw(canvas)
+            val bytes = ByteArrayOutputStream()
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+
+            byteList.add(bytes)
+            Toast.makeText(requireContext(), "스크린샷 생성", Toast.LENGTH_SHORT).show()
+        }
         binding.ibRecordViewPdf.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                withContext(Dispatchers.IO) {
-                    val bm = Bitmap.createBitmap(
-                        binding.clRecordViewMany.width,
-                        binding.clRecordViewMany.height,
-                        Bitmap.Config.ARGB_8888
-                    )
-                    val canvas = Canvas(bm)
-                    val bgDrawable = binding.clRecordViewMany.background
-                    if (bgDrawable != null) {
-                        bgDrawable.draw(canvas)
-                    } else {
-                        canvas.drawColor(Color.WHITE)
-                    }
-                    binding.clRecordViewMany.draw(canvas)
-                    val bytes = ByteArrayOutputStream()
-                    bm.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+            val document = Document()
+            PdfWriter.getInstance(
+                document,
+                FileOutputStream(
+                    Environment.getExternalStorageDirectory().toString() + "/newPDF.pdf"
+                )
+            )
+            document.open()
+            byteList.forEachIndexed { ind, it ->
+                val file = File(Environment.getExternalStorageDirectory(), "./myPDF.jpg")
+                try {
+                    file.createNewFile()
+                    val fo = FileOutputStream(file)
+                    fo.write(it.toByteArray())
 
-                    val file = File(Environment.getExternalStorageDirectory(), "./myPDF.jpg")
-                    try {
-                        file.createNewFile()
-                        val fo = FileOutputStream(file)
-                        fo.write(bytes.toByteArray())
-                        val document = Document()
-                        PdfWriter.getInstance(
-                            document,
-                            FileOutputStream(Environment.getExternalStorageDirectory().toString() + "/newPDF.pdf")
-                        )
-                        document.open()
+                    val image = Image.getInstance(file.toString())
+                    val scaler =
+                        (((document.pageSize.width - document.leftMargin()) - document.rightMargin()) / image.width) * 80
 
-                        val image = Image.getInstance(file.toString())
-                        val scaler =
-                            (((document.pageSize.width - document.leftMargin()) - document.rightMargin()) / image.width) * 100
-
-                        image.scalePercent(scaler)
-                        image.alignment = (Image.ALIGN_CENTER or Image.ALIGN_TOP)
-                        document.add(image)
+                    image.scalePercent(scaler)
+                    image.alignment = (Image.ALIGN_CENTER or Image.ALIGN_TOP)
+                    document.add(image)
+                    if (ind == (byteList.size - 1)) {
                         document.close()
-                        file.delete()
-                        CoroutineScope(Dispatchers.Main).launch {
-                            Toast.makeText(requireContext(), "pdf파일 생성", Toast.LENGTH_SHORT).show()
-                        }
-                    } catch (e: IOException) {
-                        println("something wrong")
                     }
+                    file.delete()
+                } catch (e: IOException) {
+                    println("something wrong")
                 }
             }
+            Toast.makeText(requireContext(), "pdf파일 생성", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun screenShot(view: View): Bitmap? {
+        val bitmap = Bitmap.createBitmap(
+            view.width,
+            view.height, Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        view.draw(canvas)
+        return bitmap
     }
 }

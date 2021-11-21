@@ -9,6 +9,12 @@
             type="com.thequietz.travelog.guide.viewmodel.OtherInfoViewModel" />
         <import type="android.view.View"/>
     </data>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/sl_layout"
+        >
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -82,13 +88,15 @@
             android:orientation="horizontal"
             android:id="@+id/rv_vacation_spot"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="해당 데이터가 없습니다"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_vacation_spot"
-            android:layout_marginStart="20dp"
+        <ImageView
+            android:id="@+id/iv_no_vation"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/img_refresh"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_vacation_spot"
+            app:layout_constraintBottom_toBottomOf="@id/tv_vacation_spot"
+            android:layout_marginEnd="40dp"
             android:textStyle="bold"
             android:textSize="20sp"
             android:visibility="@{viewModel.currentVacationSpotList.size() == 0 ? View.VISIBLE : View.GONE}"
@@ -115,13 +123,15 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="horizontal"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="해당 데이터가 없습니다"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_food"
-            android:layout_marginStart="20dp"
+        <ImageView
+            android:id="@+id/iv_no_food"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/img_refresh"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_food"
+            app:layout_constraintBottom_toBottomOf="@id/tv_food"
+            android:layout_marginEnd="40dp"
             android:textStyle="bold"
             android:textSize="20sp"
             android:visibility="@{viewModel.currentFoodList.size() == 0 ? View.VISIBLE : View.GONE}"
@@ -148,13 +158,15 @@
             android:orientation="horizontal"
             android:id="@+id/rv_festival"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="해당 데이터가 없습니다"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_fesetival"
-            android:layout_marginStart="20dp"
+        <ImageView
+            android:id="@+id/iv_no_festival"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/img_refresh"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_fesetival"
+            app:layout_constraintBottom_toBottomOf="@id/tv_fesetival"
+            android:layout_marginEnd="40dp"
             android:textStyle="bold"
             android:textSize="20sp"
             android:visibility="@{viewModel.currentFestivalList.size() == 0 ? View.VISIBLE : View.GONE}"
@@ -162,4 +174,5 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

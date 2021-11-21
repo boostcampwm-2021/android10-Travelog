@@ -18,7 +18,7 @@
             android:id="@+id/iv_item_place_all"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_marginStart="18dp"
+            android:layout_marginStart="25dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:setImage="@{item.url}" />

@@ -14,12 +14,11 @@ class AllPlaceAdapter() : androidx.recyclerview.widget.ListAdapter<Place, AllPla
 ) {
     class AllPlaceViewHolder(val binding: ItemRecyclerGuideSpecificPlaceBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Place) {
-            println(item.toString())
             binding.item = item
             binding.executePendingBindings()
             val temp = mutableListOf<Place>()
             temp.add(item)
-            temp.add(
+            /*temp.add(
                 item.copy(
                     areaCode = "31",
                     url = "http://tong.visitkorea.or.kr/cms/resource/36/2364836_image2_1.jpg",
@@ -42,7 +41,7 @@ class AllPlaceAdapter() : androidx.recyclerview.widget.ListAdapter<Place, AllPla
                     name = "울산",
                     stateName = "울산시"
                 )
-            )
+            )*/
 
             itemView.setOnClickListener {
                 val action = SpecificGuideFragmentDirections

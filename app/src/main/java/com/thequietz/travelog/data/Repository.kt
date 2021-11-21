@@ -23,6 +23,7 @@ class GuideRepository @Inject constructor(
 ) {
 
     private val TOUR_API_KEY = BuildConfig.TOUR_API_KEY
+    private val NEW_TOUR_API_KEY = BuildConfig.NEW_TOUR_API_KEY
 
     suspend fun loadAllPlaceData(): List<Place> {
         val result = placeService.requestAll()
@@ -45,13 +46,13 @@ class GuideRepository @Inject constructor(
     }
 
     suspend fun loadRecommendPlaceData(areaCode: String = "1", sigunguCode: String = "10"): List<RecommendPlace> {
-        val res = guideRecommendService.requestRecommendPlace(areaCode, sigunguCode, TOUR_API_KEY).response.body.items.item
+        val res = guideRecommendService.requestRecommendPlace(areaCode, sigunguCode, NEW_TOUR_API_KEY).response.body.items.item
         return res
     }
 
     suspend fun loadAreaData(areaCode: String = "1", requestType: String = "A01", pageNo: Int): List<RecommendPlace> {
         return try {
-            val res = guideRecommendService.requestAreaBased(TOUR_API_KEY, areaCode, requestType, pageNo)
+            val res = guideRecommendService.requestAreaBased(NEW_TOUR_API_KEY, areaCode, requestType, pageNo)
             val maxPage = (res.response.body.totalCnt / 10) + 1
             if (maxPage < pageNo) {
                 return listOf()
@@ -74,7 +75,7 @@ class GuideRepository @Inject constructor(
 */
     suspend fun loadFestivalData(areaCode: String, pageNo: Int): List<RecommendPlace> {
         return try {
-            val res = guideRecommendService.requestFestival(TOUR_API_KEY, getTodayDate(), areaCode, pageNo)
+            val res = guideRecommendService.requestFestival(NEW_TOUR_API_KEY, getTodayDate(), areaCode, pageNo)
             val maxPage = (res.response.body.totalCnt / 10) + 1
             if (maxPage < pageNo) {
                 return listOf()

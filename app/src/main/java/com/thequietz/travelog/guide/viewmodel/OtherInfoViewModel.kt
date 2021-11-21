@@ -80,27 +80,17 @@ class OtherInfoViewModel @Inject internal constructor(
             _vacationPageEnd.value = false
             _foodPageEnd.value = false
             _festivalPageEnd.value = false
-            vacationPageInd = 0
-            foodPageInd = 0
-            festivalPageInd = 0
-            val vacationRes = vacationSpotList.value?.get(ind)
-            vacationRes?.let {
-                _currentVacationSpotList.value = it
-            }
-            val foodRes = foodList.value?.get(ind)
-            foodRes?.let {
-                _currentFoodList.value = it
-            }
-            val festivalRes = festivalList.value?.get(ind)
-            festivalRes?.let {
-                _currentFestivalList.value = it
-            }
+            vacationPageInd = 1
+            foodPageInd = 1
+            festivalPageInd = 1
+            vacationAgain()
+            foodAgain()
+            festivalAgain()
         }
     }
 
     fun initVacationSpotData() {
         viewModelScope.launch {
-            vacationPageInd++
             val vacationRes = mutableListOf<List<RecommendPlace>>()
             placeList.value?.forEach {
                 val tempRes = withContext(Dispatchers.IO) {
@@ -113,16 +103,11 @@ class OtherInfoViewModel @Inject internal constructor(
                 }
             }
             _vacationSpotList.value = vacationRes
-            val vacationTemp = vacationSpotList.value?.get(0)
-            vacationTemp?.let {
-                _currentVacationSpotList.value = it
-            }
         }
     }
 
     fun initFoodData() {
         viewModelScope.launch {
-            foodPageInd++
             val foodRes = mutableListOf<List<RecommendPlace>>()
             placeList.value?.forEach {
                 val tempRes = withContext(Dispatchers.IO) {
@@ -135,17 +120,11 @@ class OtherInfoViewModel @Inject internal constructor(
                 }
             }
             _foodList.value = foodRes
-
-            val foodTemp = foodList.value?.get(0)
-            foodTemp?.let {
-                _currentFoodList.value = it
-            }
         }
     }
 
     fun initFestivalData() {
         viewModelScope.launch {
-            festivalPageInd++
             val festivalRes = mutableListOf<List<RecommendPlace>>()
             placeList.value?.forEach {
                 val tempRes = withContext(Dispatchers.IO) {
@@ -154,10 +133,6 @@ class OtherInfoViewModel @Inject internal constructor(
                 festivalRes.add(tempRes)
             }
             _festivalList.value = festivalRes
-            val festivalTemp = festivalList.value?.get(0)
-            festivalTemp?.let {
-                _currentFestivalList.value = it
-            }
         }
     }
     fun addVacationData() {
@@ -220,6 +195,46 @@ class OtherInfoViewModel @Inject internal constructor(
                 _festivalPageEnd.value = true
             }
             currentRes?.let {
+                _currentFestivalList.value = it
+            }
+        }
+    }
+    fun vacationAgain() {
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO) {
+                currentPlace.value?.let {
+                    CategoryMap.get(Category.VACATION)?.let { type ->
+                        repository.loadAreaData(it.areaCode, type, 1)
+                    }
+                }
+            }
+            res?.let {
+                _currentVacationSpotList.value = it
+            }
+        }
+    }
+    fun foodAgain() {
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO) {
+                currentPlace.value?.let {
+                    CategoryMap.get(Category.FOOD)?.let { type ->
+                        repository.loadAreaData(it.areaCode, type, 1)
+                    }
+                }
+            }
+            res?.let {
+                _currentFoodList.value = it
+            }
+        }
+    }
+    fun festivalAgain() {
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO) {
+                currentPlace.value?.let {
+                    repository.loadFestivalData(it.areaCode, 1)
+                }
+            }
+            res?.let {
                 _currentFestivalList.value = it
             }
         }

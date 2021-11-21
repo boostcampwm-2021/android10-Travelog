@@ -19,6 +19,10 @@ import com.thequietz.travelog.guide.adapter.OtherInfoViewPagerAdapter
 import com.thequietz.travelog.guide.viewmodel.OtherInfoViewModel
 import com.thequietz.travelog.guide.viewmodel.SpecificGuideViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class OtherInfoFragment : Fragment() {
@@ -94,7 +98,7 @@ class OtherInfoFragment : Fragment() {
             )
             tbOtherInfo.setNavigationOnClickListener {
                 val action = OtherInfoFragmentDirections
-                    .actionOtherInfoFragmentToSpecificGuideFragment(SpecificGuideViewModel.previousSearchCode)
+                    .actionOtherInfoFragmentToSpecificGuideFragment(SpecificGuideViewModel.previousSearch)
                 findNavController().navigate(action)
             }
             rvVacationSpot.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -130,6 +134,40 @@ class OtherInfoFragment : Fragment() {
                     }
                 }
             })
+            ivNoVation.setOnClickListener {
+                CoroutineScope(Dispatchers.Main).launch {
+                    withContext(Dispatchers.IO) {
+                        otherInfoViewModel.vacationAgain()
+                    }
+                    if (otherInfoViewModel.currentVacationSpotList.value?.size == 0) {
+                        Toast.makeText(requireContext(), "해당 데이터가 없습니다", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            ivNoFood.setOnClickListener {
+                CoroutineScope(Dispatchers.Main).launch {
+                    withContext(Dispatchers.IO) {
+                        otherInfoViewModel.foodAgain()
+                    }
+                    if (otherInfoViewModel.currentFoodList.value?.size == 0) {
+                        Toast.makeText(requireContext(), "해당 데이터가 없습니다", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            ivNoFestival.setOnClickListener {
+                CoroutineScope(Dispatchers.Main).launch {
+                    withContext(Dispatchers.IO) {
+                        otherInfoViewModel.festivalAgain()
+                    }
+                    if (otherInfoViewModel.currentFestivalList.value?.size == 0) {
+                        Toast.makeText(requireContext(), "해당 데이터가 없습니다", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            slLayout.setOnRefreshListener {
+                otherInfoViewModel.initPlaceList(args.item)
+                slLayout.isRefreshing = false
+            }
         }
     }
 }
