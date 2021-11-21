@@ -72,9 +72,9 @@ class GuideFragment : Fragment() {
             }
         )
         binding.etSearch.setOnKeyListener { _, key, event ->
-            downKeyboard()
             if ((event.action == KeyEvent.ACTION_DOWN) && (key == KeyEvent.KEYCODE_ENTER)) {
                 searchAction()
+                downKeyboard()
                 true
             } else {
                 false
