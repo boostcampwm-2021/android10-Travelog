@@ -15,7 +15,9 @@ import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordBasicBinding
 import com.thequietz.travelog.record.adapter.RecordBasicAdapter
 import com.thequietz.travelog.record.viewmodel.RecordBasicViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecordBasicFragment : Fragment() {
     private val navArgs by navArgs<RecordBasicFragmentArgs>()
     private val viewModel by viewModels<RecordBasicViewModel>()
