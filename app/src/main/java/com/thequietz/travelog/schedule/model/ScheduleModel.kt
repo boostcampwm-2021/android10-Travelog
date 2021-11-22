@@ -12,12 +12,12 @@ data class ScheduleModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String = "",
-    val place: List<PlaceModel> = listOf(),
+    val schedulePlace: List<SchedulePlaceModel> = listOf(),
     val date: String = "",
     val destination: List<PlaceDetailModel> = listOf()
 ) : Parcelable {
     override fun toString(): String {
-        val placeString = place.fold("") { sum, element -> sum + element }
+        val placeString = schedulePlace.fold("") { sum, element -> sum + element }
         return placeString.substring(1, placeString.length - 1)
     }
 }

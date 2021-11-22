@@ -7,8 +7,8 @@ import com.thequietz.travelog.data.ScheduleRepository
 import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.schedule.data.ColorRGB
 import com.thequietz.travelog.schedule.data.ScheduleDetailItem
-import com.thequietz.travelog.schedule.model.PlaceModel
 import com.thequietz.travelog.schedule.model.ScheduleModel
+import com.thequietz.travelog.schedule.model.SchedulePlaceModel
 import com.thequietz.travelog.util.dateFormat
 import com.thequietz.travelog.util.dateToString
 import com.thequietz.travelog.util.stringToDate
@@ -57,9 +57,9 @@ class ScheduleDetailViewModel @Inject internal constructor(
         }
     }
 
-    fun createSchedule(name: String, places: List<PlaceModel>, date: String) {
+    fun createSchedule(name: String, schedulePlaces: List<SchedulePlaceModel>, date: String) {
         repository.createSchedules(
-            ScheduleModel(name = name, place = places, date = date)
+            ScheduleModel(name = name, schedulePlace = schedulePlaces, date = date)
         )
     }
 

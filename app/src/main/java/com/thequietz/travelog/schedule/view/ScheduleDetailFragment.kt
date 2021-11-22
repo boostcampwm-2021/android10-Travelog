@@ -29,7 +29,7 @@ class ScheduleDetailFragment :
 
         binding.btnNext.setOnClickListener {
             args.schedule.apply {
-                viewModel.createSchedule(name, place, date)
+                viewModel.createSchedule(name, schedulePlace, date)
                 val action =
                     ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToScheduleFragment()
                 findNavController().navigate(action)
@@ -95,7 +95,7 @@ class ScheduleDetailFragment :
     override fun initTargetList() {
         if (isInitial)
             targetList.value =
-                args.schedule.place.map { LatLng(it.mapY.toDouble(), it.mapX.toDouble()) }
+                args.schedule.schedulePlace.map { LatLng(it.mapY.toDouble(), it.mapX.toDouble()) }
                     .toMutableList()
     }
 }

@@ -11,7 +11,6 @@ import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
@@ -87,7 +86,7 @@ class SchedulePlaceFragment : Fragment() {
             it.findNavController().navigate(action)
         }
 
-        viewModel.placeList.observe(viewLifecycleOwner, {
+        viewModel.schedulePlaceList.observe(viewLifecycleOwner, {
 
             binding.tvEmptyResult.visibility = if (it.isEmpty()) {
                 View.VISIBLE
