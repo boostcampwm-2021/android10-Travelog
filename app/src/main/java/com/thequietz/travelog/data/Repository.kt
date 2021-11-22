@@ -1,5 +1,6 @@
 package com.thequietz.travelog.data
 
+import android.util.Log
 import com.google.gson.JsonSyntaxException
 import com.thequietz.travelog.BuildConfig
 import com.thequietz.travelog.api.GuideRecommendService

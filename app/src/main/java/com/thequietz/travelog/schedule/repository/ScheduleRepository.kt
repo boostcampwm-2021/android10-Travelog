@@ -23,7 +23,7 @@ class ScheduleRepository @Inject constructor(
     fun createSchedules(schedule: ScheduleModel, onInsert: (Int) -> (Unit)) {
         coroutineScope.launch {
             val result = scheduleDao.insert(schedule)
-            onInsert(result.toInt())
+            onInsert(result[0].toInt())
         }
     }
 
