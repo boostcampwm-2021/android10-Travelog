@@ -118,6 +118,7 @@ class ScheduleSelectFragment : Fragment() {
         }
         binding.calendar.setOnRangeSelectedListener { startDate, endDate, _, _ ->
             scheduleSelectViewModel.setScheduleRange(startDate, endDate)
+            Log.d("StartDate", "$startDate / $endDate")
         }
         binding.calendar.setOnStartSelectedListener { startDate, _ ->
             scheduleSelectViewModel.setScheduleRange(startDate, startDate)
