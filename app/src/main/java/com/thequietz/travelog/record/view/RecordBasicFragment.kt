@@ -10,12 +10,14 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordBasicBinding
 import com.thequietz.travelog.record.adapter.RecordBasicAdapter
 import com.thequietz.travelog.record.viewmodel.RecordBasicViewModel
 
 class RecordBasicFragment : Fragment() {
+    private val navArgs by navArgs<RecordBasicFragmentArgs>()
     private val viewModel by viewModels<RecordBasicViewModel>()
     private val adapter by lazy {
         RecordBasicAdapter(
@@ -43,6 +45,8 @@ class RecordBasicFragment : Fragment() {
         binding = FragmentRecordBasicBinding.inflate(inflater, container, false)
 
         binding.rvRecordBasic.adapter = adapter
+
+        viewModel.loadData(navArgs.title)
 
         subscribeUi()
 

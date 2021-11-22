@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_recordBasicFragment_to_recordAddImageFragment"
             app:destination="@id/recordAddImageFragment" />
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/recordViewOneFragment"
