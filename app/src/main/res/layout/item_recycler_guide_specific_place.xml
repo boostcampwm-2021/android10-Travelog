@@ -21,6 +21,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/iv_item_specific_place"
             app:setImage="@{item.url}"
+            android:background="?attr/selectableItemBackground"
             android:layout_marginStart="18dp" />
 
         <TextView
