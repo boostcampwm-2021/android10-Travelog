@@ -20,7 +20,8 @@ import com.itextpdf.text.Document
 import com.itextpdf.text.Image
 import com.itextpdf.text.pdf.PdfWriter
 import com.thequietz.travelog.databinding.FragmentRecordViewManyBinding
-import com.thequietz.travelog.record.adapter.MultiViewAdapter
+import com.thequietz.travelog.record.adapter.RecordViewManyMultiViewAdapter
+import com.thequietz.travelog.record.viewmodel.RecordViewManyInnerViewModel
 import com.thequietz.travelog.record.viewmodel.RecordViewManyViewModel
 import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +35,8 @@ class RecordViewManyFragment : Fragment() {
     private lateinit var _binding: FragmentRecordViewManyBinding
     private val binding get() = _binding
     private val recordViewManyViewModel by viewModels<RecordViewManyViewModel>()
-    private val adapter by lazy { MultiViewAdapter() }
+    private val recordViewInnerViewModel by viewModels<RecordViewManyInnerViewModel>()
+    private val adapter by lazy { RecordViewManyMultiViewAdapter(recordViewInnerViewModel) }
     val byteList = mutableListOf<ByteArrayOutputStream>()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +59,7 @@ class RecordViewManyFragment : Fragment() {
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
             viewModel = recordViewManyViewModel
+            innerViewModel = recordViewInnerViewModel
             rvRecordViewMany.adapter = adapter
         }
         with(recordViewManyViewModel) {
@@ -129,6 +132,9 @@ class RecordViewManyFragment : Fragment() {
             val contentUrl = FileProvider.getUriForFile(requireContext(), requireContext().packageName + ".fileprovider", pdfFile)
             sharingIntent.putExtra(Intent.EXTRA_STREAM, contentUrl)
             startActivity(Intent.createChooser(sharingIntent, "파일 공유"))
+        }
+        binding.ibRecordDelete.setOnClickListener {
+            recordViewInnerViewModel.changeDeleteState()
         }
     }
 

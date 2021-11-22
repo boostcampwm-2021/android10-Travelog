@@ -17,10 +17,8 @@ import javax.inject.Inject
 class RecordViewManyViewModel @Inject constructor(
     val repository: RecordRepository
 ) : ViewModel() {
-
     private val _dataList = MutableLiveData<List<MyRecord>>()
     val dataList: LiveData<List<MyRecord>> = _dataList
-
     init {
         change2MyRecord()
     }
