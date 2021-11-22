@@ -6,7 +6,6 @@ import com.thequietz.travelog.api.PlaceRecommendService
 import com.thequietz.travelog.place.model.PlaceRecommendModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
 import retrofit2.awaitResponse
 import java.net.SocketTimeoutException
 import javax.inject.Inject
@@ -15,6 +14,7 @@ class PlaceRecommendRepository @Inject constructor(
     private val service: PlaceRecommendService,
 ) {
     private val TAG = "PLACE_RECOMMEND"
+    private var emptyList = emptyList<PlaceRecommendModel>()
 
     suspend fun loadPlaceData(typeId: Int): List<PlaceRecommendModel> {
         return withContext(Dispatchers.IO) {
@@ -25,14 +25,15 @@ class PlaceRecommendRepository @Inject constructor(
 
                 if (!resp.isSuccessful || resp.body() == null) {
                     Log.d(TAG, resp.errorBody().toString())
-                    listOf<PlaceRecommendModel>()
+                    emptyList
                 }
                 val items = resp.body()?.response?.body?.items
-                items?.item ?: listOf()
-            } catch (e: HttpException) {
-                listOf()
+                items?.item ?: emptyList
             } catch (e: SocketTimeoutException) {
-                listOf()
+                emptyList
+            } catch (t: Throwable) {
+                Log.d(TAG, t.stackTraceToString())
+                emptyList
             }
         }
     }

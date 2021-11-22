@@ -14,7 +14,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentSchedulePlaceBinding
@@ -99,8 +98,11 @@ class SchedulePlaceFragment : Fragment() {
             schedulePlaceAdapter = SchedulePlaceAdapter(
                 object : SchedulePlaceAdapter.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int, toggle: Boolean) {
+                        val state = binding.rvSelectSearch.layoutManager?.onSaveInstanceState()
+                        viewModel.saveViewState(state)
                         when (toggle) {
                             true -> viewModel.addPlaceSelectedList(it[position])
+
                             false -> viewModel.removePlaceSelectedList(it[position].cityName)
                         }
                     }
@@ -108,24 +110,28 @@ class SchedulePlaceFragment : Fragment() {
             )
 
             binding.rvSelectSearch.adapter = schedulePlaceAdapter
-            (binding.rvSelectSearch.adapter as SchedulePlaceAdapter).stateRestorationPolicy =
-                RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-
             binding.rvSelectSearch.layoutManager = GridLayoutManager(mContext, 2)
             binding.lifecycleOwner = viewLifecycleOwner
+
+            binding.rvSelectSearch.layoutManager?.onRestoreInstanceState(viewModel.viewState.value)
             schedulePlaceAdapter.submitList(it)
         })
 
         viewModel.placeSelectedList.observe(viewLifecycleOwner, {
             if (it.size == 0) {
                 binding.btnSelectDate.setDisable()
+                binding.rvSelectItem.visibility = View.GONE
             } else {
                 binding.btnSelectDate.setEnable()
+                binding.rvSelectItem.visibility = View.VISIBLE
             }
 
             schedulePlaceSelectedAdapter = SchedulePlaceSelectedAdapter(
                 object : SchedulePlaceSelectedAdapter.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int) {
+                        val state = binding.rvSelectSearch.layoutManager?.onSaveInstanceState()
+                        viewModel.saveViewState(state)
+
                         viewModel.removePlaceSelectedList(it[position].cityName)
                     }
                 }

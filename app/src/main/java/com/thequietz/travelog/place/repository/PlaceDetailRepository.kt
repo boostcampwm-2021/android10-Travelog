@@ -13,7 +13,6 @@ import com.thequietz.travelog.place.model.detail.RecommendImageObject
 import com.thequietz.travelog.place.model.detail.RecommendInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
 import retrofit2.awaitResponse
 import javax.inject.Inject
 
@@ -23,6 +22,7 @@ class PlaceDetailRepository @Inject constructor(
 ) {
     private val TAG = "PLACE_DETAIL"
     private val gson = Gson()
+    private val emptyList = emptyList<RecommendImage>()
 
     suspend fun loadPlaceDetail(placeId: String): PlaceDetailModel? {
         return withContext(Dispatchers.IO) {
@@ -34,8 +34,8 @@ class PlaceDetailRepository @Inject constructor(
                     Log.d(TAG, resp.errorBody().toString())
                 }
                 resp.body()?.result
-            } catch (e: HttpException) {
-                Log.d(TAG, e.message())
+            } catch (t: Throwable) {
+                Log.d(TAG, t.stackTraceToString())
                 null
             }
         }
@@ -51,14 +51,14 @@ class PlaceDetailRepository @Inject constructor(
                     Log.d(TAG, response.errorBody().toString())
                 }
                 response.body()?.response?.body?.items?.info
-            } catch (e: HttpException) {
-                Log.d(TAG, e.message())
+            } catch (t: Throwable) {
+                Log.d(TAG, t.stackTraceToString())
                 null
             }
         }
     }
 
-    suspend fun loadPlaceImages(typeId: Int, id: Long): List<RecommendImage>? {
+    suspend fun loadPlaceImages(typeId: Int, id: Long): List<RecommendImage> {
         return withContext(Dispatchers.IO) {
             val jsonText = try {
                 val apiKey = BuildConfig.TOUR_API_KEY
@@ -70,25 +70,25 @@ class PlaceDetailRepository @Inject constructor(
 
                 val items = response.body()?.response?.body?.items
                 gson.toJson(items)
-            } catch (e: HttpException) {
-                Log.d(TAG, e.message())
+            } catch (t: Throwable) {
+                Log.d(TAG, t.stackTraceToString())
                 ""
             }
 
-            val images = try {
-                val images = gson.fromJson(jsonText, RecommendImageItem::class.java)
-                images.images
+            try {
+                gson.fromJson(jsonText, RecommendImageItem::class.java).images
             } catch (e: JsonSyntaxException) {
                 try {
                     val images = gson.fromJson(jsonText, RecommendImageObject::class.java)
                     listOf(images.image)
                 } catch (e: JsonSyntaxException) {
                     Log.d(TAG, e.toString())
-                    listOf()
+                    emptyList
                 }
+            } catch (t: Throwable) {
+                Log.d(TAG, t.stackTraceToString())
+                emptyList
             }
-
-            images
         }
     }
 }

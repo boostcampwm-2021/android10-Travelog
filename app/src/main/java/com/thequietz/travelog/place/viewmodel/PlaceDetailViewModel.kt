@@ -1,5 +1,7 @@
 package com.thequietz.travelog.place.viewmodel
 
+import android.os.Build
+import android.text.Html
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -60,6 +62,11 @@ class PlaceDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val images = repository.loadPlaceImages(typeId, id)
             val info = repository.loadPlaceInfo(typeId, id)
+            val overview = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Html.fromHtml(info?.overview, Html.FROM_HTML_MODE_COMPACT)
+            } else {
+                Html.fromHtml(info?.overview ?: "")
+            }
             _detail.value = PlaceDetailModel(
                 placeId = id.toString(),
                 address = info?.address ?: "",
@@ -76,7 +83,7 @@ class PlaceDetailViewModel @Inject constructor(
                 reviews = listOf(),
                 types = listOf(typeMap[typeId] ?: "Unknown"),
                 website = info?.url ?: "",
-                overview = info?.overview ?: ""
+                overview = overview.toString()
             )
         }
     }

@@ -14,7 +14,6 @@ import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,30 +22,33 @@ class GuideRepository @Inject constructor(
     private val placeService: PlaceService,
     private val guideRecommendService: GuideRecommendService
 ) {
-
+    private val TAG = "GUIDE"
     private val TOUR_API_KEY = BuildConfig.TOUR_API_KEY
     private val NEW_TOUR_API_KEY = BuildConfig.NEW_TOUR_API_KEY
 
-    suspend fun loadAllPlaceData(): List<Place> {
-        val result = try {
-            placeService.requestAll().data
-        } catch (e: HttpException) {
-            listOf()
-        } catch (e: JsonSyntaxException) {
-            listOf()
-        }
+    private val emptyList = emptyList<Place>()
+    private val emptyRecommendList = emptyList<RecommendPlace>()
 
-        return result
+    suspend fun loadAllPlaceData(): List<Place> {
+        return try {
+            placeService.requestAll().data
+        } catch (e: JsonSyntaxException) {
+            emptyList
+        } catch (t: Throwable) {
+            Log.d(TAG, t.stackTraceToString())
+            emptyList
+        }
     }
 
     suspend fun loadAllDoSi(): List<Place> {
         return try {
             val result = placeService.requestALLDoSi()
             result.data
-        } catch (e: HttpException) {
-            listOf()
         } catch (e: JsonSyntaxException) {
-            listOf()
+            emptyList
+        } catch (t: Throwable) {
+            Log.d(TAG, t.stackTraceToString())
+            emptyList
         }
     }
 
@@ -54,10 +56,11 @@ class GuideRepository @Inject constructor(
         return try {
             val result = placeService.requestDoSiByCode(code)
             result.data
-        } catch (e: HttpException) {
-            listOf()
         } catch (e: JsonSyntaxException) {
-            listOf()
+            emptyList
+        } catch (t: Throwable) {
+            Log.d(TAG, t.stackTraceToString())
+            emptyList
         }
     }
 
@@ -65,10 +68,11 @@ class GuideRepository @Inject constructor(
         return try {
             val result = placeService.requestAllByKeyword(keyword)
             result.data
-        } catch (e: HttpException) {
-            listOf()
         } catch (e: JsonSyntaxException) {
-            listOf()
+            emptyList
+        } catch (t: Throwable) {
+            Log.d(TAG, t.stackTraceToString())
+            emptyList
         }
     }
 
@@ -83,10 +87,11 @@ class GuideRepository @Inject constructor(
                 NEW_TOUR_API_KEY
             ).response.body.items.item
             res
-        } catch (e: HttpException) {
-            listOf()
         } catch (e: JsonSyntaxException) {
-            listOf()
+            emptyRecommendList
+        } catch (t: Throwable) {
+            Log.d(TAG, t.stackTraceToString())
+            emptyRecommendList
         }
     }
 
@@ -96,17 +101,23 @@ class GuideRepository @Inject constructor(
         pageNo: Int
     ): List<RecommendPlace> {
         return try {
-            val res = guideRecommendService.requestAreaBased(NEW_TOUR_API_KEY, areaCode, requestType, pageNo)
+            val res = guideRecommendService.requestAreaBased(
+                NEW_TOUR_API_KEY,
+                areaCode,
+                requestType,
+                pageNo
+            )
             val maxPage = (res.response.body.totalCnt / 10) + 1
             if (maxPage < pageNo) {
-                return listOf()
+                emptyRecommendList
             } else {
-                return res.response.body.items.item
+                res.response.body.items.item
             }
-        } catch (e: Exception) {
-            listOf()
         } catch (e: JsonSyntaxException) {
-            listOf()
+            emptyRecommendList
+        } catch (t: Throwable) {
+            Log.d(TAG, t.stackTraceToString())
+            emptyRecommendList
         }
     }
 
@@ -122,17 +133,23 @@ class GuideRepository @Inject constructor(
 */
     suspend fun loadFestivalData(areaCode: String, pageNo: Int): List<RecommendPlace> {
         return try {
-            val res = guideRecommendService.requestFestival(NEW_TOUR_API_KEY, getTodayDate(), areaCode, pageNo)
+            val res = guideRecommendService.requestFestival(
+                NEW_TOUR_API_KEY,
+                getTodayDate(),
+                areaCode,
+                pageNo
+            )
             val maxPage = (res.response.body.totalCnt / 10) + 1
             if (maxPage < pageNo) {
-                return listOf()
+                emptyRecommendList
             } else {
-                return res.response.body.items.item
+                res.response.body.items.item
             }
-        } catch (e: Exception) {
-            listOf()
         } catch (e: JsonSyntaxException) {
-            listOf()
+            emptyRecommendList
+        } catch (t: Throwable) {
+            Log.d(TAG, t.stackTraceToString())
+            emptyRecommendList
         }
     }
 }

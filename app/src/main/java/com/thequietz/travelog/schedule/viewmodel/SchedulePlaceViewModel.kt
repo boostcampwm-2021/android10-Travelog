@@ -1,5 +1,6 @@
 package com.thequietz.travelog.schedule.viewmodel
 
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,11 +18,11 @@ class SchedulePlaceViewModel @Inject constructor(
     private var _placeList = MutableLiveData<List<PlaceModel>>()
     val placeList: LiveData<List<PlaceModel>> = _placeList
 
-    /*private var _selectedPlaces = MutableLiveData<MutableList<PlaceModel>>()
-    val selectedPlaces: LiveData<MutableList<PlaceModel>> = _selectedPlaces*/
-
     private var _placeSelectedList = MutableLiveData<MutableList<PlaceModel>>()
     val placeSelectedList: LiveData<MutableList<PlaceModel>> = _placeSelectedList
+
+    private var _viewState = MutableLiveData<Parcelable>()
+    val viewState: LiveData<Parcelable> get() = _viewState
 
     fun loadPlaceList() {
         viewModelScope.launch {
@@ -57,5 +58,10 @@ class SchedulePlaceViewModel @Inject constructor(
             }
         }
         _placeList.value = _placeList.value
+    }
+
+    fun saveViewState(viewState: Parcelable?) {
+        val newViewState = viewState ?: return
+        _viewState.value = newViewState
     }
 }

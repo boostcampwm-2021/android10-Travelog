@@ -6,7 +6,6 @@ import com.thequietz.travelog.api.PlaceService
 import com.thequietz.travelog.schedule.model.PlaceModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
 import retrofit2.awaitResponse
 import javax.inject.Inject
 
@@ -14,6 +13,7 @@ class SchedulePlaceRepository @Inject constructor(
     private val placeService: PlaceService
 ) {
     private val TAG = "SCHEDULE_PLACE"
+    private val emptyList = emptyList<PlaceModel>()
 
     suspend fun loadPlaceList(): List<PlaceModel> {
         return withContext(Dispatchers.IO) {
@@ -23,15 +23,14 @@ class SchedulePlaceRepository @Inject constructor(
                 val resp = call.awaitResponse()
                 if (!resp.isSuccessful || resp.body() == null) {
                     Log.d(TAG, resp.message())
-                    listOf<PlaceModel>()
                 }
                 resp.body()?.data ?: listOf()
-            } catch (e: HttpException) {
-                Log.d(TAG, e.message())
-                listOf()
             } catch (e: JsonSyntaxException) {
                 Log.d(TAG, e.message.toString())
-                listOf()
+                emptyList
+            } catch (t: Throwable) {
+                Log.d(TAG, t.stackTraceToString())
+                emptyList
             }
         }
     }
@@ -44,13 +43,13 @@ class SchedulePlaceRepository @Inject constructor(
                 if (!resp.isSuccessful || resp.body() == null) {
                     Log.d(TAG, resp.errorBody().toString())
                 }
-                resp.body()?.data ?: listOf()
-            } catch (e: HttpException) {
-                Log.d(TAG, e.message())
-                listOf()
+                resp.body()?.data ?: emptyList
             } catch (e: JsonSyntaxException) {
                 Log.d(TAG, e.message.toString())
-                listOf()
+                emptyList
+            } catch (t: Throwable) {
+                Log.d(TAG, t.stackTraceToString())
+                emptyList
             }
         }
     }
