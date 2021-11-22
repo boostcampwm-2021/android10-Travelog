@@ -1,6 +1,7 @@
 package com.thequietz.travelog.schedule.repository
 
 import android.util.Log
+import com.google.gson.JsonSyntaxException
 import com.thequietz.travelog.api.PlaceService
 import com.thequietz.travelog.schedule.model.PlaceModel
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +29,9 @@ class SchedulePlaceRepository @Inject constructor(
             } catch (e: HttpException) {
                 Log.d(TAG, e.message())
                 listOf()
+            } catch (e: JsonSyntaxException) {
+                Log.d(TAG, e.message.toString())
+                listOf()
             }
         }
     }
@@ -43,6 +47,9 @@ class SchedulePlaceRepository @Inject constructor(
                 resp.body()?.data ?: listOf()
             } catch (e: HttpException) {
                 Log.d(TAG, e.message())
+                listOf()
+            } catch (e: JsonSyntaxException) {
+                Log.d(TAG, e.message.toString())
                 listOf()
             }
         }

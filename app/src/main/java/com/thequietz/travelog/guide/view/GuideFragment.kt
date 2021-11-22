@@ -10,9 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentGuideBinding
 import com.thequietz.travelog.guide.adapter.GuideMultiViewAdapter
 import com.thequietz.travelog.guide.viewmodel.GuideViewModel
@@ -25,17 +27,22 @@ class GuideFragment : Fragment() {
     private val guideViewModel by viewModels<GuideViewModel>()
     private val adapter by lazy { GuideMultiViewAdapter(this) }
 
+    private lateinit var _context: Context
+    private lateinit var inputManager: InputMethodManager
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentGuideBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_guide, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _context = requireContext()
+        inputManager = _context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
@@ -53,28 +60,28 @@ class GuideFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setClickListener() {
-        binding.etSearch.setOnTouchListener(
-            View.OnTouchListener { view, event ->
-                val DRAWABLE_LEFT = 0
-                val DRAWABLE_TOP = 1
-                val DRAWABLE_RIGHT = 2
-                val DRAWABLE_BOTTOM = 3
+        binding.etSearch.setOnTouchListener { view, event ->
+            val DRAWABLE_LEFT = 0
+            val DRAWABLE_TOP = 1
+            val DRAWABLE_RIGHT = 2
+            val DRAWABLE_BOTTOM = 3
 
-                if (event?.action == MotionEvent.ACTION_UP) {
-                    if (event.rawX >= binding.etSearch.right - binding.etSearch.compoundDrawables.get(
-                            DRAWABLE_RIGHT
-                        ).bounds.width()
-                    ) {
-                        searchAction()
-                    }
+            if (event?.action == MotionEvent.ACTION_UP) {
+                if (event.rawX >= binding.etSearch.right - binding.etSearch.compoundDrawables.get(
+                        DRAWABLE_RIGHT
+                    ).bounds.width()
+                ) {
+                    searchAction()
                 }
-                false
             }
-        )
+            false
+        }
+
         binding.etSearch.setOnKeyListener { _, key, event ->
             if ((event.action == KeyEvent.ACTION_DOWN) && (key == KeyEvent.KEYCODE_ENTER)) {
+                inputManager.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
                 searchAction()
-                downKeyboard()
+                closeKeyboard()
                 true
             } else {
                 false
@@ -82,8 +89,8 @@ class GuideFragment : Fragment() {
         }
     }
 
-    fun searchAction() {
-        if (binding.etSearch.text.toString() == "") {
+    private fun searchAction() {
+        if (binding.etSearch.text.toString().trim() == "") {
             Toast.makeText(requireContext(), "검색어를 입력하세요!", Toast.LENGTH_SHORT).show()
         } else {
             val action = GuideFragmentDirections
@@ -92,7 +99,7 @@ class GuideFragment : Fragment() {
         }
     }
 
-    fun downKeyboard() {
+    private fun closeKeyboard() {
         val mInputMethodManager: InputMethodManager =
             requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         mInputMethodManager.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)

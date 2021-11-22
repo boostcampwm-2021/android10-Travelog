@@ -1,6 +1,7 @@
 package com.thequietz.travelog.place.repository
 
 import android.util.Log
+import com.google.gson.JsonSyntaxException
 import com.thequietz.travelog.BuildConfig
 import com.thequietz.travelog.api.PlaceSearchService
 import com.thequietz.travelog.place.model.PlaceSearchModel
@@ -28,6 +29,9 @@ class PlaceSearchRepository @Inject constructor(
                 resp.body()?.results ?: listOf()
             } catch (e: HttpException) {
                 Log.d(TAG, e.message())
+                listOf()
+            } catch (e: JsonSyntaxException) {
+                Log.d(TAG, e.message.toString())
                 listOf()
             }
         }

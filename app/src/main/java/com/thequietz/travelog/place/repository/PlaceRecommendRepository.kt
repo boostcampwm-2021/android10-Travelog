@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import retrofit2.awaitResponse
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 class PlaceRecommendRepository @Inject constructor(
@@ -29,6 +30,8 @@ class PlaceRecommendRepository @Inject constructor(
                 val items = resp.body()?.response?.body?.items
                 items?.item ?: listOf()
             } catch (e: HttpException) {
+                listOf()
+            } catch (e: SocketTimeoutException) {
                 listOf()
             }
         }
