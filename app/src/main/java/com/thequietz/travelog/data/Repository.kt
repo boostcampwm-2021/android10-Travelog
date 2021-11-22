@@ -159,6 +159,8 @@ class RecordRepository @Inject constructor(
 ) {
     fun loadRecordImages() = recordImageDao.loadAllRecordImages()
 
+    fun loadRecordImagesByTitle(title: String) = recordImageDao.loadRecordImageByTitle(title)
+
     fun createRecordImage(recordImage: RecordImage) {
         coroutineScope.launch { recordImageDao.insert(recordImage) }
     }
