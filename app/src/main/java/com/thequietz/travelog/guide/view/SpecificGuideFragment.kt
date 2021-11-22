@@ -30,16 +30,19 @@ class SpecificGuideFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
             viewModel = specificGuideViewModel
             rvSpecificPlace.adapter = adapter
         }
         with(specificGuideViewModel) {
-            initCurrentItem(args)
+
             currentPlaceList.observe(viewLifecycleOwner, { it ->
                 it?.let { adapter.submitList(it) }
             })
+
+            initCurrentItem(args)
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.thequietz.travelog.data
 
 import android.util.Log
+import com.google.gson.JsonSyntaxException
 import com.thequietz.travelog.BuildConfig
 import com.thequietz.travelog.api.GuideRecommendService
 import com.thequietz.travelog.api.PlaceService
@@ -13,6 +14,7 @@ import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,31 +28,73 @@ class GuideRepository @Inject constructor(
     private val NEW_TOUR_API_KEY = BuildConfig.NEW_TOUR_API_KEY
 
     suspend fun loadAllPlaceData(): List<Place> {
-        val result = placeService.requestAll()
-        return result.data
+        val result = try {
+            placeService.requestAll().data
+        } catch (e: HttpException) {
+            listOf()
+        } catch (e: JsonSyntaxException) {
+            listOf()
+        }
+
+        return result
     }
 
     suspend fun loadAllDoSi(): List<Place> {
-        val result = placeService.requestALLDoSi()
-        return result.data
+        return try {
+            val result = placeService.requestALLDoSi()
+            result.data
+        } catch (e: HttpException) {
+            listOf()
+        } catch (e: JsonSyntaxException) {
+            listOf()
+        }
     }
 
     suspend fun loadDoSiByCode(code: String = "3"): List<Place> {
-        val result = placeService.requestDoSiByCode(code)
-        return result.data
+        return try {
+            val result = placeService.requestDoSiByCode(code)
+            result.data
+        } catch (e: HttpException) {
+            listOf()
+        } catch (e: JsonSyntaxException) {
+            listOf()
+        }
     }
 
     suspend fun loadDoSiByKeyword(keyword: String = "서"): List<Place> {
-        val result = placeService.requestAllByKeyword(keyword)
-        return result.data
+        return try {
+            val result = placeService.requestAllByKeyword(keyword)
+            result.data
+        } catch (e: HttpException) {
+            listOf()
+        } catch (e: JsonSyntaxException) {
+            listOf()
+        }
     }
 
-    suspend fun loadRecommendPlaceData(areaCode: String = "1", sigunguCode: String = "10"): List<RecommendPlace> {
-        val res = guideRecommendService.requestRecommendPlace(areaCode, sigunguCode, NEW_TOUR_API_KEY).response.body.items.item
-        return res
+    suspend fun loadRecommendPlaceData(
+        areaCode: String = "1",
+        sigunguCode: String = "10"
+    ): List<RecommendPlace> {
+        return try {
+            val res = guideRecommendService.requestRecommendPlace(
+                areaCode,
+                sigunguCode,
+                NEW_TOUR_API_KEY
+            ).response.body.items.item
+            res
+        } catch (e: HttpException) {
+            listOf()
+        } catch (e: JsonSyntaxException) {
+            listOf()
+        }
     }
 
-    suspend fun loadAreaData(areaCode: String = "1", requestType: String = "A01", pageNo: Int): List<RecommendPlace> {
+    suspend fun loadAreaData(
+        areaCode: String = "1",
+        requestType: String = "A01",
+        pageNo: Int
+    ): List<RecommendPlace> {
         return try {
             val res = guideRecommendService.requestAreaBased(NEW_TOUR_API_KEY, areaCode, requestType, pageNo)
             val maxPage = (res.response.body.totalCnt / 10) + 1
@@ -61,8 +105,11 @@ class GuideRepository @Inject constructor(
             }
         } catch (e: Exception) {
             listOf()
+        } catch (e: JsonSyntaxException) {
+            listOf()
         }
     }
+
     /*suspend fun loadVacationSpotData(areaCode: String): List<RecommendPlace> {
         val res = placeRecommend.requestVacationSpot(areaCode).response.body.items.item
         return res
@@ -84,6 +131,8 @@ class GuideRepository @Inject constructor(
             }
         } catch (e: Exception) {
             listOf()
+        } catch (e: JsonSyntaxException) {
+            listOf()
         }
     }
 }
@@ -102,6 +151,7 @@ class RecordRepository @Inject constructor(
     fun updateRecordImageComment(comment: String, id: Int) {
         coroutineScope.launch { recordImageDao.updateRecordImageCommentById(comment, id) }
     }
+
     fun deleteRecordImage(id: Int) {
         coroutineScope.launch {
             val data = recordImageDao.loadRecordImageById(id)
