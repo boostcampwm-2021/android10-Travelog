@@ -1,5 +1,6 @@
 package com.thequietz.travelog.record.view
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -11,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -119,6 +121,14 @@ class RecordViewManyFragment : Fragment() {
                 }
             }
             Toast.makeText(requireContext(), "pdf파일 생성", Toast.LENGTH_SHORT).show()
+
+            val pdfFile = File(Environment.getExternalStorageDirectory(), "/newPDF.pdf")
+            val sharingIntent = Intent(Intent.ACTION_SEND)
+            sharingIntent.setType("application/*")
+
+            val contentUrl = FileProvider.getUriForFile(requireContext(), requireContext().packageName + ".fileprovider", pdfFile)
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, contentUrl)
+            startActivity(Intent.createChooser(sharingIntent, "파일 공유"))
         }
     }
 
