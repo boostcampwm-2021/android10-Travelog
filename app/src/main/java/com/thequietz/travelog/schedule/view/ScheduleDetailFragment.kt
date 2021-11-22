@@ -41,7 +41,7 @@ class ScheduleDetailFragment :
         stateHandle?.getLiveData<PlaceDetailModel>("result")?.observe(
             viewLifecycleOwner,
             {
-                viewModel.addSchedule(it)
+                viewModel.addScheduleDetail(it)
 
                 val newTarget =
                     LatLng(it.geometry.location.latitude, it.geometry.location.longitude)
@@ -61,6 +61,10 @@ class ScheduleDetailFragment :
                 stateHandle.remove<PlaceDetailModel>("result")
             }
         )
+
+        viewModel.placeDetailList.observe(viewLifecycleOwner, { list ->
+            list.sortedBy { it.date }
+        })
     }
 
     override fun initViewModel() {

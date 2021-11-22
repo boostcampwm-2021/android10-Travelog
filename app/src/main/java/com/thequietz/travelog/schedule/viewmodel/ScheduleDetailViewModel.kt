@@ -1,14 +1,16 @@
 package com.thequietz.travelog.schedule.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.thequietz.travelog.data.ScheduleRepository
 import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.schedule.data.ColorRGB
 import com.thequietz.travelog.schedule.data.ScheduleDetailItem
+import com.thequietz.travelog.schedule.model.ScheduleDetailModel
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import com.thequietz.travelog.schedule.model.SchedulePlaceModel
+import com.thequietz.travelog.schedule.repository.ScheduleRepository
 import com.thequietz.travelog.util.dateFormat
 import com.thequietz.travelog.util.dateToString
 import com.thequietz.travelog.util.stringToDate
@@ -19,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScheduleDetailViewModel @Inject internal constructor(
-    private val repository: ScheduleRepository,
+    private val repository: ScheduleRepository
 ) : ViewModel() {
 
     var selectedIndex = 0
@@ -28,15 +30,16 @@ class ScheduleDetailViewModel @Inject internal constructor(
     private val _itemList = MutableLiveData<List<ScheduleDetailItem>>()
     val itemList: LiveData<List<ScheduleDetailItem>> = _itemList
 
-    private val _placeDetailList = MutableLiveData<MutableList<PlaceDetailModel>>()
-    val placeDetailList: LiveData<MutableList<PlaceDetailModel>> = _placeDetailList
+    private val _schedule = MutableLiveData<ScheduleModel>()
+    val schedule: LiveData<ScheduleModel> = _schedule
+
+    val placeDetailList: MediatorLiveData<List<ScheduleDetailModel>> = MediatorLiveData()
 
     private val indexList = mutableListOf<Int>()
     private var id = 0
 
     init {
         _itemList.value = item
-        _placeDetailList.value = mutableListOf()
     }
 
     fun initItemList(startDate: String, endDate: String) {
@@ -58,12 +61,35 @@ class ScheduleDetailViewModel @Inject internal constructor(
     }
 
     fun createSchedule(name: String, schedulePlaces: List<SchedulePlaceModel>, date: String) {
-        repository.createSchedules(
-            ScheduleModel(name = name, schedulePlace = schedulePlaces, date = date)
-        )
+        val newSchedule = ScheduleModel(name = name, schedulePlace = schedulePlaces, date = date)
+        _schedule.value = newSchedule
+
+        repository.createSchedules(newSchedule) {
+            placeDetailList.addSource(repository.loadScheduleDetailsByScheduleId(it)) { list ->
+                placeDetailList.value = list
+            }
+        }
     }
 
-    fun addSchedule(placeDetail: PlaceDetailModel) {
+    fun addScheduleDetail(placeDetail: PlaceDetailModel) {
+        var temp = 0
+        for (i in 0..selectedIndex) {
+            temp += indexList[i]
+        }
+        val position = selectedIndex + temp + 1
+
+        schedule.value?.apply {
+            repository.createScheduleDetail(
+                id,
+                position,
+                schedulePlace[0],
+                date.split("~")[0],
+                placeDetail
+            )
+        }
+    }
+
+    fun applyScheduleDetails(placeDetail: PlaceDetailModel) {
         val color = getRandomColor()
         var temp = 0
         for (i in 0..selectedIndex) {
@@ -73,22 +99,6 @@ class ScheduleDetailViewModel @Inject internal constructor(
         item.add(position, ScheduleDetailItem(id++, 2, color, placeDetail.name, selectedIndex))
         _itemList.value = item
         indexList[selectedIndex]++
-
-        _placeDetailList.value = _placeDetailList.value.apply {
-            this?.add(placeDetail)
-        }
-    }
-
-    fun addSchedule(index: Int, name: String) {
-        val color = getRandomColor()
-        var temp = 0
-        for (i in 0..index) {
-            temp += indexList[i]
-        }
-        val position = index + temp + 1
-        item.add(position, ScheduleDetailItem(id++, 2, color, name, index))
-        _itemList.value = item
-        indexList[index]++
     }
 
     fun deleteSchedule(id: Int) {

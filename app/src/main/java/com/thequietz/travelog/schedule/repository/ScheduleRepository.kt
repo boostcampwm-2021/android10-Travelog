@@ -20,8 +20,11 @@ class ScheduleRepository @Inject constructor(
 ) {
     fun loadSchedules() = scheduleDao.loadAllSchedules()
 
-    fun createSchedules(schedule: ScheduleModel) {
-        coroutineScope.launch { scheduleDao.insert(schedule) }
+    fun createSchedules(schedule: ScheduleModel, onInsert: (Int) -> (Unit)) {
+        coroutineScope.launch {
+            val result = scheduleDao.insert(schedule)
+            onInsert(result.toInt())
+        }
     }
 
     fun deleteSchedule(id: Int) {
@@ -36,6 +39,9 @@ class ScheduleRepository @Inject constructor(
 
     fun loadScheduleDetailsByScheduleId(scheduleId: Int) =
         scheduleDetailDao.loadScheduleDetailsByScheduleId(scheduleId)
+
+    fun loadScheduleByScheduleName(scheduleName: String) =
+        scheduleDao.loadScheduleByName(scheduleName)
 
     fun createScheduleDetail(
         scheduleId: Int,
