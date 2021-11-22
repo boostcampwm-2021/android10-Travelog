@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleSelectBinding
@@ -52,7 +53,10 @@ class ScheduleSelectFragment : Fragment() {
 
     private fun initNextButton() {
         binding.btnNext.setOnClickListener {
-            Log.d("Next", scheduleSelectViewModel.startDate.value.toString() + "~" + scheduleSelectViewModel.endDate.value.toString())
+            Log.d(
+                "Next",
+                scheduleSelectViewModel.startDate.value.toString() + "~" + scheduleSelectViewModel.endDate.value.toString()
+            )
             val schedule = ScheduleModel(
                 name = scheduleSelectViewModel.travelName.value ?: "",
                 schedulePlace = args.placeList.toList(),

@@ -3,8 +3,8 @@ package com.thequietz.travelog.schedule.viewmodel
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.thequietz.travelog.data.ScheduleRepository
 import com.thequietz.travelog.schedule.model.ScheduleModel
+import com.thequietz.travelog.schedule.repository.ScheduleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -3,7 +3,6 @@ package com.thequietz.travelog.schedule.model
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.thequietz.travelog.place.model.PlaceDetailModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -13,8 +12,7 @@ data class ScheduleModel(
     val id: Int = 0,
     val name: String = "",
     val schedulePlace: List<SchedulePlaceModel> = listOf(),
-    val date: String = "",
-    val destination: List<PlaceDetailModel> = listOf()
+    val date: String = ""
 ) : Parcelable {
     override fun toString(): String {
         val placeString = schedulePlace.fold("") { sum, element -> sum + element }
