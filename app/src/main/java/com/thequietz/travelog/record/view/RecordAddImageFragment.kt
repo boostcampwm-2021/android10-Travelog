@@ -32,7 +32,7 @@ class RecordAddImageFragment : Fragment() {
         val clipData = result.data?.clipData
         val res = mutableListOf<RecordImage>()
         clipData?.let {
-            (0..it.itemCount - 1).forEachIndexed { ind, item ->
+            (0 until it.itemCount).forEachIndexed { ind, item ->
                 res.add(
                     RecordImage().copy(
                         title = "제주도 여행",

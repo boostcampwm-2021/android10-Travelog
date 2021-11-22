@@ -68,8 +68,8 @@ class OtherInfoViewModel @Inject internal constructor(
         viewModelScope.launch {
             _placeList.value = array.toList()
             initVacationSpotData()
-            initFoodData()
-            initFestivalData()
+            // initFoodData()
+            // initFestivalData()
             setCurrentInd(0)
         }
     }
