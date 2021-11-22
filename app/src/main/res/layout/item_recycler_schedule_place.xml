@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="viewModel"
-            type="com.thequietz.travelog.schedule.viewmodel.SchedulePlaceViewModel" />
+            name="model"
+            type="com.thequietz.travelog.schedule.model.PlaceModel" />
     </data>
 
     <RelativeLayout

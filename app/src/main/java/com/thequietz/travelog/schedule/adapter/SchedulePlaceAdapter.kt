@@ -20,6 +20,7 @@ class SchedulePlaceAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: PlaceModel, position: Int, listener: OnItemClickListener) {
+            binding.model = model
             binding.tvGuideItem.text = model.cityName
             binding.ibGuideItem.setOnClickListener { v ->
                 when (model.isSelected) {
