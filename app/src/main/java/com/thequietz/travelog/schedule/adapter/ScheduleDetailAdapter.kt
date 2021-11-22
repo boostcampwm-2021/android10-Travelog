@@ -5,6 +5,8 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.databinding.ItemRecyclerScheduleDetailAddBinding
 import com.thequietz.travelog.databinding.ItemRecyclerScheduleDetailContentBinding
@@ -15,10 +17,8 @@ import com.thequietz.travelog.schedule.data.TYPE_HEADER
 import com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel
 
 class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: () -> (Unit)) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(),
+    ListAdapter<ScheduleDetailItem, RecyclerView.ViewHolder>(ScheduleDiffCallback()),
     ScheduleTouchHelperCallback.OnItemMoveListener {
-    var item = listOf<ScheduleDetailItem>()
-
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
         if (toPosition != 0) {
             viewModel.itemMove(fromPosition, toPosition)
@@ -62,20 +62,16 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: (
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
             TYPE_HEADER -> {
-                (holder as HeaderViewHolder).bind(item[position])
+                (holder as HeaderViewHolder).bind(getItem(position))
             }
             TYPE_CONTENT -> {
-                (holder as ContentViewHolder).bind(item[position])
+                (holder as ContentViewHolder).bind(getItem(position))
             }
         }
     }
 
-    override fun getItemCount(): Int {
-        return item.size
-    }
-
     override fun getItemViewType(position: Int): Int {
-        return item[position].type
+        return getItem(position).type
     }
 
     inner class HeaderViewHolder(val binding: ItemRecyclerScheduleDetailHeaderBinding) :
@@ -110,4 +106,17 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: (
             binding.item = item
         }
     }
+}
+
+private class ScheduleDiffCallback : DiffUtil.ItemCallback<ScheduleDetailItem>() {
+    override fun areItemsTheSame(
+        oldItem: ScheduleDetailItem,
+        newItem: ScheduleDetailItem
+    ): Boolean =
+        oldItem.id == newItem.id
+
+    override fun areContentsTheSame(
+        oldItem: ScheduleDetailItem,
+        newItem: ScheduleDetailItem
+    ): Boolean = oldItem == newItem
 }
