@@ -95,12 +95,12 @@ class RecordViewManyFragment : Fragment() {
             binding.tvRecordDelete.visibility = View.VISIBLE
         }
         binding.tvRecordDelete.setOnClickListener {
-            recordViewInnerViewModel.changeDeleteState()
             binding.tvRecordDelete.visibility = View.GONE
             binding.ibRecordDelete.visibility = View.VISIBLE
             if (recordViewInnerViewModel.checkedList.value?.size != 0) {
                 showDeleteDiaglog()
             }
+            recordViewInnerViewModel.changeDeleteState()
         }
     }
 

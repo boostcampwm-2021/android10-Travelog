@@ -166,7 +166,9 @@ class RecordRepository @Inject constructor(
     fun deleteRecordImage(id: Int) {
         coroutineScope.launch {
             val data = recordImageDao.loadRecordImageById(id)
-            recordImageDao.delete(data)
+            if (data != null) {
+                recordImageDao.delete(data)
+            }
         }
     }
 

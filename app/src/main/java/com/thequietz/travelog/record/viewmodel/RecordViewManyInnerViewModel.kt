@@ -22,9 +22,12 @@ class RecordViewManyInnerViewModel @Inject constructor(
     private val _checkedList = MutableLiveData<List<Int>>()
     val checkedList: LiveData<List<Int>> = _checkedList
 
+    private val _isChecked = MutableLiveData<Boolean>()
+    val isChecked: LiveData<Boolean> = _isChecked
     init {
         _deleteState.value = false
         _checkedList.value = mutableListOf()
+        _isChecked.value = false
     }
     fun changeDeleteState() {
         viewModelScope.launch {
@@ -60,13 +63,7 @@ class RecordViewManyInnerViewModel @Inject constructor(
             }
         }
     }
-    fun clearCheckedList() {
-        viewModelScope.launch {
-            _checkedList.value = mutableListOf()
-        }
-    }
     fun deleteChecked() {
-        println("deleteChecked start")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 checkedList.value?.let { list ->
@@ -77,6 +74,28 @@ class RecordViewManyInnerViewModel @Inject constructor(
 
             }
             _checkedList.value = mutableListOf()
+        }
+        changeDeleteState()
+    }
+    fun findChecked(id: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                checkedList.value?.let { list ->
+                    list.forEach {
+                        if (it == id) {
+                            withContext(Dispatchers.Main) {
+                                _isChecked.value = true
+                            }
+                            return@forEach
+                        }
+                    }
+                }
+            }
+        }
+    }
+    fun resetChecked() {
+        viewModelScope.launch {
+            _isChecked.value = false
         }
     }
 }

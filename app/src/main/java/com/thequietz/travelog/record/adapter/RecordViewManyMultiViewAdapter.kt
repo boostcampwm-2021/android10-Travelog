@@ -16,6 +16,10 @@ import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.record.model.ViewType
 import com.thequietz.travelog.record.view.RecordViewManyFragmentDirections
 import com.thequietz.travelog.record.viewmodel.RecordViewManyInnerViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RecordViewManyMultiViewAdapter(
     val innerViewModel: RecordViewManyInnerViewModel
@@ -140,7 +144,19 @@ class MultiViewImageAdapter(
                     binding.cbDeleteCheck.visibility = View.VISIBLE
                 } else {
                     binding.cbDeleteCheck.visibility = View.GONE
+                    binding.cbDeleteCheck.isChecked = false
                 }
+            }
+            CoroutineScope(Dispatchers.IO).launch {
+                withContext(Dispatchers.Main) {
+                    innerViewModel.findChecked(item.id)
+                }
+                withContext(Dispatchers.Main) {
+                    innerViewModel.isChecked.value?.let {
+                        binding.cbDeleteCheck.isChecked = it
+                    }
+                }
+                innerViewModel.resetChecked()
             }
             binding.cbDeleteCheck.setOnCheckedChangeListener { compoundButton, isChecked ->
                 if (isChecked) {
