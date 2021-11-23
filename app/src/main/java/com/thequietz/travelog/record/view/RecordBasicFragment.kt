@@ -65,6 +65,9 @@ class RecordBasicFragment : Fragment() {
         viewModel.recordBasicItemList.observe(viewLifecycleOwner) { recordBasicItemList ->
             adapter.submitList(recordBasicItemList)
         }
+        viewModel.recordImageList.observe(viewLifecycleOwner) {
+            viewModel.createData()
+        }
     }
 
     private fun navigateToRecordViewUi() {
@@ -75,6 +78,7 @@ class RecordBasicFragment : Fragment() {
     }
 
     private fun navigateToRecordAddUi() {
+        // TODO("day 값 넘겨야함")
         val action =
             RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordAddImageFragment()
 

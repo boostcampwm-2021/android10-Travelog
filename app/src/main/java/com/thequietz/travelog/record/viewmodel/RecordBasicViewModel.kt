@@ -28,19 +28,26 @@ class RecordBasicViewModel @Inject constructor(
     private val _recordBasicItemList = MutableLiveData<List<RecordBasicItem>>()
     val recordBasicItemList: LiveData<List<RecordBasicItem>> = _recordBasicItemList
 
+    private val _recordImageList = MutableLiveData<List<RecordImage>>()
+    val recordImageList: LiveData<List<RecordImage>> = _recordImageList
+
     fun loadData(title: String) {
-        viewModelScope.launch {
-            val recordImages = withContext(Dispatchers.IO) {
-                repository.loadRecordImagesByTitle(title)
+        viewModelScope.launch(Dispatchers.IO) {
+            val recordImages = repository.loadRecordImagesByTitle(title)
+
+            withContext(Dispatchers.Main) {
+                _recordImageList.value = recordImages
             }
-
-            val recordBasic = createRecordBasicFromRecordImages(recordImages)
-
-            _title.value = recordBasic.title
-            _date.value = recordBasic.startDate
-            _recordBasicItemList.value =
-                createListOfRecyclerViewAdapterItem(recordBasic.travelDestinations)
         }
+    }
+
+    fun createData() {
+        val recordImages = _recordImageList.value ?: return
+        val recordBasic = createRecordBasicFromRecordImages(recordImages)
+        _title.value = recordBasic.title
+        _date.value = recordBasic.startDate
+        _recordBasicItemList.value =
+            createListOfRecyclerViewAdapterItem(recordBasic.travelDestinations)
     }
 
     private fun createRecordBasicFromRecordImages(recordImages: List<RecordImage>): RecordBasic {
@@ -96,7 +103,8 @@ class RecordBasicViewModel @Inject constructor(
         val tempRecordBasicItem =
             tempRecordBasicItemList[position] as RecordBasicItem.TravelDestination
         val tempImageList = tempRecordBasicItem.images.toMutableList()
-        tempImageList.add(uri.toString())
+        val imageUrl = uri.toString()
+        tempImageList.add(imageUrl)
 
         val item = RecordBasicItem.TravelDestination(
             tempRecordBasicItem.name,
@@ -107,6 +115,25 @@ class RecordBasicViewModel @Inject constructor(
         val tempRecordBasicItemMutableList = tempRecordBasicItemList.toMutableList()
         tempRecordBasicItemMutableList[position] = item
         _recordBasicItemList.value = tempRecordBasicItemMutableList.toList()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val tempRecordImageList = _recordImageList.value ?: return@launch
+            val tempRecordImage =
+                tempRecordImageList.find { it.place == item.name } ?: return@launch
+
+            repository.insertRecordImage(
+                RecordImage(
+                    travelId = tempRecordImage.travelId,
+                    title = tempRecordImage.title,
+                    startDate = tempRecordImage.startDate,
+                    endDate = tempRecordImage.endDate,
+                    schedule = tempRecordImage.schedule,
+                    place = tempRecordImage.place,
+                    url = imageUrl,
+                    group = tempRecordImage.group
+                )
+            )
+        }
     }
 
     fun deleteRecord(position: Int) {
@@ -114,8 +141,12 @@ class RecordBasicViewModel @Inject constructor(
         val tempRecordBasicItemMutableList = tempRecordBasicItemList.toMutableList()
 
         tempRecordBasicItemMutableList.getOrNull(position) ?: return
-        tempRecordBasicItemMutableList.removeAt(position)
+        val removedItem = tempRecordBasicItemMutableList.removeAt(position)
 
         _recordBasicItemList.value = tempRecordBasicItemMutableList.toList()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteRecordImageByPlace((removedItem as RecordBasicItem.TravelDestination).name)
+        }
     }
 }

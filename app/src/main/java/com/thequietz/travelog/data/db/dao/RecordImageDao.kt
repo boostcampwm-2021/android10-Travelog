@@ -9,7 +9,7 @@ abstract class RecordImageDao : BaseDao<RecordImage> {
     @Query("SELECT * FROM RecordImage")
     abstract fun loadAllRecordImages(): List<RecordImage>
 
-    @Query("SELECT * FROM RecordImage WHERE title =:title")
+    @Query("SELECT * FROM RecordImage WHERE title =:title ORDER BY `group`")
     abstract fun loadRecordImageByTitle(title: String): List<RecordImage>
 
     @Query("SELECT * FROM RecordImage WHERE id =:id")
@@ -17,4 +17,7 @@ abstract class RecordImageDao : BaseDao<RecordImage> {
 
     @Query("UPDATE RecordImage SET comment =:comment WHERE id =:id")
     abstract fun updateRecordImageCommentById(comment: String, id: Int)
+
+    @Query("DELETE FROM RecordImage WHERE place =:place")
+    abstract fun deleteRecordImageByPlace(place: String)
 }

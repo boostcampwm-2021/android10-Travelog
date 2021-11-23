@@ -169,10 +169,20 @@ class RecordRepository @Inject constructor(
         coroutineScope.launch { recordImageDao.updateRecordImageCommentById(comment, id) }
     }
 
+    fun insertRecordImage(image: RecordImage) {
+        coroutineScope.launch { recordImageDao.insert(image) }
+    }
+
     fun deleteRecordImage(id: Int) {
         coroutineScope.launch {
             val data = recordImageDao.loadRecordImageById(id)
             recordImageDao.delete(data)
+        }
+    }
+
+    fun deleteRecordImageByPlace(place: String) {
+        coroutineScope.launch {
+            recordImageDao.deleteRecordImageByPlace(place)
         }
     }
 }
