@@ -49,9 +49,28 @@ class RecordBasicViewModel @Inject constructor(
         val recordImages = _recordImageList.value ?: return
         val recordBasic = createRecordBasicFromRecordImages(recordImages)
         _title.value = recordBasic.title
-        _date.value = recordBasic.startDate
+        _date.value = "${recordBasic.startDate} ~ ${recordBasic.endDate}"
         _recordBasicItemList.value =
             createListOfRecyclerViewAdapterItem(recordBasic.travelDestinations)
+    }
+
+    private fun createDateFromDay(startDate: String, day: String): String {
+        val tempDate = startDate.split('.').map { it.toInt() }
+        val tempDay = day.substring(3).toInt() - 1
+        val isLeapYear = tempDate[0] % 4 == 0
+        val dayOfMonth =
+            if (isLeapYear) listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+            else listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+
+        if (tempDate[2] + tempDay <= dayOfMonth[tempDate[1]]) {
+            return "${tempDate[0]}.${tempDate[1]}.${tempDate[2] + tempDay}"
+        }
+
+        if (tempDate[1] + 1 <= 12) {
+            return "${tempDate[0]}.${tempDate[1] + 1}.${(tempDate[2] + tempDay) % dayOfMonth[tempDate[1]]}"
+        }
+
+        return "${tempDate[0] + 1}.1.${(tempDate[2] + tempDay) % dayOfMonth[tempDate[1]]}"
     }
 
     private fun createRecordBasicFromRecordImages(recordImages: List<RecordImage>): RecordBasic {
@@ -67,7 +86,7 @@ class RecordBasicViewModel @Inject constructor(
                 recordDestinationList.add(
                     RecordBasicItem.TravelDestination(
                         recordImages[i].place,
-                        recordImages[i].day,
+                        createDateFromDay(recordImages[i].startDate, recordImages[i].day),
                         recordImages[i].group,
                         recordImageList.toList()
                     )
