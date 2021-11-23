@@ -67,7 +67,7 @@ class RecordBasicViewModel @Inject constructor(
                 recordDestinationList.add(
                     RecordBasicItem.TravelDestination(
                         recordImages[i].place,
-                        recordImages[i].schedule,
+                        recordImages[i].day,
                         recordImages[i].group,
                         recordImageList.toList()
                     )
@@ -134,7 +134,7 @@ class RecordBasicViewModel @Inject constructor(
                     title = tempRecordImage.title,
                     startDate = tempRecordImage.startDate,
                     endDate = tempRecordImage.endDate,
-                    schedule = tempRecordImage.schedule,
+                    day = tempRecordImage.day,
                     place = tempRecordImage.place,
                     url = imageUrl,
                     group = tempRecordImage.group

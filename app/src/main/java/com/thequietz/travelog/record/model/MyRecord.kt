@@ -25,7 +25,7 @@ data class RecordImage(
     val title: String = "",
     val startDate: String = "",
     val endDate: String = "",
-    val schedule: String = "",
+    val day: String = "",
     val place: String = "",
     val url: String = "",
     var group: Int = 0,

@@ -38,7 +38,7 @@ class RecordAddImageFragment : Fragment() {
                         title = "제주도 여행",
                         startDate = "2021.10.27",
                         endDate = "2021.10.29",
-                        schedule = binding.tvSchedule.text.toString(),
+                        day = binding.tvSchedule.text.toString(),
                         place = binding.tvDestination.text.toString(),
                         url = it.getItemAt(ind).uri.toString(),
                         comment = "test입니다~",

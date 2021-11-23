@@ -22,8 +22,8 @@ class RecordAddViewModel @Inject constructor(
     private val _place = MutableLiveData<String>()
     val place: LiveData<String> = _place
 
-    private val _schedule = MutableLiveData<String>()
-    val schedule: LiveData<String> = _schedule
+    private val _day = MutableLiveData<String>()
+    val day: LiveData<String> = _day
 
     private val _imageList = MutableLiveData<List<String>>()
     val imageList: LiveData<List<String>> = _imageList
@@ -36,7 +36,7 @@ class RecordAddViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 tempRecordImage.value = recordImage
                 tempGroup.value = group
-                _schedule.value = recordImage.schedule
+                _day.value = recordImage.day
             }
         }
     }
@@ -68,7 +68,7 @@ class RecordAddViewModel @Inject constructor(
                     title = temp.title,
                     startDate = temp.startDate,
                     endDate = temp.endDate,
-                    schedule = temp.schedule,
+                    day = temp.day,
                     // place = newPlace,
                     place = "test",
                     url = image,
