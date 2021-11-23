@@ -2,6 +2,7 @@ package com.thequietz.travelog.confirm.view
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,12 +51,7 @@ class ConfirmFragment : Fragment() {
 
         dayAdapter = ConfirmDayAdapter(object : ConfirmDayAdapter.OnClickListener {
             override fun onClick(index: Int) {
-                pageAdapter.submitList(viewModel.schedules.value?.get("Day ${index + 1}"))
-                binding.vpConfirmPlace.let {
-                    it.post {
-                        it.setCurrentItem(0, true)
-                    }
-                }
+                viewModel.updateSchedule("Day ${index + 1}")
             }
         })
         pageAdapter = ConfirmPagerAdapter()
@@ -63,6 +59,14 @@ class ConfirmFragment : Fragment() {
         binding.rvConfirmHeader.adapter = dayAdapter
         binding.vpConfirmPlace.adapter = pageAdapter
         binding.vpConfirmPlace.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        binding.vpConfirmPlace.registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+
+                    Log.d("PAGE", viewModel.currentSchedule.value?.get(position).toString())
+                }
+            })
 
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -70,9 +74,22 @@ class ConfirmFragment : Fragment() {
             val keys = it.keys.toList()
 
             dayAdapter.submitList(keys)
-            pageAdapter.submitList(it[keys[0]])
+            viewModel.updateSchedule(keys[0])
+        })
+
+        viewModel.currentSchedule.observe(viewLifecycleOwner, {
+            pageAdapter.submitList(it)
+            binding.vpConfirmPlace.let { pager ->
+                pager.post {
+                    pager.setCurrentItem(0, true)
+                }
+            }
         })
 
         viewModel.getSchedulesByNavArgs(navArgs.schedules)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 }

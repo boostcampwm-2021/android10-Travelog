@@ -12,6 +12,9 @@ class ConfirmViewModel @Inject constructor() : ViewModel() {
     private var _schedules = MutableLiveData<Map<String, List<ScheduleDetailModel>>>()
     val schedules: LiveData<Map<String, List<ScheduleDetailModel>>> get() = _schedules
 
+    private var _currentSchedule = MutableLiveData<List<ScheduleDetailModel>>()
+    val currentSchedule: LiveData<List<ScheduleDetailModel>> get() = _currentSchedule
+
     fun getSchedulesByNavArgs(schedules: Array<ScheduleDetailModel>) {
         val dataSet = schedules.map { it.date }.toSet()
         val newDataMap = mutableMapOf<String, List<ScheduleDetailModel>>()
@@ -21,5 +24,9 @@ class ConfirmViewModel @Inject constructor() : ViewModel() {
         }
 
         _schedules.value = newDataMap
+    }
+
+    fun updateSchedule(key: String) {
+        _currentSchedule.value = schedules.value?.get(key) ?: listOf()
     }
 }
