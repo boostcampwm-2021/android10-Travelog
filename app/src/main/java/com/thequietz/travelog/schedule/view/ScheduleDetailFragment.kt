@@ -39,10 +39,25 @@ class ScheduleDetailFragment :
             viewModel.loadSchedule(args.schedule)
 
         binding.btnNext.setOnClickListener {
+            val schedules = viewModel.detailList.value?.toTypedArray()
+            if (schedules == null || schedules.isEmpty()) {
+                return@setOnClickListener
+            }
             viewModel.saveSchedule()
+            Log.d(
+                "LIST",
+                viewModel.detailList
+                    .value?.fold("", { acc, v -> acc + v.date + "\t" }) ?: ""
+            )
+
             val action =
-                ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToScheduleFragment()
+                ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToConfirmFragment(
+                    schedules
+                )
             findNavController().navigate(action)
+            /*val action =
+                ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToScheduleFragment()
+            findNavController().navigate(action)*/
         }
 
         val stateHandle = findNavController().currentBackStackEntry?.savedStateHandle

@@ -19,7 +19,7 @@ class SchedulePlaceViewModel @Inject constructor(
     private val repository: SchedulePlaceRepository
 ) : ViewModel() {
     private var _placeList = MutableLiveData<List<SchedulePlaceModel>>()
-    val schedulePlaceList: LiveData<List<SchedulePlaceModel>> = _placeList
+    val placeList: LiveData<List<SchedulePlaceModel>> = _placeList
 
     val handler = CoroutineExceptionHandler { _, throwable ->
         Log.d("ERROR", throwable.stackTraceToString())

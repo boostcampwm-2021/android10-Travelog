@@ -55,6 +55,9 @@
         <action
             android:id="@+id/action_scheduleDetailFragment_to_placeRecommendFragment"
             app:destination="@id/placeRecommendFragment" />
+        <action
+            android:id="@+id/action_scheduleDetailFragment_to_confirmFragment"
+            app:destination="@id/confirmFragment" />
     </fragment>
     <fragment
         android:id="@+id/placeSearchFragment"
@@ -85,6 +88,14 @@
         <action
             android:id="@+id/action_placeRecommendFragment_to_placeSearchFragment"
             app:destination="@id/placeSearchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmFragment"
+        android:name="com.thequietz.travelog.confirm.view.ConfirmFragment"
+        android:label="ConfirmFragment" >
+        <argument
+            android:name="schedules"
+            app:argType="com.thequietz.travelog.schedule.model.ScheduleDetailModel[]" />
     </fragment>
 
 </navigation>
