@@ -13,6 +13,9 @@ abstract class ScheduleDao : BaseDao<ScheduleModel> {
     @Query("SELECT * FROM Schedule WHERE id =:id")
     abstract fun loadScheduleById(id: Int): List<ScheduleModel>
 
+    @Query("SELECT date FROM Schedule")
+    abstract fun loadAllDates(): List<String>
+
     @Query("SELECT * FROM Schedule WHERE name =:name")
     abstract fun loadScheduleByName(name: String): List<ScheduleModel>
 }

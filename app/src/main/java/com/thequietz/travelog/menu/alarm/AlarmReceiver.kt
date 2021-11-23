@@ -11,35 +11,66 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.thequietz.travelog.MainActivity
 import com.thequietz.travelog.R
+import com.thequietz.travelog.schedule.repository.ScheduleRepository
+import com.thequietz.travelog.util.dateToString
+import com.thequietz.travelog.util.stringToDate
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.internal.managers.BroadcastReceiverComponentManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import java.util.Date
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class AlarmReceiver : BroadcastReceiver() {
     companion object {
         const val TAG = "AlarmReceiver"
-        const val NOTIFICATION_ID = 0
+        const val SCHEDULE_NOTIFICATION_ID = 0
+        const val RECORD_NOTIFICATION_ID = 1
         const val CHANNEL_ID = "Travelog"
     }
 
-    lateinit var notificationManager: NotificationManager
+    private lateinit var notificationManager: NotificationManager
+
+    @Inject
+    lateinit var repository: ScheduleRepository
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.e(TAG, "Received intent: $intent")
+
+        val injector =
+            BroadcastReceiverComponentManager.generatedComponent(context) as AlarmReceiver_GeneratedInjector
+        injector.injectAlarmReceiver(this)
+
+        Log.e(TAG, "onreceive")
         notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        createNotificationChannel()
-        deliverNotification(context, intent.extras?.getString("name"))
+        CoroutineScope(IO).launch {
+            val dateList = repository.loadScheduleDateList()
+            if (!isValidDate(dateList)) return@launch
+
+            val type = intent.extras?.getString("type")
+            createNotificationChannel()
+            deliverNotification(
+                context,
+                intent.extras?.getString("content"),
+                if (type == "Schedule") SCHEDULE_NOTIFICATION_ID
+                else RECORD_NOTIFICATION_ID
+            )
+        }
     }
 
-    private fun deliverNotification(context: Context, content: String?) {
+    private fun deliverNotification(context: Context, content: String?, id: Int) {
         val contentIntent = Intent(context, MainActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(
             context,
-            NOTIFICATION_ID,
+            id,
             contentIntent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_edit)
-            .setContentTitle("Alert")
+            .setContentTitle("Travelog")
             .setContentText(content)
             .setContentIntent(contentPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -47,10 +78,10 @@ class AlarmReceiver : BroadcastReceiver() {
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
-        notificationManager.notify(NOTIFICATION_ID, builder.build())
+        notificationManager.notify(id, builder.build())
     }
 
-    fun createNotificationChannel() {
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
                 NotificationChannel(CHANNEL_ID, "일정 알림", NotificationManager.IMPORTANCE_HIGH)
@@ -60,5 +91,22 @@ class AlarmReceiver : BroadcastReceiver() {
             notificationChannel.description = "Travelog 일정 알림"
             notificationManager.createNotificationChannel(notificationChannel)
         }
+    }
+
+    private fun isValidDate(list: List<String>): Boolean {
+        val todayDate = Date(System.currentTimeMillis())
+        val today = stringToDate(dateToString(todayDate))
+        var dateList: List<String>
+        var startDate: Date?
+        var endDate: Date?
+        for (term in list) {
+            dateList = term.split("~")
+            startDate = stringToDate(dateList[0])
+            endDate = stringToDate(dateList[1])
+            if (startDate == null || endDate == null) continue
+            else if (startDate.equals(today) || endDate.equals(today)) return true
+            else if (startDate.before(today) && endDate.after(today)) return true
+        }
+        return false
     }
 }

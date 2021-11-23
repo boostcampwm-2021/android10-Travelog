@@ -6,15 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.CompoundButton
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentMenuBinding
-import com.thequietz.travelog.menu.alarm.AlarmType
-import com.thequietz.travelog.menu.alarm.cancelAlarm
-import com.thequietz.travelog.menu.alarm.registerAlarm
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,7 +33,6 @@ class MenuFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         initSpinner()
-        initAlarm()
     }
 
     private fun initSpinner() {
@@ -84,20 +79,5 @@ class MenuFragment : Fragment() {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
-    }
-
-    fun initAlarm() {
-        binding.btnAlarm.setOnCheckedChangeListener(
-            CompoundButton.OnCheckedChangeListener { _, isChecked ->
-                when (isChecked) {
-                    true -> registerAlarm(
-                        requireContext(),
-                        AlarmType.Schedule,
-                        null
-                    )
-                    else -> cancelAlarm()
-                }
-            }
-        )
     }
 }

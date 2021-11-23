@@ -55,4 +55,6 @@ class ScheduleRepository @Inject constructor(
             }
         }
     }
+
+    fun loadScheduleDateList() = scheduleDao.loadAllDates()
 }
