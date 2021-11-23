@@ -22,12 +22,9 @@ class RecordViewManyInnerViewModel @Inject constructor(
     private val _checkedList = MutableLiveData<List<Int>>()
     val checkedList: LiveData<List<Int>> = _checkedList
 
-    private val _isChecked = MutableLiveData<Boolean>()
-    val isChecked: LiveData<Boolean> = _isChecked
     init {
         _deleteState.value = false
         _checkedList.value = mutableListOf()
-        _isChecked.value = false
     }
     fun changeDeleteState() {
         viewModelScope.launch {
@@ -39,10 +36,9 @@ class RecordViewManyInnerViewModel @Inject constructor(
     fun addCheck(id: Int) {
         viewModelScope.launch {
             checkedList.value?.let {
-                val res = it.toMutableList()
+                val res = it.toMutableSet()
                 res.add(id)
-                res.sort()
-                _checkedList.value = res
+                _checkedList.value = res.toMutableList().sorted()
             }
         }
     }
@@ -50,15 +46,17 @@ class RecordViewManyInnerViewModel @Inject constructor(
         viewModelScope.launch {
             checkedList.value?.let {
                 val res = it.toMutableList()
-                var ind = 0
+                var ind = -1
                 res.forEachIndexed { idx, it ->
                     if (id == it) {
                         ind = idx
                         return@forEachIndexed
                     }
                 }
-                res.removeAt(ind)
-                res.sort()
+                if (ind != -1) {
+                    res.removeAt(ind)
+                    res.sort()
+                }
                 _checkedList.value = res
             }
         }
@@ -71,31 +69,21 @@ class RecordViewManyInnerViewModel @Inject constructor(
                         repository.deleteRecordImage(it)
                     }
                 }
-
             }
             _checkedList.value = mutableListOf()
         }
         changeDeleteState()
     }
-    fun findChecked(id: Int) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                checkedList.value?.let { list ->
-                    list.forEach {
-                        if (it == id) {
-                            withContext(Dispatchers.Main) {
-                                _isChecked.value = true
-                            }
-                            return@forEach
-                        }
-                    }
+    fun findChecked(id: Int): Boolean {
+        var flag = false
+        checkedList.value?.let { list ->
+            list.forEach {
+                if (it == id) {
+                    flag = true
+                    return@forEach
                 }
             }
         }
-    }
-    fun resetChecked() {
-        viewModelScope.launch {
-            _isChecked.value = false
-        }
+        return flag
     }
 }
