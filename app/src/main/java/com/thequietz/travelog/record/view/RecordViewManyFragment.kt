@@ -119,6 +119,7 @@ class RecordViewManyFragment : Fragment() {
                     .show()
             }
             .setPositiveButton("아니오") { dialog, which ->
+                recordViewInnerViewModel.clearChecked()
             }.show()
     }
 }

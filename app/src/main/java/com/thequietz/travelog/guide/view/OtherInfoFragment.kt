@@ -14,8 +14,10 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentOtherInfoBinding
+import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.adapter.OtherInfoAdapter
 import com.thequietz.travelog.guide.adapter.OtherInfoViewPagerAdapter
 import com.thequietz.travelog.guide.viewmodel.OtherInfoViewModel
@@ -36,7 +38,7 @@ class OtherInfoFragment : Fragment() {
     private val vacationAdapter by lazy { OtherInfoAdapter() }
     private val festivalAdapter by lazy { OtherInfoAdapter() }
     private val foodAdapter by lazy { OtherInfoAdapter() }
-
+    private lateinit var thisPlace: Place
     var vacationPrevItemCount = 0
     var foodPrevItemCount = 0
     var festivalPrevItemCount = 0
@@ -53,7 +55,7 @@ class OtherInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        thisPlace = Gson().fromJson(args.item, Place::class.java)
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
             viewModel = otherInfoViewModel
@@ -66,17 +68,17 @@ class OtherInfoFragment : Fragment() {
         }
 
         with(otherInfoViewModel) {
-            initPlaceList(args.item)
+            initPlace(thisPlace)
             placeList.observe(viewLifecycleOwner, { it ->
                 it?.let { viewPagerAdapter.submitList(it) }
             })
-            currentVacationSpotList.observe(viewLifecycleOwner, { it ->
+            vacationSpotList.observe(viewLifecycleOwner, { it ->
                 it?.let { vacationAdapter.submitList(it) }
             })
-            currentFoodList.observe(viewLifecycleOwner, { it ->
+            foodList.observe(viewLifecycleOwner, { it ->
                 it?.let { foodAdapter.submitList(it) }
             })
-            currentFestivalList.observe(viewLifecycleOwner, { it ->
+            festivalList.observe(viewLifecycleOwner, { it ->
                 it?.let { festivalAdapter.submitList(it) }
             })
         }
@@ -98,7 +100,6 @@ class OtherInfoFragment : Fragment() {
                     ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
-                        otherInfoViewModel.setCurrentInd(position)
                     }
                 }
             )
@@ -169,7 +170,7 @@ class OtherInfoFragment : Fragment() {
                     withContext(Dispatchers.IO) {
                         otherInfoViewModel.vacationAgain()
                     }
-                    if (otherInfoViewModel.currentVacationSpotList.value?.size == 0) {
+                    if (otherInfoViewModel.vacationSpotList.value?.size == 0) {
                         Toast.makeText(requireContext(), "해당 데이터가 없습니다", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -179,7 +180,7 @@ class OtherInfoFragment : Fragment() {
                     withContext(Dispatchers.IO) {
                         otherInfoViewModel.foodAgain()
                     }
-                    if (otherInfoViewModel.currentFoodList.value?.size == 0) {
+                    if (otherInfoViewModel.foodList.value?.size == 0) {
                         Toast.makeText(requireContext(), "해당 데이터가 없습니다", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -189,13 +190,13 @@ class OtherInfoFragment : Fragment() {
                     withContext(Dispatchers.IO) {
                         otherInfoViewModel.festivalAgain()
                     }
-                    if (otherInfoViewModel.currentFestivalList.value?.size == 0) {
+                    if (otherInfoViewModel.festivalList.value?.size == 0) {
                         Toast.makeText(requireContext(), "해당 데이터가 없습니다", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             slLayout.setOnRefreshListener {
-                otherInfoViewModel.initPlaceList(args.item)
+                otherInfoViewModel.initPlace(thisPlace)
                 slLayout.isRefreshing = false
             }
             btnMakePlan.setOnClickListener {

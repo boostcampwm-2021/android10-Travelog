@@ -128,7 +128,6 @@ class MultiViewImageAdapter(
 
     class MultiViewImageViewHolder(val binding: ItemRecyclerRecordManyImagesBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
         fun bind(
             innerViewModel: RecordViewManyInnerViewModel,
             item: RecordImage
@@ -138,20 +137,20 @@ class MultiViewImageAdapter(
             innerViewModel.deleteState.observeForever {
                 if (it) {
                     binding.cbDeleteCheck.visibility = View.VISIBLE
+                    binding.cbDeleteCheck.setOnCheckedChangeListener { compoundButton, isChecked ->
+                        if (isChecked) {
+                            innerViewModel.addCheck(item.id)
+                        } else {
+                            innerViewModel.deleteCheck(item.id)
+                        }
+                    }
                 } else {
-                    binding.cbDeleteCheck.visibility = View.GONE
+                    binding.cbDeleteCheck.setOnCheckedChangeListener(null)
                     binding.cbDeleteCheck.isChecked = false
+                    binding.cbDeleteCheck.visibility = View.GONE
                 }
             }
-            binding.cbDeleteCheck.setOnCheckedChangeListener(null)
             binding.cbDeleteCheck.isChecked = innerViewModel.findChecked(item.id)
-            binding.cbDeleteCheck.setOnCheckedChangeListener { compoundButton, isChecked ->
-                if (isChecked) {
-                    innerViewModel.addCheck(item.id)
-                } else {
-                    innerViewModel.deleteCheck(item.id)
-                }
-            }
             binding.executePendingBindings()
         }
     }

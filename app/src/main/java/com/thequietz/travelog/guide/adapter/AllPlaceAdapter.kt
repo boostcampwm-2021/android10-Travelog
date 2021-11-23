@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.thequietz.travelog.databinding.ItemRecyclerGuideSpecificPlaceBinding
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.view.SpecificGuideFragmentDirections
@@ -16,37 +17,11 @@ class AllPlaceAdapter() : androidx.recyclerview.widget.ListAdapter<Place, AllPla
         fun bind(item: Place) {
             binding.item = item
             binding.executePendingBindings()
-            val temp = mutableListOf<Place>()
-            temp.add(item)
-            /*temp.add(
-                item.copy(
-                    areaCode = "31",
-                    url = "http://tong.visitkorea.or.kr/cms/resource/36/2364836_image2_1.jpg",
-                    name = "고양시",
-                    stateName = "가평군"
-                )
-            )
-            temp.add(
-                item.copy(
-                    areaCode = "6",
-                    url = "http://tong.visitkorea.or.kr/cms/resource/43/2757743_image2_1.jpg",
-                    name = "부산",
-                    stateName = "부산시"
-                )
-            )
-            temp.add(
-                item.copy(
-                    areaCode = "7",
-                    url = "http://tong.visitkorea.or.kr/cms/resource/67/2558467_image2_1.jpg",
-                    name = "울산",
-                    stateName = "울산시"
-                )
-            )*/
 
             itemView.setOnClickListener {
+                val param = Gson().toJson(item)
                 val action = SpecificGuideFragmentDirections
-                    // .actionSpecificGuideFragmentToOtherInfoFragment(arrayOf(item!!))
-                    .actionSpecificGuideFragmentToOtherInfoFragment(temp.toTypedArray())
+                    .actionSpecificGuideFragmentToOtherInfoFragment(param)
                 it.findNavController().navigate(action)
             }
         }
