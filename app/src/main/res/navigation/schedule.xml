@@ -43,6 +43,10 @@
         <argument
             android:name="schedule"
             app:argType="com.thequietz.travelog.schedule.model.ScheduleModel" />
+        <argument
+            android:name="type"
+            android:defaultValue="TYPE_CREATE"
+            app:argType="com.thequietz.travelog.util.ScheduleControlType" />
         <action
             android:id="@+id/action_scheduleDetailFragment_to_scheduleFragment"
             app:destination="@id/scheduleFragment"

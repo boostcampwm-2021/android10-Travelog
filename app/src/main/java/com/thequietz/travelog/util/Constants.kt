@@ -4,6 +4,11 @@ import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import com.thequietz.travelog.schedule.model.SchedulePlaceModel
 
+enum class ScheduleControlType {
+    TYPE_CREATE,
+    TYPE_UPDATE
+}
+
 const val requestImage = 99
 val SAMPLE_SCHEDULES = listOf(
     ScheduleModel(

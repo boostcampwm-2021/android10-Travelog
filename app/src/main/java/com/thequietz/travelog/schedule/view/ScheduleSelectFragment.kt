@@ -19,6 +19,7 @@ import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleSelectBinding
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import com.thequietz.travelog.schedule.viewmodel.ScheduleSelectViewModel
+import com.thequietz.travelog.util.ScheduleControlType
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import java.util.Locale
@@ -59,7 +60,8 @@ class ScheduleSelectFragment : Fragment() {
             )
             val action =
                 ScheduleSelectFragmentDirections.actionScheduleSelectFragmentToScheduleDetailFragment(
-                    schedule
+                    schedule,
+                    ScheduleControlType.TYPE_CREATE
                 )
             it.findNavController().navigate(action)
         }

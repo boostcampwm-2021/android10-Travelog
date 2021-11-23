@@ -14,6 +14,7 @@ import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleBinding
 import com.thequietz.travelog.schedule.adapter.ScheduleRecyclerAdapter
 import com.thequietz.travelog.schedule.viewmodel.ScheduleViewModel
+import com.thequietz.travelog.util.ScheduleControlType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,7 +48,11 @@ class ScheduleFragment : Fragment() {
         val adapter = ScheduleRecyclerAdapter(
             {
                 // TODO: 세부 일정 설정 화면 Navigation 연결
-                val action = ScheduleFragmentDirections.actionScheduleFragmentToScheduleDetailFragment(it)
+                val action =
+                    ScheduleFragmentDirections.actionScheduleFragmentToScheduleDetailFragment(
+                        it,
+                        ScheduleControlType.TYPE_UPDATE
+                    )
                 findNavController().navigate(action)
             },
             {
