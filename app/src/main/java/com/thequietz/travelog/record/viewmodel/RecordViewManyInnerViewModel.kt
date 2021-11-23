@@ -70,9 +70,8 @@ class RecordViewManyInnerViewModel @Inject constructor(
                     }
                 }
             }
-            _checkedList.value = mutableListOf()
+            clearChecked()
         }
-        changeDeleteState()
     }
     fun findChecked(id: Int): Boolean {
         var flag = false
@@ -85,5 +84,10 @@ class RecordViewManyInnerViewModel @Inject constructor(
             }
         }
         return flag
+    }
+    fun clearChecked() {
+        viewModelScope.launch {
+            _checkedList.value = mutableListOf()
+        }
     }
 }
