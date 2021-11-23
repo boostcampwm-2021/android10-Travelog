@@ -1,7 +1,6 @@
 package com.thequietz.travelog.schedule.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -63,18 +62,19 @@ class ScheduleDetailFragment :
         val stateHandle = findNavController().currentBackStackEntry?.savedStateHandle
 
         viewModel.detailList.observe(viewLifecycleOwner, { list ->
-            targetList.value = list.map {
+            targetList.value = mutableListOf()
+            val tempList = list.map {
                 LatLng(
                     it.destination.geometry.location.latitude,
                     it.destination.geometry.location.longitude
                 )
             }.toMutableList()
+            targetList.value = tempList
         })
 
         stateHandle?.getLiveData<PlaceDetailModel>("result")?.observe(
             viewLifecycleOwner,
             {
-                Log.d("Cal:GetStateIndex", viewModel.selectedIndex.toString())
                 viewModel.addScheduleDetail(it)
 
                 stateHandle.remove<PlaceDetailModel>("result")
@@ -105,20 +105,15 @@ class ScheduleDetailFragment :
 
     private fun initItemObserver() {
         viewModel.itemList.observe(viewLifecycleOwner, {
-            adapter.submitList(it.toMutableList())
+            adapter.submitList(it)
         })
 
         viewModel.placeDetailList.observe(viewLifecycleOwner, {
-            viewModel.initDetailList(
-                args.schedule.date.split("~")[0],
-                args.schedule.date.split("~")[1],
-                it
-            )
             viewModel.placeDetailList.removeObservers(viewLifecycleOwner)
         })
 
         viewModel.colorList.observe(viewLifecycleOwner, {
-            markerColorList = it
+            markerColorList.value = it
         })
     }
 
