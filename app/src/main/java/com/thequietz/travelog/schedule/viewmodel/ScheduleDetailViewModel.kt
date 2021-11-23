@@ -4,17 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.schedule.data.ColorRGB
 import com.thequietz.travelog.schedule.data.ScheduleDetailItem
+import com.thequietz.travelog.schedule.data.TYPE_CONTENT
+import com.thequietz.travelog.schedule.data.TYPE_HEADER
 import com.thequietz.travelog.schedule.model.ScheduleDetailModel
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import com.thequietz.travelog.schedule.model.SchedulePlaceModel
 import com.thequietz.travelog.schedule.repository.ScheduleRepository
-import com.thequietz.travelog.util.dateFormat
 import com.thequietz.travelog.util.dateToString
 import com.thequietz.travelog.util.stringToDate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Collections
 import javax.inject.Inject
@@ -25,13 +28,17 @@ class ScheduleDetailViewModel @Inject internal constructor(
 ) : ViewModel() {
 
     var selectedIndex = 0
+    var selectedDate = ""
+
+    private lateinit var schedule: ScheduleModel
 
     val item = mutableListOf<ScheduleDetailItem>()
     private val _itemList = MutableLiveData<List<ScheduleDetailItem>>()
     val itemList: LiveData<List<ScheduleDetailItem>> = _itemList
-
-    private val _schedule = MutableLiveData<ScheduleModel>()
-    val schedule: LiveData<ScheduleModel> = _schedule
+    private val _detailList = MutableLiveData<List<ScheduleDetailModel>>()
+    val detailList: LiveData<List<ScheduleDetailModel>> = _detailList
+    private val _colorList = MutableLiveData<List<ColorRGB>>()
+    val colorList: LiveData<List<ColorRGB>> = _colorList
 
     val placeDetailList: MediatorLiveData<List<ScheduleDetailModel>> = MediatorLiveData()
 
@@ -40,6 +47,8 @@ class ScheduleDetailViewModel @Inject internal constructor(
 
     init {
         _itemList.value = item
+        _detailList.value = mutableListOf()
+        _colorList.value = mutableListOf()
     }
 
     fun initItemList(startDate: String, endDate: String) {
@@ -48,72 +57,131 @@ class ScheduleDetailViewModel @Inject internal constructor(
         var date = startDate
         var day = 1
 
-        item.add(ScheduleDetailItem(id++, 1, getRandomColor(), date, day++))
-        indexList.add(0)
-
-        _itemList.value = item
-        while (date != endDate) {
+        while (date <= endDate) {
             date = addOneDate(date).toString()
-            item.add(ScheduleDetailItem(id++, 1, getRandomColor(), date, day++))
+            item.add(ScheduleDetailItem(id++, TYPE_HEADER, getRandomColor(), date, day++))
             indexList.add(0)
             _itemList.value = item
         }
     }
 
-    fun createSchedule(name: String, schedulePlaces: List<SchedulePlaceModel>, date: String) {
-        val newSchedule = ScheduleModel(name = name, schedulePlace = schedulePlaces, date = date)
-        _schedule.value = newSchedule
+    fun initDetailList(startDate: String, endDate: String, detailList: List<ScheduleDetailModel>) {
+        var date = startDate
+        val tempIndex = selectedIndex
+        selectedIndex = 0
 
-        repository.createSchedules(newSchedule) {
-            placeDetailList.addSource(repository.loadScheduleDetailsByScheduleId(it)) { list ->
+        while (date <= endDate) {
+            detailList.filter { it.date == date }.forEach {
+                addScheduleDetail(it.destination)
+            }
+            date = addOneDate(date).toString()
+            selectedIndex++
+        }
+        selectedIndex = tempIndex
+    }
+
+    fun loadSchedule(schedule: ScheduleModel) {
+        this.schedule = schedule
+
+        viewModelScope.launch {
+            placeDetailList.addSource(repository.loadScheduleDetailsByScheduleId(schedule.id)) { list ->
                 placeDetailList.value = list
             }
         }
     }
 
-    fun addScheduleDetail(placeDetail: PlaceDetailModel) {
-        var temp = 0
-        for (i in 0..selectedIndex) {
-            temp += indexList[i]
-        }
-        val position = selectedIndex + temp + 1
-
-        schedule.value?.apply {
-            repository.createScheduleDetail(
-                id,
-                position,
-                schedulePlace[0],
-                date.split("~")[0],
-                placeDetail
+    fun createSchedule(name: String, schedulePlaces: List<SchedulePlaceModel>, date: String) {
+        repository.createSchedules(
+            ScheduleModel(
+                name = name,
+                schedulePlace = schedulePlaces,
+                date = date
             )
+        ) {
+            viewModelScope.launch {
+                placeDetailList.addSource(repository.loadScheduleDetailsByScheduleId(it)) { list ->
+                    placeDetailList.value = list
+                }
+            }
+            schedule = ScheduleModel(it, name, schedulePlaces, date)
         }
     }
 
-    fun applyScheduleDetails(placeDetail: PlaceDetailModel) {
-        val color = getRandomColor()
-        var temp = 0
+    fun saveSchedule() {
+        detailList.value?.let { repository.createScheduleDetail(it) }
+    }
+
+    fun addScheduleDetail(placeDetail: PlaceDetailModel) {
+        var numPriors = 0
         for (i in 0..selectedIndex) {
-            temp += indexList[i]
+            numPriors += indexList[i]
         }
-        val position = selectedIndex + temp + 1
-        item.add(position, ScheduleDetailItem(id++, 2, color, placeDetail.name, selectedIndex))
+        val position = selectedIndex + numPriors + 1
+
+        val temp = detailList.value?.toMutableList()?.apply {
+            add(
+                numPriors,
+                ScheduleDetailModel(
+                    scheduleId = schedule.id,
+                    place = schedule.schedulePlace[0],
+                    date = selectedDate,
+                    destination = placeDetail
+                )
+            )
+        }
+        _detailList.value = mutableListOf()
+        temp.let { _detailList.value = it }
+
+        applyScheduleDetails(position, placeDetail)
+    }
+
+    private fun applyScheduleDetails(position: Int, placeDetail: PlaceDetailModel) {
+        val color = getRandomColor()
+        _colorList.value = colorList.value?.toMutableList()?.apply { add(color) }
+
+        item.add(
+            position,
+            ScheduleDetailItem(id++, TYPE_CONTENT, color, placeDetail.name, selectedIndex)
+        )
         _itemList.value = item
         indexList[selectedIndex]++
     }
 
-    fun deleteSchedule(id: Int) {
-        val target = item.filter { it.id == id }[0]
-        target.index?.let { indexList[it]-- }
-        item.remove(target)
+    fun deleteSchedule(position: Int) {
+        val dayIndex = getDayIndex(position)
+        indexList[dayIndex]--
+        val detailIndex = position - (dayIndex + 1)
+
+        item.removeAt(position)
         _itemList.value = item
+
+        _detailList.value = detailList.value?.toMutableList()?.apply {
+            removeAt(detailIndex)
+        }
+
+        _colorList.value = colorList.value?.toMutableList()?.apply {
+            removeAt(detailIndex)
+        }
     }
 
-    fun itemMove(fromPosition: Int, toPosition: Int) {
+    fun itemMove(fromPosition: Int, toPosition: Int) { // TODO
+        val tempDetails = detailList.value?.toMutableList()
+        val tempColors = colorList.value?.toMutableList()
+
         val fromIndex = getDayIndex(fromPosition)
         indexList[fromIndex]--
+        val fromDetailIndex = fromPosition - (fromIndex + 1)
+
         val toIndex = getDayIndex(toPosition)
         indexList[toIndex]++
+        val toDetailIndex = toPosition - (toIndex + 1)
+
         Collections.swap(item, fromPosition, toPosition)
+        Collections.swap(tempDetails, fromDetailIndex, toDetailIndex)
+        Collections.swap(tempColors, fromDetailIndex, toDetailIndex)
+
+        tempDetails.let { _detailList.value = it }
+        tempColors.let { _colorList.value = it }
     }
 
     private fun getDayIndex(position: Int): Int {
@@ -132,9 +200,10 @@ class ScheduleDetailViewModel @Inject internal constructor(
 
     private fun addOneDate(date: String): String? {
         val cal: Calendar = Calendar.getInstance()
-        cal.time = stringToDate(date)
-        cal.add(Calendar.DATE, 1)
-        val str = dateFormat.format(cal.time)
-        return stringToDate(str)?.let { dateToString(it) }
+        cal.apply {
+            time = stringToDate(date)
+            add(Calendar.DATE, 1)
+        }
+        return stringToDate(dateToString(cal.time))?.let { dateToString(it) }
     }
 }

@@ -81,8 +81,9 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: (
             binding.viewModel = viewModel
             binding.setOnAddClickListener {
                 if (item.index != null && item.name != null) {
-                    onAdd()
                     viewModel.selectedIndex = item.index - 1
+                    viewModel.selectedDate = item.name
+                    onAdd()
                 }
             }
         }
@@ -93,9 +94,12 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: (
         fun bind(item: ScheduleDetailItem) {
             binding.item = item
             binding.viewModel = viewModel
-            item.color?.let {
+            item.color.let {
                 binding.viewCircle.backgroundTintList =
                     ColorStateList.valueOf(Color.rgb(it.r, it.g, it.b))
+            }
+            binding.btnDelete.setOnClickListener {
+                viewModel.deleteSchedule(bindingAdapterPosition)
             }
         }
     }
