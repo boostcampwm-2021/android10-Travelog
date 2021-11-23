@@ -3,17 +3,21 @@
     <item
         android:id="@+id/guide"
         android:enabled="true"
-        android:title="@string/menu_guide"/>
+        android:icon="@drawable/ic_outline_menu_book_24"
+        android:title="@string/menu_guide" />
     <item
         android:id="@+id/schedule"
         android:enabled="true"
-        android:title="@string/menu_schedule"/>
+        android:icon="@drawable/ic_outline_map_24"
+        android:title="@string/menu_schedule" />
     <item
         android:id="@+id/record"
         android:enabled="true"
-        android:title="@string/menu_record"/>
+        android:icon="@drawable/ic_outline_collections_24"
+        android:title="@string/menu_record" />
     <item
         android:id="@+id/menu"
         android:enabled="true"
-        android:title="@string/menu_menu"/>
+        android:icon="@drawable/ic_outline_notifications_24"
+        android:title="@string/menu_menu" />
 </menu>
