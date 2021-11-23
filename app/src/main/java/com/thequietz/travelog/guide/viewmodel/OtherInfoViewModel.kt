@@ -18,32 +18,20 @@ class OtherInfoViewModel @Inject internal constructor(
     val repository: GuideRepository
 ) : ViewModel() {
 
-    private val _vacationSpotList = MutableLiveData<List<List<RecommendPlace>>>()
-    val vacationSpotList: LiveData<List<List<RecommendPlace>>> = _vacationSpotList
+    private val _vacationSpotList = MutableLiveData<List<RecommendPlace>>()
+    val vacationSpotList: LiveData<List<RecommendPlace>> = _vacationSpotList
 
-    private val _foodList = MutableLiveData<List<List<RecommendPlace>>>()
-    val foodList: LiveData<List<List<RecommendPlace>>> = _foodList
+    private val _foodList = MutableLiveData<List<RecommendPlace>>()
+    val foodList: LiveData<List<RecommendPlace>> = _foodList
 
-    private val _festivalList = MutableLiveData<List<List<RecommendPlace>>>()
-    val festivalList: LiveData<List<List<RecommendPlace>>> = _festivalList
+    private val _festivalList = MutableLiveData<List<RecommendPlace>>()
+    val festivalList: LiveData<List<RecommendPlace>> = _festivalList
 
     private val _placeList = MutableLiveData<List<Place>>()
     val placeList: LiveData<List<Place>> = _placeList
 
-    private val _currentVacationSpotList = MutableLiveData<List<RecommendPlace>>()
-    val currentVacationSpotList: LiveData<List<RecommendPlace>> = _currentVacationSpotList
-
-    private val _currentFoodList = MutableLiveData<List<RecommendPlace>>()
-    val currentFoodList: LiveData<List<RecommendPlace>> = _currentFoodList
-
-    private val _currentFestivalList = MutableLiveData<List<RecommendPlace>>()
-    val currentFestivalList: LiveData<List<RecommendPlace>> = _currentFestivalList
-
     private val _currentPlace = MutableLiveData<Place>()
     val currentPlace: LiveData<Place> = _currentPlace
-
-    private val _currentInd = MutableLiveData<Int>()
-    val currentInd: LiveData<Int> = _currentInd
 
     var vacationPageInd = 0
     var foodPageInd = 0
@@ -58,87 +46,68 @@ class OtherInfoViewModel @Inject internal constructor(
     private val _festivalPageEnd = MutableLiveData<Boolean>()
     val festivalPageEnd: LiveData<Boolean> = _festivalPageEnd
 
-    /*init {
-        initCurrenetItem()
-        initVacationSpotData()
-        initFoodData()
-        initFestivalData()
-    }*/
-    fun initPlaceList(array: Array<Place>) {
-        viewModelScope.launch {
-            _placeList.value = array.toList()
-            initVacationSpotData()
-            // initFoodData()
-            // initFestivalData()
-            setCurrentInd(0)
-        }
+    init {
+        _vacationPageEnd.value = false
+        _foodPageEnd.value = false
+        _festivalPageEnd.value = false
+        vacationPageInd = 1
+        foodPageInd = 1
+        festivalPageInd = 1
     }
-    fun setCurrentInd(ind: Int) {
+    fun initPlace(place: Place) {
         viewModelScope.launch {
-            _currentInd.value = ind
-            _currentPlace.value = placeList.value?.get(ind)
-            _vacationPageEnd.value = false
-            _foodPageEnd.value = false
-            _festivalPageEnd.value = false
-            vacationPageInd = 1
-            foodPageInd = 1
-            festivalPageInd = 1
-            vacationAgain()
-            foodAgain()
-            festivalAgain()
+            _currentPlace.value = place
+            initVacationSpotData()
+            initFoodData()
+            initFestivalData()
         }
     }
 
     fun initVacationSpotData() {
         viewModelScope.launch {
-            val vacationRes = mutableListOf<List<RecommendPlace>>()
-            placeList.value?.forEach {
-                val tempRes = withContext(Dispatchers.IO) {
+            currentPlace.value?.let {
+                val res = withContext(Dispatchers.IO) {
                     CategoryMap.get(Category.VACATION)?.let { type ->
                         repository.loadAreaData(it.areaCode, type, vacationPageInd)
                     }
                 }
-                tempRes?.let {
-                    vacationRes.add(it)
+                res?.let {
+                    _vacationSpotList.value = it
                 }
             }
-            _vacationSpotList.value = vacationRes
         }
     }
 
     fun initFoodData() {
         viewModelScope.launch {
-            val foodRes = mutableListOf<List<RecommendPlace>>()
-            placeList.value?.forEach {
-                val tempRes = withContext(Dispatchers.IO) {
+            currentPlace.value?.let {
+                val res = withContext(Dispatchers.IO) {
                     CategoryMap.get(Category.FOOD)?.let { type ->
                         repository.loadAreaData(it.areaCode, type, foodPageInd)
                     }
                 }
-                tempRes?.let {
-                    foodRes.add(it)
+                res?.let {
+                    _foodList.value = it
                 }
             }
-            _foodList.value = foodRes
         }
     }
 
     fun initFestivalData() {
         viewModelScope.launch {
             val festivalRes = mutableListOf<List<RecommendPlace>>()
-            placeList.value?.forEach {
-                val tempRes = withContext(Dispatchers.IO) {
+            currentPlace.value?.let {
+                val res = withContext(Dispatchers.IO) {
                     repository.loadFestivalData(it.areaCode, festivalPageInd)
                 }
-                festivalRes.add(tempRes)
+                _festivalList.value = res
             }
-            _festivalList.value = festivalRes
         }
     }
     fun addVacationData() {
         viewModelScope.launch {
             vacationPageInd++
-            val currentRes = currentVacationSpotList.value?.toMutableList()
+            val currentRes = vacationSpotList.value?.toMutableList()
             val res = withContext(Dispatchers.IO) {
                 currentPlace.value?.let {
                     CategoryMap.get(Category.VACATION)?.let { type ->
@@ -153,14 +122,14 @@ class OtherInfoViewModel @Inject internal constructor(
                 _vacationPageEnd.value = true
             }
             currentRes?.let {
-                _currentVacationSpotList.value = it
+                _vacationSpotList.value = it
             }
         }
     }
     fun addFoodData() {
         viewModelScope.launch {
             foodPageInd++
-            val currentRes = currentFoodList.value?.toMutableList()
+            val currentRes = foodList.value?.toMutableList()
             val res = withContext(Dispatchers.IO) {
                 currentPlace.value?.let {
                     CategoryMap.get(Category.FOOD)?.let { type ->
@@ -175,14 +144,14 @@ class OtherInfoViewModel @Inject internal constructor(
                 _foodPageEnd.value = true
             }
             currentRes?.let {
-                _currentFoodList.value = it
+                _foodList.value = it
             }
         }
     }
     fun addFestivalData() {
         viewModelScope.launch {
             festivalPageInd++
-            val currentRes = currentFestivalList.value?.toMutableList()
+            val currentRes = festivalList.value?.toMutableList()
             val res = withContext(Dispatchers.IO) {
                 currentPlace.value?.let {
                     repository.loadFestivalData(it.areaCode, festivalPageInd)
@@ -195,7 +164,7 @@ class OtherInfoViewModel @Inject internal constructor(
                 _festivalPageEnd.value = true
             }
             currentRes?.let {
-                _currentFestivalList.value = it
+                _festivalList.value = it
             }
         }
     }
@@ -209,7 +178,7 @@ class OtherInfoViewModel @Inject internal constructor(
                 }
             }
             res?.let {
-                _currentVacationSpotList.value = it
+                _vacationSpotList.value = it
             }
         }
     }
@@ -223,7 +192,7 @@ class OtherInfoViewModel @Inject internal constructor(
                 }
             }
             res?.let {
-                _currentFoodList.value = it
+                _foodList.value = it
             }
         }
     }
@@ -235,7 +204,7 @@ class OtherInfoViewModel @Inject internal constructor(
                 }
             }
             res?.let {
-                _currentFestivalList.value = it
+                _festivalList.value = it
             }
         }
     }
