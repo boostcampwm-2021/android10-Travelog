@@ -2,10 +2,11 @@ package com.thequietz.travelog.guide.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.databinding.ItemRecyclerOtherInfoBinding
 import com.thequietz.travelog.guide.RecommendPlace
+import com.thequietz.travelog.guide.view.OtherInfoFragmentDirections
 
 class OtherInfoAdapter : androidx.recyclerview.widget.ListAdapter<RecommendPlace, OtherInfoAdapter.OtherInfoViewHolder>(
     RecommendPlaceDiffUtilCallback()
@@ -15,7 +16,9 @@ class OtherInfoAdapter : androidx.recyclerview.widget.ListAdapter<RecommendPlace
             binding.item = item
             binding.executePendingBindings()
             itemView.setOnClickListener {
-                Toast.makeText(itemView.context, "${item.name}", Toast.LENGTH_SHORT).show()
+                val action = OtherInfoFragmentDirections
+                    .actionOtherInfoFragmentToPlaceSearchFragmentFromGuide()
+                it.findNavController().navigate(action)
             }
         }
     }

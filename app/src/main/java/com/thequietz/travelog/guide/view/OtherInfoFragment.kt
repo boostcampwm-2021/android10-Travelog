@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -196,6 +197,11 @@ class OtherInfoFragment : Fragment() {
             slLayout.setOnRefreshListener {
                 otherInfoViewModel.initPlaceList(args.item)
                 slLayout.isRefreshing = false
+            }
+            btnMakePlan.setOnClickListener {
+                val action = OtherInfoFragmentDirections
+                    .actionOtherInfoFragmentToSchedulePlaceFragmentFromGuide()
+                it.findNavController().navigate(action)
             }
         }
     }
