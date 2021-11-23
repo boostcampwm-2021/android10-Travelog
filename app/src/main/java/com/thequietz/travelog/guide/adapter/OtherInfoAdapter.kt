@@ -4,9 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.thequietz.travelog.databinding.ItemRecyclerOtherInfoBinding
 import com.thequietz.travelog.guide.RecommendPlace
 import com.thequietz.travelog.guide.view.OtherInfoFragmentDirections
+import com.thequietz.travelog.place.model.PlaceGeometry
+import com.thequietz.travelog.place.model.PlaceLocation
+import com.thequietz.travelog.place.model.PlaceSearchModel
 
 class OtherInfoAdapter : androidx.recyclerview.widget.ListAdapter<RecommendPlace, OtherInfoAdapter.OtherInfoViewHolder>(
     RecommendPlaceDiffUtilCallback()
@@ -16,8 +20,21 @@ class OtherInfoAdapter : androidx.recyclerview.widget.ListAdapter<RecommendPlace
             binding.item = item
             binding.executePendingBindings()
             itemView.setOnClickListener {
+                val param = Gson().toJson(
+                    PlaceSearchModel(
+                        item.name,
+                        "23",
+                        PlaceGeometry(
+                            PlaceLocation(
+                                item.latitude, item.longitude
+                            )
+                        )
+                    )
+                )
                 val action = OtherInfoFragmentDirections
-                    .actionOtherInfoFragmentToPlaceSearchFragmentFromGuide()
+                    .actionOtherInfoFragmentToPlaceDetailFragmentFromGuide(
+                        param, true
+                    )
                 it.findNavController().navigate(action)
             }
         }

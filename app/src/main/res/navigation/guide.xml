@@ -38,19 +38,26 @@
             app:popUpTo="@id/specificGuideFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_otherInfoFragment_to_placeSearchFragmentFromGuide"
-            app:destination="@id/placeSearchFragmentFromGuide" />
-        <action
             android:id="@+id/action_otherInfoFragment_to_schedulePlaceFragmentFromGuide"
             app:destination="@id/schedulePlaceFragmentFromGuide" />
+        <action
+            android:id="@+id/action_otherInfoFragment_to_placeDetailFragmentFromGuide"
+            app:destination="@id/placeDetailFragmentFromGuide" />
     </fragment>
-    <fragment
-        android:id="@+id/placeSearchFragmentFromGuide"
-        android:name="com.thequietz.travelog.place.view.PlaceSearchFragment"
-        android:label="PlaceSearchFragment" />
     <fragment
         android:id="@+id/schedulePlaceFragmentFromGuide"
         android:name="com.thequietz.travelog.schedule.view.SchedulePlaceFragment"
         android:label="SchedulePlaceFragment" />
+    <fragment
+        android:id="@+id/placeDetailFragmentFromGuide"
+        android:name="com.thequietz.travelog.place.view.PlaceDetailFragment"
+        android:label="PlaceDetailFragment">
+        <argument
+            android:name="param"
+            app:argType="string" />
+        <argument
+            android:name="isRecommended"
+            app:argType="boolean" />
+    </fragment>
 
 </navigation>
