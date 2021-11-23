@@ -95,14 +95,14 @@ class MenuViewModel @Inject internal constructor(
     }
 
     fun scheduleTimeChange(index: Int) {
-        _scheduleAlarmTime.postValue(index)
+        _scheduleAlarmTime.value = index
         pref.scheduleTime = index
         cancelScheduleAlarm()
         makeScheduleAlarms()
     }
 
     fun recordTimeChange(index: Int) {
-        _recordAlarmTime.postValue(index)
+        _recordAlarmTime.value = index
         pref.recordTime = index
         cancelRecordAlarm()
         makeRecordAlarms()

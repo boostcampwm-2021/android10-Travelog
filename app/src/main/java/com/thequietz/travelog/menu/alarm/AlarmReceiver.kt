@@ -26,11 +26,13 @@ import javax.inject.Inject
 class AlarmReceiver : BroadcastReceiver() {
     companion object {
         const val TAG = "AlarmReceiver"
-        const val NOTIFICATION_ID = 0
+        const val SCHEDULE_NOTIFICATION_ID = 0
+        const val RECORD_NOTIFICATION_ID = 1
         const val CHANNEL_ID = "Travelog"
     }
 
     private lateinit var notificationManager: NotificationManager
+
     @Inject
     lateinit var repository: ScheduleRepository
 
@@ -47,8 +49,14 @@ class AlarmReceiver : BroadcastReceiver() {
             val dateList = repository.loadScheduleDateList()
             if (!isValidDate(dateList)) return@launch
 
+            val type = intent.extras?.getString("type")
             createNotificationChannel()
-            deliverNotification(context, intent.extras?.getString("content"), NOTIFICATION_ID)
+            deliverNotification(
+                context,
+                intent.extras?.getString("content"),
+                if (type == "Schedule") SCHEDULE_NOTIFICATION_ID
+                else RECORD_NOTIFICATION_ID
+            )
         }
     }
 
@@ -70,7 +78,7 @@ class AlarmReceiver : BroadcastReceiver() {
             .setDefaults(NotificationCompat.DEFAULT_ALL)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
-        notificationManager.notify(NOTIFICATION_ID, builder.build())
+        notificationManager.notify(id, builder.build())
     }
 
     private fun createNotificationChannel() {

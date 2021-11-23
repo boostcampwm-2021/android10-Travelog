@@ -25,7 +25,8 @@ fun registerAlarm(context: Context, type: AlarmType, alarmTime: String) {
 
     val pendingIntent = PendingIntent.getBroadcast(
         context,
-        AlarmReceiver.NOTIFICATION_ID,
+        if (type == AlarmType.Schedule) AlarmReceiver.SCHEDULE_NOTIFICATION_ID
+        else AlarmReceiver.RECORD_NOTIFICATION_ID,
         intent,
         PendingIntent.FLAG_UPDATE_CURRENT
     )
@@ -55,7 +56,8 @@ fun cancelAlarm(context: Context, type: AlarmType) {
 
     val pendingIntent = PendingIntent.getBroadcast(
         context,
-        AlarmReceiver.NOTIFICATION_ID,
+        if (type == AlarmType.Schedule) AlarmReceiver.SCHEDULE_NOTIFICATION_ID
+        else AlarmReceiver.RECORD_NOTIFICATION_ID,
         intent,
         PendingIntent.FLAG_UPDATE_CURRENT
     )
