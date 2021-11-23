@@ -21,7 +21,7 @@ class RecordViewModel @Inject constructor(
     val recordList: LiveData<List<Record>> = _recordList
 
     init {
-        TODO("Schedule 테이블에서 데이터 로드 후 Record 테이블에 저장")
+        // TODO("Schedule 테이블에서 데이터 로드 후 Record 테이블에 저장")
         viewModelScope.launch {
             val recordImages = withContext(Dispatchers.IO) {
                 repository.loadRecordImages()

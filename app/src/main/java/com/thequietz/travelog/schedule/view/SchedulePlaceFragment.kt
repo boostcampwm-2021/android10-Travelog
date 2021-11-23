@@ -87,7 +87,7 @@ class SchedulePlaceFragment : Fragment() {
             it.findNavController().navigate(action)
         }
 
-        viewModel.schedulePlaceList.observe(viewLifecycleOwner, {
+        viewModel.placeList.observe(viewLifecycleOwner, {
 
             binding.tvEmptyResult.visibility = if (it.isEmpty()) {
                 View.VISIBLE

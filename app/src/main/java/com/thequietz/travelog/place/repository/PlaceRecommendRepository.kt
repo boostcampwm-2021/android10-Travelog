@@ -19,7 +19,7 @@ class PlaceRecommendRepository @Inject constructor(
     suspend fun loadPlaceData(typeId: Int): List<PlaceRecommendModel> {
         return withContext(Dispatchers.IO) {
             try {
-                val apiKey = BuildConfig.TOUR_API_KEY
+                val apiKey = BuildConfig.NEW_TOUR_API_KEY
                 val call = service.loadRecommendPlace(typeId, apiKey)
                 val resp = call.awaitResponse()
 

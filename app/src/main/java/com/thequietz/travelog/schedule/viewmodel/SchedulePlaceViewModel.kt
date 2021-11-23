@@ -1,6 +1,7 @@
 package com.thequietz.travelog.schedule.viewmodel
 
 import android.os.Parcelable
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.schedule.model.SchedulePlaceModel
 import com.thequietz.travelog.schedule.repository.SchedulePlaceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,10 +19,12 @@ class SchedulePlaceViewModel @Inject constructor(
     private val repository: SchedulePlaceRepository
 ) : ViewModel() {
     private var _placeList = MutableLiveData<List<SchedulePlaceModel>>()
-    val schedulePlaceList: LiveData<List<SchedulePlaceModel>> = _placeList
+    val placeList: LiveData<List<SchedulePlaceModel>> = _placeList
 
-    /*private var _selectedPlaces = MutableLiveData<MutableList<PlaceModel>>()
-    val selectedPlaces: LiveData<MutableList<PlaceModel>> = _selectedPlaces*/
+    val handler = CoroutineExceptionHandler { _, throwable ->
+        Log.d("ERROR", throwable.stackTraceToString())
+        null
+    }
 
     private var _placeSelectedList = MutableLiveData<MutableList<SchedulePlaceModel>>()
     val placeSelectedList: LiveData<MutableList<SchedulePlaceModel>> = _placeSelectedList
@@ -28,7 +33,7 @@ class SchedulePlaceViewModel @Inject constructor(
     val viewState: LiveData<Parcelable> get() = _viewState
 
     fun loadPlaceList() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Main + handler) {
             _placeList.value = repository.loadPlaceList()
         }
     }
