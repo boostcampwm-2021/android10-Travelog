@@ -6,6 +6,8 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,8 +16,9 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -36,6 +39,7 @@ import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.snackbar.Snackbar
 import com.thequietz.travelog.R
+import com.thequietz.travelog.schedule.data.ColorRGB
 
 abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
     Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -51,15 +55,26 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
     private lateinit var mapViewBound: LatLngBounds
     protected var zoomLevel: Float = 11f
 
+    open var drawMarker = false
+    open var isMarkerNumbered = false
+    open var drawOrderedPolyline = false
+
+    var baseTargetList: MutableList<LatLng> = // Set base target to Seoul
+        mutableListOf(LatLng(37.55, 126.99), LatLng(37.55, 126.99))
     var targetList: MutableLiveData<MutableList<LatLng>> = MutableLiveData(mutableListOf())
+
     private var targetCount: Int = 0
 
     protected var markerList: MutableList<Marker> = mutableListOf()
+    protected var markerColorList: List<ColorRGB> = mutableListOf()
+
     private var polylineList: MutableList<Polyline> = mutableListOf()
 
     protected var isInitial: Boolean = true
 
     abstract fun initViewModel()
+
+    abstract fun initTargetList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,13 +103,8 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         initViewModel()
-
         initTargetList()
-        initMapViewBound()
-    }
-
-    open fun initTargetList() {
-        targetList.value = mutableListOf()
+        updateMapViewBound()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -105,17 +115,9 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
             setMinZoomPreference(6f)
             setOnMapLoadedCallback {
                 targetList.observe(viewLifecycleOwner, {
-                    initMapViewBound()
-                    map.moveCamera(
-                        if (targetCount > 1)
-                            CameraUpdateFactory.newLatLngBounds(
-                                mapViewBound, 100
-                            )
-                        else
-                            CameraUpdateFactory.newLatLngZoom(
-                                mapViewBound.center, zoomLevel
-                            )
-                    )
+                    updateMapViewBound()
+                    moveCameraByTargetCount(targetCount)
+                    drawMarker()
                 })
             }
             uiSettings.apply {
@@ -123,62 +125,90 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
             }
         }
         setUserLocationAction()
-        addMapComponents()
         isInitial = false
     }
 
-    open fun addMapComponents() {}
+    private fun updateMapViewBound() {
+        targetList.value.run {
+            if (!isNullOrEmpty()) {
+                targetCount = size
 
-    private fun setUserLocationAction() {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                locationPermission
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissionLauncher.launch(locationPermission)
-        } else {
-            map.uiSettings.isMyLocationButtonEnabled = true
-            map.isMyLocationEnabled = true
-        }
-    }
-
-    private fun showPermissionDeniedSnackBar(layout: View) {
-        Snackbar.make(layout, "현재 위치 기능 사용 불가", Snackbar.LENGTH_INDEFINITE).apply {
-            setAction("권한 설정") { setUserLocationAction() }
-        }.show()
-    }
-
-    private fun initMapViewBound() {
-        targetList.value.let { list ->
-            if (list != null) {
-                targetCount = list.size
-
-                mapViewBound =
-                    if (targetCount > 0)
-                        LatLngBounds(
-                            LatLng(list.minOf { it.latitude }, list.minOf { it.longitude }),
-                            LatLng(list.maxOf { it.latitude }, list.maxOf { it.longitude })
-                        )
-                    else
-                        LatLngBounds(LatLng(37.55, 126.99), LatLng(37.55, 126.99))
+                mapViewBound = LatLngBounds(
+                    LatLng(minOf { it.latitude }, minOf { it.longitude }),
+                    LatLng(maxOf { it.latitude }, maxOf { it.longitude })
+                )
+                return
             }
         }
+
+        baseTargetList.run {
+            if (!isNullOrEmpty()) {
+                targetCount = size
+
+                mapViewBound = LatLngBounds(
+                    LatLng(minOf { it.latitude }, minOf { it.longitude }),
+                    LatLng(maxOf { it.latitude }, maxOf { it.longitude })
+                )
+                return
+            }
+        }
+
+        targetCount = 0
+        mapViewBound = LatLngBounds(LatLng(37.55, 126.99), LatLng(37.55, 126.99))
 
         Log.d("initMap", mapViewBound.center.toString())
     }
 
-    fun createMarker(
-        vararg markerPos: LatLng,
-        colorId: Int = R.color.blue_travelog,
-        isNumbered: Boolean = false
-    ) {
-        markerPos.forEach { position ->
-            val markerView = if (isNumbered)
-                createMarkerView(colorId, markerList.size + 1)
-            else createMarkerView(colorId)
-            val markerOption = MarkerOptions().position(position)
+    private fun moveCameraByTargetCount(targetCount: Int) {
+        map.moveCamera(
+            if (targetCount > 1)
+                CameraUpdateFactory.newLatLngBounds(
+                    mapViewBound, 100
+                )
+            else
+                CameraUpdateFactory.newLatLngZoom(
+                    mapViewBound.center, zoomLevel
+                )
+        )
+    }
+
+    private fun drawMarker() {
+        if (!drawMarker)
+            return
+
+        markerList.apply {
+            forEach { it.remove() }
+            clear()
+        }
+
+        var rgb = ColorRGB(60, 149, 255)
+
+        targetList.value?.forEachIndexed { index, latLng ->
+            if (markerColorList.size == targetList.value?.size)
+                rgb = markerColorList[index]
+
+            val markerView =
+                if (isMarkerNumbered)
+                    createMarkerView(rgb, index + 1)
+                else
+                    createMarkerView(rgb)
+
+            val markerOption = MarkerOptions().position(latLng)
                 .icon((markerView)?.let { BitmapDescriptorFactory.fromBitmap(it) })
+
             map.addMarker(markerOption)?.let { markerList.add(it) }
+        }
+
+        polylineList.forEach { it.remove() }
+        polylineList.clear()
+
+        if (!drawOrderedPolyline)
+            return
+
+        markerList.forEachIndexed { index, marker ->
+            if (index < markerList.size - 1) {
+                drawPolyline(marker, markerList[index + 1])
+            }
         }
     }
 
@@ -187,12 +217,22 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
             markerList[pos].remove()
             markerList.removeAt(pos)
         }
+
+        drawMarker()
     }
 
-    private fun createMarkerView(colorId: Int, number: Int = -1): Bitmap? {
+    private fun createMarkerView(rgb: ColorRGB, number: Int = -1): Bitmap? {
+        val color = Color.argb(255, rgb.r, rgb.g, rgb.b)
         val drawable = ResourcesCompat.getDrawable(resources, R.drawable.ic_map_marker, null)
             ?.apply {
-                setTint(ContextCompat.getColor(requireContext(), colorId))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                        color,
+                        BlendModeCompat.SRC_IN
+                    )
+                } else {
+                    setColorFilter(color, PorterDuff.Mode.SRC_IN)
+                }
             } ?: return null
 
         val bitmap = Bitmap.createBitmap(
@@ -218,7 +258,7 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
         return bitmap
     }
 
-    fun createPolyline(
+    fun drawPolyline(
         fromMarker: Marker,
         toMarker: Marker,
         colorId: Int = R.color.green_travelog
@@ -242,40 +282,29 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
         }
     }
 
-    fun changeMarkerOrder(
-        fromPosition: Int,
-        toPosition: Int,
-        drawOrderedPolyline: Boolean = false
-    ) {
-        if (fromPosition >= markerList.size && toPosition >= markerList.size)
-            return
+    // Set Marker Listener
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val index = markerList.indexOf(marker)
 
-        val temp = mutableListOf<Marker>().apply {
-            addAll(
-                markerList.apply {
-                    val tempPos = markerList[fromPosition]
-                    markerList.removeAt(fromPosition)
-                    markerList.add(toPosition, tempPos)
-                }
-            )
-        }
+        return true
+    }
 
-        markerList.forEach { it.remove() }
-        markerList.clear()
-        polylineList.forEach { it.remove() }
-        polylineList.clear()
-
-        createMarker(*temp.map { it.position }.toTypedArray())
-
-        if (drawOrderedPolyline) {
-            markerList.forEachIndexed { index, marker ->
-                if (index < markerList.size - 1) {
-                    createPolyline(marker, markerList[index + 1])
-                }
-            }
+    private fun setUserLocationAction() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                locationPermission
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissionLauncher.launch(locationPermission)
+        } else {
+            map.uiSettings.isMyLocationButtonEnabled = true
+            map.isMyLocationEnabled = true
         }
     }
 
-    // Set Marker Listener
-    override fun onMarkerClick(p0: Marker) = true
+    private fun showPermissionDeniedSnackBar(layout: View) {
+        Snackbar.make(layout, "현재 위치 기능 사용 불가", Snackbar.LENGTH_INDEFINITE).apply {
+            setAction("권한 설정") { setUserLocationAction() }
+        }.show()
+    }
 }
