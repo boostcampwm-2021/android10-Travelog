@@ -26,6 +26,7 @@ import javax.inject.Inject
 class ScheduleDetailViewModel @Inject internal constructor(
     private val repository: ScheduleRepository
 ) : ViewModel() {
+    var isInitial = true
 
     var selectedIndex = 0
     var selectedDate = ""
@@ -33,14 +34,15 @@ class ScheduleDetailViewModel @Inject internal constructor(
     private lateinit var schedule: ScheduleModel
 
     val item = mutableListOf<ScheduleDetailItem>()
-    private val _itemList = MutableLiveData<List<ScheduleDetailItem>>()
-    val itemList: LiveData<List<ScheduleDetailItem>> = _itemList
-    private val _detailList = MutableLiveData<List<ScheduleDetailModel>>()
-    val detailList: LiveData<List<ScheduleDetailModel>> = _detailList
-    private val _colorList = MutableLiveData<List<ColorRGB>>()
-    val colorList: LiveData<List<ColorRGB>> = _colorList
+    private val _itemList = MutableLiveData<MutableList<ScheduleDetailItem>>()
+    val itemList: LiveData<MutableList<ScheduleDetailItem>> = _itemList
+    private val _detailList = MutableLiveData<MutableList<ScheduleDetailModel>>()
+    val detailList: LiveData<MutableList<ScheduleDetailModel>> = _detailList
+    private val _colorList = MutableLiveData<MutableList<ColorRGB>>()
+    val colorList: LiveData<MutableList<ColorRGB>> = _colorList
 
-    val placeDetailList: MediatorLiveData<List<ScheduleDetailModel>> = MediatorLiveData()
+    private val _placeDetailList: MediatorLiveData<List<ScheduleDetailModel>> = MediatorLiveData()
+    val placeDetailList: LiveData<List<ScheduleDetailModel>> = _placeDetailList
 
     private val indexList = mutableListOf<Int>()
     private var id = 0
@@ -58,10 +60,10 @@ class ScheduleDetailViewModel @Inject internal constructor(
         var day = 1
 
         while (date <= endDate) {
-            date = addOneDate(date).toString()
             item.add(ScheduleDetailItem(id++, TYPE_HEADER, getRandomColor(), date, day++))
+            date = addOneDate(date).toString()
             indexList.add(0)
-            _itemList.value = item
+            _itemList.value = item.toMutableList()
         }
     }
 
@@ -72,7 +74,7 @@ class ScheduleDetailViewModel @Inject internal constructor(
 
         while (date <= endDate) {
             detailList.filter { it.date == date }.forEach {
-                addScheduleDetail(it.destination)
+                addScheduleDetail(it.destination, it.date)
             }
             date = addOneDate(date).toString()
             selectedIndex++
@@ -83,14 +85,26 @@ class ScheduleDetailViewModel @Inject internal constructor(
     fun loadSchedule(schedule: ScheduleModel) {
         this.schedule = schedule
 
+        if (!isInitial)
+            return
+
         viewModelScope.launch {
-            placeDetailList.addSource(repository.loadScheduleDetailsByScheduleId(schedule.id)) { list ->
-                placeDetailList.value = list
+            _placeDetailList.addSource(repository.loadScheduleDetailsByScheduleId(schedule.id)) { list ->
+                _placeDetailList.value = list
+                initDetailList(
+                    schedule.date.split("~")[0],
+                    schedule.date.split("~")[1],
+                    list
+                )
+                isInitial = false
             }
         }
     }
 
     fun createSchedule(name: String, schedulePlaces: List<SchedulePlaceModel>, date: String) {
+        if (!isInitial)
+            return
+
         repository.createSchedules(
             ScheduleModel(
                 name = name,
@@ -98,12 +112,8 @@ class ScheduleDetailViewModel @Inject internal constructor(
                 date = date
             )
         ) {
-            viewModelScope.launch {
-                placeDetailList.addSource(repository.loadScheduleDetailsByScheduleId(it)) { list ->
-                    placeDetailList.value = list
-                }
-            }
             schedule = ScheduleModel(it, name, schedulePlaces, date)
+            isInitial = false
         }
     }
 
@@ -111,39 +121,38 @@ class ScheduleDetailViewModel @Inject internal constructor(
         detailList.value?.let { repository.createScheduleDetail(it) }
     }
 
-    fun addScheduleDetail(placeDetail: PlaceDetailModel) {
+    fun addScheduleDetail(placeDetail: PlaceDetailModel, date: String = selectedDate) {
         var numPriors = 0
         for (i in 0..selectedIndex) {
             numPriors += indexList[i]
         }
         val position = selectedIndex + numPriors + 1
 
-        val temp = detailList.value?.toMutableList()?.apply {
+        val temp = detailList.value?.apply {
             add(
                 numPriors,
                 ScheduleDetailModel(
                     scheduleId = schedule.id,
                     place = schedule.schedulePlace[0],
-                    date = selectedDate,
+                    date = date,
                     destination = placeDetail
                 )
             )
-        }
-        _detailList.value = mutableListOf()
-        temp.let { _detailList.value = it }
+        }?.toMutableList()
+        _detailList.value = temp!!
 
-        applyScheduleDetails(position, placeDetail)
+        applyScheduleDetails(position, placeDetail, numPriors)
     }
 
-    private fun applyScheduleDetails(position: Int, placeDetail: PlaceDetailModel) {
+    private fun applyScheduleDetails(position: Int, placeDetail: PlaceDetailModel, numPriors: Int) {
         val color = getRandomColor()
-        _colorList.value = colorList.value?.toMutableList()?.apply { add(color) }
+        _colorList.value = colorList.value?.toMutableList()?.apply { add(numPriors, color) }
 
         item.add(
             position,
             ScheduleDetailItem(id++, TYPE_CONTENT, color, placeDetail.name, selectedIndex)
         )
-        _itemList.value = item
+        _itemList.value = item.toMutableList()
         indexList[selectedIndex]++
     }
 
@@ -153,7 +162,7 @@ class ScheduleDetailViewModel @Inject internal constructor(
         val detailIndex = position - (dayIndex + 1)
 
         item.removeAt(position)
-        _itemList.value = item
+        _itemList.value = item.toMutableList()
 
         _detailList.value = detailList.value?.toMutableList()?.apply {
             removeAt(detailIndex)
@@ -164,9 +173,9 @@ class ScheduleDetailViewModel @Inject internal constructor(
         }
     }
 
-    fun itemMove(fromPosition: Int, toPosition: Int) { // TODO
-        val tempDetails = detailList.value?.toMutableList()
-        val tempColors = colorList.value?.toMutableList()
+    fun itemMove(fromPosition: Int, toPosition: Int) {
+        val tempDetails = detailList.value
+        val tempColors = colorList.value
 
         val fromIndex = getDayIndex(fromPosition)
         indexList[fromIndex]--
@@ -176,10 +185,22 @@ class ScheduleDetailViewModel @Inject internal constructor(
         indexList[toIndex]++
         val toDetailIndex = toPosition - (toIndex + 1)
 
+        if (item[toPosition].type == TYPE_HEADER) {
+            if (toPosition > fromPosition)
+                tempDetails?.get(fromDetailIndex)?.apply {
+                    addOneDate(this.date).let { if (it != null) date = it }
+                }
+            else if (toPosition < fromPosition)
+                tempDetails?.get(fromDetailIndex)?.apply {
+                    subOneDate(this.date).let { if (it != null) date = it }
+                }
+        }
+
         Collections.swap(item, fromPosition, toPosition)
+        _itemList.value = item
+
         Collections.swap(tempDetails, fromDetailIndex, toDetailIndex)
         Collections.swap(tempColors, fromDetailIndex, toDetailIndex)
-
         tempDetails.let { _detailList.value = it }
         tempColors.let { _colorList.value = it }
     }
@@ -203,6 +224,15 @@ class ScheduleDetailViewModel @Inject internal constructor(
         cal.apply {
             time = stringToDate(date)
             add(Calendar.DATE, 1)
+        }
+        return stringToDate(dateToString(cal.time))?.let { dateToString(it) }
+    }
+
+    private fun subOneDate(date: String): String? {
+        val cal: Calendar = Calendar.getInstance()
+        cal.apply {
+            time = stringToDate(date)
+            add(Calendar.DATE, -1)
         }
         return stringToDate(dateToString(cal.time))?.let { dateToString(it) }
     }

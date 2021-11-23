@@ -117,7 +117,7 @@ private class ScheduleDiffCallback : DiffUtil.ItemCallback<ScheduleDetailItem>()
         oldItem: ScheduleDetailItem,
         newItem: ScheduleDetailItem
     ): Boolean =
-        oldItem.id == newItem.id
+        oldItem == newItem
 
     override fun areContentsTheSame(
         oldItem: ScheduleDetailItem,
