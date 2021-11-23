@@ -13,6 +13,6 @@ data class ScheduleDetailModel(
     val id: Int = 0,
     val scheduleId: Int,
     val place: SchedulePlaceModel,
-    val date: String,
+    var date: String,
     val destination: PlaceDetailModel
 ) : Parcelable

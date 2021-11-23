@@ -66,7 +66,7 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
     private var targetCount: Int = 0
 
     protected var markerList: MutableList<Marker> = mutableListOf()
-    protected var markerColorList: List<ColorRGB> = mutableListOf()
+    protected var markerColorList: MutableLiveData<List<ColorRGB>> = MutableLiveData(mutableListOf())
 
     private var polylineList: MutableList<Polyline> = mutableListOf()
 
@@ -117,6 +117,9 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
                 targetList.observe(viewLifecycleOwner, {
                     updateMapViewBound()
                     moveCameraByTargetCount(targetCount)
+                    drawMarker()
+                })
+                markerColorList.observe(viewLifecycleOwner, {
                     drawMarker()
                 })
             }
@@ -184,8 +187,8 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
         var rgb = ColorRGB(60, 149, 255)
 
         targetList.value?.forEachIndexed { index, latLng ->
-            if (markerColorList.size == targetList.value?.size)
-                rgb = markerColorList[index]
+            if (markerColorList.value?.size == targetList.value?.size)
+                rgb = markerColorList.value?.get(index) ?: rgb
 
             val markerView =
                 if (isMarkerNumbered)
