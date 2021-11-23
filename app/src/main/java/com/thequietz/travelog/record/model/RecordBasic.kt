@@ -1,6 +1,7 @@
 package com.thequietz.travelog.record.model
 
 data class RecordBasic(
+    val travelId: Int,
     val title: String,
     val startDate: String,
     val endDate: String,

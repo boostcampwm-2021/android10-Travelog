@@ -13,39 +13,32 @@ import com.thequietz.travelog.record.model.RecordBasicItem
 sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     class RecordBasicHeaderViewHolder(
         private val binding: ItemRecyclerRecordBasicHeaderBinding,
-        navigateToRecordAddUi: () -> Unit
+        private val navigateToRecordAddUi: (String) -> Unit
     ) : RecordBasicViewHolder(binding.root) {
-        init {
-            binding.btnItemRecordBasicHeaderAddRecord.setOnClickListener {
-                navigateToRecordAddUi.invoke()
-            }
-        }
-
-        override fun <T : RecordBasicItem> bind(item: T) {
+        override fun <T : RecordBasicItem> bind(item: T) = with(binding) {
             item as RecordBasicItem.RecordBasicHeader
-            binding.tvItemRecordBasicHeaderTitle.text = item.day
-            binding.tvItemRecordBasicHeaderDate.text = item.date
+            btnItemRecordBasicHeaderAddRecord.setOnClickListener {
+                navigateToRecordAddUi.invoke(item.day)
+            }
+            tvItemRecordBasicHeaderTitle.text = item.day
+            tvItemRecordBasicHeaderDate.text = item.date
         }
     }
 
     class RecordBasicItemViewHolder(
         private val binding: ItemRecyclerRecordBasicBinding,
-        navigateToRecordViewUi: () -> Unit,
-        showMenu: (View, Int) -> Unit
+        private val navigateToRecordViewUi: (Int) -> Unit,
+        private val showMenu: (View, Int) -> Unit
     ) : RecordBasicViewHolder(binding.root) {
-        private val adapter = RecordPhotoAdapter()
-
-        init {
-            binding.root.setOnClickListener {
-                navigateToRecordViewUi.invoke()
-            }
-
-            binding.btnItemRecordBasicMore.setOnClickListener {
-                showMenu.invoke(it, absoluteAdapterPosition)
-            }
-        }
+        private val adapter = RecordPhotoAdapter(navigateToRecordViewUi)
 
         override fun <T : RecordBasicItem> bind(item: T) = with(binding) {
+            root.setOnClickListener {
+                navigateToRecordViewUi.invoke(0)
+            }
+            btnItemRecordBasicMore.setOnClickListener {
+                showMenu.invoke(it, absoluteAdapterPosition)
+            }
             item as RecordBasicItem.TravelDestination
             tvItemRecordBasicTitle.text = item.name
             rvItemRecordBasic.adapter = adapter
@@ -57,8 +50,8 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 }
 
 class RecordBasicAdapter(
-    private val navigateToRecordViewUi: () -> Unit,
-    private val navigateToRecordAddUi: () -> Unit,
+    private val navigateToRecordViewUi: (Int) -> Unit,
+    private val navigateToRecordAddUi: (String) -> Unit,
     private val showMenu: (View, Int) -> Unit
 ) : ListAdapter<RecordBasicItem, RecordBasicViewHolder>(diffUtil) {
     override fun getItemViewType(position: Int): Int {

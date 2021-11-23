@@ -9,15 +9,32 @@ import com.bumptech.glide.Glide
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.ItemRecyclerRecordPhotoBinding
 
-class RecordPhotoAdapter : ListAdapter<String, RecordPhotoAdapter.RecordPhotoViewHolder>(diffUtil) {
-    class RecordPhotoViewHolder(private val binding: ItemRecyclerRecordPhotoBinding) :
+class RecordPhotoAdapter(
+    private val navigateToRecordViewUi: ((Int) -> Unit)? = null,
+    private val addImage: (() -> Unit)? = null
+) : ListAdapter<String, RecordPhotoAdapter.RecordPhotoViewHolder>(diffUtil) {
+    inner class RecordPhotoViewHolder(private val binding: ItemRecyclerRecordPhotoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(url: String) {
-            Glide.with(itemView)
-                .load(url)
-                .placeholder(R.drawable.bg_photo_placeholder)
-                .into(binding.ivItemRecordPhoto)
+        fun bind(url: String?) = with(binding) {
+            ivItemRecordPhoto.setOnClickListener {
+                if (url == null) {
+                    addImage?.invoke()
+                }
+                navigateToRecordViewUi?.invoke(absoluteAdapterPosition)
+                println(absoluteAdapterPosition)
+                println(bindingAdapterPosition)
+                println(layoutPosition)
+            }
+
+            if (url != null) {
+                Glide.with(itemView)
+                    .load(url)
+                    .placeholder(R.drawable.bg_photo_placeholder)
+                    .into(ivItemRecordPhoto)
+            } else {
+                ivItemRecordPhoto.setImageResource(R.drawable.ic_add)
+            }
         }
     }
 
@@ -32,9 +49,14 @@ class RecordPhotoAdapter : ListAdapter<String, RecordPhotoAdapter.RecordPhotoVie
     }
 
     override fun onBindViewHolder(holder: RecordPhotoViewHolder, position: Int) {
-        val imageUrl = currentList[position]
+        val imageUrl = currentList.getOrNull(position)
 
         holder.bind(imageUrl)
+    }
+
+    override fun getItemCount(): Int {
+        if (addImage != null) return super.getItemCount() + 1
+        return super.getItemCount()
     }
 
     companion object {
