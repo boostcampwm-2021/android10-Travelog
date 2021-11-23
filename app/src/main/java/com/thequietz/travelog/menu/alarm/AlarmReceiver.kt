@@ -12,27 +12,44 @@ import androidx.core.app.NotificationCompat
 import com.thequietz.travelog.MainActivity
 import com.thequietz.travelog.R
 import com.thequietz.travelog.schedule.repository.ScheduleRepository
+import com.thequietz.travelog.util.dateToString
+import com.thequietz.travelog.util.stringToDate
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.internal.managers.BroadcastReceiverComponentManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
 
-class AlarmReceiver @Inject internal constructor(
-    val repository: ScheduleRepository,
-) : BroadcastReceiver() {
+@AndroidEntryPoint
+class AlarmReceiver : BroadcastReceiver() {
     companion object {
         const val TAG = "AlarmReceiver"
         const val NOTIFICATION_ID = 0
         const val CHANNEL_ID = "Travelog"
     }
 
-    lateinit var notificationManager: NotificationManager
+    private lateinit var notificationManager: NotificationManager
+    @Inject
+    lateinit var repository: ScheduleRepository
 
     override fun onReceive(context: Context, intent: Intent) {
+
+        val injector =
+            BroadcastReceiverComponentManager.generatedComponent(context) as AlarmReceiver_GeneratedInjector
+        injector.injectAlarmReceiver(this)
+
         Log.e(TAG, "onreceive")
         notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val dateList = repository.loadScheduleDateList()
-        createNotificationChannel()
-        deliverNotification(context, intent.extras?.getString("content"), NOTIFICATION_ID)
+        CoroutineScope(IO).launch {
+            val dateList = repository.loadScheduleDateList()
+            if (!isValidDate(dateList)) return@launch
+
+            createNotificationChannel()
+            deliverNotification(context, intent.extras?.getString("content"), NOTIFICATION_ID)
+        }
     }
 
     private fun deliverNotification(context: Context, content: String?, id: Int) {
@@ -68,7 +85,20 @@ class AlarmReceiver @Inject internal constructor(
         }
     }
 
-    private fun isValidDate(list: List<String>) {
-        val today = Date(System.currentTimeMillis())
+    private fun isValidDate(list: List<String>): Boolean {
+        val todayDate = Date(System.currentTimeMillis())
+        val today = stringToDate(dateToString(todayDate))
+        var dateList: List<String>
+        var startDate: Date?
+        var endDate: Date?
+        for (term in list) {
+            dateList = term.split("~")
+            startDate = stringToDate(dateList[0])
+            endDate = stringToDate(dateList[1])
+            if (startDate == null || endDate == null) continue
+            else if (startDate.equals(today) || endDate.equals(today)) return true
+            else if (startDate.before(today) && endDate.after(today)) return true
+        }
+        return false
     }
 }

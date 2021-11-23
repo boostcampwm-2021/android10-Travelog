@@ -1,20 +1,16 @@
 package com.thequietz.travelog.menu
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.thequietz.travelog.TravelogApplication
 import com.thequietz.travelog.menu.alarm.AlarmType
+import com.thequietz.travelog.menu.alarm.cancelAlarm
 import com.thequietz.travelog.menu.alarm.registerAlarm
 import com.thequietz.travelog.schedule.repository.ScheduleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
-import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,8 +20,8 @@ class MenuViewModel @Inject internal constructor(
 ) : ViewModel() {
 
     private val pref = TravelogApplication.prefs
-    private var scheduleAlarmSettingFlag = 0
-    private var recordAlarmSettingFlag = 0
+    private var scheduleAlarmSettingFlag = -1
+    private var recordAlarmSettingFlag = -1
 
     private val _locationPermission = MutableLiveData<Boolean>()
     val locationPermission: LiveData<Boolean> = _locationPermission
@@ -51,11 +47,11 @@ class MenuViewModel @Inject internal constructor(
 
     private fun permissionSetting() {
         _locationPermission.postValue(false)
-        _alarmPermission.postValue(pref.alarmPermission)
-        _scheduleAlarm.postValue(pref.scheduleAlarmPermission)
-        _recordAlarm.postValue(pref.recordAlarmPermission)
-        _recordAlarmTime.value = (pref.recordTime)
-        _scheduleAlarmTime.value = (pref.scheduleTime)
+        _alarmPermission.value = pref.alarmPermission
+        _scheduleAlarm.value = pref.scheduleAlarmPermission
+        _recordAlarm.value = pref.recordAlarmPermission
+        _recordAlarmTime.value = pref.recordTime
+        _scheduleAlarmTime.value = pref.scheduleTime
         if (alarmPermission.value == true && scheduleAlarm.value == true) scheduleAlarmSettingFlag--
         else if (alarmPermission.value == false && scheduleAlarm.value == false) scheduleAlarmSettingFlag++
         if (alarmPermission.value == true && recordAlarm.value == true) recordAlarmSettingFlag--
@@ -70,6 +66,8 @@ class MenuViewModel @Inject internal constructor(
         if (!isChecked) {
             _alarmPermission.postValue(false)
             pref.alarmPermission = false
+            cancelRecordAlarm()
+            cancelScheduleAlarm()
         } else {
             _alarmPermission.postValue(true)
             pref.alarmPermission = true
@@ -86,22 +84,28 @@ class MenuViewModel @Inject internal constructor(
         _scheduleAlarm.value = isChecked
         pref.scheduleAlarmPermission = isChecked
         if (isChecked) makeScheduleAlarms()
+        else cancelScheduleAlarm()
     }
 
     fun recordPermissionChange(isChecked: Boolean) {
         _recordAlarm.postValue(isChecked)
         pref.recordAlarmPermission = isChecked
         if (isChecked) makeRecordAlarms()
+        else cancelRecordAlarm()
     }
 
     fun scheduleTimeChange(index: Int) {
         _scheduleAlarmTime.postValue(index)
         pref.scheduleTime = index
+        cancelScheduleAlarm()
+        makeScheduleAlarms()
     }
 
     fun recordTimeChange(index: Int) {
         _recordAlarmTime.postValue(index)
         pref.recordTime = index
+        cancelRecordAlarm()
+        makeRecordAlarms()
     }
 
     private fun makeScheduleAlarms() {
@@ -109,18 +113,7 @@ class MenuViewModel @Inject internal constructor(
             scheduleAlarmSettingFlag++
             return
         }
-        var schedules: List<String>
-        CoroutineScope(IO).launch {
-            schedules = repository.loadScheduleDateList()
-
-            if (schedules.isEmpty()) return@launch
-
-            val startDates = schedules.map { getStartDate(it) }
-            val today = Calendar.getInstance()
-            Log.e("date", startDates[0].toString())
-            registerAlarm(context, AlarmType.Schedule, startDates[0], 0, getScheduleTime())
-            // startDates.forEach { registerAlarm(context, AlarmType.Schedule, it, 0, getScheduleTime()) }
-        }
+        registerAlarm(context, AlarmType.Schedule, getScheduleTime())
     }
 
     private fun makeRecordAlarms() {
@@ -128,18 +121,15 @@ class MenuViewModel @Inject internal constructor(
             recordAlarmSettingFlag++
             return
         }
-        var schedules: List<String>
-        CoroutineScope(IO).launch {
-            schedules = repository.loadScheduleDateList()
+        registerAlarm(context, AlarmType.Record, getRecordTime())
+    }
 
-            if (schedules.isEmpty()) return@launch
+    private fun cancelScheduleAlarm() {
+        cancelAlarm(context, AlarmType.Schedule)
+    }
 
-            val startDates = schedules.map { getStartDate(it) }
-            val today = Calendar.getInstance()
-            Log.e("date", startDates.toString())
-
-            // startDates.forEach { registerAlarm(context, AlarmType.Record, it, 1,  getRecordTime()) }
-        }
+    private fun cancelRecordAlarm() {
+        cancelAlarm(context, AlarmType.Record)
     }
 
     private fun getScheduleTime(): String {
@@ -152,16 +142,6 @@ class MenuViewModel @Inject internal constructor(
         var time = ""
         recordAlarmTime.value?.let { time = getTimeFromSpinner(1, it) }
         return time
-    }
-
-    private fun getStartDate(dateStr: String): String {
-        val dates = dateStr.split("~")
-        return dates[0].replace(".", "-")
-    }
-
-    private fun getEndDate(dateStr: String): String {
-        val dates = dateStr.split("~")
-        return dates[1].replace(".", "-")
     }
 
     private fun getTimeFromSpinner(flag: Int, index: Int): String {
