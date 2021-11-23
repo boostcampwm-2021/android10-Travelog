@@ -48,7 +48,7 @@ class RecordBasicFragment : Fragment() {
 
         binding.rvRecordBasic.adapter = adapter
 
-        viewModel.loadData(navArgs.title)
+        viewModel.loadData(navArgs.travelId)
 
         subscribeUi()
 
@@ -70,17 +70,22 @@ class RecordBasicFragment : Fragment() {
         }
     }
 
-    private fun navigateToRecordViewUi() {
+    private fun navigateToRecordViewUi(index: Int) {
         val action =
-            RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordViewOneFragment()
+            RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordViewOneFragment(
+                travelId = navArgs.travelId,
+                index = index
+            )
 
         findNavController().navigate(action)
     }
 
-    private fun navigateToRecordAddUi() {
+    private fun navigateToRecordAddUi(day: String) {
         // TODO("day 값 넘겨야함")
-        val action =
-            RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordAddImageFragment()
+        val action = RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordAddFragment(
+            travelId = navArgs.travelId,
+            day = day
+        )
 
         findNavController().navigate(action)
     }

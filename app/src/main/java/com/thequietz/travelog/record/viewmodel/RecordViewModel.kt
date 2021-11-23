@@ -46,6 +46,7 @@ class RecordViewModel @Inject constructor(
 
             recordList.add(
                 Record(
+                    recordImage.travelId,
                     recordImage.title,
                     recordImage.startDate,
                     recordImage.endDate,

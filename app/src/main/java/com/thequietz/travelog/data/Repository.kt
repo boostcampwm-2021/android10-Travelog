@@ -149,7 +149,14 @@ class RecordRepository @Inject constructor(
 ) {
     fun loadRecordImages() = recordImageDao.loadAllRecordImages()
 
-    fun loadRecordImagesByTitle(title: String) = recordImageDao.loadRecordImageByTitle(title)
+    fun loadRecordImagesByTravelId(travelId: Int) =
+        recordImageDao.loadRecordImageByTravelId(travelId)
+
+    fun loadLastRecordImageByTravelIdAndDay(travelId: Int, day: String) =
+        recordImageDao.loadLastRecordImageByTravelIdAndDay(travelId, day)
+
+    fun loadGroupFromRecordImageByTravelId(travelId: Int) =
+        recordImageDao.loadGroupFromRecordImageByTravelId(travelId)
 
     fun createRecordImage(recordImage: RecordImage) {
         coroutineScope.launch { recordImageDao.insert(recordImage) }
@@ -161,6 +168,10 @@ class RecordRepository @Inject constructor(
 
     fun insertRecordImage(image: RecordImage) {
         coroutineScope.launch { recordImageDao.insert(image) }
+    }
+
+    fun insertRecordImages(images: List<RecordImage>) {
+        coroutineScope.launch { recordImageDao.insert(*images.toTypedArray()) }
     }
 
     fun deleteRecordImage(id: Int) {

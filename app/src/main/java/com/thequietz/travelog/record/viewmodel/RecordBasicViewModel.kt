@@ -31,9 +31,13 @@ class RecordBasicViewModel @Inject constructor(
     private val _recordImageList = MutableLiveData<List<RecordImage>>()
     val recordImageList: LiveData<List<RecordImage>> = _recordImageList
 
-    fun loadData(title: String) {
+    fun loadData(travelId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val recordImages = repository.loadRecordImagesByTitle(title)
+            val recordImages = repository.loadRecordImagesByTravelId(travelId)
+
+            recordImages.forEach {
+                println(it)
+            }
 
             withContext(Dispatchers.Main) {
                 _recordImageList.value = recordImages
@@ -72,6 +76,7 @@ class RecordBasicViewModel @Inject constructor(
         }
 
         return RecordBasic(
+            recordImages.first().travelId,
             recordImages.first().title,
             recordImages.first().startDate,
             recordImages.first().endDate,
