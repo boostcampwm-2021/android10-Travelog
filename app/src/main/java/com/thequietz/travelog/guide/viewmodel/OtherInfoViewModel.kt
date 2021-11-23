@@ -27,9 +27,6 @@ class OtherInfoViewModel @Inject internal constructor(
     private val _festivalList = MutableLiveData<List<RecommendPlace>>()
     val festivalList: LiveData<List<RecommendPlace>> = _festivalList
 
-    private val _placeList = MutableLiveData<List<Place>>()
-    val placeList: LiveData<List<Place>> = _placeList
-
     private val _currentPlace = MutableLiveData<Place>()
     val currentPlace: LiveData<Place> = _currentPlace
 
