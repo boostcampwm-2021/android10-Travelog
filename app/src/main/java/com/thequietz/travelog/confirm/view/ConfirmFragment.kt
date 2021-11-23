@@ -2,53 +2,49 @@ package com.thequietz.travelog.confirm.view
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
 import com.thequietz.travelog.R
 import com.thequietz.travelog.confirm.adapter.ConfirmDayAdapter
 import com.thequietz.travelog.confirm.adapter.ConfirmPagerAdapter
 import com.thequietz.travelog.confirm.viewmodel.ConfirmViewModel
 import com.thequietz.travelog.databinding.FragmentConfirmBinding
+import com.thequietz.travelog.map.GoogleMapFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ConfirmFragment : Fragment() {
+class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewModel>() {
 
-    private var _binding: FragmentConfirmBinding? = null
-    private val binding get() = _binding!!
+    override val layoutId = R.layout.fragment_confirm
+    override val viewModel: ConfirmViewModel by viewModels()
+    override var drawMarker = true
+    override var isMarkerNumbered = true
+    override var drawOrderedPolyline = true
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        super.onMapReady(googleMap)
+
+        googleMap.setMinZoomPreference(15F)
+    }
 
     private lateinit var _context: Context
     private lateinit var dayAdapter: ConfirmDayAdapter
     private lateinit var pageAdapter: ConfirmPagerAdapter
 
     private val navArgs: ConfirmFragmentArgs by navArgs()
-    private val viewModel: ConfirmViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_confirm, container, false)
-        _context = requireContext()
-
-        return binding.root
+    override fun initViewModel() {
+        binding.viewModel = viewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        _context = requireContext()
         dayAdapter = ConfirmDayAdapter(object : ConfirmDayAdapter.OnClickListener {
             override fun onClick(index: Int) {
                 viewModel.updateSchedule("Day ${index + 1}")
@@ -64,7 +60,14 @@ class ConfirmFragment : Fragment() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
 
-                    Log.d("PAGE", viewModel.currentSchedule.value?.get(position).toString())
+                    val currentItem = viewModel.currentSchedule.value?.get(position)
+                    val location = currentItem?.destination?.geometry?.location
+                    val lat = location?.latitude
+                    val lng = location?.longitude
+
+                    if (lat != null && lng != null) {
+                        targetList.value = mutableListOf(LatLng(lat, lng))
+                    }
                 }
             })
 
@@ -84,12 +87,24 @@ class ConfirmFragment : Fragment() {
                     pager.setCurrentItem(0, true)
                 }
             }
+
+            val currentItem = it.firstOrNull()
+            val location = currentItem?.destination?.geometry?.location
+            val lat = location?.latitude
+            val lng = location?.longitude
+
+            if (lat != null && lng != null) {
+                targetList.value = mutableListOf(LatLng(lat, lng))
+            }
         })
 
         viewModel.getSchedulesByNavArgs(navArgs.schedules)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun initTargetList() {
+        baseTargetList = navArgs.schedules.map { it ->
+            val location = it.destination.geometry.location
+            LatLng(location.latitude, location.latitude)
+        }.toMutableList()
     }
 }
