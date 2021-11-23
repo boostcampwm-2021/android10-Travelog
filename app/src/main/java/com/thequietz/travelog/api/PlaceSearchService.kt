@@ -13,14 +13,15 @@ interface PlaceSearchService {
     @GET("maps/api/place/textsearch/json")
     fun loadPlaceList(
         @Query("query") query: String,
+        @Query("language") language: String? = "ko",
         @Query("key") key: String
     ): Call<PlaceSearchModelResponse>
 
     @GET("maps/api/place/details/json")
     fun loadPlaceDetail(
         @Query("place_id") placeId: String,
+        @Query("language") language: String? = "ko",
         @Query("key") key: String,
-        @Query("language") language: String? = "ko"
     ): Call<PlaceDetailModelResponse>
 
     companion object {

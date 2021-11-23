@@ -14,6 +14,8 @@ import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.place.model.PlaceDetailOperation
 import com.thequietz.travelog.place.repository.PlaceDetailRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,8 +44,15 @@ class PlaceDetailViewModel @Inject constructor(
 
     var isLoaded = MutableLiveData(false)
 
+    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        Log.d("ERROR", throwable.stackTraceToString())
+        null
+    }
+
+    private val handler = Dispatchers.Main + exceptionHandler
+
     fun loadDetailBySearch(placeId: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(handler) {
             val data = repository.loadPlaceDetail(placeId)
             Log.d(TAG, data.toString())
 
@@ -59,7 +68,7 @@ class PlaceDetailViewModel @Inject constructor(
 
     fun loadDetailByRecommend(id: Long, typeId: Int) {
         Log.d(TAG, "Detail Data Loaded")
-        viewModelScope.launch {
+        viewModelScope.launch(handler) {
             val images = repository.loadPlaceImages(typeId, id)
             val info = repository.loadPlaceInfo(typeId, id)
             val overview = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

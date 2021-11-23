@@ -21,7 +21,7 @@ class PlaceSearchRepository @Inject constructor(
         return withContext(Dispatchers.IO) {
             try {
                 val apiKey = BuildConfig.GOOGLE_MAP_KEY
-                val call = service.loadPlaceList(query, apiKey)
+                val call = service.loadPlaceList(query, "ko", apiKey)
                 val resp = call.awaitResponse()
                 if (!resp.isSuccessful || resp.body() == null) {
                     Log.d(TAG, resp.errorBody().toString())
