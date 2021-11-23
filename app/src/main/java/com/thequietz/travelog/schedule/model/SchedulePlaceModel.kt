@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class PlaceModel(
+data class SchedulePlaceModel(
     @SerializedName("firstimage")
     var thumbnail: String,
 
@@ -30,5 +30,5 @@ data class PlaceModel(
 
 data class PlaceResponse(
     @SerializedName("data")
-    val data: List<PlaceModel>,
+    val data: List<SchedulePlaceModel>,
 )

@@ -62,13 +62,10 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
         }
     }
 
-    override fun addMapComponents() {
-        zoomLevel = 15f
-        targetList.value?.let { createMarker(*it.toTypedArray()) }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        zoomLevel = 15f
 
         gson = Gson()
         isRecommended = navArgs.isRecommended

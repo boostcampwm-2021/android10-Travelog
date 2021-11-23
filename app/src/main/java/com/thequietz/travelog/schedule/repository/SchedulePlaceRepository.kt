@@ -3,7 +3,7 @@ package com.thequietz.travelog.schedule.repository
 import android.util.Log
 import com.google.gson.JsonSyntaxException
 import com.thequietz.travelog.api.PlaceService
-import com.thequietz.travelog.schedule.model.PlaceModel
+import com.thequietz.travelog.schedule.model.SchedulePlaceModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.awaitResponse
@@ -13,9 +13,9 @@ class SchedulePlaceRepository @Inject constructor(
     private val placeService: PlaceService
 ) {
     private val TAG = "SCHEDULE_PLACE"
-    private val emptyList = emptyList<PlaceModel>()
+    private val emptyList = emptyList<SchedulePlaceModel>()
 
-    suspend fun loadPlaceList(): List<PlaceModel> {
+    suspend fun loadPlaceList(): List<SchedulePlaceModel> {
         return withContext(Dispatchers.IO) {
             try {
                 val call =
@@ -23,6 +23,7 @@ class SchedulePlaceRepository @Inject constructor(
                 val resp = call.awaitResponse()
                 if (!resp.isSuccessful || resp.body() == null) {
                     Log.d(TAG, resp.message())
+                    listOf<SchedulePlaceModel>()
                 }
                 resp.body()?.data ?: listOf()
             } catch (e: JsonSyntaxException) {
@@ -35,7 +36,7 @@ class SchedulePlaceRepository @Inject constructor(
         }
     }
 
-    suspend fun searchPlaceList(keyword: String): List<PlaceModel> {
+    suspend fun searchPlaceList(keyword: String): List<SchedulePlaceModel> {
         return withContext(Dispatchers.IO) {
             try {
                 val call = placeService.searchPlaceList(keyword)

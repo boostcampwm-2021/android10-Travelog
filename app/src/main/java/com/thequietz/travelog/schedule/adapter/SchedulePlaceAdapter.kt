@@ -10,16 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.ItemRecyclerSchedulePlaceBinding
-import com.thequietz.travelog.schedule.model.PlaceModel
+import com.thequietz.travelog.schedule.model.SchedulePlaceModel
 
 class SchedulePlaceAdapter(
     private val listener: OnItemClickListener
 ) :
-    ListAdapter<PlaceModel, SchedulePlaceAdapter.ViewHolder>(SchedulePlaceDiffUtil()) {
+    ListAdapter<SchedulePlaceModel, SchedulePlaceAdapter.ViewHolder>(SchedulePlaceDiffUtil()) {
     class ViewHolder(val binding: ItemRecyclerSchedulePlaceBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: PlaceModel, position: Int, listener: OnItemClickListener) {
+        fun bind(model: SchedulePlaceModel, position: Int, listener: OnItemClickListener) {
             binding.model = model
             binding.tvGuideItem.text = model.cityName
             binding.ibGuideItem.setOnClickListener { v ->
@@ -65,12 +65,12 @@ class SchedulePlaceAdapter(
     }
 }
 
-private class SchedulePlaceDiffUtil : DiffUtil.ItemCallback<PlaceModel>() {
-    override fun areItemsTheSame(oldItem: PlaceModel, newItem: PlaceModel): Boolean {
+private class SchedulePlaceDiffUtil : DiffUtil.ItemCallback<SchedulePlaceModel>() {
+    override fun areItemsTheSame(oldItem: SchedulePlaceModel, newItem: SchedulePlaceModel): Boolean {
         return oldItem.cityName == newItem.cityName
     }
 
-    override fun areContentsTheSame(oldItem: PlaceModel, newItem: PlaceModel): Boolean {
+    override fun areContentsTheSame(oldItem: SchedulePlaceModel, newItem: SchedulePlaceModel): Boolean {
         return oldItem == newItem
     }
 }

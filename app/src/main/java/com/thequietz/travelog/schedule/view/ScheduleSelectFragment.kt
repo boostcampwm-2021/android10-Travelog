@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +19,7 @@ import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleSelectBinding
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import com.thequietz.travelog.schedule.viewmodel.ScheduleSelectViewModel
+import com.thequietz.travelog.util.ScheduleControlType
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import java.util.Locale
@@ -53,15 +53,15 @@ class ScheduleSelectFragment : Fragment() {
 
     private fun initNextButton() {
         binding.btnNext.setOnClickListener {
-            Log.d("Next", scheduleSelectViewModel.startDate.value.toString() + "~" + scheduleSelectViewModel.endDate.value.toString())
             val schedule = ScheduleModel(
                 name = scheduleSelectViewModel.travelName.value ?: "",
-                place = args.placeList.toList(),
+                schedulePlace = args.placeList.toList(),
                 date = scheduleSelectViewModel.startDate.value.toString() + "~" + scheduleSelectViewModel.endDate.value.toString()
             )
             val action =
                 ScheduleSelectFragmentDirections.actionScheduleSelectFragmentToScheduleDetailFragment(
-                    schedule
+                    schedule,
+                    ScheduleControlType.TYPE_CREATE
                 )
             it.findNavController().navigate(action)
         }

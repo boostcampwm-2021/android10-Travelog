@@ -8,6 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.thequietz.travelog.data.db.AppDatabase
 import com.thequietz.travelog.data.db.dao.RecordImageDao
 import com.thequietz.travelog.data.db.dao.ScheduleDao
+import com.thequietz.travelog.data.db.dao.ScheduleDetailDao
 import com.thequietz.travelog.util.SAMPLE_RECORD_IMAGES
 import dagger.Module
 import dagger.Provides
@@ -49,6 +50,11 @@ object DatabaseModule {
     @Provides
     fun provideScheduleDao(appDatabase: AppDatabase): ScheduleDao {
         return appDatabase.scheduleDao()
+    }
+
+    @Provides
+    fun provideScheduleDetailDao(appDatabase: AppDatabase): ScheduleDetailDao {
+        return appDatabase.scheduleDetailDao()
     }
 
     @Provides

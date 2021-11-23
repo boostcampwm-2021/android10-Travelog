@@ -1,8 +1,13 @@
 package com.thequietz.travelog.util
 
 import com.thequietz.travelog.record.model.RecordImage
-import com.thequietz.travelog.schedule.model.PlaceModel
 import com.thequietz.travelog.schedule.model.ScheduleModel
+import com.thequietz.travelog.schedule.model.SchedulePlaceModel
+
+enum class ScheduleControlType {
+    TYPE_CREATE,
+    TYPE_UPDATE
+}
 
 const val requestImage = 99
 val SAMPLE_SCHEDULES = listOf(
@@ -10,7 +15,7 @@ val SAMPLE_SCHEDULES = listOf(
         0,
         "경주 여행",
         listOf(
-            PlaceModel(
+            SchedulePlaceModel(
                 thumbnail = "",
                 areaCode = 0,
                 mapX = 35.241615f,
@@ -23,14 +28,14 @@ val SAMPLE_SCHEDULES = listOf(
     ScheduleModel(
         0, "서울 여행",
         listOf(
-            PlaceModel(
+            SchedulePlaceModel(
                 thumbnail = "",
                 areaCode = 0,
                 mapX = 35.241615f,
                 mapY = 128.695587f,
                 "서울"
             ),
-            PlaceModel(
+            SchedulePlaceModel(
                 thumbnail = "",
                 areaCode = 0,
                 mapX = 35.241615f,
@@ -43,7 +48,7 @@ val SAMPLE_SCHEDULES = listOf(
     ScheduleModel(
         0, "강릉 여행",
         listOf(
-            PlaceModel(
+            SchedulePlaceModel(
                 thumbnail = "",
                 areaCode = 0,
                 mapX = 35.241615f,

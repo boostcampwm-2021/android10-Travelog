@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-val dateFormat: SimpleDateFormat = SimpleDateFormat("MM.dd", Locale("ko", "KR"))
+val dateFormat: SimpleDateFormat = SimpleDateFormat("yyyy.MM.dd", Locale("ko", "KR"))
 
 fun dateToString(date: Date): String {
     return dateFormat.format(date)

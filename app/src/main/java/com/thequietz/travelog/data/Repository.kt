@@ -6,12 +6,10 @@ import com.thequietz.travelog.BuildConfig
 import com.thequietz.travelog.api.GuideRecommendService
 import com.thequietz.travelog.api.PlaceService
 import com.thequietz.travelog.data.db.dao.RecordImageDao
-import com.thequietz.travelog.data.db.dao.ScheduleDao
 import com.thequietz.travelog.getTodayDate
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.RecommendPlace
 import com.thequietz.travelog.record.model.RecordImage
-import com.thequietz.travelog.schedule.model.ScheduleModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -173,28 +171,6 @@ class RecordRepository @Inject constructor(
         coroutineScope.launch {
             val data = recordImageDao.loadRecordImageById(id)
             recordImageDao.delete(data)
-        }
-    }
-}
-
-@Singleton
-class ScheduleRepository @Inject constructor(
-    private val scheduleDao: ScheduleDao,
-    private val coroutineScope: CoroutineScope
-) {
-    fun loadSchedules() = scheduleDao.loadAllSchedules()
-
-    fun createSchedules(schedule: ScheduleModel) {
-        coroutineScope.launch { scheduleDao.insert(schedule) }
-    }
-
-    fun deleteSchedule(id: Int) {
-        coroutineScope.launch {
-            val data = scheduleDao.loadScheduleById(id)
-            Log.d("Loaded Data", data[0].name)
-
-            if (!data.isNullOrEmpty())
-                scheduleDao.delete(data[0])
         }
     }
 }

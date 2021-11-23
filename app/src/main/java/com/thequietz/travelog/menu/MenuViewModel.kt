@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.thequietz.travelog.TravelogApplication
-import com.thequietz.travelog.data.ScheduleRepository
+import com.thequietz.travelog.schedule.repository.ScheduleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

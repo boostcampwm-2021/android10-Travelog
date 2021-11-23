@@ -3,7 +3,7 @@ package com.thequietz.travelog.data.db
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.thequietz.travelog.place.model.PlaceDetailModel
-import com.thequietz.travelog.schedule.model.PlaceModel
+import com.thequietz.travelog.schedule.model.SchedulePlaceModel
 
 class Converters {
     @TypeConverter
@@ -14,11 +14,25 @@ class Converters {
         Gson().fromJson(value, Array<String>::class.java).toList()
 
     @TypeConverter
-    fun placeListToJson(value: List<PlaceModel>): String = Gson().toJson(value)
+    fun jsonToSchedulePlace(value: String): SchedulePlaceModel =
+        Gson().fromJson(value, SchedulePlaceModel::class.java)
 
     @TypeConverter
-    fun jsonToPlaceList(value: String): List<PlaceModel> =
-        Gson().fromJson(value, Array<PlaceModel>::class.java).toList()
+    fun schedulePlaceToJson(value: SchedulePlaceModel): String = Gson().toJson(value)
+
+    @TypeConverter
+    fun placeListToJson(value: List<SchedulePlaceModel>): String = Gson().toJson(value)
+
+    @TypeConverter
+    fun jsonToPlaceList(value: String): List<SchedulePlaceModel> =
+        Gson().fromJson(value, Array<SchedulePlaceModel>::class.java).toList()
+
+    @TypeConverter
+    fun placeDetailToJson(value: PlaceDetailModel): String = Gson().toJson(value)
+
+    @TypeConverter
+    fun jsonToPlaceDetail(value: String): PlaceDetailModel =
+        Gson().fromJson(value, PlaceDetailModel::class.java)
 
     @TypeConverter
     fun placeDetailListToJson(value: List<PlaceDetailModel>): String = Gson().toJson(value)
