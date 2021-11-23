@@ -5,14 +5,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.thequietz.travelog.data.RecordRepository
 import com.thequietz.travelog.record.model.RecordBasic
 import com.thequietz.travelog.record.model.RecordBasicItem
+import com.thequietz.travelog.record.model.RecordImage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class RecordBasicViewModel @Inject constructor() : ViewModel() {
+class RecordBasicViewModel @Inject constructor(
+    private val repository: RecordRepository
+) : ViewModel() {
     private val _title = MutableLiveData<String>()
     val title: LiveData<String> = _title
 
@@ -22,31 +28,55 @@ class RecordBasicViewModel @Inject constructor() : ViewModel() {
     private val _recordBasicItemList = MutableLiveData<List<RecordBasicItem>>()
     val recordBasicItemList: LiveData<List<RecordBasicItem>> = _recordBasicItemList
 
-    init {
-        // TODO:
-        //  1. 여행 기록 목록 화면으로부터 데이터(제목, 기간)를 전달받고,
-        //  2. DB로부터 기록 데이터 로드
-        viewModelScope.launch {
-            // 임시 데이터 사용
-            val temp = RecordBasic(
-                "경주 여행",
-                "21.10.26",
-                "21.10.28",
-                listOf(
-                    RecordBasicItem.TravelDestination("불국사", "2021.10.26", listOf()),
-                    RecordBasicItem.TravelDestination("첨성대", "2021.10.26", listOf()),
-                    RecordBasicItem.TravelDestination("황리단길", "2021.10.27", listOf()),
-                    RecordBasicItem.TravelDestination("보문단지", "2021.10.27", listOf()),
-                    RecordBasicItem.TravelDestination("황리단길2", "2021.10.28", listOf()),
-                    RecordBasicItem.TravelDestination("보문단지2", "2021.10.28", listOf())
-                )
-            )
+    private val _recordImageList = MutableLiveData<List<RecordImage>>()
+    val recordImageList: LiveData<List<RecordImage>> = _recordImageList
 
-            _title.value = temp.title
-            _date.value = temp.startDate
-            _recordBasicItemList.value =
-                createListOfRecyclerViewAdapterItem(temp.travelDestinations)
+    fun loadData(title: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val recordImages = repository.loadRecordImagesByTitle(title)
+
+            withContext(Dispatchers.Main) {
+                _recordImageList.value = recordImages
+            }
         }
+    }
+
+    fun createData() {
+        val recordImages = _recordImageList.value ?: return
+        val recordBasic = createRecordBasicFromRecordImages(recordImages)
+        _title.value = recordBasic.title
+        _date.value = recordBasic.startDate
+        _recordBasicItemList.value =
+            createListOfRecyclerViewAdapterItem(recordBasic.travelDestinations)
+    }
+
+    private fun createRecordBasicFromRecordImages(recordImages: List<RecordImage>): RecordBasic {
+        val recordImageList = mutableListOf<String>()
+        val recordDestinationList = mutableListOf<RecordBasicItem.TravelDestination>()
+
+        for (i in recordImages.indices) {
+            recordImageList.add(recordImages[i].url)
+
+            if ((i + 1 < recordImages.size && recordImages[i].place != recordImages[i + 1].place) ||
+                (i == recordImages.lastIndex && recordImages[i - 1].place != recordImages[i].place)
+            ) {
+                recordDestinationList.add(
+                    RecordBasicItem.TravelDestination(
+                        recordImages[i].place,
+                        recordImages[i].schedule,
+                        recordImageList.toList()
+                    )
+                )
+                recordImageList.clear()
+            }
+        }
+
+        return RecordBasic(
+            recordImages.first().title,
+            recordImages.first().startDate,
+            recordImages.first().endDate,
+            recordDestinationList.toList()
+        )
     }
 
     private fun createListOfRecyclerViewAdapterItem(travelDestinations: List<RecordBasicItem.TravelDestination>): List<RecordBasicItem> {
@@ -70,9 +100,11 @@ class RecordBasicViewModel @Inject constructor() : ViewModel() {
         val tempRecordBasicItemList = _recordBasicItemList.value ?: return
         tempRecordBasicItemList.getOrNull(position) ?: return
 
-        val tempRecordBasicItem = tempRecordBasicItemList[position] as RecordBasicItem.TravelDestination
+        val tempRecordBasicItem =
+            tempRecordBasicItemList[position] as RecordBasicItem.TravelDestination
         val tempImageList = tempRecordBasicItem.images.toMutableList()
-        tempImageList.add(uri.toString())
+        val imageUrl = uri.toString()
+        tempImageList.add(imageUrl)
 
         val item = RecordBasicItem.TravelDestination(
             tempRecordBasicItem.name,
@@ -83,6 +115,25 @@ class RecordBasicViewModel @Inject constructor() : ViewModel() {
         val tempRecordBasicItemMutableList = tempRecordBasicItemList.toMutableList()
         tempRecordBasicItemMutableList[position] = item
         _recordBasicItemList.value = tempRecordBasicItemMutableList.toList()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val tempRecordImageList = _recordImageList.value ?: return@launch
+            val tempRecordImage =
+                tempRecordImageList.find { it.place == item.name } ?: return@launch
+
+            repository.insertRecordImage(
+                RecordImage(
+                    travelId = tempRecordImage.travelId,
+                    title = tempRecordImage.title,
+                    startDate = tempRecordImage.startDate,
+                    endDate = tempRecordImage.endDate,
+                    schedule = tempRecordImage.schedule,
+                    place = tempRecordImage.place,
+                    url = imageUrl,
+                    group = tempRecordImage.group
+                )
+            )
+        }
     }
 
     fun deleteRecord(position: Int) {
@@ -90,8 +141,12 @@ class RecordBasicViewModel @Inject constructor() : ViewModel() {
         val tempRecordBasicItemMutableList = tempRecordBasicItemList.toMutableList()
 
         tempRecordBasicItemMutableList.getOrNull(position) ?: return
-        tempRecordBasicItemMutableList.removeAt(position)
+        val removedItem = tempRecordBasicItemMutableList.removeAt(position)
 
         _recordBasicItemList.value = tempRecordBasicItemMutableList.toList()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteRecordImageByPlace((removedItem as RecordBasicItem.TravelDestination).name)
+        }
     }
 }

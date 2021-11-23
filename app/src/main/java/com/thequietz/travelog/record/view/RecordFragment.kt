@@ -36,8 +36,8 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
         return binding.root
     }
 
-    private fun navigateToRecordBasicUi() {
-        val action = RecordFragmentDirections.actionRecordFragmentToRecordBasicFragment()
+    private fun navigateToRecordBasicUi(title: String) {
+        val action = RecordFragmentDirections.actionRecordFragmentToRecordBasicFragment(title)
 
         findNavController().navigate(action)
     }

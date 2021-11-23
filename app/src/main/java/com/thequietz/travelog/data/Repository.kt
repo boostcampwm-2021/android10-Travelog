@@ -159,6 +159,8 @@ class RecordRepository @Inject constructor(
 ) {
     fun loadRecordImages() = recordImageDao.loadAllRecordImages()
 
+    fun loadRecordImagesByTitle(title: String) = recordImageDao.loadRecordImageByTitle(title)
+
     fun createRecordImage(recordImage: RecordImage) {
         coroutineScope.launch { recordImageDao.insert(recordImage) }
     }
@@ -167,10 +169,20 @@ class RecordRepository @Inject constructor(
         coroutineScope.launch { recordImageDao.updateRecordImageCommentById(comment, id) }
     }
 
+    fun insertRecordImage(image: RecordImage) {
+        coroutineScope.launch { recordImageDao.insert(image) }
+    }
+
     fun deleteRecordImage(id: Int) {
         coroutineScope.launch {
             val data = recordImageDao.loadRecordImageById(id)
             recordImageDao.delete(data)
+        }
+    }
+
+    fun deleteRecordImageByPlace(place: String) {
+        coroutineScope.launch {
+            recordImageDao.deleteRecordImageByPlace(place)
         }
     }
 }

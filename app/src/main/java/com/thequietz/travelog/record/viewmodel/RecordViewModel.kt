@@ -4,28 +4,56 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.thequietz.travelog.data.RecordRepository
 import com.thequietz.travelog.record.model.Record
+import com.thequietz.travelog.record.model.RecordImage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class RecordViewModel @Inject constructor() : ViewModel() {
+class RecordViewModel @Inject constructor(
+    private val repository: RecordRepository
+) : ViewModel() {
     private var _recordList = MutableLiveData<List<Record>>()
     val recordList: LiveData<List<Record>> = _recordList
 
     init {
+        TODO("Schedule 테이블에서 데이터 로드 후 Record 테이블에 저장")
         viewModelScope.launch {
-            // TODO: DB로부터 기록 목록 데이터 로드
-            // 임시 데이터 사용
-            _recordList.value = listOf(
-                Record("제주도여행", "2021.08.30", "2021.09.01", listOf("", "", "")),
-                Record("경주여행", "2021.10.26", "2021.10.28", listOf("", "", "")),
-                Record("강릉여행", "2021.12.20", "2021.12.25", listOf("", "", "")),
-                Record("제주도여행", "2021.08.30", "2021.09.01", listOf("", "", "")),
-                Record("경주여행", "2021.10.26", "2021.10.28", listOf("", "", "")),
-                Record("강릉여행", "2021.12.20", "2021.12.25", listOf("", "", ""))
+            val recordImages = withContext(Dispatchers.IO) {
+                repository.loadRecordImages()
+            }
+            _recordList.value = createRecordFromRecordImages(recordImages)
+        }
+    }
+
+    private fun createRecordFromRecordImages(recordImages: List<RecordImage>): List<Record> {
+        val recordList = mutableListOf<Record>()
+        var travelId = -1
+
+        for (recordImage in recordImages) {
+            val tempImageList = if (travelId != recordImage.travelId) {
+                travelId = recordImage.travelId
+                mutableListOf()
+            } else {
+                recordList.removeLast().images.toMutableList()
+            }
+
+            tempImageList.add(recordImage.url)
+
+            recordList.add(
+                Record(
+                    recordImage.title,
+                    recordImage.startDate,
+                    recordImage.endDate,
+                    tempImageList.toList()
+                )
             )
         }
+
+        return recordList.toList()
     }
 }

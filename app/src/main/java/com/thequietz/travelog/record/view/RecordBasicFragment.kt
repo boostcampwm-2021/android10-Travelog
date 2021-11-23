@@ -10,12 +10,16 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordBasicBinding
 import com.thequietz.travelog.record.adapter.RecordBasicAdapter
 import com.thequietz.travelog.record.viewmodel.RecordBasicViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecordBasicFragment : Fragment() {
+    private val navArgs by navArgs<RecordBasicFragmentArgs>()
     private val viewModel by viewModels<RecordBasicViewModel>()
     private val adapter by lazy {
         RecordBasicAdapter(
@@ -44,6 +48,8 @@ class RecordBasicFragment : Fragment() {
 
         binding.rvRecordBasic.adapter = adapter
 
+        viewModel.loadData(navArgs.title)
+
         subscribeUi()
 
         return binding.root
@@ -59,6 +65,9 @@ class RecordBasicFragment : Fragment() {
         viewModel.recordBasicItemList.observe(viewLifecycleOwner) { recordBasicItemList ->
             adapter.submitList(recordBasicItemList)
         }
+        viewModel.recordImageList.observe(viewLifecycleOwner) {
+            viewModel.createData()
+        }
     }
 
     private fun navigateToRecordViewUi() {
@@ -69,6 +78,7 @@ class RecordBasicFragment : Fragment() {
     }
 
     private fun navigateToRecordAddUi() {
+        // TODO("day 값 넘겨야함")
         val action =
             RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordAddImageFragment()
 
