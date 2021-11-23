@@ -12,7 +12,6 @@ data class ScheduleDetailModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val scheduleId: Int,
-    val scheduleOrder: Int,
     val place: SchedulePlaceModel,
     val date: String,
     val destination: PlaceDetailModel

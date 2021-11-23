@@ -18,7 +18,7 @@ class ScheduleViewModel @Inject internal constructor(
     init {
         schedules.value = null
         viewModelScope.launch {
-            schedules.addSource(repository.loadSchedules()) { schedules.value = it }
+            schedules.addSource(repository.loadAllSchedules()) { schedules.value = it }
         }
     }
 
