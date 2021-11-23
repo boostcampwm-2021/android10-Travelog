@@ -6,6 +6,10 @@
         <variable
             name="imageItem"
             type="com.thequietz.travelog.record.model.RecordImage" />
+        <variable
+            name="viewModel"
+            type="com.thequietz.travelog.record.viewmodel.RecordViewManyInnerViewModel" />
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,6 +26,17 @@
             android:id="@+id/iv_item_image"
             android:layout_marginStart="15dp"
             app:setImage="@{imageItem.url}" />
+        <CheckBox
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:layout_constraintStart_toStartOf="@id/iv_item_image"
+            app:layout_constraintTop_toTopOf="@id/iv_item_image"
+            android:src="@android:drawable/checkbox_off_background"
+            android:button="@android:color/transparent"
+            android:background="@drawable/selector_checkbox"
+            android:id="@+id/cb_delete_check"
+            android:visibility="@{viewModel.deleteState == true ? View.VISIBLE : View.GONE}"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

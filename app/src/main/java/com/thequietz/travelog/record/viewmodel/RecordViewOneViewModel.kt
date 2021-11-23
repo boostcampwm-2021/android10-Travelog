@@ -61,7 +61,11 @@ class RecordViewOneViewModel @Inject constructor(
     }
 
     fun setCurrentPosition(position: Int) {
-        _currentPosition.value = position
+        if (position <0) {
+            return
+        } else {
+            _currentPosition.value = position
+        }
     }
 
     fun resetIsListUpdate() {

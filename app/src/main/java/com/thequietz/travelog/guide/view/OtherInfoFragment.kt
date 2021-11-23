@@ -8,8 +8,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.thequietz.travelog.R
@@ -34,6 +36,10 @@ class OtherInfoFragment : Fragment() {
     private val vacationAdapter by lazy { OtherInfoAdapter() }
     private val festivalAdapter by lazy { OtherInfoAdapter() }
     private val foodAdapter by lazy { OtherInfoAdapter() }
+
+    var vacationPrevItemCount = 0
+    var foodPrevItemCount = 0
+    var festivalPrevItemCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -104,8 +110,16 @@ class OtherInfoFragment : Fragment() {
             rvVacationSpot.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
+                    with(binding.rvVacationSpot) {
+                        val visibleItemCount = childCount
+                        val totalItemCount = layoutManager?.itemCount!!
+                        val firstVisibleItem = (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                        if (totalItemCount <= (firstVisibleItem + visibleItemCount) && (visibleItemCount - vacationPrevItemCount == 1)) {
+                            otherInfoViewModel.addVacationData()
+                        }
+                        vacationPrevItemCount = visibleItemCount
+                    }
                     if (!binding.rvVacationSpot.canScrollHorizontally(1)) {
-                        otherInfoViewModel.addVacationData()
                         if (otherInfoViewModel.vacationPageEnd.value == true) {
                             Toast.makeText(requireContext(), "마지막 페이지입니다", Toast.LENGTH_SHORT).show()
                         }
@@ -115,8 +129,16 @@ class OtherInfoFragment : Fragment() {
             rvFood.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
+                    with(binding.rvFood) {
+                        val visibleItemCount = childCount
+                        val totalItemCount = layoutManager?.itemCount!!
+                        val firstVisibleItem = (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                        if (totalItemCount <= (firstVisibleItem + visibleItemCount) && (visibleItemCount - vacationPrevItemCount == 1)) {
+                            otherInfoViewModel.addFoodData()
+                        }
+                        foodPrevItemCount = visibleItemCount
+                    }
                     if (!binding.rvFood.canScrollHorizontally(1)) {
-                        otherInfoViewModel.addFoodData()
                         if (otherInfoViewModel.foodPageEnd.value == true) {
                             Toast.makeText(requireContext(), "마지막 페이지입니다", Toast.LENGTH_SHORT).show()
                         }
@@ -126,8 +148,16 @@ class OtherInfoFragment : Fragment() {
             rvFestival.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
+                    with(binding.rvFestival) {
+                        val visibleItemCount = childCount
+                        val totalItemCount = layoutManager?.itemCount!!
+                        val firstVisibleItem = (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                        if (totalItemCount <= (firstVisibleItem + visibleItemCount) && (visibleItemCount - vacationPrevItemCount == 1)) {
+                            otherInfoViewModel.addFestivalData()
+                        }
+                        festivalPrevItemCount = visibleItemCount
+                    }
                     if (!binding.rvFestival.canScrollHorizontally(1)) {
-                        otherInfoViewModel.addFestivalData()
                         if (otherInfoViewModel.festivalPageEnd.value == true) {
                             Toast.makeText(requireContext(), "마지막 페이지입니다", Toast.LENGTH_SHORT).show()
                         }
@@ -167,6 +197,11 @@ class OtherInfoFragment : Fragment() {
             slLayout.setOnRefreshListener {
                 otherInfoViewModel.initPlaceList(args.item)
                 slLayout.isRefreshing = false
+            }
+            btnMakePlan.setOnClickListener {
+                val action = OtherInfoFragmentDirections
+                    .actionOtherInfoFragmentToSchedulePlaceFragmentFromGuide()
+                it.findNavController().navigate(action)
             }
         }
     }

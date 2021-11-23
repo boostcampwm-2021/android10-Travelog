@@ -1,6 +1,5 @@
 package com.thequietz.travelog.record.view
 
-import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +9,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,7 +20,6 @@ import com.thequietz.travelog.databinding.FragmentRecordAddImageBinding
 import com.thequietz.travelog.record.adapter.RecordAddImageAdapter
 import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.record.viewmodel.RecordAddImageViewModel
-import com.thequietz.travelog.util.requestImage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,6 +28,27 @@ class RecordAddImageFragment : Fragment() {
     private val binding get() = _binding
     private val recordAddImageViewModel by viewModels<RecordAddImageViewModel>()
     private val adapter by lazy { RecordAddImageAdapter() }
+    private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        val clipData = result.data?.clipData
+        val res = mutableListOf<RecordImage>()
+        clipData?.let {
+            (0 until it.itemCount).forEachIndexed { ind, item ->
+                res.add(
+                    RecordImage().copy(
+                        title = "제주도 여행",
+                        startDate = "2021.10.27",
+                        endDate = "2021.10.29",
+                        schedule = binding.tvSchedule.text.toString(),
+                        place = binding.tvDestination.text.toString(),
+                        url = it.getItemAt(ind).uri.toString(),
+                        comment = "test입니다~",
+                        group = 6
+                    )
+                )
+            }
+            recordAddImageViewModel.addImage(res)
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -76,9 +97,9 @@ class RecordAddImageFragment : Fragment() {
         binding.btnAddImage.setOnClickListener {
             Intent().apply {
                 type = "image/*"
-                action = Intent.ACTION_GET_CONTENT
-                startActivityForResult(this, requestImage)
-                return@setOnClickListener
+                action = Intent.ACTION_PICK
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                getContent.launch(this)
             }
         }
         binding.tbRecordAddImage.setNavigationOnClickListener {
@@ -94,30 +115,6 @@ class RecordAddImageFragment : Fragment() {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setDisplayShowTitleEnabled(false)
             supportActionBar?.setHomeAsUpIndicator(R.drawable.img_leftarrow)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            if (requestCode == requestImage) {
-                try {
-                    recordAddImageViewModel.addImage(
-                        RecordImage().copy(
-                            title = "제주도 여행",
-                            startDate = "2021.10.27",
-                            endDate = "2021.10.29",
-                            schedule = binding.tvSchedule.text.toString(),
-                            place = binding.tvDestination.text.toString(),
-                            url = data?.data.toString(),
-                            comment = "test입니다~",
-                            group = 6
-                        )
-                    )
-                } catch (e: Exception) {
-                    println("Something wrong")
-                }
-            }
         }
     }
 }

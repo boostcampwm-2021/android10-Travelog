@@ -23,13 +23,14 @@ class RecordAddImageViewModel @Inject constructor(
     init {
         _imageList.value = listOf()
     }
-    fun addImage(img: RecordImage) {
+    fun addImage(newImgList: List<RecordImage>) {
         viewModelScope.launch {
-            var res = mutableListOf<RecordImage>()
             imageList.value?.let {
+                val res = it.toMutableList()
                 withContext(Dispatchers.IO) {
-                    res = it.toMutableList()
-                    res.add(img)
+                    newImgList.forEach { img ->
+                        res.add(img)
+                    }
                 }
                 _imageList.value = res
             }
