@@ -44,9 +44,11 @@ class RecordViewManyMultiViewAdapter(
             innerViewModel,
             object : MultiViewImageAdapter.OnItemClickListener {
                 override fun onItemClick(view: View, ind: Int) {
-                    val action = RecordViewManyFragmentDirections
-                        .actionRecordViewManyFragmentToRecordViewOneFragment(ind)
-                    itemView.findNavController().navigate(action)
+                    if (innerViewModel.deleteState.value == false) {
+                        val action = RecordViewManyFragmentDirections
+                            .actionRecordViewManyFragmentToRecordViewOneFragment(ind)
+                        itemView.findNavController().navigate(action)
+                    }
                 }
             }
         )
@@ -142,13 +144,10 @@ class MultiViewImageAdapter(
             }
             binding.cbDeleteCheck.setOnCheckedChangeListener { compoundButton, isChecked ->
                 if (isChecked) {
-                    println("${item.id} clicked!!")
-                    innerViewModel.addChecked(item.id)
+                    innerViewModel.addCheck(item.id)
                 } else {
-                    println("${item.id} unclicked!!")
-                    innerViewModel.deleteChecked(item.id)
+                    innerViewModel.deleteCheck(item.id)
                 }
-                println(innerViewModel.checkedList.value?.size)
             }
             binding.executePendingBindings()
         }
@@ -166,6 +165,7 @@ class MultiViewImageAdapter(
         holder.bind(innerViewModel, getItem(position))
         holder.binding.ivItemImage.setOnClickListener { view ->
             onItemClickListener.onItemClick(view, getItem(position).id)
+            holder.binding.cbDeleteCheck.isChecked = !(holder.binding.cbDeleteCheck.isChecked)
         }
     }
 }

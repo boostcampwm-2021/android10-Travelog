@@ -6,13 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class RecordViewManyInnerViewModel @Inject constructor(
     val repository: RecordRepository
 ) : ViewModel() {
+
     private val _deleteState = MutableLiveData<Boolean>()
     val deleteState: LiveData<Boolean> = _deleteState
 
@@ -29,9 +32,8 @@ class RecordViewManyInnerViewModel @Inject constructor(
                 _deleteState.value = !it
             }
         }
-        println("delete state ${deleteState.value}")
     }
-    fun addChecked(id: Int) {
+    fun addCheck(id: Int) {
         viewModelScope.launch {
             checkedList.value?.let {
                 val res = it.toMutableList()
@@ -41,13 +43,13 @@ class RecordViewManyInnerViewModel @Inject constructor(
             }
         }
     }
-    fun deleteChecked(id: Int) {
+    fun deleteCheck(id: Int) {
         viewModelScope.launch {
             checkedList.value?.let {
                 val res = it.toMutableList()
                 var ind = 0
                 res.forEachIndexed { idx, it ->
-                    if (it == id) {
+                    if (id == it) {
                         ind = idx
                         return@forEachIndexed
                     }
@@ -56,6 +58,25 @@ class RecordViewManyInnerViewModel @Inject constructor(
                 res.sort()
                 _checkedList.value = res
             }
+        }
+    }
+    fun clearCheckedList() {
+        viewModelScope.launch {
+            _checkedList.value = mutableListOf()
+        }
+    }
+    fun deleteChecked() {
+        println("deleteChecked start")
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                checkedList.value?.let { list ->
+                    list.forEach {
+                        repository.deleteRecordImage(it)
+                    }
+                }
+
+            }
+            _checkedList.value = mutableListOf()
         }
     }
 }

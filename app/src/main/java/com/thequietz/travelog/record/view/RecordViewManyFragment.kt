@@ -1,5 +1,6 @@
 package com.thequietz.travelog.record.view
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -16,6 +17,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.itextpdf.text.Document
 import com.itextpdf.text.Image
 import com.itextpdf.text.pdf.PdfWriter
@@ -25,6 +27,11 @@ import com.thequietz.travelog.record.viewmodel.RecordViewManyInnerViewModel
 import com.thequietz.travelog.record.viewmodel.RecordViewManyViewModel
 import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -59,7 +66,6 @@ class RecordViewManyFragment : Fragment() {
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
             viewModel = recordViewManyViewModel
-            innerViewModel = recordViewInnerViewModel
             rvRecordViewMany.adapter = adapter
         }
         with(recordViewManyViewModel) {
@@ -135,6 +141,16 @@ class RecordViewManyFragment : Fragment() {
         }
         binding.ibRecordDelete.setOnClickListener {
             recordViewInnerViewModel.changeDeleteState()
+            binding.ibRecordDelete.visibility = View.GONE
+            binding.tvRecordDelete.visibility = View.VISIBLE
+        }
+        binding.tvRecordDelete.setOnClickListener {
+            recordViewInnerViewModel.changeDeleteState()
+            binding.tvRecordDelete.visibility = View.GONE
+            binding.ibRecordDelete.visibility = View.VISIBLE
+            if (recordViewInnerViewModel.checkedList.value?.size != 0) {
+                showDeleteDiaglog()
+            }
         }
     }
 
@@ -146,5 +162,22 @@ class RecordViewManyFragment : Fragment() {
         val canvas = Canvas(bitmap)
         view.draw(canvas)
         return bitmap
+    }
+    private fun showDeleteDiaglog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("삭제 확인")
+            .setMessage("선택된 이미지를 삭제하시겠습니까?")
+            .setNegativeButton("예") { dialog, which ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    withContext(Dispatchers.Main) {
+                        recordViewInnerViewModel.deleteChecked()
+                    }
+                    recordViewManyViewModel.change2MyRecord()
+                }
+                Snackbar.make(binding.clRecordViewMany, "이미지가 삭제되었습니다", Snackbar.LENGTH_SHORT)
+                    .show()
+            }
+            .setPositiveButton("아니오") { dialog, which ->
+            }.show()
     }
 }

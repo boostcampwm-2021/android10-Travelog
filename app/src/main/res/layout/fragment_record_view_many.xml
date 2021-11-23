@@ -67,6 +67,18 @@
             app:layout_constraintTop_toBottomOf="@id/tv_record_view_many_title"
             android:id="@+id/tv_record_view_many_date"
             />
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintEnd_toStartOf="@id/ib_record_camera"
+            app:layout_constraintTop_toBottomOf="@id/tb_record_view_many"
+            app:layout_constraintBottom_toTopOf="@id/rv_record_view_many"
+            android:id="@+id/tv_record_Delete"
+            android:layout_marginEnd="5dp"
+            android:text="삭제"
+            android:gravity="center"
+            android:visibility="gone"
+            />
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
