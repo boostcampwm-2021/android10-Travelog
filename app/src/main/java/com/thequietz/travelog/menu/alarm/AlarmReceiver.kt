@@ -11,8 +11,13 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.thequietz.travelog.MainActivity
 import com.thequietz.travelog.R
+import com.thequietz.travelog.schedule.repository.ScheduleRepository
+import java.util.Date
+import javax.inject.Inject
 
-class AlarmReceiver : BroadcastReceiver() {
+class AlarmReceiver @Inject internal constructor(
+    val repository: ScheduleRepository,
+) : BroadcastReceiver() {
     companion object {
         const val TAG = "AlarmReceiver"
         const val NOTIFICATION_ID = 0
@@ -22,24 +27,25 @@ class AlarmReceiver : BroadcastReceiver() {
     lateinit var notificationManager: NotificationManager
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.e(TAG, "Received intent: $intent")
+        Log.e(TAG, "onreceive")
         notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val dateList = repository.loadScheduleDateList()
         createNotificationChannel()
-        deliverNotification(context, intent.extras?.getString("name"))
+        deliverNotification(context, intent.extras?.getString("content"), NOTIFICATION_ID)
     }
 
-    private fun deliverNotification(context: Context, content: String?) {
+    private fun deliverNotification(context: Context, content: String?, id: Int) {
         val contentIntent = Intent(context, MainActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(
             context,
-            NOTIFICATION_ID,
+            id,
             contentIntent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_edit)
-            .setContentTitle("Alert")
+            .setContentTitle("Travelog")
             .setContentText(content)
             .setContentIntent(contentPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -50,7 +56,7 @@ class AlarmReceiver : BroadcastReceiver() {
         notificationManager.notify(NOTIFICATION_ID, builder.build())
     }
 
-    fun createNotificationChannel() {
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
                 NotificationChannel(CHANNEL_ID, "일정 알림", NotificationManager.IMPORTANCE_HIGH)
@@ -60,5 +66,9 @@ class AlarmReceiver : BroadcastReceiver() {
             notificationChannel.description = "Travelog 일정 알림"
             notificationManager.createNotificationChannel(notificationChannel)
         }
+    }
+
+    private fun isValidDate(list: List<String>) {
+        val today = Date(System.currentTimeMillis())
     }
 }
