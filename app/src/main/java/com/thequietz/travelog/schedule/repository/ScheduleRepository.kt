@@ -3,10 +3,8 @@ package com.thequietz.travelog.schedule.repository
 import android.util.Log
 import com.thequietz.travelog.data.db.dao.ScheduleDao
 import com.thequietz.travelog.data.db.dao.ScheduleDetailDao
-import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.schedule.model.ScheduleDetailModel
 import com.thequietz.travelog.schedule.model.ScheduleModel
-import com.thequietz.travelog.schedule.model.SchedulePlaceModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,12 +16,14 @@ class ScheduleRepository @Inject constructor(
     private val scheduleDetailDao: ScheduleDetailDao,
     private val coroutineScope: CoroutineScope
 ) {
-    fun loadSchedules() = scheduleDao.loadAllSchedules()
+    fun loadAllSchedules() = scheduleDao.loadAllSchedules()
+
+    fun loadScheduleById(id: Int) = scheduleDao.loadScheduleById(id)
 
     fun createSchedules(schedule: ScheduleModel, onInsert: (Int) -> (Unit)) {
         coroutineScope.launch {
             val result = scheduleDao.insert(schedule)
-            onInsert(result[0].toInt())
+            onInsert(result.last().toInt())
         }
     }
 
@@ -44,22 +44,13 @@ class ScheduleRepository @Inject constructor(
         scheduleDao.loadScheduleByName(scheduleName)
 
     fun createScheduleDetail(
-        scheduleId: Int,
-        scheduleOrder: Int,
-        place: SchedulePlaceModel,
-        date: String,
-        destination: PlaceDetailModel
+        scheduleDetails: List<ScheduleDetailModel>
     ) {
         coroutineScope.launch {
-            val newDetailModel = ScheduleDetailModel(
-                scheduleId = scheduleId,
-                scheduleOrder = scheduleOrder,
-                place = place,
-                date = date,
-                destination = destination
-            )
-
-            scheduleDetailDao.insert(newDetailModel)
+            scheduleDetailDao.deleteScheduleDetailsByScheduleId(scheduleDetails[0].scheduleId)
+            scheduleDetails.forEach {
+                scheduleDetailDao.insert(it)
+            }
         }
     }
 }
