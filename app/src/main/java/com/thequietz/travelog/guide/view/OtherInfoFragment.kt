@@ -134,7 +134,7 @@ class OtherInfoFragment : Fragment() {
                         val visibleItemCount = childCount
                         val totalItemCount = layoutManager?.itemCount!!
                         val firstVisibleItem = (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-                        if (totalItemCount <= (firstVisibleItem + visibleItemCount) && (visibleItemCount - vacationPrevItemCount == 1)) {
+                        if (totalItemCount <= (firstVisibleItem + visibleItemCount) && (visibleItemCount - foodPrevItemCount == 1)) {
                             otherInfoViewModel.addFoodData()
                         }
                         foodPrevItemCount = visibleItemCount
@@ -153,7 +153,7 @@ class OtherInfoFragment : Fragment() {
                         val visibleItemCount = childCount
                         val totalItemCount = layoutManager?.itemCount!!
                         val firstVisibleItem = (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-                        if (totalItemCount <= (firstVisibleItem + visibleItemCount) && (visibleItemCount - vacationPrevItemCount == 1)) {
+                        if (totalItemCount <= (firstVisibleItem + visibleItemCount) && (visibleItemCount - festivalPrevItemCount == 1)) {
                             otherInfoViewModel.addFestivalData()
                         }
                         festivalPrevItemCount = visibleItemCount
