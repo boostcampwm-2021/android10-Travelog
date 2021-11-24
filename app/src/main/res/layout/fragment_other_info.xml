@@ -44,28 +44,16 @@
             android:id="@+id/btn_make_plan"
             android:layout_marginTop="10dp"
             />
-        <FrameLayout
+        <ImageView
             android:layout_width="380dp"
             android:layout_height="290dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_make_plan"
             android:layout_marginTop="25dp"
-            android:id="@+id/fl_other_info"
-            >
-            <androidx.viewpager2.widget.ViewPager2
-                android:layout_width="380dp"
-                android:layout_height="290dp"
-                android:id="@+id/vp_other_info"
-                />
-            <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:id="@+id/ci_other_into"
-                android:layout_gravity="bottom|center"
-                app:spi_visibleDotCount="5"
-                />
-        </FrameLayout>
+            android:id="@+id/iv_other_info"
+            app:setImage="@{viewModel.currentPlace.url}"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,7 +63,7 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fl_other_info"
+            app:layout_constraintTop_toBottomOf="@id/iv_other_info"
             android:layout_marginTop="25dp"
             android:id="@+id/tv_vacation_spot"
             />

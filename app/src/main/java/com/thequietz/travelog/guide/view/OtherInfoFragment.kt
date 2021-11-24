@@ -13,13 +13,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentOtherInfoBinding
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.adapter.OtherInfoAdapter
-import com.thequietz.travelog.guide.adapter.OtherInfoViewPagerAdapter
 import com.thequietz.travelog.guide.viewmodel.OtherInfoViewModel
 import com.thequietz.travelog.guide.viewmodel.SpecificGuideViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,11 +32,11 @@ class OtherInfoFragment : Fragment() {
     private val binding get() = _binding
     private val otherInfoViewModel by viewModels<OtherInfoViewModel>()
     private val args: OtherInfoFragmentArgs by navArgs()
-    private val viewPagerAdapter by lazy { OtherInfoViewPagerAdapter() }
     private val vacationAdapter by lazy { OtherInfoAdapter() }
     private val festivalAdapter by lazy { OtherInfoAdapter() }
     private val foodAdapter by lazy { OtherInfoAdapter() }
     private lateinit var thisPlace: Place
+
     var vacationPrevItemCount = 0
     var foodPrevItemCount = 0
     var festivalPrevItemCount = 0
@@ -47,7 +45,7 @@ class OtherInfoFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentOtherInfoBinding.inflate(inflater, container, false)
         initToolbar()
         return binding.root
@@ -56,22 +54,17 @@ class OtherInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         thisPlace = Gson().fromJson(args.item, Place::class.java)
+
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
             viewModel = otherInfoViewModel
             rvVacationSpot.adapter = vacationAdapter
             rvFood.adapter = foodAdapter
             rvFestival.adapter = festivalAdapter
-            vpOtherInfo.adapter = viewPagerAdapter
-            vpOtherInfo.setCurrentItem(0, false)
-            ciOtherInto.attachToRecyclerView(binding.vpOtherInfo.getChildAt(0) as RecyclerView)
         }
 
         with(otherInfoViewModel) {
             initPlace(thisPlace)
-            placeList.observe(viewLifecycleOwner, { it ->
-                it?.let { viewPagerAdapter.submitList(it) }
-            })
             vacationSpotList.observe(viewLifecycleOwner, { it ->
                 it?.let { vacationAdapter.submitList(it) }
             })
@@ -96,13 +89,6 @@ class OtherInfoFragment : Fragment() {
 
     private fun setListener() {
         with(binding) {
-            vpOtherInfo.registerOnPageChangeCallback(object :
-                    ViewPager2.OnPageChangeCallback() {
-                    override fun onPageSelected(position: Int) {
-                        super.onPageSelected(position)
-                    }
-                }
-            )
             tbOtherInfo.setNavigationOnClickListener {
                 val action = OtherInfoFragmentDirections
                     .actionOtherInfoFragmentToSpecificGuideFragment(SpecificGuideViewModel.previousSearch)
