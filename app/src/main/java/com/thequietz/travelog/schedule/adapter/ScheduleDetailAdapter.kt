@@ -3,7 +3,6 @@ package com.thequietz.travelog.schedule.adapter
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -19,15 +18,41 @@ import com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel
 class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: () -> (Unit)) :
     ListAdapter<ScheduleDetailItem, RecyclerView.ViewHolder>(ScheduleDiffCallback()),
     ScheduleTouchHelperCallback.OnItemMoveListener {
+    override fun onCurrentListChanged(
+        previousList: MutableList<ScheduleDetailItem>,
+        currentList: MutableList<ScheduleDetailItem>
+    ) {
+        submitList(currentList)
+    }
+
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
         if (toPosition != 0) {
-            viewModel.itemMove(fromPosition, toPosition)
-            notifyItemMoved(fromPosition, toPosition)
+            val newList = currentList.toMutableList()
+            if (fromPosition >= toPosition) {
+                val data = newList.removeAt(fromPosition)
+                newList.add(toPosition, data)
+            } else {
+                val data = newList.removeAt(fromPosition)
+                if (toPosition + 1 >= newList.size)
+                    newList.add(toPosition, data)
+                else
+                    newList.add(toPosition + 1, data)
+            }
+            viewModel.moveItem(fromPosition, toPosition)
+            submitList(newList)
         }
     }
 
+    override fun onItemDropped(fromPosition: Int, toPosition: Int) {
+        if (toPosition != 0) {
+        }
+    }
+
+    override fun onItemSwiped(position: Int) {
+        viewModel.deleteSchedule(position)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view: View?
         return when (viewType) {
             TYPE_HEADER -> {
                 val binding =
@@ -60,6 +85,7 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: (
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        holder.setIsRecyclable(false)
         when (holder.itemViewType) {
             TYPE_HEADER -> {
                 (holder as HeaderViewHolder).bind(getItem(position))
@@ -67,6 +93,7 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: (
             TYPE_CONTENT -> {
                 (holder as ContentViewHolder).bind(getItem(position))
             }
+            else -> { }
         }
     }
 
@@ -97,9 +124,6 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: (
             item.color.let {
                 binding.viewCircle.backgroundTintList =
                     ColorStateList.valueOf(Color.rgb(it.r, it.g, it.b))
-            }
-            binding.btnDelete.setOnClickListener {
-                viewModel.deleteSchedule(bindingAdapterPosition)
             }
         }
     }
