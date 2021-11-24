@@ -77,26 +77,28 @@ fun byteListToPdf(list: MutableList<ByteArrayOutputStream>, fileName: String) {
         )
     )
     document.open()
-    list.forEachIndexed { ind, it ->
-        val file = File(Environment.getExternalStorageDirectory(), "./temp.jpg")
-        try {
-            file.createNewFile()
-            val fo = FileOutputStream(file)
-            fo.write(it.toByteArray())
+    if (list.size != 0) {
+        list.forEachIndexed { ind, it ->
+            val file = File(Environment.getExternalStorageDirectory(), "./temp.jpg")
+            try {
+                file.createNewFile()
+                val fo = FileOutputStream(file)
+                fo.write(it.toByteArray())
 
-            val image = Image.getInstance(file.toString())
-            val scaler =
-                (((document.pageSize.width - document.leftMargin()) - document.rightMargin()) / image.width) * 80
+                val image = Image.getInstance(file.toString())
+                val scaler =
+                    (((document.pageSize.width - document.leftMargin()) - document.rightMargin()) / image.width) * 80
 
-            image.scalePercent(scaler)
-            image.alignment = (Image.ALIGN_CENTER or Image.ALIGN_TOP)
-            document.add(image)
-            if (ind == (list.size - 1)) {
-                document.close()
+                image.scalePercent(scaler)
+                image.alignment = (Image.ALIGN_CENTER or Image.ALIGN_TOP)
+                document.add(image)
+                if (ind == (list.size - 1)) {
+                    document.close()
+                }
+                file.delete()
+            } catch (e: IOException) {
+                println("something wrong")
             }
-            file.delete()
-        } catch (e: IOException) {
-            println("something wrong")
         }
     }
 }

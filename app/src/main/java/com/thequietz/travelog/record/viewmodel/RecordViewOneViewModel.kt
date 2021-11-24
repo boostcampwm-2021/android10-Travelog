@@ -44,7 +44,7 @@ class RecordViewOneViewModel @Inject constructor(
                 repository.loadRecordImages()
             }
             withContext(Dispatchers.Main) {
-                _imageList.postValue(res)
+                _imageList.value = res
             }
         }
     }

@@ -146,11 +146,24 @@ class RecordViewOneFragment : Fragment() {
             .setTitle("삭제 확인")
             .setMessage("현재 이미지를 삭제하시겠습니까?")
             .setNegativeButton("예") { dialog, which ->
-                CoroutineScope(Dispatchers.IO).launch {
-                    recordViewOneViewModel.delete()
+                if (recordViewOneViewModel.currentImage.value?.id != null) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        recordViewOneViewModel.delete()
+                    }
+                    Snackbar.make(
+                        binding.layoutRecordViewOne,
+                        "이미지가 삭제되었습니다",
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .show()
+                } else {
+                    Snackbar.make(
+                        binding.layoutRecordViewOne,
+                        "삭제할 이미지가 없습니다",
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .show()
                 }
-                Snackbar.make(binding.layoutRecordViewOne, "이미지가 삭제되었습니다", Snackbar.LENGTH_SHORT)
-                    .show()
             }
             .setPositiveButton("아니오") { dialog, which ->
             }.show()
