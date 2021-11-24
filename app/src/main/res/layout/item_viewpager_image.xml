@@ -11,10 +11,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <ImageView
             android:id="@+id/iv_item_viewPager_image"
-            android:layout_width="385dp"
+            android:layout_width="0dp"
             android:layout_height="400dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
