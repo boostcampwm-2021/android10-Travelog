@@ -2,6 +2,7 @@ package com.thequietz.travelog.schedule.adapter
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.thequietz.travelog.schedule.data.TYPE_CONTENT
 
 class ScheduleTouchHelperCallback(private val itemMoveListener: OnItemMoveListener) :
     ItemTouchHelper.Callback() {
@@ -10,6 +11,10 @@ class ScheduleTouchHelperCallback(private val itemMoveListener: OnItemMoveListen
 
     interface OnItemMoveListener {
         fun onItemMove(fromPosition: Int, toPosition: Int)
+    }
+
+    override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+        super.clearView(recyclerView, viewHolder)
     }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
@@ -25,6 +30,9 @@ class ScheduleTouchHelperCallback(private val itemMoveListener: OnItemMoveListen
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
     ): Int {
+        if (viewHolder.itemViewType != TYPE_CONTENT)
+            return makeMovementFlags(0, 0)
+
         val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
         return makeMovementFlags(dragFlags, 0)
     }
