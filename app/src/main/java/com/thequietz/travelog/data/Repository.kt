@@ -21,8 +21,8 @@ class GuideRepository @Inject constructor(
     private val guideRecommendService: GuideRecommendService
 ) {
     private val TAG = "GUIDE"
-    private val TOUR_API_KEY = BuildConfig.TOUR_API_KEY
-    private val NEW_TOUR_API_KEY = BuildConfig.NEW_TOUR_API_KEY
+    private val NEW_TOUR_API_KEY = BuildConfig.TOUR_API_KEY
+    private val TOUR_API_KEY = BuildConfig.NEW_TOUR_API_KEY
 
     private val emptyList = emptyList<Place>()
     private val emptyRecommendList = emptyList<RecommendPlace>()
