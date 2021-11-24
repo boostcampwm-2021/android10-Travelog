@@ -23,9 +23,6 @@ class MenuViewModel @Inject internal constructor(
     private var scheduleAlarmSettingFlag = -1
     private var recordAlarmSettingFlag = -1
 
-    private val _locationPermission = MutableLiveData<Boolean>()
-    val locationPermission: LiveData<Boolean> = _locationPermission
-
     private val _alarmPermission = MutableLiveData<Boolean>()
     val alarmPermission: LiveData<Boolean> = _alarmPermission
 
@@ -46,7 +43,6 @@ class MenuViewModel @Inject internal constructor(
     }
 
     private fun permissionSetting() {
-        _locationPermission.postValue(false)
         _alarmPermission.value = pref.alarmPermission
         _scheduleAlarm.value = pref.scheduleAlarmPermission
         _recordAlarm.value = pref.recordAlarmPermission
@@ -56,10 +52,6 @@ class MenuViewModel @Inject internal constructor(
         else if (alarmPermission.value == false && scheduleAlarm.value == false) scheduleAlarmSettingFlag++
         if (alarmPermission.value == true && recordAlarm.value == true) recordAlarmSettingFlag--
         else if (alarmPermission.value == false && recordAlarm.value == false) recordAlarmSettingFlag++
-    }
-
-    fun locationPermissionChange(isChecked: Boolean) {
-        _locationPermission.postValue(isChecked)
     }
 
     fun alarmPermissionChange(isChecked: Boolean) {
