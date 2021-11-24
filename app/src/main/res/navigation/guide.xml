@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_guideFragment_to_specificGuideFragment"
             app:destination="@id/specificGuideFragment" />
+        <action
+            android:id="@+id/action_guideFragment_to_placeDetailFragmentFromGuide"
+            app:destination="@id/placeDetailFragmentFromGuide" />
     </fragment>
     <fragment
         android:id="@+id/specificGuideFragment"
