@@ -2,12 +2,12 @@ package com.thequietz.travelog.guide.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.thequietz.travelog.databinding.ItemRecyclerGuidePlaceAllBinding
 import com.thequietz.travelog.databinding.ItemRecyclerGuideRecommendPlaceBinding
 import com.thequietz.travelog.databinding.ItemRecyclerTitleBinding
@@ -18,6 +18,9 @@ import com.thequietz.travelog.guide.RecommendPlace
 import com.thequietz.travelog.guide.model.Guide
 import com.thequietz.travelog.guide.model.GuideViewType
 import com.thequietz.travelog.guide.view.GuideFragmentDirections
+import com.thequietz.travelog.place.model.PlaceGeometry
+import com.thequietz.travelog.place.model.PlaceLocation
+import com.thequietz.travelog.place.model.PlaceSearchModel
 
 class GuideMultiViewAdapter(val frag: Fragment) : ListAdapter<Guide, RecyclerView.ViewHolder>(
     GuideDiffUtilCallback()
@@ -28,10 +31,25 @@ class GuideMultiViewAdapter(val frag: Fragment) : ListAdapter<Guide, RecyclerVie
             binding.executePendingBindings()
         }
     }
-    class GuideRecommendViewHolder(val binding: RecyclerGuideRecommendImageBinding) : RecyclerView.ViewHolder(binding.root) {
+    class GuideRecommendViewHolder(frag: Fragment, val binding: RecyclerGuideRecommendImageBinding) : RecyclerView.ViewHolder(binding.root) {
         val adapter = RecommendMultiViewImageAdapter(object : RecommendMultiViewImageAdapter.OnItemClickListener {
             override fun onItemClick(item: RecommendPlace) {
-                Toast.makeText(itemView.context, "${item.name} ", Toast.LENGTH_SHORT).show()
+                val param = Gson().toJson(
+                    PlaceSearchModel(
+                        item.name,
+                        "23",
+                        PlaceGeometry(
+                            PlaceLocation(
+                                item.latitude, item.longitude
+                            )
+                        )
+                    )
+                )
+                val action = GuideFragmentDirections
+                    .actionGuideFragmentToPlaceDetailFragmentFromGuide(
+                        param, true
+                    )
+                findNavController(frag).navigate(action)
             }
         })
         init {
@@ -75,6 +93,7 @@ class GuideMultiViewAdapter(val frag: Fragment) : ListAdapter<Guide, RecyclerVie
             }
             GuideViewType.RECOMMEND -> {
                 GuideRecommendViewHolder(
+                    frag,
                     RecyclerGuideRecommendImageBinding.inflate(
                         LayoutInflater.from(parent.context), parent, false
                     )
