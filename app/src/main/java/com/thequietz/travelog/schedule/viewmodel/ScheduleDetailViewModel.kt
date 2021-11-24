@@ -173,7 +173,7 @@ class ScheduleDetailViewModel @Inject internal constructor(
         }
     }
 
-    fun itemMove(fromPosition: Int, toPosition: Int) {
+    fun moveItem(fromPosition: Int, toPosition: Int) {
         val tempDetails = detailList.value
         val tempColors = colorList.value
 
