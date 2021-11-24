@@ -18,7 +18,6 @@
         android:focusableInTouchMode="true"
         tools:context=".schedule.ScheduleSelectFragment"
         android:focusable="true">
-        tools:context=".schedule.view.ScheduleSelectFragment">
 
         <ImageButton
             android:id="@+id/btn_back"
