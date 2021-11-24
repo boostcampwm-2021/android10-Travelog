@@ -18,9 +18,7 @@ import com.thequietz.travelog.guide.RecommendPlace
 import com.thequietz.travelog.guide.model.Guide
 import com.thequietz.travelog.guide.model.GuideViewType
 import com.thequietz.travelog.guide.view.GuideFragmentDirections
-import com.thequietz.travelog.place.model.PlaceGeometry
-import com.thequietz.travelog.place.model.PlaceLocation
-import com.thequietz.travelog.place.model.PlaceSearchModel
+import com.thequietz.travelog.place.model.PlaceRecommendModel
 
 class GuideMultiViewAdapter(val frag: Fragment) : ListAdapter<Guide, RecyclerView.ViewHolder>(
     GuideDiffUtilCallback()
@@ -35,14 +33,14 @@ class GuideMultiViewAdapter(val frag: Fragment) : ListAdapter<Guide, RecyclerVie
         val adapter = RecommendMultiViewImageAdapter(object : RecommendMultiViewImageAdapter.OnItemClickListener {
             override fun onItemClick(item: RecommendPlace) {
                 val param = Gson().toJson(
-                    PlaceSearchModel(
+                    PlaceRecommendModel(
                         item.name,
-                        "23",
-                        PlaceGeometry(
-                            PlaceLocation(
-                                item.latitude, item.longitude
-                            )
-                        )
+                        item.url,
+                        item.description,
+                        item.latitude,
+                        item.longitude,
+                        item.contentId,
+                        item.contentTypeId
                     )
                 )
                 val action = GuideFragmentDirections

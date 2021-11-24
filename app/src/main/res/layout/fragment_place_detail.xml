@@ -69,8 +69,9 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nv_place_detail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="fill_vertical"
+            android:paddingBottom="60dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
