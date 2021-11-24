@@ -55,9 +55,6 @@ class ScheduleDetailFragment :
                     schedules
                 )
             findNavController().navigate(action)
-            /*val action =
-                ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToScheduleFragment()
-            findNavController().navigate(action)*/
         }
 
         val stateHandle = findNavController().currentBackStackEntry?.savedStateHandle

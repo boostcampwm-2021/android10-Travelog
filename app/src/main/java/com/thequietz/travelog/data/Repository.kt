@@ -82,7 +82,7 @@ class GuideRepository @Inject constructor(
             val res = guideRecommendService.requestRecommendPlace(
                 areaCode,
                 sigunguCode,
-                TOUR_API_KEY
+                NEW_TOUR_API_KEY
             ).response.body.items.item
             res
         } catch (e: JsonSyntaxException) {
@@ -99,7 +99,7 @@ class GuideRepository @Inject constructor(
         pageNo: Int
     ): List<RecommendPlace> {
         return try {
-            val res = guideRecommendService.requestAreaBased(TOUR_API_KEY, areaCode, requestType, pageNo)
+            val res = guideRecommendService.requestAreaBased(NEW_TOUR_API_KEY, areaCode, requestType, pageNo)
             val maxPage = (res.response.body.totalCnt / 10) + 1
             if (maxPage < pageNo) {
                 emptyRecommendList
@@ -126,7 +126,7 @@ class GuideRepository @Inject constructor(
 */
     suspend fun loadFestivalData(areaCode: String, pageNo: Int): List<RecommendPlace> {
         return try {
-            val res = guideRecommendService.requestFestival(TOUR_API_KEY, getTodayDate(), areaCode, pageNo)
+            val res = guideRecommendService.requestFestival(NEW_TOUR_API_KEY, getTodayDate(), areaCode, pageNo)
             val maxPage = (res.response.body.totalCnt / 10) + 1
             if (maxPage < pageNo) {
                 emptyRecommendList
