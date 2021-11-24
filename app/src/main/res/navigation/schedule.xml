@@ -48,11 +48,6 @@
             android:defaultValue="TYPE_CREATE"
             app:argType="com.thequietz.travelog.util.ScheduleControlType" />
         <action
-            android:id="@+id/action_scheduleDetailFragment_to_scheduleFragment"
-            app:destination="@id/scheduleFragment"
-            app:popUpTo="@id/scheduleFragment"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_scheduleDetailFragment_to_placeRecommendFragment"
             app:destination="@id/placeRecommendFragment" />
         <action
@@ -96,6 +91,11 @@
         <argument
             android:name="schedules"
             app:argType="com.thequietz.travelog.schedule.model.ScheduleDetailModel[]" />
+        <action
+            android:id="@+id/action_confirmFragment_to_scheduleFragment"
+            app:destination="@id/scheduleFragment"
+            app:popUpTo="@id/scheduleFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>

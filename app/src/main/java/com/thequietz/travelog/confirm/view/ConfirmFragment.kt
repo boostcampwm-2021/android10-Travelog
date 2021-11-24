@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.maps.GoogleMap
@@ -22,7 +23,6 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
     override val layoutId = R.layout.fragment_confirm
     override val viewModel: ConfirmViewModel by viewModels()
     override var drawMarker = true
-    override var isMarkerNumbered = true
     override var drawOrderedPolyline = true
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -55,8 +55,8 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
         binding.rvConfirmHeader.adapter = dayAdapter
         binding.vpConfirmPlace.adapter = pageAdapter
         binding.vpConfirmPlace.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        binding.vpConfirmPlace.registerOnPageChangeCallback(object :
-                ViewPager2.OnPageChangeCallback() {
+        binding.vpConfirmPlace.registerOnPageChangeCallback(
+            object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
 
@@ -99,6 +99,12 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
         })
 
         viewModel.getSchedulesByNavArgs(navArgs.schedules)
+
+        binding.btnConfirm.setOnClickListener {
+            val action =
+                ConfirmFragmentDirections.actionConfirmFragmentToScheduleFragment()
+            findNavController().navigate(action)
+        }
     }
 
     override fun initTargetList() {
