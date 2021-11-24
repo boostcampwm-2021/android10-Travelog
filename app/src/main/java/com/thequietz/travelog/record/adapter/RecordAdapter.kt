@@ -13,7 +13,7 @@ class RecordAdapter(
 ) : ListAdapter<Record, RecordAdapter.RecordViewHolder>(diffUtil) {
     inner class RecordViewHolder(private val binding: ItemRecyclerRecordBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val adapter = RecordPhotoAdapter(navigateToRecordBasicUi)
+        private val adapter = RecordPhotoAdapter(navigateToRecordBasicUi = navigateToRecordBasicUi)
 
         fun bind(item: Record) = with(binding) {
             root.setOnClickListener {

@@ -68,6 +68,7 @@ class RecordBasicViewModel @Inject constructor(
                     RecordBasicItem.TravelDestination(
                         recordImages[i].place,
                         recordImages[i].schedule,
+                        recordImages[i].group,
                         recordImageList.toList()
                     )
                 )
@@ -114,6 +115,7 @@ class RecordBasicViewModel @Inject constructor(
         val item = RecordBasicItem.TravelDestination(
             tempRecordBasicItem.name,
             tempRecordBasicItem.date,
+            tempRecordBasicItem.group,
             tempImageList.toList()
         )
 

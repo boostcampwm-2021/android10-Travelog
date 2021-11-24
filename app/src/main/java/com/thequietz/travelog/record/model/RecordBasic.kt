@@ -12,6 +12,7 @@ sealed class RecordBasicItem {
     data class TravelDestination(
         val name: String,
         val date: String,
+        val group: Int,
         val images: List<String> = emptyList()
     ) : RecordBasicItem()
 
