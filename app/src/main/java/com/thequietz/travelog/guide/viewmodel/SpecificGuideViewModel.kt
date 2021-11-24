@@ -48,11 +48,7 @@ class SpecificGuideViewModel @Inject internal constructor(
                     guideRepository.loadDoSiByKeyword(args.item)
                 }
                 _currentPlaceList.value = res
-                if (res.size == 0) {
-                    _currentSearch.value = args.item
-                } else {
-                    _currentSearch.value = areaCodeList.get(res.get(0).areaCode.toInt())
-                }
+                _currentSearch.value = args.item
                 previousSearch = args.item
                 _noData.value = currentPlaceList.value?.size == 0
             }
