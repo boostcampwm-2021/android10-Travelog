@@ -98,9 +98,6 @@ class RecordViewOneFragment : Fragment() {
                 if (recordViewOneViewModel.isCommentChanged(currentText) && currentText != "") {
                     showChangeCommentDialog(currentText)
                 }
-                binding.etRecordViewOne.isEnabled = !binding.etRecordViewOne.isEnabled
-                binding.tvRecordViewOneSave.visibility = View.GONE
-                binding.ibRecordViewOneEditComment.visibility = View.VISIBLE
             }
             tvRecordViewOneReduce.setOnClickListener {
                 val popup = PopupMenu(requireContext(), it)
@@ -131,6 +128,11 @@ class RecordViewOneFragment : Fragment() {
             .setNegativeButton("예") { dialog, which ->
                 CoroutineScope(Dispatchers.IO).launch {
                     recordViewOneViewModel.updateComment(currentText)
+                    CoroutineScope(Dispatchers.Main).launch {
+                        binding.etRecordViewOne.isEnabled = !binding.etRecordViewOne.isEnabled
+                        binding.tvRecordViewOneSave.visibility = View.GONE
+                        binding.ibRecordViewOneEditComment.visibility = View.VISIBLE
+                    }
                 }
                 Toast.makeText(requireContext(), "현재 내용이 저장되었습니다", Toast.LENGTH_SHORT)
                     .show()
