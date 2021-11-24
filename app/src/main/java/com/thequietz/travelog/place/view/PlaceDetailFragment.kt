@@ -25,6 +25,10 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
 
     override val layoutId = R.layout.fragment_place_detail
     override val viewModel by viewModels<PlaceDetailViewModel>()
+    override var drawMarker = true
+    override var isMarkerNumbered = false
+    override var drawOrderedPolyline = false
+
     private val navArgs: PlaceDetailFragmentArgs by navArgs()
 
     private var isRecommended: Boolean = false

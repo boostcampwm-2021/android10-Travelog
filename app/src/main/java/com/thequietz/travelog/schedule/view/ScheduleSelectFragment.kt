@@ -53,13 +53,18 @@ class ScheduleSelectFragment : Fragment() {
 
     private fun initNextButton() {
         binding.btnNext.setOnClickListener {
+            val keyword = scheduleSelectViewModel.travelName.value?.toString()
+            if (keyword == null || keyword.isEmpty()) {
+                return@setOnClickListener
+            }
             val schedule = ScheduleModel(
-                name = scheduleSelectViewModel.travelName.value ?: "",
+                name = keyword,
                 schedulePlace = args.placeList.toList(),
                 date = scheduleSelectViewModel.startDate.value.toString() + "~" + scheduleSelectViewModel.endDate.value.toString()
             )
             val action =
                 ScheduleSelectFragmentDirections.actionScheduleSelectFragmentToScheduleDetailFragment(
+                    args.placeList,
                     schedule,
                     ScheduleControlType.TYPE_CREATE
                 )

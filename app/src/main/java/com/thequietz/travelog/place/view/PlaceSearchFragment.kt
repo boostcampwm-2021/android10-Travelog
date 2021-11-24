@@ -2,21 +2,22 @@ package com.thequietz.travelog.place.view
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceSearchBinding
+import com.thequietz.travelog.map.GoogleMapFragment
 import com.thequietz.travelog.place.adapter.PlaceSearchAdapter
 import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.place.model.PlaceSearchModel
@@ -24,29 +25,36 @@ import com.thequietz.travelog.place.viewmodel.PlaceSearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PlaceSearchFragment : Fragment() {
+class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceSearchViewModel>() {
 
-    private var _binding: FragmentPlaceSearchBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel: PlaceSearchViewModel by viewModels()
+    override val viewModel: PlaceSearchViewModel by viewModels()
+    override val layoutId = R.layout.fragment_place_search
+    override var drawMarker = true
+    override var isMarkerNumbered = true
+    override var drawOrderedPolyline = false
 
     private lateinit var adapter: PlaceSearchAdapter
     private lateinit var _context: Context
     private lateinit var gson: Gson
     private lateinit var inputManager: InputMethodManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val navArgs: PlaceSearchFragmentArgs by navArgs()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_place_search, container, false)
-        return binding.root
+    override fun onMapReady(googleMap: GoogleMap) {
+        super.onMapReady(googleMap)
+
+        if (navArgs.schedulePlaceArray.isEmpty()) {
+            return
+        }
+        val initLocation = navArgs.schedulePlaceArray[0]
+        googleMap.moveCamera(
+            CameraUpdateFactory.newLatLng(
+                LatLng(
+                    initLocation.mapY,
+                    initLocation.mapX
+                )
+            )
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -86,6 +94,16 @@ class PlaceSearchFragment : Fragment() {
         }
 
         viewModel.place.observe(viewLifecycleOwner, {
+            val nextList = it.map { model ->
+                val loc = model.geometry.location
+                val lat = loc.latitude
+                val lng = loc.longitude
+                LatLng(lat, lng)
+            }.toMutableList()
+
+            baseTargetList = nextList
+            targetList.value = nextList
+
             (binding.rvPlaceSearch.adapter as PlaceSearchAdapter).submitList(it)
         })
 
@@ -102,5 +120,13 @@ class PlaceSearchFragment : Fragment() {
                     }
                 )
         }
+    }
+
+    override fun initViewModel() {
+        binding.viewModel = viewModel
+    }
+
+    override fun initTargetList() {
+        baseTargetList = mutableListOf()
     }
 }

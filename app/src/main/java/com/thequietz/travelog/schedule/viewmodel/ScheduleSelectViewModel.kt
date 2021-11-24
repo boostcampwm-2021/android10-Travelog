@@ -14,37 +14,35 @@ class ScheduleSelectViewModel @Inject internal constructor(
     val guideRepository: GuideRepository,
 ) : ViewModel() {
 
-    private val _travelName = MutableLiveData<String?>()
-    val travelName: LiveData<String?> = _travelName
+    private val _travelName = MutableLiveData<String?>(null)
+    val travelName: LiveData<String?> get() = _travelName
 
-    private val _startDate = MutableLiveData<String?>()
-    val startDate: LiveData<String?> = _startDate
+    private val _startDate = MutableLiveData<String?>(null)
+    val startDate: LiveData<String?> get() = _startDate
 
-    private val _endDate = MutableLiveData<String?>()
-    val endDate: LiveData<String?> = _endDate
+    private val _endDate = MutableLiveData<String?>(null)
+    val endDate: LiveData<String?> get() = _endDate
 
-    private val _btnEnable = MutableLiveData<Boolean>()
-    val btnEnable: LiveData<Boolean> = _btnEnable
-
-    init {
-        _travelName.postValue(null)
-        _startDate.postValue(null)
-        _endDate.postValue(null)
-        _btnEnable.postValue(false)
-    }
+    private val _btnEnable = MutableLiveData(false)
+    val btnEnable: LiveData<Boolean> get() = _btnEnable
 
     private fun checkNextButtonEnable() {
-        _btnEnable.postValue(!(travelName.value.isNullOrBlank() || startDate.value == null || endDate.value == null))
+        val name = travelName.value.toString()
+        val duration = startDate.value != null && endDate.value != null
+        when (name.isNotEmpty() && duration) {
+            true -> _btnEnable.value = true
+            false -> _btnEnable.value = false
+        }
     }
 
     fun setScheduleRange(startDate: Date, endDate: Date) {
-        _startDate.postValue(dateToString(startDate))
-        _endDate.postValue(dateToString(endDate))
+        _startDate.value = dateToString(startDate)
+        _endDate.value = dateToString(endDate)
         checkNextButtonEnable()
     }
 
     fun setTravelName(name: String) {
-        _travelName.postValue(name)
+        _travelName.value = name
         checkNextButtonEnable()
     }
 }

@@ -18,8 +18,8 @@ val SAMPLE_SCHEDULES = listOf(
             SchedulePlaceModel(
                 thumbnail = "",
                 areaCode = 0,
-                mapX = 35.241615f,
-                mapY = 128.695587f,
+                mapX = 35.241615,
+                mapY = 128.695587,
                 "경주"
             )
         ),
@@ -31,15 +31,15 @@ val SAMPLE_SCHEDULES = listOf(
             SchedulePlaceModel(
                 thumbnail = "",
                 areaCode = 0,
-                mapX = 35.241615f,
-                mapY = 128.695587f,
+                mapX = 35.241615,
+                mapY = 128.695587,
                 "서울"
             ),
             SchedulePlaceModel(
                 thumbnail = "",
                 areaCode = 0,
-                mapX = 35.241615f,
-                mapY = 128.695587f,
+                mapX = 35.241615,
+                mapY = 128.695587,
                 "경기"
             )
         ),
@@ -51,8 +51,8 @@ val SAMPLE_SCHEDULES = listOf(
             SchedulePlaceModel(
                 thumbnail = "",
                 areaCode = 0,
-                mapX = 35.241615f,
-                mapY = 128.695587f,
+                mapX = 35.241615,
+                mapY = 128.695587,
                 "강릉"
             )
         ),

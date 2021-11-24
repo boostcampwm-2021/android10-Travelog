@@ -23,7 +23,8 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
     override val layoutId = R.layout.fragment_confirm
     override val viewModel: ConfirmViewModel by viewModels()
     override var drawMarker = true
-    override var drawOrderedPolyline = true
+    override var isMarkerNumbered = false
+    override var drawOrderedPolyline = false
 
     override fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap)
@@ -77,6 +78,8 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
             val keys = it.keys.toList()
 
             dayAdapter.submitList(keys)
+
+            if (keys.isEmpty()) return@observe
             viewModel.updateSchedule(keys[0])
         })
 

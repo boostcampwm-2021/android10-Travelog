@@ -47,9 +47,9 @@ class ScheduleFragment : Fragment() {
     private fun initRecyclerView() {
         val adapter = ScheduleRecyclerAdapter(
             {
-                // TODO: 세부 일정 설정 화면 Navigation 연결
                 val action =
                     ScheduleFragmentDirections.actionScheduleFragmentToScheduleDetailFragment(
+                        it.schedulePlace.toTypedArray(),
                         it,
                         ScheduleControlType.TYPE_UPDATE
                     )
