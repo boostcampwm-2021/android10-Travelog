@@ -70,18 +70,19 @@ class RecordBasicFragment : Fragment() {
         }
     }
 
-    private fun navigateToRecordViewUi(index: Int) {
+    private fun navigateToRecordViewUi(index: Int, day: String, group: Int) {
         val action =
             RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordViewOneFragment(
                 travelId = navArgs.travelId,
-                index = index
+                index = index,
+                day = day,
+                group = group
             )
 
         findNavController().navigate(action)
     }
 
     private fun navigateToRecordAddUi(day: String) {
-        // TODO("day 값 넘겨야함")
         val action = RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordAddFragment(
             travelId = navArgs.travelId,
             day = day

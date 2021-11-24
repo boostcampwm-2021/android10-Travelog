@@ -8,23 +8,34 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.ItemRecyclerRecordPhotoBinding
+import com.thequietz.travelog.record.model.RecordBasicItem
 
 class RecordPhotoAdapter(
-    private val navigateToRecordViewUi: ((Int) -> Unit)? = null,
-    private val addImage: (() -> Unit)? = null
+    private val navigateToRecordBasicUi: ((Int) -> Unit)? = null,
+    private val navigateToRecordViewUi: ((Int, String, Int) -> Unit)? = null,
+    private val addImage: (() -> Unit)? = null,
+    private val item: RecordBasicItem.TravelDestination? = null,
+    private val travelId: Int? = null
 ) : ListAdapter<String, RecordPhotoAdapter.RecordPhotoViewHolder>(diffUtil) {
     inner class RecordPhotoViewHolder(private val binding: ItemRecyclerRecordPhotoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(url: String?) = with(binding) {
             ivItemRecordPhoto.setOnClickListener {
+                // 여행 기록 기본 화면으로 이동 시
+                if (travelId != null) {
+                    navigateToRecordBasicUi?.invoke(travelId)
+                }
+
+                // 여행 기록 상세 화면으로 이동 시
+                if (item != null) {
+                    navigateToRecordViewUi?.invoke(absoluteAdapterPosition, item.date, item.group)
+                }
+
+                // 여행 기록 추가 화면에서 이미지 추가 시
                 if (url == null) {
                     addImage?.invoke()
                 }
-                navigateToRecordViewUi?.invoke(absoluteAdapterPosition)
-                println(absoluteAdapterPosition)
-                println(bindingAdapterPosition)
-                println(layoutPosition)
             }
 
             if (url != null) {
