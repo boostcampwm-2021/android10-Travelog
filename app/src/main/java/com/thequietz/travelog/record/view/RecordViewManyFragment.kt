@@ -25,7 +25,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 
 @AndroidEntryPoint
@@ -110,9 +109,7 @@ class RecordViewManyFragment : Fragment() {
             .setMessage("선택된 이미지를 삭제하시겠습니까?")
             .setNegativeButton("예") { dialog, which ->
                 CoroutineScope(Dispatchers.IO).launch {
-                    withContext(Dispatchers.Main) {
-                        recordViewInnerViewModel.deleteChecked()
-                    }
+                    recordViewInnerViewModel.deleteChecked()
                     recordViewManyViewModel.change2MyRecord()
                 }
                 Snackbar.make(binding.clRecordViewMany, "이미지가 삭제되었습니다", Snackbar.LENGTH_SHORT)
