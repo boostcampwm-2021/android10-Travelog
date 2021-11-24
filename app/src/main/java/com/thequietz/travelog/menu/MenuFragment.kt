@@ -79,5 +79,23 @@ class MenuFragment : Fragment() {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
+
+        viewModel.recordAlarm.observe(this, {
+            binding.spinnerRecord.isEnabled = it
+        })
+
+        viewModel.scheduleAlarm.observe(this, {
+            binding.spinnerSchedule.isEnabled = it
+        })
+
+        viewModel.alarmPermission.observe(this, {
+            if (it == false) {
+                binding.spinnerSchedule.isEnabled = false
+                binding.spinnerRecord.isEnabled = false
+            } else {
+                if (viewModel.recordAlarm.value == true) binding.spinnerRecord.isEnabled = true
+                if (viewModel.scheduleAlarm.value == true) binding.spinnerSchedule.isEnabled = true
+            }
+        })
     }
 }
