@@ -57,6 +57,7 @@ class OtherInfoViewModel @Inject internal constructor(
             initVacationSpotData()
             initFoodData()
             initFestivalData()
+            println(currentPlace.value?.url)
         }
     }
 

@@ -15,7 +15,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:layout_marginTop="15dp">
 
         <ImageView
@@ -23,6 +22,7 @@
             android:layout_height="80dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:paddingHorizontal="5dp"
             android:id="@+id/iv_item_image"
             app:setImage="@{imageItem.url}" />
         <CheckBox

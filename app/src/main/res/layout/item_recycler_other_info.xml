@@ -10,17 +10,25 @@
             type="com.thequietz.travelog.guide.RecommendPlace" />
     </data>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.41"
+            android:id="@+id/gl_other_info_right"
+            />
         <ImageView
+            android:paddingHorizontal="5dp"
             android:id="@+id/iv_grid_item"
-            android:layout_width="170dp"
+            android:layout_width="0dp"
             android:layout_height="150dp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/gl_other_info_right"
             app:layout_constraintTop_toTopOf="parent"
             app:setImage="@{item.url}" />
 

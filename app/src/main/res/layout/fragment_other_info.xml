@@ -45,13 +45,15 @@
             android:layout_marginTop="10dp"
             />
         <ImageView
-            android:layout_width="380dp"
+            android:layout_width="0dp"
             android:layout_height="290dp"
             app:layout_constraintStart_toStartOf="parent"
+            android:paddingHorizontal="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_make_plan"
             android:layout_marginTop="25dp"
             android:id="@+id/iv_other_info"
+            android:scaleType="fitXY"
             app:setImage="@{viewModel.currentPlace.url}"
             />
         <TextView
