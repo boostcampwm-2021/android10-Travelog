@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceRecommendBinding
@@ -26,6 +27,7 @@ class PlaceRecommendFragment : Fragment() {
 
     private lateinit var _context: Context
     private val viewModel: PlaceRecommendViewModel by viewModels()
+    private val navArgs: PlaceRecommendFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +61,9 @@ class PlaceRecommendFragment : Fragment() {
 
         binding.etPlaceRecommendSearch.setOnClickListener {
             val action =
-                PlaceRecommendFragmentDirections.actionPlaceRecommendFragmentToPlaceSearchFragment()
+                PlaceRecommendFragmentDirections.actionPlaceRecommendFragmentToPlaceSearchFragment(
+                    navArgs.schedulePlaceArray
+                )
             view.findNavController().navigate(action)
         }
 

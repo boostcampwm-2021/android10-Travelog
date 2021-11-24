@@ -13,10 +13,10 @@ data class SchedulePlaceModel(
     val areaCode: Int,
 
     @SerializedName("mapx")
-    val mapX: Float,
+    val mapX: Double,
 
     @SerializedName("mapy")
-    val mapY: Float,
+    val mapY: Double,
 
     @SerializedName("cityname")
     val cityName: String,

@@ -39,10 +39,7 @@ class ScheduleDetailFragment :
             viewModel.loadSchedule(args.schedule)
 
         binding.btnNext.setOnClickListener {
-            val schedules = viewModel.detailList.value?.toTypedArray()
-            if (schedules == null || schedules.isEmpty()) {
-                return@setOnClickListener
-            }
+            val schedules = viewModel.detailList.value?.toTypedArray() ?: return@setOnClickListener
             viewModel.saveSchedule()
             Log.d(
                 "LIST",
@@ -92,7 +89,9 @@ class ScheduleDetailFragment :
         viewModel.initItemList(startDate, endDate)
         adapter = ScheduleDetailAdapter(viewModel) {
             val action =
-                ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToPlaceRecommendFragment()
+                ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToPlaceRecommendFragment(
+                    args.schedulePlaceArray
+                )
             this.findNavController().navigate(action)
         }
         val callback = ScheduleTouchHelperCallback(adapter)
