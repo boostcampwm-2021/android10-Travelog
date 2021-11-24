@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,16 +60,12 @@ class RecordViewManyInnerViewModel @Inject constructor(
         }
     }
     fun deleteChecked() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                checkedList.value?.let { list ->
-                    list.forEach {
-                        repository.deleteRecordImage(it)
-                    }
-                }
+        checkedList.value?.let { list ->
+            list.forEach {
+                repository.deleteRecordImage(it)
             }
-            clearChecked()
         }
+        clearChecked()
     }
     fun findChecked(id: Int): Boolean {
         var flag = false
