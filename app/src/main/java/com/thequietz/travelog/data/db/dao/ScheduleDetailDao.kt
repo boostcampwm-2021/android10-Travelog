@@ -10,6 +10,9 @@ abstract class ScheduleDetailDao : BaseDao<ScheduleDetailModel> {
     @Query("SELECT * FROM ScheduleDetail WHERE scheduleId =:id")
     abstract fun loadScheduleDetailsByScheduleId(id: Int): LiveData<List<ScheduleDetailModel>>
 
+    @Query("SELECT * FROM ScheduleDetail WHERE scheduleId =:scheduleId ORDER BY scheduleId, date")
+    abstract fun loadScheduleDetailsByScheduleIdOrderByScheduleIdAndDate(scheduleId: Int): List<ScheduleDetailModel>
+
     @Query("DELETE FROM ScheduleDetail WHERE scheduleId =:id")
     abstract fun deleteScheduleDetailsByScheduleId(id: Int)
 }
