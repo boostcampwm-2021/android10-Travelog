@@ -75,7 +75,8 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
                 val action =
                     PlaceSearchFragmentDirections.actionPlaceSearchFragmentToPlaceDetailFragment(
                         param,
-                        false,
+                        isRecommended = false,
+                        isGuide = false
                     )
                 findNavController().navigate(action)
             }
@@ -103,7 +104,8 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
                 val action =
                     PlaceSearchFragmentDirections.actionPlaceSearchFragmentToPlaceDetailFragment(
                         param,
-                        false,
+                        isRecommended = false,
+                        isGuide = false
                     )
                 view.findNavController().navigate(action)
                 return true
