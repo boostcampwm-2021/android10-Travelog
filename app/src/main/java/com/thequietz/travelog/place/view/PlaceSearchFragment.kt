@@ -90,6 +90,7 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
             if (code !== android.view.KeyEvent.KEYCODE_ENTER) return@setOnKeyListener false
             val query = (v as EditText).text.toString()
             viewModel.loadPlaceList(query)
+            inputManager.hideSoftInputFromWindow(view.windowToken, 0)
             true
         }
 

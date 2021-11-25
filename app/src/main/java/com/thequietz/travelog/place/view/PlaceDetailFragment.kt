@@ -1,5 +1,6 @@
 package com.thequietz.travelog.place.view
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -89,6 +90,7 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
 
         binding.rvPlaceDetail.adapter = adapter
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.tblPlaceDetail.setExpandedTitleColor(Color.parseColor(getString(R.string.color_transparent)))
 
         viewModel.detail.observe(viewLifecycleOwner, {
             (binding.rvPlaceDetail.adapter as PlaceDetailAdapter).submitList(it.images)

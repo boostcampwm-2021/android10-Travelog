@@ -62,5 +62,6 @@
     <string name="tv_place_review_relative_time">4일 전</string>
     <string name="tv_item_place_review_time">2021년 11월 15일</string>
     <string name="tv_item_recycler_place_recommend">관광지</string>
+    <string name="color_transparent">#00FFFFFF</string>
 
 </resources>
