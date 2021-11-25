@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
 import com.thequietz.travelog.record.model.RecordBasic
 import com.thequietz.travelog.record.model.RecordBasicItem
 import com.thequietz.travelog.record.model.RecordImage
@@ -49,7 +50,9 @@ class RecordBasicViewModel @Inject constructor(
                             endDate = endDate,
                             place = scheduleDetail.destination.name,
                             day = createDayFromDate(startDate, scheduleDetail.date),
-                            group = group
+                            group = group,
+                            lat = scheduleDetail.destination.geometry.location.latitude,
+                            lng = scheduleDetail.destination.geometry.location.longitude
                         )
                     )
                 }
@@ -121,7 +124,9 @@ class RecordBasicViewModel @Inject constructor(
                         recordImages[i].place,
                         createDateFromDay(recordImages[i].startDate, recordImages[i].day),
                         recordImages[i].group,
-                        recordImageList.toList()
+                        recordImageList.toList(),
+                        recordImages[i].lat,
+                        recordImages[i].lng
                     )
                 )
                 recordImageList.clear()
@@ -162,13 +167,20 @@ class RecordBasicViewModel @Inject constructor(
             tempRecordBasicItemList[position] as RecordBasicItem.TravelDestination
         val tempImageList = tempRecordBasicItem.images.toMutableList()
         val imageUrl = uri.toString()
-        tempImageList.add(imageUrl)
+
+        if (tempImageList[0] == "") {
+            tempImageList[0] = imageUrl
+        } else {
+            tempImageList.add(imageUrl)
+        }
 
         val item = RecordBasicItem.TravelDestination(
             tempRecordBasicItem.name,
             tempRecordBasicItem.date,
             tempRecordBasicItem.group,
-            tempImageList.toList()
+            tempImageList.toList(),
+            tempRecordBasicItem.lat,
+            tempRecordBasicItem.lng
         )
 
         val tempRecordBasicItemMutableList = tempRecordBasicItemList.toMutableList()
@@ -180,6 +192,10 @@ class RecordBasicViewModel @Inject constructor(
             val tempRecordImage =
                 tempRecordImageList.find { it.place == item.name } ?: return@launch
 
+            if (tempRecordImage.url == "") {
+                repository.deleteRecordImageById(tempRecordImage.id)
+            }
+
             repository.insertRecordImage(
                 RecordImage(
                     travelId = tempRecordImage.travelId,
@@ -189,7 +205,9 @@ class RecordBasicViewModel @Inject constructor(
                     day = tempRecordImage.day,
                     place = tempRecordImage.place,
                     url = imageUrl,
-                    group = tempRecordImage.group
+                    group = tempRecordImage.group,
+                    lat = tempRecordImage.lat,
+                    lng = tempRecordImage.lng
                 )
             )
         }
@@ -207,5 +225,26 @@ class RecordBasicViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteRecordImageByPlace((removedItem as RecordBasicItem.TravelDestination).name)
         }
+    }
+
+    fun updateTargetList(day: String, targetList: MutableLiveData<MutableList<LatLng>>) {
+        val tempRecordBasicItemList = _recordBasicItemList.value ?: return
+        val list = mutableListOf<LatLng>()
+        var isCurrentDay = false
+
+        for (tempRecordBasicItem in tempRecordBasicItemList) {
+            when (tempRecordBasicItem) {
+                is RecordBasicItem.RecordBasicHeader -> {
+                    isCurrentDay = tempRecordBasicItem.day == day
+                }
+                is RecordBasicItem.TravelDestination -> {
+                    if (isCurrentDay) {
+                        list.add(LatLng(tempRecordBasicItem.lat, tempRecordBasicItem.lng))
+                    }
+                }
+            }
+        }
+
+        targetList.value = list
     }
 }

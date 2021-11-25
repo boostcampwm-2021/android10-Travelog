@@ -25,7 +25,8 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
         RecordBasicAdapter(
             ::navigateToRecordViewUi,
             ::navigateToRecordAddUi,
-            ::showMenu
+            ::showMenu,
+            ::updateTargetList
         )
     }
 
@@ -35,6 +36,10 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
             uri ?: return@registerForActivityResult
             viewModel.addImage(uri, position)
         }
+
+    override var drawMarker = true
+    override var isMarkerNumbered = true
+    override var drawOrderedPolyline = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.rvRecordBasic.adapter = adapter
@@ -49,7 +54,7 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
     }
 
     override fun initTargetList() {
-        targetList.value
+        updateTargetList()
     }
 
     private fun subscribeUi() {
@@ -60,11 +65,16 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
             binding.tvRecordBasicSchedule.text = date
         }
         viewModel.recordBasicItemList.observe(viewLifecycleOwner) { recordBasicItemList ->
+            updateTargetList()
             adapter.submitList(recordBasicItemList)
         }
         viewModel.recordImageList.observe(viewLifecycleOwner) {
             viewModel.createData()
         }
+    }
+
+    private fun updateTargetList(day: String = "Day1") {
+        viewModel.updateTargetList(day, targetList)
     }
 
     private fun navigateToRecordViewUi(index: Int, day: String, group: Int) {
