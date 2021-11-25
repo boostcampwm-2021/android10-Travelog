@@ -55,6 +55,23 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
                 )
             )
         )
+        googleMap.setOnMarkerClickListener { marker ->
+            val markerId = marker.id.substring(1).toIntOrNull()
+            val model = markerId?.let { idx ->
+                viewModel.place.value?.get(idx)
+            }
+            model?.also { it ->
+                val param = gson.toJson(it)
+                val action =
+                    PlaceSearchFragmentDirections.actionPlaceSearchFragmentToPlaceDetailFragment(
+                        param,
+                        false,
+                    )
+                findNavController().navigate(action)
+            }
+
+            true
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -90,6 +107,7 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
             if (code !== android.view.KeyEvent.KEYCODE_ENTER) return@setOnKeyListener false
             val query = (v as EditText).text.toString()
             viewModel.loadPlaceList(query)
+            inputManager.hideSoftInputFromWindow(view.windowToken, 0)
             true
         }
 

@@ -1,5 +1,6 @@
 package com.thequietz.travelog.place.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -53,6 +54,7 @@ class PlaceRecommendViewModel @Inject constructor(
                 async { _restaurantData.value = repository.loadPlaceData(39) },
             )
             deferJobs.awaitAll()
+            Log.d("STATUS", "HTTP RESPONSE")
             _dataList.value = listOf(
                 PlaceRecommendWithList("관광지", landmarkData),
                 PlaceRecommendWithList("문화시설", cultureData),
@@ -63,5 +65,11 @@ class PlaceRecommendViewModel @Inject constructor(
                 PlaceRecommendWithList("음식점", restaurantData),
             )
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+
+        Log.d("STATUS", "DATA REMOVED")
     }
 }
