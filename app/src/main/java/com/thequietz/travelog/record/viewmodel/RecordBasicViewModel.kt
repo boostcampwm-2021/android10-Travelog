@@ -283,4 +283,16 @@ class RecordBasicViewModel @Inject constructor(
 
         targetList.value = list
     }
+
+    fun getIndexByGroupAndDay(group: Int, day: String): Int {
+        val recordImageList = _recordImageList.value ?: return 0
+
+        for ((index, recordImage) in recordImageList.withIndex()) {
+            if (recordImage.group == group && recordImage.day == day) {
+                return index
+            }
+        }
+
+        return 0
+    }
 }

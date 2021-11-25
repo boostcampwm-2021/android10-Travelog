@@ -78,10 +78,12 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
     }
 
     private fun navigateToRecordViewUi(index: Int, day: String, group: Int) {
+        val row = viewModel.getIndexByGroupAndDay(group, day)
+
         val action =
             RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordViewOneFragment(
                 travelId = navArgs.travelId,
-                index = index,
+                index = row,
                 day = day,
                 group = group
             )
