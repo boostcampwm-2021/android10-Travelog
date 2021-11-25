@@ -11,15 +11,21 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="10dp"
+        android:elevation="3dp">
 
         <TextView
             android:id="@+id/tv_place_search_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="15dp"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="5dp"
             android:text="@{model.name}"
+            android:textColor="@color/black"
             android:textSize="20sp"
+            android:textStyle="bold"
             tools:text="@string/tv_place_search_item" />
     </LinearLayout>
 </layout>
