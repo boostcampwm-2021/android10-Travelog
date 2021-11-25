@@ -2,12 +2,16 @@ package com.thequietz.travelog.record.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,7 +24,11 @@ import com.thequietz.travelog.databinding.FragmentRecordAddImageBinding
 import com.thequietz.travelog.record.adapter.RecordAddImageAdapter
 import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.record.viewmodel.RecordAddImageViewModel
+import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RecordAddImageFragment : Fragment() {
@@ -28,27 +36,34 @@ class RecordAddImageFragment : Fragment() {
     private val binding get() = _binding
     private val recordAddImageViewModel by viewModels<RecordAddImageViewModel>()
     private val adapter by lazy { RecordAddImageAdapter() }
-    private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        val clipData = result.data?.clipData
-        val res = mutableListOf<RecordImage>()
-        clipData?.let {
-            (0 until it.itemCount).forEachIndexed { ind, item ->
-                res.add(
-                    RecordImage().copy(
-                        title = "제주도 여행",
-                        startDate = "2021.10.27",
-                        endDate = "2021.10.29",
-                        day = binding.tvSchedule.text.toString(),
-                        place = binding.tvDestination.text.toString(),
-                        url = it.getItemAt(ind).uri.toString(),
-                        comment = "test입니다~",
-                        group = 6
-                    )
-                )
+    lateinit var placeSpinnerAdapter: ArrayAdapter<String>
+    lateinit var scheduleSpinnerAdapter: ArrayAdapter<String>
+
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            val clipData = result.data?.clipData
+            val res = mutableListOf<RecordImage>()
+            CoroutineScope(Dispatchers.IO).launch {
+                clipData?.let {
+                    (0 until it.itemCount).forEachIndexed { ind, item ->
+                        res.add(
+                            RecordImage().copy(
+                                title = recordAddImageViewModel.travelName.value!!,
+                                startDate = recordAddImageViewModel.startDate.value!!,
+                                endDate = recordAddImageViewModel.endDate.value!!,
+                                day = recordAddImageViewModel.currentSchedule,
+                                place = recordAddImageViewModel.currentPlace,
+                                url = it.getItemAt(ind).uri.toString(),
+                                comment = "test입니다~",
+                                group = recordAddImageViewModel.nextGroupId.value!!
+                            )
+                        )
+                    }
+                    recordAddImageViewModel.addImage(res)
+                }
             }
-            recordAddImageViewModel.addImage(res)
         }
-    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,6 +72,7 @@ class RecordAddImageFragment : Fragment() {
         _binding = FragmentRecordAddImageBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         initToolbar()
+        initAdapter()
         return binding.root
     }
 
@@ -73,6 +89,9 @@ class RecordAddImageFragment : Fragment() {
             })
         }
         setListener()
+        Handler(Looper.getMainLooper()).postDelayed({
+            addDataToAdapter()
+        }, 1000)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -82,11 +101,18 @@ class RecordAddImageFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_save -> {
-                recordAddImageViewModel.insertImage()
-                Toast.makeText(requireContext(), "저장 완료", Toast.LENGTH_SHORT).show()
-                val action = RecordAddImageFragmentDirections
-                    .actionRecordAddImageFragmentToRecordViewOneFragment()
-                findNavController().navigate(action)
+                recordAddImageViewModel.insertImages()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    Toast.makeText(requireContext(), "저장 완료", Toast.LENGTH_SHORT).show()
+                    val action = RecordAddImageFragmentDirections
+                        .actionRecordAddImageFragmentToRecordViewOneFragment(
+                            0,
+                            RecordViewOneViewModel.currentTravleId,
+                            "Day1",
+                            0
+                        )
+                    findNavController().navigate(action)
+                }, 1000)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -104,9 +130,46 @@ class RecordAddImageFragment : Fragment() {
         }
         binding.tbRecordAddImage.setNavigationOnClickListener {
             val action = RecordAddImageFragmentDirections
-                .actionRecordAddImageFragmentToRecordViewOneFragment()
+                .actionRecordAddImageFragmentToRecordViewOneFragment(
+                    0,
+                    RecordViewOneViewModel.currentTravleId,
+                    "Day1",
+                    0
+                )
             findNavController().navigate(action)
         }
+        binding.spPlace.onItemSelectedListener = (
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    recordAddImageViewModel.placeList.value?.let {
+                        recordAddImageViewModel.currentPlace = it.get(position)
+                    }
+                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+            }
+            )
+        binding.spSchedule.onItemSelectedListener = (
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    recordAddImageViewModel.schedulList.value?.let {
+                        recordAddImageViewModel.currentSchedule = it.get(position)
+                    }
+                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+            }
+            )
     }
 
     private fun initToolbar() {
@@ -116,5 +179,34 @@ class RecordAddImageFragment : Fragment() {
             supportActionBar?.setDisplayShowTitleEnabled(false)
             supportActionBar?.setHomeAsUpIndicator(R.drawable.img_leftarrow)
         }
+    }
+
+    private fun initAdapter() {
+        placeSpinnerAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            mutableListOf("날짜를 선택하세요")
+        )
+        scheduleSpinnerAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            mutableListOf("날짜를 선택하세요")
+        )
+        binding.spPlace.adapter = placeSpinnerAdapter
+        binding.spSchedule.adapter = scheduleSpinnerAdapter
+    }
+
+    private fun addDataToAdapter() {
+        placeSpinnerAdapter.clear()
+        recordAddImageViewModel.placeList.value?.forEach {
+            placeSpinnerAdapter.add(it)
+        }
+        placeSpinnerAdapter.notifyDataSetChanged()
+        scheduleSpinnerAdapter.clear()
+        recordAddImageViewModel.schedulList.value?.forEach {
+            scheduleSpinnerAdapter.add(it)
+        }
+        scheduleSpinnerAdapter.notifyDataSetChanged()
+        println("data size  ${recordAddImageViewModel.placeList.value?.size}  ${recordAddImageViewModel.schedulList.value?.size}")
     }
 }

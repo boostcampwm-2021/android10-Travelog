@@ -94,45 +94,35 @@
             android:id="@+id/tv_destination_title"
             android:textSize="14sp"
             />
-        <TextView
+        <Spinner
             android:layout_width="0dp"
             android:layout_height="30dp"
-            android:maxLines="1"
-            android:text="첨성대"
-            android:background="@drawable/bg_textview"
-            android:src="@drawable/bg_textview"
             app:layout_constraintStart_toStartOf="@id/gl_record_add_place_name_left"
             app:layout_constraintEnd_toEndOf="@id/gl_record_add_place_name_right"
             app:layout_constraintTop_toBottomOf="@id/tv_destination_title"
             android:layout_marginTop="7dp"
-            android:gravity="center"
-            android:id="@+id/tv_destination"
-            android:textSize="14sp"
+            android:id="@+id/sp_place"
+            android:spinnerMode="dropdown"
             />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/gl_record_add_place_name_left"
-            app:layout_constraintTop_toBottomOf="@id/tv_destination"
+            app:layout_constraintTop_toBottomOf="@id/sp_place"
             android:layout_marginTop="10dp"
             android:text="일정"
             android:id="@+id/tv_schedule_title"
-            android:textSize="14sp"
             />
-        <TextView
+        <Spinner
             android:layout_width="0dp"
             android:layout_height="30dp"
-            android:maxLines="1"
-            android:text="2021.11.16"
-            android:background="@drawable/bg_textview"
-            android:src="@drawable/bg_textview"
             app:layout_constraintStart_toStartOf="@id/gl_record_add_place_name_left"
             app:layout_constraintEnd_toEndOf="@id/gl_record_add_place_name_right"
             app:layout_constraintTop_toBottomOf="@id/tv_schedule_title"
             android:layout_marginTop="7dp"
-            android:gravity="center"
-            android:id="@+id/tv_schedule"
-            android:textSize="14sp"
+            android:id="@+id/sp_schedule"
+            android:spinnerMode="dropdown"
             />
 
         <TextView

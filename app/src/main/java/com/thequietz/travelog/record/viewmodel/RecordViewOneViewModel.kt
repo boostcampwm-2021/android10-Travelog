@@ -55,6 +55,7 @@ class RecordViewOneViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 _imageList.value = res
             }
+            println("viewOneFragment  ${imageList.value?.size}")
             // setCurrentImage(currentInd)
         }
     }
