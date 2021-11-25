@@ -13,6 +13,7 @@ interface PlaceSearchService {
     @GET("maps/api/place/textsearch/json")
     fun loadPlaceList(
         @Query("query") query: String,
+        @Query("location") location: String,
         @Query("language") language: String? = "ko",
         @Query("key") key: String
     ): Call<PlaceSearchModelResponse>

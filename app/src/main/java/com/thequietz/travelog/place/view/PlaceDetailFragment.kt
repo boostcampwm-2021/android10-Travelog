@@ -2,7 +2,6 @@ package com.thequietz.travelog.place.view
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.viewModels
@@ -84,7 +83,7 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
 
         val params = binding.ablPlaceDetail.layoutParams as CoordinatorLayout.LayoutParams
         val newBehavior = AppBarLayout.Behavior()
-        newBehavior.setDragCallback(newCallback())
+        newBehavior.setDragCallback(NewCallback())
         params.behavior = newBehavior
         binding.viewModel = viewModel
 
@@ -112,7 +111,6 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
                 val len = it.reviews?.size ?: 0
                 val parentContext = requireContext()
                 it.reviews?.forEachIndexed { idx, review ->
-                    Log.d("IS_LOADED", viewModel.isLoaded.value.toString())
                     val reviewLayout = PlaceReviewLayout(
                         parentContext,
                         review
@@ -167,7 +165,7 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
     }
 }
 
-private class newCallback : AppBarLayout.Behavior.DragCallback() {
+private class NewCallback : AppBarLayout.Behavior.DragCallback() {
     override fun canDrag(appBarLayout: AppBarLayout): Boolean {
         return false
     }
