@@ -67,6 +67,7 @@
             android:name="group"
             app:argType="integer"
             android:defaultValue="0" />
+
     </fragment>
     <fragment
         android:id="@+id/recordViewManyFragment"
@@ -77,6 +78,10 @@
             app:destination="@id/recordViewOneFragment"
             app:popUpTo="@id/recordViewOneFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="travelId"
+            app:argType="integer"
+            android:defaultValue="1" />
     </fragment>
     <fragment
         android:id="@+id/recordAddImageFragment"

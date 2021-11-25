@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.thequietz.travelog.addToByteList
 import com.thequietz.travelog.byteListToPdf
@@ -34,6 +35,7 @@ class RecordViewManyFragment : Fragment() {
     private val recordViewManyViewModel by viewModels<RecordViewManyViewModel>()
     private val recordViewInnerViewModel by viewModels<RecordViewManyInnerViewModel>()
     private val adapter by lazy { RecordViewManyMultiViewAdapter(recordViewInnerViewModel) }
+    private val args: RecordViewManyFragmentArgs by navArgs()
     val byteList = mutableListOf<ByteArrayOutputStream>()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,6 +61,7 @@ class RecordViewManyFragment : Fragment() {
             rvRecordViewMany.adapter = adapter
         }
         with(recordViewManyViewModel) {
+            change2MyRecord(args)
             dataList.observe(viewLifecycleOwner, { it ->
                 it?.let { adapter.submitList(it) }
             })
@@ -70,7 +73,7 @@ class RecordViewManyFragment : Fragment() {
         binding.ibRecordViewMany.setOnClickListener {
             val action = RecordViewOneViewModel.currentPosition.value?.let { it ->
                 RecordViewManyFragmentDirections
-                    .actionRecordViewManyFragmentToRecordViewOneFragment(it + 1)
+                    .actionRecordViewManyFragmentToRecordViewOneFragment(it, args.travelId, "day1", 0)
             }
             if (action != null) {
                 findNavController().navigate(action)
@@ -110,7 +113,7 @@ class RecordViewManyFragment : Fragment() {
             .setNegativeButton("예") { dialog, which ->
                 CoroutineScope(Dispatchers.IO).launch {
                     recordViewInnerViewModel.deleteChecked()
-                    recordViewManyViewModel.change2MyRecord()
+                    recordViewManyViewModel.change2MyRecord(args)
                 }
                 Snackbar.make(binding.clRecordViewMany, "이미지가 삭제되었습니다", Snackbar.LENGTH_SHORT)
                     .show()

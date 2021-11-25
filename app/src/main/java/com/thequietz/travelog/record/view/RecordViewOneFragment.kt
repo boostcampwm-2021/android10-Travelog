@@ -46,20 +46,25 @@ class RecordViewOneFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             viewModel = recordViewOneViewModel
             vpReviewViewOne.adapter = adapter
-            vpReviewViewOne.post {
-                vpReviewViewOne.setCurrentItem(args.index - 1, false)
-            }
+
             ciReviewViewOne.attachToRecyclerView(binding.vpReviewViewOne.getChildAt(0) as RecyclerView)
         }
         with(recordViewOneViewModel) {
             // 아이템 초기화
             // createRecord()
             // loadRecord()
-
+            initVariable(args)
+            loadRecord()
+            binding.vpReviewViewOne.post {
+                binding.vpReviewViewOne.setCurrentItem(args.index, false)
+            }
+            setCurrentImage(args.index)
+            setCurrentPosition(args.index)
             imageList.observe(viewLifecycleOwner, { it ->
                 it?.let { adapter.submitList(it) }
             })
         }
+        RecordViewOneViewModel.currentTravleId = args.travelId
         setListener()
     }
 
@@ -82,10 +87,11 @@ class RecordViewOneFragment : Fragment() {
                             recordViewOneViewModel.setCurrentPosition(position)
                         }
                     }
-                })
+                }
+            )
             ibRecordViewOne.setOnClickListener {
                 val action = RecordViewOneFragmentDirections
-                    .actionRecordViewOneFragmentToRecordViewManyFragment()
+                    .actionRecordViewOneFragmentToRecordViewManyFragment(recordViewOneViewModel.travelId)
                 findNavController().navigate(action)
             }
             ibRecordViewOneEditComment.setOnClickListener {

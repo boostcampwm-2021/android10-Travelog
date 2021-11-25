@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
 import com.thequietz.travelog.record.model.RecordImage
+import com.thequietz.travelog.record.view.RecordViewOneFragmentArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ class RecordViewOneViewModel @Inject constructor(
     companion object {
         private val _currentPosition = MutableLiveData<Int>()
         val currentPosition: LiveData<Int> = _currentPosition
+        var currentTravleId: Int = 0
     }
 
     private val _imageList = MutableLiveData<List<RecordImage>>()
@@ -31,21 +33,29 @@ class RecordViewOneViewModel @Inject constructor(
     private val _islistUpdate = MutableLiveData<Boolean>()
     val islistUpdate: LiveData<Boolean> = _islistUpdate
 
+    var travelId: Int = 0
+    var groupId: Int = 0
+    var day: String = ""
+
     init {
         // createRecord()
-        loadRecord()
+        // loadRecord()
         _currentPosition.value = 0
-        imageList.value?.forEach { println(it.toString()) }
     }
-
+    fun initVariable(args: RecordViewOneFragmentArgs) {
+        travelId = args.travelId
+        groupId = args.group
+        day = args.day
+    }
     fun loadRecord() {
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO) {
-                repository.loadRecordImages()
+                repository.loadRecordImagesByTravelId(travelId)
             }
             withContext(Dispatchers.Main) {
                 _imageList.value = res
             }
+            // setCurrentImage(currentInd)
         }
     }
 

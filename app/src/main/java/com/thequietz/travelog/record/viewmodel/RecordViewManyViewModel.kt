@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
 import com.thequietz.travelog.record.model.MyRecord
 import com.thequietz.travelog.record.model.RecordImage
+import com.thequietz.travelog.record.view.RecordViewManyFragmentArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,14 +20,24 @@ class RecordViewManyViewModel @Inject constructor(
 ) : ViewModel() {
     private val _dataList = MutableLiveData<List<MyRecord>>()
     val dataList: LiveData<List<MyRecord>> = _dataList
+
+    private val _travelName = MutableLiveData<String>()
+    val travelName: LiveData<String> = _travelName
+
+    private val _startDate = MutableLiveData<String>()
+    val startDate: LiveData<String> = _startDate
+
+    private val _endDate = MutableLiveData<String>()
+    val endDate: LiveData<String> = _endDate
+
     init {
-        change2MyRecord()
+        // change2MyRecord()
     }
 
-    fun change2MyRecord() {
+    fun change2MyRecord(args: RecordViewManyFragmentArgs) {
         viewModelScope.launch {
             val loadData = withContext(Dispatchers.IO) {
-                repository.loadRecordImages()
+                repository.loadRecordImagesByTravelId(args.travelId)
             }
             val res = mutableListOf<MyRecord>()
             if (loadData.size != 0) {
@@ -98,6 +109,10 @@ class RecordViewManyViewModel @Inject constructor(
                     _dataList.value = mutableListOf()
                 }
             }
+            _travelName.value = loadData.get(0).title
+            _startDate.value = loadData.get(0).startDate
+            _endDate.value = loadData.get(0).endDate
+            loadData.forEach { println(it.toString()) }
         }
     }
 }
