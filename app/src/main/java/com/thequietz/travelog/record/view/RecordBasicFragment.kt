@@ -48,7 +48,7 @@ class RecordBasicFragment : Fragment() {
 
         binding.rvRecordBasic.adapter = adapter
 
-        viewModel.loadData(navArgs.travelId)
+        viewModel.loadData(navArgs.travelId, navArgs.title, navArgs.startDate, navArgs.endDate)
 
         subscribeUi()
 

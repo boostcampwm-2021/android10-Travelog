@@ -9,18 +9,23 @@ import com.thequietz.travelog.databinding.ItemRecyclerRecordBinding
 import com.thequietz.travelog.record.model.Record
 
 class RecordAdapter(
-    private val navigateToRecordBasicUi: (Int) -> Unit
+    private val navigateToRecordBasicUi: (Int, String, String, String) -> Unit
 ) : ListAdapter<Record, RecordAdapter.RecordViewHolder>(diffUtil) {
     inner class RecordViewHolder(private val binding: ItemRecyclerRecordBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val adapter = RecordPhotoAdapter(navigateToRecordBasicUi = navigateToRecordBasicUi)
-
         fun bind(item: Record) = with(binding) {
             root.setOnClickListener {
-                navigateToRecordBasicUi.invoke(item.travelId)
+                navigateToRecordBasicUi.invoke(
+                    item.travelId,
+                    item.title,
+                    item.startDate,
+                    item.endDate
+                )
             }
             tvItemRecordTitle.text = item.title
             tvItemRecordSchedule.text = "${item.startDate} ~ ${item.endDate.substring(5)}"
+            val adapter =
+                RecordPhotoAdapter(navigateToRecordBasicUi = navigateToRecordBasicUi, recordItem = item)
             rvItemRecordPhoto.adapter = adapter
             adapter.submitList(item.images)
         }

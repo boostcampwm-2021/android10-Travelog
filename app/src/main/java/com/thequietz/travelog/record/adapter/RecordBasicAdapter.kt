@@ -40,7 +40,10 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
             tvItemRecordBasicTitle.text = item.name
             val adapter =
-                RecordPhotoAdapter(navigateToRecordViewUi = navigateToRecordViewUi, item = item)
+                RecordPhotoAdapter(
+                    navigateToRecordViewUi = navigateToRecordViewUi,
+                    recordBasicItem = item
+                )
             rvItemRecordBasic.adapter = adapter
             adapter.submitList(item.images)
         }
