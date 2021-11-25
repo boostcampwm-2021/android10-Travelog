@@ -31,12 +31,36 @@ class RecordBasicViewModel @Inject constructor(
     private val _recordImageList = MutableLiveData<List<RecordImage>>()
     val recordImageList: LiveData<List<RecordImage>> = _recordImageList
 
-    fun loadData(travelId: Int) {
+    fun loadData(travelId: Int, title: String, startDate: String, endDate: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val recordImages = repository.loadRecordImagesByTravelId(travelId)
 
-            recordImages.forEach {
-                println(it)
+            if (recordImages.isEmpty()) {
+                val scheduleDetails =
+                    repository.loadScheduleDetailOrderByScheduleIdAndDate(travelId)
+                val recordImages = mutableListOf<RecordImage>()
+
+                for ((group, scheduleDetail) in scheduleDetails.withIndex()) {
+                    recordImages.add(
+                        RecordImage(
+                            travelId = scheduleDetail.scheduleId,
+                            title = title,
+                            startDate = startDate,
+                            endDate = endDate,
+                            place = scheduleDetail.destination.name,
+                            day = createDayFromDate(startDate, scheduleDetail.date),
+                            group = group
+                        )
+                    )
+                }
+
+                withContext(Dispatchers.Main) {
+                    _recordImageList.value = recordImages.toList()
+                }
+
+                repository.insertRecordImages(recordImages.toList())
+
+                return@launch
             }
 
             withContext(Dispatchers.Main) {
@@ -46,12 +70,21 @@ class RecordBasicViewModel @Inject constructor(
     }
 
     fun createData() {
-        val recordImages = _recordImageList.value ?: return
+        val recordImages = _recordImageList.value ?: emptyList()
         val recordBasic = createRecordBasicFromRecordImages(recordImages)
         _title.value = recordBasic.title
         _date.value = "${recordBasic.startDate} ~ ${recordBasic.endDate}"
         _recordBasicItemList.value =
             createListOfRecyclerViewAdapterItem(recordBasic.travelDestinations)
+    }
+
+    private fun createDayFromDate(startDate: String, date: String): String {
+        val tempStartDate = startDate.split('.').map { it.toInt() }
+        val tempDate = date.split('.').map { it.toInt() }
+
+        // TODO("다른 년, 월 계산")
+
+        return "Day${tempDate[2] - tempStartDate[2] + 1}"
     }
 
     private fun createDateFromDay(startDate: String, day: String): String {
@@ -81,7 +114,7 @@ class RecordBasicViewModel @Inject constructor(
             recordImageList.add(recordImages[i].url)
 
             if ((i + 1 < recordImages.size && recordImages[i].place != recordImages[i + 1].place) ||
-                (i == recordImages.lastIndex && recordImages[i - 1].place != recordImages[i].place)
+                (i != 0 && i == recordImages.lastIndex && recordImages[i - 1].place != recordImages[i].place)
             ) {
                 recordDestinationList.add(
                     RecordBasicItem.TravelDestination(
