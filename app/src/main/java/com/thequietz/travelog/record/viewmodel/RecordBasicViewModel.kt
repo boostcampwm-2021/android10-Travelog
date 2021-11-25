@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
 import com.thequietz.travelog.record.model.RecordBasic
 import com.thequietz.travelog.record.model.RecordBasicItem
 import com.thequietz.travelog.record.model.RecordImage
@@ -49,7 +50,9 @@ class RecordBasicViewModel @Inject constructor(
                             endDate = endDate,
                             place = scheduleDetail.destination.name,
                             day = createDayFromDate(startDate, scheduleDetail.date),
-                            group = group
+                            group = group,
+                            lat = scheduleDetail.destination.geometry.location.latitude,
+                            lng = scheduleDetail.destination.geometry.location.longitude
                         )
                     )
                 }
@@ -81,10 +84,42 @@ class RecordBasicViewModel @Inject constructor(
     private fun createDayFromDate(startDate: String, date: String): String {
         val tempStartDate = startDate.split('.').map { it.toInt() }
         val tempDate = date.split('.').map { it.toInt() }
+        val isLeapYear = tempDate[0] % 4 == 0
+        val dayOfMonth =
+            if (isLeapYear) listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+            else listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
-        // TODO("다른 년, 월 계산")
+        // 2020.12.30 ~ 2021.1.4
+        var day = 0
+        if (tempStartDate[0] < tempDate[0]) {
+            day = dayOfMonth[tempStartDate[1]] - tempStartDate[2]
 
-        return "Day${tempDate[2] - tempStartDate[2] + 1}"
+            for (i in tempStartDate[1] + 1..12) {
+                day += dayOfMonth[i]
+            }
+
+            day += tempDate[2]
+
+            for (i in tempDate[1] - 1 downTo 1) {
+                day += dayOfMonth[i]
+            }
+        }
+        // 2021.1.4 ~ 2021.3.5
+        else if (tempStartDate[1] < tempDate[1]) {
+            day = dayOfMonth[tempStartDate[1]] - tempStartDate[2]
+
+            for (i in tempStartDate[1] + 1 until tempDate[1]) {
+                day += dayOfMonth[i]
+            }
+
+            day += tempDate[2]
+        }
+        // 2021.1.4 ~ 2021.1.5
+        else {
+            day = tempDate[2] - tempStartDate[2]
+        }
+
+        return "Day${day + 1}"
     }
 
     private fun createDateFromDay(startDate: String, day: String): String {
@@ -94,6 +129,8 @@ class RecordBasicViewModel @Inject constructor(
         val dayOfMonth =
             if (isLeapYear) listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
             else listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+
+        // TODO("2달 이상 고려해야함.")
 
         if (tempDate[2] + tempDay <= dayOfMonth[tempDate[1]]) {
             return "${tempDate[0]}.${tempDate[1]}.${tempDate[2] + tempDay}"
@@ -120,8 +157,11 @@ class RecordBasicViewModel @Inject constructor(
                     RecordBasicItem.TravelDestination(
                         recordImages[i].place,
                         createDateFromDay(recordImages[i].startDate, recordImages[i].day),
+                        recordImages[i].day,
                         recordImages[i].group,
-                        recordImageList.toList()
+                        recordImageList.toList(),
+                        recordImages[i].lat,
+                        recordImages[i].lng
                     )
                 )
                 recordImageList.clear()
@@ -162,13 +202,21 @@ class RecordBasicViewModel @Inject constructor(
             tempRecordBasicItemList[position] as RecordBasicItem.TravelDestination
         val tempImageList = tempRecordBasicItem.images.toMutableList()
         val imageUrl = uri.toString()
-        tempImageList.add(imageUrl)
+
+        if (tempImageList[0] == "") {
+            tempImageList[0] = imageUrl
+        } else {
+            tempImageList.add(imageUrl)
+        }
 
         val item = RecordBasicItem.TravelDestination(
             tempRecordBasicItem.name,
             tempRecordBasicItem.date,
+            tempRecordBasicItem.day,
             tempRecordBasicItem.group,
-            tempImageList.toList()
+            tempImageList.toList(),
+            tempRecordBasicItem.lat,
+            tempRecordBasicItem.lng
         )
 
         val tempRecordBasicItemMutableList = tempRecordBasicItemList.toMutableList()
@@ -180,6 +228,10 @@ class RecordBasicViewModel @Inject constructor(
             val tempRecordImage =
                 tempRecordImageList.find { it.place == item.name } ?: return@launch
 
+            if (tempRecordImage.url == "") {
+                repository.deleteRecordImageById(tempRecordImage.id)
+            }
+
             repository.insertRecordImage(
                 RecordImage(
                     travelId = tempRecordImage.travelId,
@@ -189,7 +241,9 @@ class RecordBasicViewModel @Inject constructor(
                     day = tempRecordImage.day,
                     place = tempRecordImage.place,
                     url = imageUrl,
-                    group = tempRecordImage.group
+                    group = tempRecordImage.group,
+                    lat = tempRecordImage.lat,
+                    lng = tempRecordImage.lng
                 )
             )
         }
@@ -207,5 +261,26 @@ class RecordBasicViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteRecordImageByPlace((removedItem as RecordBasicItem.TravelDestination).name)
         }
+    }
+
+    fun updateTargetList(day: String, targetList: MutableLiveData<MutableList<LatLng>>) {
+        val tempRecordBasicItemList = _recordBasicItemList.value ?: return
+        val list = mutableListOf<LatLng>()
+        var isCurrentDay = false
+
+        for (tempRecordBasicItem in tempRecordBasicItemList) {
+            when (tempRecordBasicItem) {
+                is RecordBasicItem.RecordBasicHeader -> {
+                    isCurrentDay = tempRecordBasicItem.day == day
+                }
+                is RecordBasicItem.TravelDestination -> {
+                    if (isCurrentDay) {
+                        list.add(LatLng(tempRecordBasicItem.lat, tempRecordBasicItem.lng))
+                    }
+                }
+            }
+        }
+
+        targetList.value = list
     }
 }

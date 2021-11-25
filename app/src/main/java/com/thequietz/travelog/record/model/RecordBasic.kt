@@ -12,8 +12,11 @@ sealed class RecordBasicItem {
     data class TravelDestination(
         val name: String,
         val date: String,
+        val day: String,
         val group: Int,
-        val images: List<String> = emptyList()
+        val images: List<String> = emptyList(),
+        val lat: Double,
+        val lng: Double
     ) : RecordBasicItem()
 
     class RecordBasicHeader(

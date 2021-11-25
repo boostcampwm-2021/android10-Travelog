@@ -29,5 +29,7 @@ data class RecordImage(
     val place: String = "",
     val url: String = "",
     var group: Int = 0,
-    var comment: String = ""
+    var comment: String = "",
+    val lat: Double = 0.0,
+    val lng: Double = 0.0
 )

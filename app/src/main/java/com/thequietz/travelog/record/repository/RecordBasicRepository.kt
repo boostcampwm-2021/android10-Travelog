@@ -32,6 +32,12 @@ class RecordBasicRepository @Inject constructor(
         coroutineScope.launch { recordImageDao.insert(*images.toTypedArray()) }
     }
 
+    fun deleteRecordImageById(id: Int) {
+        coroutineScope.launch {
+            recordImageDao.deleteRecordImageById(id)
+        }
+    }
+
     fun deleteRecordImageByPlace(place: String) {
         coroutineScope.launch {
             recordImageDao.deleteRecordImageByPlace(place)

@@ -1,35 +1,35 @@
 package com.thequietz.travelog.record.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordBasicBinding
+import com.thequietz.travelog.map.GoogleMapFragment
 import com.thequietz.travelog.record.adapter.RecordBasicAdapter
 import com.thequietz.travelog.record.viewmodel.RecordBasicViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RecordBasicFragment : Fragment() {
+class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, RecordBasicViewModel>() {
+    override val layoutId = R.layout.fragment_record_basic
+    override val viewModel by viewModels<RecordBasicViewModel>()
+
     private val navArgs by navArgs<RecordBasicFragmentArgs>()
-    private val viewModel by viewModels<RecordBasicViewModel>()
     private val adapter by lazy {
         RecordBasicAdapter(
             ::navigateToRecordViewUi,
             ::navigateToRecordAddUi,
-            ::showMenu
+            ::showMenu,
+            ::updateTargetList
         )
     }
 
-    // TODO("아래 코드는 ViewModel로 이동 예정")
     private var position = 0
     private val getImageUri: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -37,22 +37,24 @@ class RecordBasicFragment : Fragment() {
             viewModel.addImage(uri, position)
         }
 
-    private lateinit var binding: FragmentRecordBasicBinding
+    override var drawMarker = true
+    override var isMarkerNumbered = true
+    override var drawOrderedPolyline = true
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentRecordBasicBinding.inflate(inflater, container, false)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.rvRecordBasic.adapter = adapter
 
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun initViewModel() {
         viewModel.loadData(navArgs.travelId, navArgs.title, navArgs.startDate, navArgs.endDate)
 
         subscribeUi()
+    }
 
-        return binding.root
+    override fun initTargetList() {
+        updateTargetList()
     }
 
     private fun subscribeUi() {
@@ -63,11 +65,16 @@ class RecordBasicFragment : Fragment() {
             binding.tvRecordBasicSchedule.text = date
         }
         viewModel.recordBasicItemList.observe(viewLifecycleOwner) { recordBasicItemList ->
+            updateTargetList()
             adapter.submitList(recordBasicItemList)
         }
         viewModel.recordImageList.observe(viewLifecycleOwner) {
             viewModel.createData()
         }
+    }
+
+    private fun updateTargetList(day: String = "Day1") {
+        viewModel.updateTargetList(day, targetList)
     }
 
     private fun navigateToRecordViewUi(index: Int, day: String, group: Int) {

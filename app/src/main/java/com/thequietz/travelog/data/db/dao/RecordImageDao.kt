@@ -24,6 +24,9 @@ abstract class RecordImageDao : BaseDao<RecordImage> {
     @Query("UPDATE RecordImage SET comment =:comment WHERE id =:id")
     abstract fun updateRecordImageCommentById(comment: String, id: Int)
 
+    @Query("DELETE FROM RecordImage WHERE id =:id")
+    abstract fun deleteRecordImageById(id: Int)
+
     @Query("DELETE FROM RecordImage WHERE place =:place")
     abstract fun deleteRecordImageByPlace(place: String)
 }
