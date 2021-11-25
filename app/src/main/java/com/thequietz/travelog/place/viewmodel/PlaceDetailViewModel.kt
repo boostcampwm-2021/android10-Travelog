@@ -54,7 +54,6 @@ class PlaceDetailViewModel @Inject constructor(
     fun loadDetailBySearch(placeId: String) {
         viewModelScope.launch(handler) {
             val data = repository.loadPlaceDetail(placeId)
-            Log.d(TAG, data.toString())
 
             data.let {
                 _detail.value = it

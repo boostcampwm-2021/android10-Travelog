@@ -34,9 +34,9 @@ class PlaceSearchAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(model: PlaceSearchModel, position: Int) {
-            binding.model = model
+            binding.tvPlaceSearchItem.text = "${position + 1}. ${model.name}"
             binding.tvPlaceSearchItem.setOnClickListener {
-                listener.onClickItem(model, position)
+                listener.onItemClick(model, position)
             }
 
             binding.executePendingBindings()
@@ -44,7 +44,7 @@ class PlaceSearchAdapter(
     }
 
     interface OnItemClickListener {
-        fun onClickItem(model: PlaceSearchModel, position: Int): Boolean
+        fun onItemClick(model: PlaceSearchModel, position: Int): Boolean
     }
 }
 
