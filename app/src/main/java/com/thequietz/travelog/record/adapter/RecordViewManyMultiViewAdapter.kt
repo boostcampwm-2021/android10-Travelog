@@ -43,10 +43,10 @@ class RecordViewManyMultiViewAdapter(
         val adapter = MultiViewImageAdapter(
             innerViewModel,
             object : MultiViewImageAdapter.OnItemClickListener {
-                override fun onItemClick(view: View, ind: Int) {
+                override fun onItemClick(view: View, item: RecordImage) {
                     if (innerViewModel.deleteState.value == false) {
                         val action = RecordViewManyFragmentDirections
-                            .actionRecordViewManyFragmentToRecordViewOneFragment(ind)
+                            .actionRecordViewManyFragmentToRecordViewOneFragment(innerViewModel.findInd(item), item.travelId, item.day, item.group)
                         itemView.findNavController().navigate(action)
                     }
                 }
@@ -123,7 +123,7 @@ class MultiViewImageAdapter(
         RecordImageDiffUtilCallback()
     ) {
     interface OnItemClickListener {
-        fun onItemClick(view: View, ind: Int)
+        fun onItemClick(view: View, item: RecordImage)
     }
 
     class MultiViewImageViewHolder(val binding: ItemRecyclerRecordManyImagesBinding) :
@@ -166,7 +166,7 @@ class MultiViewImageAdapter(
     override fun onBindViewHolder(holder: MultiViewImageViewHolder, position: Int) {
         holder.bind(innerViewModel, getItem(position))
         holder.binding.ivItemImage.setOnClickListener { view ->
-            onItemClickListener.onItemClick(view, getItem(position).id)
+            onItemClickListener.onItemClick(view, getItem(position))
             holder.binding.cbDeleteCheck.isChecked = !(holder.binding.cbDeleteCheck.isChecked)
         }
     }

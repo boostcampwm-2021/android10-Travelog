@@ -47,7 +47,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="제주도 여행"
+            android:text="@{viewModel.travelName}"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_many"
@@ -59,7 +59,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2021.10.27 ~ 2021.10.29"
+            android:text="@{viewModel.startDate + ` ~ ` + viewModel.endDate}"
             android:textSize="18sp"
             android:textColor="@color/black"
             android:layout_marginEnd="60dp"

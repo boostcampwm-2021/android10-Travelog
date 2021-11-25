@@ -5,8 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
+import com.thequietz.travelog.record.model.RecordImage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,9 +23,28 @@ class RecordViewManyInnerViewModel @Inject constructor(
     private val _checkedList = MutableLiveData<List<Int>>()
     val checkedList: LiveData<List<Int>> = _checkedList
 
+    var list = mutableListOf<RecordImage>()
     init {
         _deleteState.value = false
         _checkedList.value = mutableListOf()
+        loadList()
+    }
+    fun loadList() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                list = repository.loadRecordImagesByTravelId(RecordViewOneViewModel.currentTravleId).toMutableList()
+            }
+        }
+    }
+    fun findInd(item: RecordImage): Int {
+        var ind = 0
+        list.forEachIndexed { idx, it ->
+            if (it.id == item.id) {
+                ind = idx
+                return@forEachIndexed
+            }
+        }
+        return ind
     }
     fun changeDeleteState() {
         viewModelScope.launch {
