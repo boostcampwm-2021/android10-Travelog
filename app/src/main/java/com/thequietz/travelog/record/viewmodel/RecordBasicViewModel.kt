@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.thequietz.travelog.data.RecordRepository
 import com.thequietz.travelog.record.model.RecordBasic
 import com.thequietz.travelog.record.model.RecordBasicItem
 import com.thequietz.travelog.record.model.RecordImage
+import com.thequietz.travelog.record.repository.RecordBasicRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecordBasicViewModel @Inject constructor(
-    private val repository: RecordRepository
+    private val repository: RecordBasicRepository
 ) : ViewModel() {
     private val _title = MutableLiveData<String>()
     val title: LiveData<String> = _title
