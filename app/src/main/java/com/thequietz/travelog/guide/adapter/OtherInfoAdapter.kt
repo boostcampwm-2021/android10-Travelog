@@ -31,7 +31,7 @@ class OtherInfoAdapter : androidx.recyclerview.widget.ListAdapter<RecommendPlace
                 )
                 val action = OtherInfoFragmentDirections
                     .actionOtherInfoFragmentToPlaceDetailFragmentFromGuide(
-                        param, true
+                        param, isRecommended = true, isGuide = true
                     )
                 it.findNavController().navigate(action)
             }

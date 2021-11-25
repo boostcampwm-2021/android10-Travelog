@@ -79,6 +79,10 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
             false -> searchModel = gson.fromJson(navArgs.param, PlaceSearchModel::class.java)
         }
 
+        if (navArgs.isGuide) {
+            binding.btnPlaceAdd.visibility = View.GONE
+        }
+
         adapter = PlaceDetailAdapter(isRecommended)
 
         val params = binding.ablPlaceDetail.layoutParams as CoordinatorLayout.LayoutParams

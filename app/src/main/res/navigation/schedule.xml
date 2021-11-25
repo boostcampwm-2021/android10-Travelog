@@ -78,6 +78,9 @@
         <argument
             android:name="isRecommended"
             app:argType="boolean" />
+        <argument
+            android:name="isGuide"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/placeRecommendFragment"

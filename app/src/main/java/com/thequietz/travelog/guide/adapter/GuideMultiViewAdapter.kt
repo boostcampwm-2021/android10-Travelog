@@ -45,7 +45,7 @@ class GuideMultiViewAdapter(val frag: Fragment) : ListAdapter<Guide, RecyclerVie
                 )
                 val action = GuideFragmentDirections
                     .actionGuideFragmentToPlaceDetailFragmentFromGuide(
-                        param, true
+                        param, isRecommended = true, isGuide = true
                     )
                 findNavController(frag).navigate(action)
             }

@@ -41,7 +41,7 @@ class PlaceRecommendSpecAdapter(private val parentFragment: Fragment) :
                 val param = gson.toJson(model)
                 val action =
                     PlaceRecommendFragmentDirections.actionPlaceRecommendFragmentToPlaceDetailFragment(
-                        param, true,
+                        param, true, isGuide = false
                     )
                 fragment.findNavController().navigate(action)
             }
