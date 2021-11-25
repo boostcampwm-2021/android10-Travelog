@@ -66,7 +66,7 @@ class OtherInfoViewModel @Inject internal constructor(
             currentPlace.value?.let {
                 val res = withContext(Dispatchers.IO) {
                     CategoryMap.get(Category.VACATION)?.let { type ->
-                        repository.loadAreaData(it.areaCode, type, vacationPageInd)
+                        repository.loadAreaData(it.areaCode.toString(), type, vacationPageInd)
                     }
                 }
                 res?.let {
@@ -81,7 +81,7 @@ class OtherInfoViewModel @Inject internal constructor(
             currentPlace.value?.let {
                 val res = withContext(Dispatchers.IO) {
                     CategoryMap.get(Category.FOOD)?.let { type ->
-                        repository.loadAreaData(it.areaCode, type, foodPageInd)
+                        repository.loadAreaData(it.areaCode.toString(), type, foodPageInd)
                     }
                 }
                 res?.let {
@@ -93,10 +93,9 @@ class OtherInfoViewModel @Inject internal constructor(
 
     fun initFestivalData() {
         viewModelScope.launch {
-            val festivalRes = mutableListOf<List<RecommendPlace>>()
             currentPlace.value?.let {
                 val res = withContext(Dispatchers.IO) {
-                    repository.loadFestivalData(it.areaCode, festivalPageInd)
+                    repository.loadFestivalData(it.areaCode.toString(), festivalPageInd)
                 }
                 _festivalList.value = res
             }
@@ -109,7 +108,7 @@ class OtherInfoViewModel @Inject internal constructor(
             val res = withContext(Dispatchers.IO) {
                 currentPlace.value?.let {
                     CategoryMap.get(Category.VACATION)?.let { type ->
-                        repository.loadAreaData(it.areaCode, type, vacationPageInd)
+                        repository.loadAreaData(it.areaCode.toString(), type, vacationPageInd)
                     }
                 }
             }
@@ -131,7 +130,7 @@ class OtherInfoViewModel @Inject internal constructor(
             val res = withContext(Dispatchers.IO) {
                 currentPlace.value?.let {
                     CategoryMap.get(Category.FOOD)?.let { type ->
-                        repository.loadAreaData(it.areaCode, type, foodPageInd)
+                        repository.loadAreaData(it.areaCode.toString(), type, foodPageInd)
                     }
                 }
             }
@@ -152,7 +151,7 @@ class OtherInfoViewModel @Inject internal constructor(
             val currentRes = festivalList.value?.toMutableList()
             val res = withContext(Dispatchers.IO) {
                 currentPlace.value?.let {
-                    repository.loadFestivalData(it.areaCode, festivalPageInd)
+                    repository.loadFestivalData(it.areaCode.toString(), festivalPageInd)
                 }
             }
             res?.forEach {
@@ -171,7 +170,7 @@ class OtherInfoViewModel @Inject internal constructor(
             val res = withContext(Dispatchers.IO) {
                 currentPlace.value?.let {
                     CategoryMap.get(Category.VACATION)?.let { type ->
-                        repository.loadAreaData(it.areaCode, type, 1)
+                        repository.loadAreaData(it.areaCode.toString(), type, 1)
                     }
                 }
             }
@@ -185,7 +184,7 @@ class OtherInfoViewModel @Inject internal constructor(
             val res = withContext(Dispatchers.IO) {
                 currentPlace.value?.let {
                     CategoryMap.get(Category.FOOD)?.let { type ->
-                        repository.loadAreaData(it.areaCode, type, 1)
+                        repository.loadAreaData(it.areaCode.toString(), type, 1)
                     }
                 }
             }
@@ -198,7 +197,7 @@ class OtherInfoViewModel @Inject internal constructor(
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO) {
                 currentPlace.value?.let {
-                    repository.loadFestivalData(it.areaCode, 1)
+                    repository.loadFestivalData(it.areaCode.toString(), 1)
                 }
             }
             res?.let {
