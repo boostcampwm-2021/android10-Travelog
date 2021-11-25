@@ -37,7 +37,7 @@ class RecordPhotoAdapter(
                 if (recordBasicItem != null) {
                     navigateToRecordViewUi?.invoke(
                         absoluteAdapterPosition,
-                        recordBasicItem.date,
+                        recordBasicItem.day,
                         recordBasicItem.group
                     )
                 }

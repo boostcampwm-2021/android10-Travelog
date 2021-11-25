@@ -37,7 +37,7 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         override fun <T : RecordBasicItem> bind(item: T) = with(binding) {
             item as RecordBasicItem.TravelDestination
             root.setOnClickListener {
-                navigateToRecordViewUi.invoke(0, item.date, item.group)
+                navigateToRecordViewUi.invoke(0, item.day, item.group)
             }
             btnItemRecordBasicMore.setOnClickListener {
                 showMenu.invoke(it, absoluteAdapterPosition)
