@@ -22,18 +22,16 @@ data class rItems(
 )
 @Entity(tableName = "RecommendPlaceDB")
 data class RecommendPlace(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @SerializedName("title") val name: String = "",
     @SerializedName("firstimage") val url: String = "",
     @SerializedName("addr1") val description: String = "",
     @SerializedName("readcount") val readCount: String,
     @SerializedName("mapx") val longitude: Double = 0.0,
     @SerializedName("mapy") val latitude: Double = 0.0,
-    @SerializedName("contentid") val contentId: Long,
+    @PrimaryKey @SerializedName("contentid") val contentId: Long,
     @SerializedName("contenttypeid") val contentTypeId: Int,
-    @SerializedName("areacode") val areaCode: String,
+    @SerializedName("areacode") val areaCode: Int,
     @SerializedName("cat1") val category: String,
-    @SerializedName("sigungucode") val sigunguCode: String,
-    val eventStartDate: String = "",
-    val pageNo: Int = 1
+    @SerializedName("sigungucode") val sigunguCode: Int,
+    val eventStartDate: String = ""
 )

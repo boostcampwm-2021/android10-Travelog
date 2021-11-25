@@ -12,6 +12,7 @@ import com.thequietz.travelog.getTodayDate
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.RecommendPlace
 import com.thequietz.travelog.record.model.RecordImage
+import com.thequietz.travelog.util.festivalContentTypeId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -51,6 +52,7 @@ class GuideRepository @Inject constructor(
                         placeDao.insert(it)
                     }
                 }
+                println("from server..")
                 allRes
             } catch (e: JsonSyntaxException) {
                 emptyList
@@ -59,6 +61,7 @@ class GuideRepository @Inject constructor(
                 emptyList
             }
         } else {
+            println("from cache..")
             loadData
         }
     }
@@ -68,6 +71,7 @@ class GuideRepository @Inject constructor(
         return if (loadData.isEmpty()) {
             try {
                 val res = placeService.requestALLDoSi().data
+                println("from server..")
                 res
             } catch (e: JsonSyntaxException) {
                 emptyList
@@ -76,6 +80,7 @@ class GuideRepository @Inject constructor(
                 emptyList
             }
         } else {
+            println("from cache..")
             loadData
         }
     }
@@ -90,6 +95,7 @@ class GuideRepository @Inject constructor(
                         placeDao.insert(it)
                     }
                 }
+                println("from server..")
                 res
             } catch (e: JsonSyntaxException) {
                 emptyList
@@ -98,6 +104,7 @@ class GuideRepository @Inject constructor(
                 emptyList
             }
         } else {
+            println("from cache..")
             loadData
         }
     }
@@ -107,6 +114,7 @@ class GuideRepository @Inject constructor(
         return if (loadData.isEmpty()) {
             try {
                 val res = placeService.requestAllByKeyword(keyword).data
+                println("from server..")
                 res
             } catch (e: JsonSyntaxException) {
                 emptyList
@@ -115,6 +123,7 @@ class GuideRepository @Inject constructor(
                 emptyList
             }
         } else {
+            println("from cache..")
             loadData
         }
     }
@@ -123,39 +132,29 @@ class GuideRepository @Inject constructor(
         areaCode: String = "1",
         sigunguCode: String = "10"
     ): List<RecommendPlace> {
-        // val loadData = recommendPlaceDao.loadRecommendPlaceByAreaCodeAndSigunguCode(areaCode, sigunguCode)
-        return try {
-
-            val res = guideRecommendService.requestRecommendPlace(
-                areaCode,
-                sigunguCode,
-                NEW_TOUR_API_KEY
-            ).response.body.items.item
-            /*coroutineScope.launch {
-                res.forEach {
-                    recommendPlaceDao.insert(it)
-                }
-            }*/
-            res
-        } catch (e: JsonSyntaxException) {
-            emptyRecommendList
-        } catch (t: Throwable) {
-            Log.d(TAG, t.stackTraceToString())
-            emptyRecommendList
-        }
-        /*return if (loadData.isEmpty()) {
+        val loadData =
+            recommendPlaceDao.loadRecommendPlaceByAreaCodeAndSigunguCode(areaCode, sigunguCode)
+        return if (loadData.isEmpty()) {
             try {
-                println("loadRecommendPlaceData  try")
                 val res = guideRecommendService.requestRecommendPlace(
                     areaCode,
                     sigunguCode,
                     NEW_TOUR_API_KEY
                 ).response.body.items.item
-                *//*coroutineScope.launch {
+                coroutineScope.launch {
                     res.forEach {
-                        recommendPlaceDao.insert(it)
+                        if (it.eventStartDate == null) {
+                            recommendPlaceDao.insert(
+                                it.copy(
+                                    eventStartDate = ""
+                                )
+                            )
+                        } else {
+                            recommendPlaceDao.insert(it)
+                        }
                     }
-                }*//*
+                }
+                println("from server..")
                 res
             } catch (e: JsonSyntaxException) {
                 emptyRecommendList
@@ -164,10 +163,9 @@ class GuideRepository @Inject constructor(
                 emptyRecommendList
             }
         } else {
-            println("loadRecommendPlaceData  else")
-
+            println("from cache..")
             loadData
-        }*/
+        }
     }
 
     suspend fun loadAreaData(
@@ -175,58 +173,86 @@ class GuideRepository @Inject constructor(
         requestType: String = "A01",
         pageNo: Int
     ): List<RecommendPlace> {
-        val loadData = recommendPlaceDao.loadRecommendPlaceByAreaCodeAndCategory(areaCode, requestType, pageNo)
-        return if (loadData.isEmpty()) {
+        val loadData =
+            recommendPlaceDao.loadRecommendPlaceByAreaCodeAndCategory(areaCode, requestType)
+        if (loadData.size < pageNo * 10) {
             try {
-                val res = guideRecommendService.requestAreaBased(NEW_TOUR_API_KEY, areaCode, requestType, pageNo)
+                val res = guideRecommendService.requestAreaBased(
+                    NEW_TOUR_API_KEY,
+                    areaCode,
+                    requestType,
+                    pageNo
+                )
                 val maxPage = (res.response.body.totalCnt / 10) + 1
-                if (maxPage < pageNo) {
+                return if (maxPage < pageNo) {
                     emptyRecommendList
                 } else {
-                    val resList = res.response.body.items.item
+                    val resList = res.response.body.items.item.filter { it.url != null }
                     CoroutineScope(Dispatchers.IO).launch {
                         resList.forEach {
-                            recommendPlaceDao.insert(it)
+                            recommendPlaceDao.insert(
+                                it.copy(
+                                    eventStartDate = ""
+                                )
+                            )
                         }
                     }
+                    println("from server..")
                     resList
                 }
             } catch (e: JsonSyntaxException) {
-                emptyRecommendList
+                return emptyRecommendList
             } catch (t: Throwable) {
                 Log.d(TAG, t.stackTraceToString())
-                emptyRecommendList
+                return emptyRecommendList
             }
         } else {
-            loadData
+            println("from cache..")
+            return loadData
         }
     }
 
-    /*suspend fun loadVacationSpotData(areaCode: String): List<RecommendPlace> {
-        val res = placeRecommend.requestVacationSpot(areaCode).response.body.items.item
-        return res
-    }
-
-    suspend fun loadFoodData(areaCode: String): List<RecommendPlace> {
-        val res = placeRecommend.requestFood(areaCode).response.body.items.item
-        return res
-    }
-*/
     suspend fun loadFestivalData(areaCode: String, pageNo: Int): List<RecommendPlace> {
-        // val loadData = recommendPlaceDao.loadRecommendFestivalByAreaCode(areaCode, getTodayDate(), pageNo)
-        return try {
-            val res = guideRecommendService.requestFestival(NEW_TOUR_API_KEY, getTodayDate(), areaCode, pageNo)
-            val maxPage = (res.response.body.totalCnt / 10) + 1
-            if (maxPage < pageNo) {
-                emptyRecommendList
-            } else {
-                res.response.body.items.item
+        val loadData = recommendPlaceDao.loadRecommendFestivalByAreaCode(areaCode, festivalContentTypeId)
+        if (loadData.size < pageNo * 10) {
+            try {
+                val res = guideRecommendService.requestFestival(
+                    NEW_TOUR_API_KEY,
+                    getTodayDate(),
+                    areaCode,
+                    pageNo
+                )
+                val maxPage = (res.response.body.totalCnt / 10) + 1
+                return if (maxPage < pageNo) {
+                    emptyRecommendList
+                } else {
+                    val resList = res.response.body.items.item.filter { it.url != null }
+                    coroutineScope.launch {
+                        resList.forEach {
+                            if (it.eventStartDate == null) {
+                                recommendPlaceDao.insert(
+                                    it.copy(
+                                        contentTypeId = festivalContentTypeId,
+                                        eventStartDate = ""
+                                    )
+                                )
+                            } else {
+                                recommendPlaceDao.insert(it)
+                            }
+                        }
+                    }
+                    println("from server..")
+                    resList
+                }
+            } catch (e: JsonSyntaxException) {
+                return emptyRecommendList
+            } catch (t: Throwable) {
+                Log.d(TAG, t.stackTraceToString())
+                return emptyRecommendList
             }
-        } catch (e: JsonSyntaxException) {
-            emptyRecommendList
-        } catch (t: Throwable) {
-            Log.d(TAG, t.stackTraceToString())
-            emptyRecommendList
+        } else {
+            println("from cache..")
+            return loadData
         }
     }
 }

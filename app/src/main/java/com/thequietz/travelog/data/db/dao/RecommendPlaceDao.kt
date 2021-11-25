@@ -12,9 +12,9 @@ abstract class RecommendPlaceDao : BaseDao<RecommendPlace> {
     @Query("SELECT * FROM RecommendPlaceDB WHERE areaCode= :areacode and sigunguCode= :sigungucode")
     abstract fun loadRecommendPlaceByAreaCodeAndSigunguCode(areacode: String = "1", sigungucode: String = "10"): List<RecommendPlace>
 
-    @Query("SELECT * FROM RecommendPlaceDB WHERE areaCode= :areacode and category= :cat and pageNo= :pageno")
-    abstract fun loadRecommendPlaceByAreaCodeAndCategory(areacode: String = "1", cat: String = "A01", pageno: Int): List<RecommendPlace>
+    @Query("SELECT * FROM RecommendPlaceDB WHERE areaCode= :areacode and category= :cat")
+    abstract fun loadRecommendPlaceByAreaCodeAndCategory(areacode: String = "1", cat: String = "A01"): List<RecommendPlace>
 
-    @Query("SELECT * FROM RecommendPlaceDB WHERE areaCode= :areacode and eventStartDate= :startDate and pageNo= :pageno")
-    abstract fun loadRecommendFestivalByAreaCode(areacode: String, startDate: String, pageno: Int): List<RecommendPlace>
+    @Query("SELECT * FROM RecommendPlaceDB WHERE areaCode= :areacode and contentTypeId= :type")
+    abstract fun loadRecommendFestivalByAreaCode(areacode: String, type: Int): List<RecommendPlace>
 }

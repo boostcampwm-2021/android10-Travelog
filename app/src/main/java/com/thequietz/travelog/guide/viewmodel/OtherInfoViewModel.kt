@@ -93,7 +93,6 @@ class OtherInfoViewModel @Inject internal constructor(
 
     fun initFestivalData() {
         viewModelScope.launch {
-            val festivalRes = mutableListOf<List<RecommendPlace>>()
             currentPlace.value?.let {
                 val res = withContext(Dispatchers.IO) {
                     repository.loadFestivalData(it.areaCode.toString(), festivalPageInd)

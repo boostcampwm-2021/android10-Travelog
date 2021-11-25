@@ -12,7 +12,7 @@ interface GuideRecommendService {
         @Query("areaCode") area: String,
         @Query("sigunguCode") secondCode: String,
         @Query("ServiceKey") key: String,
-        @Query("contentTypeId") typeId: Int = 15,
+        @Query("contentTypeId") typeId: Int = 14,
         @Query("MobileOS") os: String = "AND",
         @Query("MobileApp") appName: String = "Travelog",
         @Query("_type") contentType: String = "json",
