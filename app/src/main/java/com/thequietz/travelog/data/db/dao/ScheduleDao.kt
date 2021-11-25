@@ -10,6 +10,9 @@ abstract class ScheduleDao : BaseDao<ScheduleModel> {
     @Query("SELECT * FROM Schedule")
     abstract fun loadAllSchedules(): LiveData<List<ScheduleModel>>
 
+    @Query("SELECT * FROM Schedule")
+    abstract fun loadAllSchedule(): List<ScheduleModel>
+
     @Query("SELECT * FROM Schedule WHERE id =:id")
     abstract fun loadScheduleById(id: Int): List<ScheduleModel>
 

@@ -30,7 +30,7 @@ class RecordViewManyViewModel @Inject constructor(
             }
             val res = mutableListOf<MyRecord>()
             if (loadData.size != 0) {
-                var currentSchedule = loadData.get(0).schedule
+                var currentSchedule = loadData.get(0).day
                 var currentPlace = loadData.get(0).place
                 res.add(
                     MyRecord.RecordSchedule().copy(
@@ -44,7 +44,7 @@ class RecordViewManyViewModel @Inject constructor(
                 )
                 val currentImageList = mutableListOf<RecordImage>()
                 loadData.forEach {
-                    if (currentSchedule != it.schedule) { // 일정 다르면
+                    if (currentSchedule != it.day) { // 일정 다르면
                         res.add( // 이전 이미지 res에 넣어주고
                             MyRecord.RecordImageList().copy(
                                 list = currentImageList.toMutableList()
@@ -52,7 +52,7 @@ class RecordViewManyViewModel @Inject constructor(
                         )
                         currentImageList.clear() // 이미지 리스트 초기화
 
-                        currentSchedule = it.schedule // 일정 갱신해주고
+                        currentSchedule = it.day // 일정 갱신해주고
                         res.add( // res에 schedule넣어주고
                             MyRecord.RecordSchedule().copy(
                                 date = currentSchedule

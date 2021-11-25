@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.thequietz.travelog.data.RecordRepository
 import com.thequietz.travelog.record.model.Record
 import com.thequietz.travelog.record.model.RecordImage
+import com.thequietz.travelog.record.repository.RecordBasicRepository
+import com.thequietz.travelog.schedule.model.ScheduleModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,19 +16,37 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecordViewModel @Inject constructor(
-    private val repository: RecordRepository
+    private val repository: RecordBasicRepository
 ) : ViewModel() {
     private var _recordList = MutableLiveData<List<Record>>()
     val recordList: LiveData<List<Record>> = _recordList
 
     init {
-        // TODO("Schedule 테이블에서 데이터 로드 후 Record 테이블에 저장")
-        viewModelScope.launch {
-            val recordImages = withContext(Dispatchers.IO) {
-                repository.loadRecordImages()
+        viewModelScope.launch(Dispatchers.IO) {
+            val scheduleList = repository.loadAllSchedule()
+            val recordList = createRecordFromSchedule(scheduleList)
+
+            withContext(Dispatchers.Main) {
+                _recordList.value = recordList
             }
-            _recordList.value = createRecordFromRecordImages(recordImages)
         }
+    }
+
+    private fun createRecordFromSchedule(scheduleList: List<ScheduleModel>): List<Record> {
+        val recordList = mutableListOf<Record>()
+
+        for (schedule in scheduleList) {
+            val record = Record(
+                travelId = schedule.id,
+                title = schedule.name,
+                startDate = schedule.date.split('~').first(),
+                endDate = schedule.date.split('~').last()
+            )
+
+            recordList.add(record)
+        }
+
+        return recordList
     }
 
     private fun createRecordFromRecordImages(recordImages: List<RecordImage>): List<Record> {

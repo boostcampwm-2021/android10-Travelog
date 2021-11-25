@@ -54,8 +54,8 @@ class RecordAddFragment : Fragment() {
         place.observe(viewLifecycleOwner) { place ->
             binding.tvRecordAddDest.text = place
         }
-        schedule.observe(viewLifecycleOwner) { schedule ->
-            binding.tvRecordAddSchedule.text = schedule
+        day.observe(viewLifecycleOwner) { day ->
+            binding.tvRecordAddSchedule.text = day
         }
         imageList.observe(viewLifecycleOwner) { imageList ->
             adapter.submitList(imageList)

@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@{viewModel.currentImage.schedule}"
+            android:text="@{viewModel.currentImage.day}"
             tools:text="Day1"
             android:textColor="@color/black"
             android:textSize="20sp"

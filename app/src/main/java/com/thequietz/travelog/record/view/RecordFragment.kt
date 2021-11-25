@@ -36,8 +36,18 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
         return binding.root
     }
 
-    private fun navigateToRecordBasicUi(travelId: Int) {
-        val action = RecordFragmentDirections.actionRecordFragmentToRecordBasicFragment(travelId)
+    private fun navigateToRecordBasicUi(
+        travelId: Int,
+        title: String,
+        startDate: String,
+        endDate: String
+    ) {
+        val action = RecordFragmentDirections.actionRecordFragmentToRecordBasicFragment(
+            travelId,
+            title,
+            startDate,
+            endDate
+        )
 
         findNavController().navigate(action)
     }

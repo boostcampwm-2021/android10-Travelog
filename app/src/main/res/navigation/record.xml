@@ -27,6 +27,15 @@
         <argument
             android:name="travelId"
             app:argType="integer" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="startDate"
+            app:argType="string" />
+        <argument
+            android:name="endDate"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/recordViewOneFragment"
