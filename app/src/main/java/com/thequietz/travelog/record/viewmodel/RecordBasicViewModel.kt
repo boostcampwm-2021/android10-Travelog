@@ -84,10 +84,42 @@ class RecordBasicViewModel @Inject constructor(
     private fun createDayFromDate(startDate: String, date: String): String {
         val tempStartDate = startDate.split('.').map { it.toInt() }
         val tempDate = date.split('.').map { it.toInt() }
+        val isLeapYear = tempDate[0] % 4 == 0
+        val dayOfMonth =
+            if (isLeapYear) listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+            else listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
-        // TODO("다른 년, 월 계산")
+        // 2020.12.30 ~ 2021.1.4
+        var day = 0
+        if (tempStartDate[0] < tempDate[0]) {
+            day = dayOfMonth[tempStartDate[1]] - tempStartDate[2]
 
-        return "Day${tempDate[2] - tempStartDate[2] + 1}"
+            for (i in tempStartDate[1] + 1..12) {
+                day += dayOfMonth[i]
+            }
+
+            day += tempDate[2]
+
+            for (i in tempDate[1] - 1 downTo 1) {
+                day += dayOfMonth[i]
+            }
+        }
+        // 2021.1.4 ~ 2021.3.5
+        else if (tempStartDate[1] < tempDate[1]) {
+            day = dayOfMonth[tempStartDate[1]] - tempStartDate[2]
+
+            for (i in tempStartDate[1] + 1 until tempDate[1]) {
+                day += dayOfMonth[i]
+            }
+
+            day += tempDate[2]
+        }
+        // 2021.1.4 ~ 2021.1.5
+        else {
+            day = tempDate[2] - tempStartDate[2]
+        }
+
+        return "Day${day + 1}"
     }
 
     private fun createDateFromDay(startDate: String, day: String): String {
@@ -97,6 +129,8 @@ class RecordBasicViewModel @Inject constructor(
         val dayOfMonth =
             if (isLeapYear) listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
             else listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+
+        // TODO("2달 이상 고려해야함.")
 
         if (tempDate[2] + tempDay <= dayOfMonth[tempDate[1]]) {
             return "${tempDate[0]}.${tempDate[1]}.${tempDate[2] + tempDay}"
