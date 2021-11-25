@@ -27,9 +27,9 @@ class ScheduleSelectViewModel @Inject internal constructor(
     val btnEnable: LiveData<Boolean> get() = _btnEnable
 
     private fun checkNextButtonEnable() {
-        val name = travelName.value.toString()
+        val name = travelName.value
         val duration = startDate.value != null && endDate.value != null
-        when (name.isNotEmpty() && duration) {
+        when (!name.isNullOrBlank() && duration) {
             true -> _btnEnable.value = true
             false -> _btnEnable.value = false
         }
