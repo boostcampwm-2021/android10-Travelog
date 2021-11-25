@@ -41,7 +41,7 @@ class SpecificGuideViewModel @Inject internal constructor(
                 }
                 _currentPlaceList.value = res
                 _currentSearch.value = areaCodeList.get(res.get(0).areaCode.toInt())
-                previousSearch = res.get(0).areaCode
+                previousSearch = res.get(0).areaCode.toString()
                 _noData.value = currentPlaceList.value?.size == 0
             } catch (e: NumberFormatException) {
                 val res = withContext(Dispatchers.IO) {

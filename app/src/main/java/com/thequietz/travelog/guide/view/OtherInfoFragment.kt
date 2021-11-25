@@ -64,7 +64,6 @@ class OtherInfoFragment : Fragment() {
         }
 
         with(otherInfoViewModel) {
-            println(thisPlace.toString())
             initPlace(thisPlace)
             vacationSpotList.observe(viewLifecycleOwner, { it ->
                 it?.let { vacationAdapter.submitList(it) }

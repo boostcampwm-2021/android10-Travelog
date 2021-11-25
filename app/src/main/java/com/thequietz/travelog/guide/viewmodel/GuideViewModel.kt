@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.GuideRepository
 import com.thequietz.travelog.guide.model.Guide
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,6 +22,9 @@ class GuideViewModel @Inject internal constructor(
     val dataList: LiveData<List<Guide>> = _dataList
 
     init {
+        CoroutineScope(Dispatchers.IO).launch {
+            guideRepository.loadAllPlaceData()
+        }
         change2MyGuide()
     }
 

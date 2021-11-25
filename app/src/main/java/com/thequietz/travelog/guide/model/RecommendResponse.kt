@@ -1,5 +1,7 @@
 package com.thequietz.travelog.guide
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 data class RecommendResponse(
@@ -18,8 +20,9 @@ data class rBody(
 data class rItems(
     @SerializedName("item") val item: List<RecommendPlace>
 )
-
+@Entity(tableName = "RecommendPlaceDB")
 data class RecommendPlace(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @SerializedName("title") val name: String = "",
     @SerializedName("firstimage") val url: String = "",
     @SerializedName("addr1") val description: String = "",
@@ -28,4 +31,9 @@ data class RecommendPlace(
     @SerializedName("mapy") val latitude: Double = 0.0,
     @SerializedName("contentid") val contentId: Long,
     @SerializedName("contenttypeid") val contentTypeId: Int,
+    @SerializedName("areacode") val areaCode: String,
+    @SerializedName("cat1") val category: String,
+    @SerializedName("sigungucode") val sigunguCode: String,
+    val eventStartDate: String = "",
+    val pageNo: Int = 1
 )
