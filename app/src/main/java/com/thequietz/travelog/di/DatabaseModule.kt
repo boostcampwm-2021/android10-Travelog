@@ -1,7 +1,6 @@
 package com.thequietz.travelog.di
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -9,7 +8,6 @@ import com.thequietz.travelog.data.db.AppDatabase
 import com.thequietz.travelog.data.db.dao.RecordImageDao
 import com.thequietz.travelog.data.db.dao.ScheduleDao
 import com.thequietz.travelog.data.db.dao.ScheduleDetailDao
-import com.thequietz.travelog.util.SAMPLE_RECORD_IMAGES
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,9 +36,9 @@ object DatabaseModule {
                     CoroutineScope(Dispatchers.IO).launch {
                         /*provideScheduleDao(provideDatabase(appContext))
                             .insert(*SAMPLE_SCHEDULES.toTypedArray())*/
-                        Log.d("InitDB", "OK")
+                        /*Log.d("InitDB", "OK")
                         provideRecordImageDao(provideDatabase(appContext))
-                            .insert(*SAMPLE_RECORD_IMAGES.toTypedArray())
+                            .insert(*SAMPLE_RECORD_IMAGES.toTypedArray())*/
                     }
                 }
             }
