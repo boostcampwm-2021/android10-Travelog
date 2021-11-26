@@ -53,8 +53,10 @@ class RecordViewOneFragment : Fragment() {
             // 아이템 초기화
             // createRecord()
             // loadRecord()
-            initVariable(args)
-            loadRecord()
+            CoroutineScope(Dispatchers.IO).launch {
+                initVariable(args)
+                loadRecord()
+            }
             binding.vpReviewViewOne.post {
                 binding.vpReviewViewOne.setCurrentItem(args.index, false)
             }
@@ -64,7 +66,6 @@ class RecordViewOneFragment : Fragment() {
                 it?.let { adapter.submitList(it) }
             })
         }
-        RecordViewOneViewModel.currentTravleId = args.travelId
         setListener()
     }
 
