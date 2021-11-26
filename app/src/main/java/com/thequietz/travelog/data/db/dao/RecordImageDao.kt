@@ -21,6 +21,18 @@ abstract class RecordImageDao : BaseDao<RecordImage> {
     @Query("SELECT `group` FROM RecordImage WHERE travelId =:travelId ORDER BY `group` DESC LIMIT 1")
     abstract fun loadGroupFromRecordImageByTravelId(travelId: Int): Int
 
+    @Query("SELECT DISTINCT `day` FROM RecordImage WHERE travelId =:travelId ORDER BY `day` ASC")
+    abstract fun loadDistinctScheduleByTravelId(travelId: Int): List<String>
+
+    @Query("SELECT DISTINCT `place` FROM RecordImage WHERE travelId =:travelId ORDER BY `place` ASC")
+    abstract fun loadDistinctPlaceByTravelId(travelId: Int): List<String>
+
+    @Query("SELECT DISTINCT `group` FROM RecordImage WHERE travelId =:travelId")
+    abstract fun loadDistinctGroupIdByTravelId(travelId: Int): List<Int>
+
+    @Query("SELECT * FROM RecordImage WHERE travelId =:travelId LIMIT :limit OFFSET :offset ")
+    abstract fun loadFirstRowByTravelId(travelId: Int, limit: Int, offset: Int): RecordImage
+
     @Query("UPDATE RecordImage SET comment =:comment WHERE id =:id")
     abstract fun updateRecordImageCommentById(comment: String, id: Int)
 
