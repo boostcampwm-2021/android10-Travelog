@@ -101,18 +101,18 @@ class RecordAddImageFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_save -> {
-                recordAddImageViewModel.insertImages()
-                Handler(Looper.getMainLooper()).postDelayed({
-                    Toast.makeText(requireContext(), "저장 완료", Toast.LENGTH_SHORT).show()
-                    val action = RecordAddImageFragmentDirections
-                        .actionRecordAddImageFragmentToRecordViewOneFragment(
-                            0,
-                            RecordViewOneViewModel.currentTravleId,
-                            "Day1",
-                            0
-                        )
-                    findNavController().navigate(action)
-                }, 1000)
+                CoroutineScope(Dispatchers.Main).launch {
+                    recordAddImageViewModel.insertImages()
+                }
+                Toast.makeText(requireContext(), "저장 완료", Toast.LENGTH_SHORT).show()
+                val action = RecordAddImageFragmentDirections
+                    .actionRecordAddImageFragmentToRecordViewOneFragment(
+                        0,
+                        RecordViewOneViewModel.currentTravleId,
+                        "Day1",
+                        0
+                    )
+                findNavController().navigate(action)
                 true
             }
             else -> super.onOptionsItemSelected(item)

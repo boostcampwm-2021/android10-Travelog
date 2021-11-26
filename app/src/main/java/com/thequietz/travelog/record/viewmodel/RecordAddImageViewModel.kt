@@ -78,13 +78,8 @@ class RecordAddImageViewModel @Inject constructor(
         }
     }
     fun insertImages() {
-        println("insertImages  ${imageList.value?.size}")
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                imageList.value?.forEach {
-                    repository.insertEachImage(it)
-                }
-            }
+        imageList.value?.forEach {
+            repository.insertEachImage(it)
         }
     }
 }
