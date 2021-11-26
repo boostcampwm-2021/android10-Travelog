@@ -46,15 +46,15 @@ class RecordViewOneViewModel @Inject constructor(
         travelId = args.travelId
         groupId = args.group
         day = args.day
+        currentTravleId = travelId
     }
     fun loadRecord() {
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO) {
                 repository.loadRecordImagesByTravelId(travelId)
             }
-            withContext(Dispatchers.Main) {
-                _imageList.value = res
-            }
+            _imageList.value = res
+
             println("viewOneFragment  ${imageList.value?.size}")
             // setCurrentImage(currentInd)
         }

@@ -78,8 +78,8 @@ class RecordAddImageViewModel @Inject constructor(
         }
     }
     fun insertImages() {
-        imageList.value?.forEach {
-            repository.insertEachImage(it)
+        imageList.value?.let {
+            repository.insertRecordImages(it)
         }
     }
 }

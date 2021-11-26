@@ -48,6 +48,7 @@ class RecordAddImageFragment : Fragment() {
                     (0 until it.itemCount).forEachIndexed { ind, item ->
                         res.add(
                             RecordImage().copy(
+                                travelId = RecordViewOneViewModel.currentTravleId,
                                 title = recordAddImageViewModel.travelName.value!!,
                                 startDate = recordAddImageViewModel.startDate.value!!,
                                 endDate = recordAddImageViewModel.endDate.value!!,
@@ -58,6 +59,7 @@ class RecordAddImageFragment : Fragment() {
                                 group = recordAddImageViewModel.nextGroupId.value!!
                             )
                         )
+                        println("getContent  ${recordAddImageViewModel.travelName.value!!}")
                     }
                     recordAddImageViewModel.addImage(res)
                 }
@@ -104,6 +106,7 @@ class RecordAddImageFragment : Fragment() {
                 CoroutineScope(Dispatchers.Main).launch {
                     recordAddImageViewModel.insertImages()
                 }
+                println("travelId  ${RecordViewOneViewModel.currentTravleId}")
                 Toast.makeText(requireContext(), "저장 완료", Toast.LENGTH_SHORT).show()
                 val action = RecordAddImageFragmentDirections
                     .actionRecordAddImageFragmentToRecordViewOneFragment(
