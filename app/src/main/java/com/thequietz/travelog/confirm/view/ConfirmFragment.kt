@@ -60,6 +60,10 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
             object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
+                    if (viewModel.currentSchedule.value.isNullOrEmpty()) {
+                        targetList.value = mutableListOf()
+                        return
+                    }
 
                     val currentItem = viewModel.currentSchedule.value?.get(position)
                     val location = currentItem?.destination?.geometry?.location
