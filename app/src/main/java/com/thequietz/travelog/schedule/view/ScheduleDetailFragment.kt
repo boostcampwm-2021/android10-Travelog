@@ -72,17 +72,24 @@ class ScheduleDetailFragment :
         val startDate = args.schedule.date.split("~")[0]
         val endDate = args.schedule.date.split("~")[1]
         viewModel.initItemList(startDate, endDate)
-        adapter = ScheduleDetailAdapter(viewModel) {
-            val action =
-                ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToPlaceRecommendFragment(
-                    args.schedulePlaceArray
-                )
-            this.findNavController().navigate(action)
-        }
+        adapter = ScheduleDetailAdapter(
+            { addItem() },
+            { viewModel.deleteSchedule(it) },
+            { viewModel.moveItem(it) },
+            { idx, date -> viewModel.changeSelected(idx, date) }
+        )
         val callback = ScheduleTouchHelperCallback(adapter)
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(binding.rvSchedule)
         binding.rvSchedule.adapter = adapter
+    }
+
+    private fun addItem() {
+        val action =
+            ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToPlaceRecommendFragment(
+                args.schedulePlaceArray
+            )
+        this.findNavController().navigate(action)
     }
 
     private fun initItemObserver() {
@@ -101,12 +108,12 @@ class ScheduleDetailFragment :
             adapter.submitList(it)
         })
 
-        viewModel.placeDetailList.observe(viewLifecycleOwner, {
-            viewModel.placeDetailList.removeObservers(viewLifecycleOwner)
-        })
-
         viewModel.colorList.observe(viewLifecycleOwner, {
             markerColorList.value = it
+        })
+
+        viewModel.placeDetailList.observe(viewLifecycleOwner, {
+            viewModel.placeDetailList.removeObservers(viewLifecycleOwner)
         })
     }
 
@@ -115,5 +122,10 @@ class ScheduleDetailFragment :
             baseTargetList =
                 args.schedule.schedulePlace.map { LatLng(it.mapY.toDouble(), it.mapX.toDouble()) }
                     .toMutableList()
+    }
+
+    override fun onDestroyView() {
+        binding.rvSchedule.adapter = null
+        super.onDestroyView()
     }
 }

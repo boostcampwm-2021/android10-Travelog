@@ -118,6 +118,11 @@ class ScheduleDetailViewModel @Inject internal constructor(
         detailList.value?.let { repository.createScheduleDetail(it) }
     }
 
+    fun changeSelected(index: Int, date: String) {
+        selectedIndex = index
+        selectedDate = date
+    }
+
     fun addScheduleDetail(placeDetail: PlaceDetailModel, date: String = selectedDate) {
         var numPriors = 0
         for (i in 0..selectedIndex) {
