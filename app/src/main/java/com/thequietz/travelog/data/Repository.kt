@@ -273,11 +273,8 @@ class RecordRepository @Inject constructor(
     fun loadRecordImagesByTravelId(travelId: Int) =
         recordImageDao.loadRecordImageByTravelId(travelId)
 
-    fun loadSchedulesByTravelId(travelId: Int) =
-        recordImageDao.loadDistinctScheduleByTravelId(travelId)
-
-    fun loadPlacesByTravelId(travelId: Int) =
-        recordImageDao.loadDistinctPlaceByTravelId(travelId)
+    fun loadPlaceAndScheduleByTravelId(travelId: Int) =
+        recordImageDao.loadDistinctPlaceAndScheduleByTravelId(travelId)
 
     fun loadOneDataByTravelId(travelId: Int) =
         recordImageDao.loadFirstRowByTravelId(travelId, 1, 0)
@@ -292,8 +289,6 @@ class RecordRepository @Inject constructor(
     fun updateRecordImageComment(comment: String, id: Int) {
         coroutineScope.launch { recordImageDao.updateRecordImageCommentById(comment, id) }
     }
-    fun insertEachImage(image: RecordImage) =
-        coroutineScope.launch { recordImageDao.insert(image) }
 
     fun insertRecordImages(images: List<RecordImage>) {
         coroutineScope.launch { recordImageDao.insert(*images.toTypedArray()) }

@@ -33,3 +33,7 @@ data class RecordImage(
     val lat: Double = 0.0,
     val lng: Double = 0.0
 )
+data class PlaceAndSchedule(
+    val place: String = "",
+    val day: String = ""
+)

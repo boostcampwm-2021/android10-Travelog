@@ -19,7 +19,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.thequietz.travelog.LoadingDialog
 import com.thequietz.travelog.R
+import com.thequietz.travelog.TravelogApplication
 import com.thequietz.travelog.databinding.FragmentRecordAddImageBinding
 import com.thequietz.travelog.record.adapter.RecordAddImageAdapter
 import com.thequietz.travelog.record.model.RecordImage
@@ -38,6 +40,7 @@ class RecordAddImageFragment : Fragment() {
     private val adapter by lazy { RecordAddImageAdapter() }
     lateinit var placeSpinnerAdapter: ArrayAdapter<String>
     lateinit var scheduleSpinnerAdapter: ArrayAdapter<String>
+    lateinit var loading: LoadingDialog
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
@@ -72,7 +75,10 @@ class RecordAddImageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRecordAddImageBinding.inflate(inflater, container, false)
+        loading = LoadingDialog(requireContext())
         setHasOptionsMenu(true)
+        loading.show()
+
         initToolbar()
         initAdapter()
         return binding.root
@@ -93,6 +99,7 @@ class RecordAddImageFragment : Fragment() {
         setListener()
         Handler(Looper.getMainLooper()).postDelayed({
             addDataToAdapter()
+            loading.dismiss()
         }, 1000)
     }
 
@@ -106,7 +113,6 @@ class RecordAddImageFragment : Fragment() {
                 CoroutineScope(Dispatchers.Main).launch {
                     recordAddImageViewModel.insertImages()
                 }
-                println("travelId  ${RecordViewOneViewModel.currentTravleId}")
                 Toast.makeText(requireContext(), "저장 완료", Toast.LENGTH_SHORT).show()
                 val action = RecordAddImageFragmentDirections
                     .actionRecordAddImageFragmentToRecordViewOneFragment(
@@ -149,8 +155,10 @@ class RecordAddImageFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    recordAddImageViewModel.placeList.value?.let {
-                        recordAddImageViewModel.currentPlace = it.get(position)
+                    recordAddImageViewModel.placeAndScheduleList.value?.let {
+                        recordAddImageViewModel.currentPlace = it.get(position).place
+                        recordAddImageViewModel.currentSchedule = it.get(position).day
+                        binding.spSchedule.setSelection(position)
                     }
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -165,8 +173,10 @@ class RecordAddImageFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    recordAddImageViewModel.schedulList.value?.let {
-                        recordAddImageViewModel.currentSchedule = it.get(position)
+                    recordAddImageViewModel.placeAndScheduleList.value?.let {
+                        recordAddImageViewModel.currentPlace = it.get(position).place
+                        recordAddImageViewModel.currentSchedule = it.get(position).day
+                        binding.spPlace.setSelection(position)
                     }
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -201,15 +211,14 @@ class RecordAddImageFragment : Fragment() {
 
     private fun addDataToAdapter() {
         placeSpinnerAdapter.clear()
-        recordAddImageViewModel.placeList.value?.forEach {
-            placeSpinnerAdapter.add(it)
+        recordAddImageViewModel.placeAndScheduleList.value?.forEach {
+            placeSpinnerAdapter.add(it.place)
         }
         placeSpinnerAdapter.notifyDataSetChanged()
         scheduleSpinnerAdapter.clear()
-        recordAddImageViewModel.schedulList.value?.forEach {
-            scheduleSpinnerAdapter.add(it)
+        recordAddImageViewModel.placeAndScheduleList.value?.forEach {
+            scheduleSpinnerAdapter.add(it.day)
         }
         scheduleSpinnerAdapter.notifyDataSetChanged()
-        println("data size  ${recordAddImageViewModel.placeList.value?.size}  ${recordAddImageViewModel.schedulList.value?.size}")
     }
 }

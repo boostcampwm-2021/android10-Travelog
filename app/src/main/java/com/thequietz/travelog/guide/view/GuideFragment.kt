@@ -26,8 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class GuideFragment : Fragment() {
-    private var _binding: FragmentGuideBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentGuideBinding
     private val guideViewModel by viewModels<GuideViewModel>()
     private val adapter by lazy { GuideMultiViewAdapter(this) }
     lateinit var loading: LoadingDialog
@@ -40,7 +39,7 @@ class GuideFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_guide, container, false)
+        binding = FragmentGuideBinding.inflate(inflater, container, false)
         loading = LoadingDialog(requireContext())
         if (!TravelogApplication.prefs.loadGuideLoadingState()) {
             loading.show()
