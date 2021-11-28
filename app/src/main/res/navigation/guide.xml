@@ -65,5 +65,9 @@
             android:name="isGuide"
             app:argType="boolean" />
     </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.thequietz.travelog.SplashFragment"
+        android:label="SplashFragment" />
 
 </navigation>
