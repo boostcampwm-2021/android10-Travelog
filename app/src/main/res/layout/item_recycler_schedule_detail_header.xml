@@ -9,10 +9,6 @@
             type="com.thequietz.travelog.schedule.data.ScheduleDetailItem" />
 
         <variable
-            name="viewModel"
-            type="com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel" />
-
-        <variable
             name="onAddClickListener"
             type="android.view.View.OnClickListener" />
     </data>
