@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.thequietz.travelog.data.db.AppDatabase
+import com.thequietz.travelog.data.db.dao.NewRecordImageDao
 import com.thequietz.travelog.data.db.dao.PlaceDao
 import com.thequietz.travelog.data.db.dao.RecommendPlaceDao
 import com.thequietz.travelog.data.db.dao.RecordImageDao
@@ -71,6 +72,11 @@ object DatabaseModule {
     fun provideRecommendPlaceDao(appDatabase: AppDatabase): RecommendPlaceDao {
         return appDatabase.recommendPlaceDao()
     }
+
+   /*@Provides
+   fun provideNewRecordImageDao(appDatabase: AppDatabase): NewRecordImageDao {
+       return appDatabase.newRecordImageDao()
+   }*/
 
     @Provides
     fun provideCoroutineScope() = CoroutineScope(SupervisorJob())

@@ -31,6 +31,9 @@ abstract class RecordImageDao : BaseDao<RecordImage> {
     @Query("SELECT * FROM RecordImage WHERE travelId =:travelId LIMIT :limit OFFSET :offset ")
     abstract fun loadFirstRowByTravelId(travelId: Int, limit: Int, offset: Int): RecordImage
 
+    @Query("SELECT * FROM RecordImage WHERE travelId =:travelId GROUP BY `place`, `day` ORDER BY `day`")
+    abstract fun loadAnyImageWithDistinctPlaceAndScheduleByTravelId(travelId: Int): List<RecordImage>
+
     @Query("UPDATE RecordImage SET comment =:comment WHERE id =:id")
     abstract fun updateRecordImageCommentById(comment: String, id: Int)
 

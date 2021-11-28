@@ -21,7 +21,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.thequietz.travelog.LoadingDialog
 import com.thequietz.travelog.R
-import com.thequietz.travelog.TravelogApplication
 import com.thequietz.travelog.databinding.FragmentRecordAddImageBinding
 import com.thequietz.travelog.record.adapter.RecordAddImageAdapter
 import com.thequietz.travelog.record.model.RecordImage
@@ -158,6 +157,7 @@ class RecordAddImageFragment : Fragment() {
                     recordAddImageViewModel.placeAndScheduleList.value?.let {
                         recordAddImageViewModel.currentPlace = it.get(position).place
                         recordAddImageViewModel.currentSchedule = it.get(position).day
+                        recordAddImageViewModel.setMainImage(position)
                         binding.spSchedule.setSelection(position)
                     }
                 }
@@ -176,6 +176,7 @@ class RecordAddImageFragment : Fragment() {
                     recordAddImageViewModel.placeAndScheduleList.value?.let {
                         recordAddImageViewModel.currentPlace = it.get(position).place
                         recordAddImageViewModel.currentSchedule = it.get(position).day
+                        recordAddImageViewModel.setMainImage(position)
                         binding.spPlace.setSelection(position)
                     }
                 }

@@ -24,6 +24,9 @@ class RecordAddImageViewModel @Inject constructor(
     private val _placeAndScheduleList = MutableLiveData<List<PlaceAndSchedule>>()
     val placeAndScheduleList: LiveData<List<PlaceAndSchedule>> = _placeAndScheduleList
 
+    private val _mainImageList = MutableLiveData<List<RecordImage>>()
+    val mainImageList: LiveData<List<RecordImage>> = _mainImageList
+
     private val _travelName = MutableLiveData<String>()
     val travelName: LiveData<String> = _travelName
 
@@ -35,6 +38,9 @@ class RecordAddImageViewModel @Inject constructor(
 
     private val _nextGroupId = MutableLiveData<Int>()
     val nextGroupId: LiveData<Int> = _nextGroupId
+
+    private val _currentMainImage = MutableLiveData<RecordImage>()
+    val currentMainImage: LiveData<RecordImage> = _currentMainImage
 
     var currentPlace = ""
     var currentSchedule = ""
@@ -49,12 +55,15 @@ class RecordAddImageViewModel @Inject constructor(
                 val placeAndScheduleRes = repository.loadPlaceAndScheduleByTravelId(RecordViewOneViewModel.currentTravleId)
                 val groupRes = repository.loadNextGroupIdByTravelId(RecordViewOneViewModel.currentTravleId)
                 val tempData = repository.loadOneDataByTravelId(RecordViewOneViewModel.currentTravleId)
+                val mainImageRes = repository.loadMainImagesByTravelId(RecordViewOneViewModel.currentTravleId)
+                mainImageRes.forEach { println(it.toString()) }
                 withContext(Dispatchers.Main) {
                     _placeAndScheduleList.value = placeAndScheduleRes
                     _travelName.value = tempData.title
                     _startDate.value = tempData.startDate
                     _endDate.value = tempData.endDate
                     _nextGroupId.value = groupRes.size + 1
+                    _mainImageList.value = mainImageRes
                 }
             }
         }
@@ -76,6 +85,12 @@ class RecordAddImageViewModel @Inject constructor(
     fun insertImages() {
         imageList.value?.let {
             repository.insertRecordImages(it)
+        }
+    }
+
+    fun setMainImage(position: Int) {
+        mainImageList.value?.let {
+            _currentMainImage.value = it.get(position)
         }
     }
 }

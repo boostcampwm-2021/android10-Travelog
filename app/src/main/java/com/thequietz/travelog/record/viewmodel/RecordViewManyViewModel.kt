@@ -109,6 +109,9 @@ class RecordViewManyViewModel @Inject constructor(
                     _dataList.value = mutableListOf()
                 }
             }
+            if (loadData.size == 0) {
+                _travelName
+            }
             _travelName.value = loadData.get(0).title
             _startDate.value = loadData.get(0).startDate
             _endDate.value = loadData.get(0).endDate

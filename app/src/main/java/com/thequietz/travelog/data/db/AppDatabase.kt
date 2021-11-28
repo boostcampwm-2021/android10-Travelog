@@ -22,4 +22,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun recordImageDao(): RecordImageDao
     abstract fun placeDao(): PlaceDao
     abstract fun recommendPlaceDao(): RecommendPlaceDao
+    // abstract fun newRecordImageDao(): NewRecordImageDao
 }

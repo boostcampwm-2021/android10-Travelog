@@ -282,6 +282,9 @@ class RecordRepository @Inject constructor(
     fun loadNextGroupIdByTravelId(travelId: Int) =
         recordImageDao.loadDistinctGroupIdByTravelId(travelId)
 
+    fun loadMainImagesByTravelId(travelId: Int) =
+        recordImageDao.loadAnyImageWithDistinctPlaceAndScheduleByTravelId(travelId)
+
     fun createRecordImage(recordImage: RecordImage) {
         coroutineScope.launch { recordImageDao.insert(recordImage) }
     }
