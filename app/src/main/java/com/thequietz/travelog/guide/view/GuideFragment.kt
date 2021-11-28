@@ -12,12 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.thequietz.travelog.LoadingDialog
-import com.thequietz.travelog.R
 import com.thequietz.travelog.TravelogApplication
 import com.thequietz.travelog.databinding.FragmentGuideBinding
 import com.thequietz.travelog.guide.adapter.GuideMultiViewAdapter
