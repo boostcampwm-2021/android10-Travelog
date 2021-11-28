@@ -38,13 +38,13 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: (
                 else
                     newList.add(toPosition + 1, data)
             }
-            viewModel.moveItem(fromPosition, toPosition)
             submitList(newList)
         }
     }
 
     override fun onItemDropped(fromPosition: Int, toPosition: Int) {
         if (toPosition != 0) {
+            viewModel.moveItem(currentList)
         }
     }
 

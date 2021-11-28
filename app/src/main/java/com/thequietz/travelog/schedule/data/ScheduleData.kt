@@ -14,4 +14,5 @@ data class ColorRGB(
     val r: Int,
     val g: Int,
     val b: Int,
+    var id: Int = 0
 )
