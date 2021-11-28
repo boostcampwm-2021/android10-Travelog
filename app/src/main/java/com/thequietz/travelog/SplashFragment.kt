@@ -1,11 +1,11 @@
 package com.thequietz.travelog
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import androidx.fragment.app.Fragment
 import com.thequietz.travelog.databinding.FragmentSplashBinding
 
 class SplashFragment : Fragment() {
@@ -23,3 +23,4 @@ class SplashFragment : Fragment() {
         return binding.root
     }
 }
+
