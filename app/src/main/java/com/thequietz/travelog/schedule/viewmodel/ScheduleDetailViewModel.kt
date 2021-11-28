@@ -179,12 +179,21 @@ class ScheduleDetailViewModel @Inject internal constructor(
 
         val tempDetails = mutableListOf<ScheduleDetailModel>()
         val tempColors = mutableListOf<ColorRGB>()
+
         var date = ""
+        var dateIndex = -1
+        var detailCount = 0
 
         itemList.forEach { item ->
-            if (item.type == TYPE_HEADER)
+            if (item.type == TYPE_HEADER) {
+                if (dateIndex > -1)
+                    indexList[dateIndex] = detailCount
+
                 date = item.name
-            else {
+                dateIndex++
+                detailCount = 0
+            } else {
+                detailCount++
                 detailList.value?.first { it.id == item.id }.let {
                     it?.date = date
                     if (it != null)
