@@ -1,7 +1,6 @@
 package com.thequietz.travelog.schedule.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -41,11 +40,6 @@ class ScheduleDetailFragment :
         binding.btnNext.setOnClickListener {
             val schedules = viewModel.detailList.value?.toTypedArray() ?: return@setOnClickListener
             viewModel.saveSchedule()
-            Log.d(
-                "LIST",
-                viewModel.detailList
-                    .value?.fold("", { acc, v -> acc + v.date + "\t" }) ?: ""
-            )
 
             val action =
                 ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToConfirmFragment(
@@ -55,17 +49,6 @@ class ScheduleDetailFragment :
         }
 
         val stateHandle = findNavController().currentBackStackEntry?.savedStateHandle
-
-        viewModel.detailList.observe(viewLifecycleOwner, { list ->
-            targetList.value = mutableListOf()
-            val tempList = list.map {
-                LatLng(
-                    it.destination.geometry.location.latitude,
-                    it.destination.geometry.location.longitude
-                )
-            }.toMutableList()
-            targetList.value = tempList
-        })
 
         stateHandle?.getLiveData<PlaceDetailModel>("result")?.observe(
             viewLifecycleOwner,
@@ -101,6 +84,17 @@ class ScheduleDetailFragment :
     }
 
     private fun initItemObserver() {
+        viewModel.detailList.observe(viewLifecycleOwner, { list ->
+            targetList.value = mutableListOf()
+            val tempList = list.map {
+                LatLng(
+                    it.destination.geometry.location.latitude,
+                    it.destination.geometry.location.longitude
+                )
+            }.toMutableList()
+            targetList.value = tempList
+        })
+
         viewModel.itemList.observe(viewLifecycleOwner, {
             adapter.submitList(it)
         })
