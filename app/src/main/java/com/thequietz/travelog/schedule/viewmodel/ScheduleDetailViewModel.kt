@@ -14,11 +14,9 @@ import com.thequietz.travelog.schedule.model.ScheduleDetailModel
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import com.thequietz.travelog.schedule.model.SchedulePlaceModel
 import com.thequietz.travelog.schedule.repository.ScheduleRepository
-import com.thequietz.travelog.util.dateToString
-import com.thequietz.travelog.util.stringToDate
+import com.thequietz.travelog.util.addOneDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,7 +28,7 @@ class ScheduleDetailViewModel @Inject internal constructor(
     var selectedIndex = 0
     var selectedDate = ""
 
-    private lateinit var schedule: ScheduleModel
+    lateinit var schedule: ScheduleModel
 
     val item = mutableListOf<ScheduleDetailItem>()
     private val _itemList = MutableLiveData<MutableList<ScheduleDetailItem>>()
@@ -60,7 +58,7 @@ class ScheduleDetailViewModel @Inject internal constructor(
 
         while (date <= endDate) {
             item.add(ScheduleDetailItem(-1, TYPE_HEADER, getRandomColor(), date, day++))
-            date = addOneDate(date).toString()
+            date = addOneDate(date)
             indexList.add(0)
             _itemList.value = item.toMutableList()
         }
@@ -79,7 +77,7 @@ class ScheduleDetailViewModel @Inject internal constructor(
             detailList.filter { it.date == date }.forEach {
                 addScheduleDetail(it.destination, it.date)
             }
-            date = addOneDate(date).toString()
+            date = addOneDate(date)
             selectedIndex++
         }
         selectedIndex = tempIndex
@@ -223,14 +221,5 @@ class ScheduleDetailViewModel @Inject internal constructor(
 
     private fun getRandomColor(): ColorRGB {
         return ColorRGB((0..255).random(), (0..255).random(), (0..255).random())
-    }
-
-    private fun addOneDate(date: String): String? {
-        val cal: Calendar = Calendar.getInstance()
-        cal.apply {
-            time = stringToDate(date)
-            add(Calendar.DATE, 1)
-        }
-        return stringToDate(dateToString(cal.time))?.let { dateToString(it) }
     }
 }

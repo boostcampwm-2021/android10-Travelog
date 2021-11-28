@@ -38,12 +38,14 @@ class ScheduleDetailFragment :
             viewModel.loadSchedule(args.schedule)
 
         binding.btnNext.setOnClickListener {
-            val schedules = viewModel.detailList.value?.toTypedArray() ?: return@setOnClickListener
+            val schedule = viewModel.schedule
+            val scheduleDetails =
+                viewModel.detailList.value?.toTypedArray() ?: return@setOnClickListener
             viewModel.saveSchedule()
 
             val action =
                 ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToConfirmFragment(
-                    schedules
+                    schedule, scheduleDetails
                 )
             findNavController().navigate(action)
         }

@@ -101,7 +101,10 @@
         android:name="com.thequietz.travelog.confirm.view.ConfirmFragment"
         android:label="ConfirmFragment" >
         <argument
-            android:name="schedules"
+            android:name="schedule"
+            app:argType="com.thequietz.travelog.schedule.model.ScheduleModel" />
+        <argument
+            android:name="scheduleDetails"
             app:argType="com.thequietz.travelog.schedule.model.ScheduleDetailModel[]" />
         <action
             android:id="@+id/action_confirmFragment_to_scheduleFragment"

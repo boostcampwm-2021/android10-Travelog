@@ -101,7 +101,7 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
             }
         })
 
-        viewModel.getSchedulesByNavArgs(navArgs.schedules)
+        viewModel.getSchedulesByNavArgs(navArgs.schedule, navArgs.scheduleDetails)
 
         binding.btnConfirm.setOnClickListener {
             val action =
@@ -111,7 +111,7 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
     }
 
     override fun initTargetList() {
-        baseTargetList = navArgs.schedules.map { it ->
+        baseTargetList = navArgs.scheduleDetails.map { it ->
             val location = it.destination.geometry.location
             LatLng(location.latitude, location.latitude)
         }.toMutableList()
