@@ -53,7 +53,6 @@ class RecordAddImageViewModel @Inject constructor(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 val placeAndScheduleRes = repository.loadPlaceAndScheduleByTravelId(RecordViewOneViewModel.currentTravleId)
-                val groupRes = repository.loadNextGroupIdByTravelId(RecordViewOneViewModel.currentTravleId)
                 val tempData = repository.loadOneDataByTravelId(RecordViewOneViewModel.currentTravleId)
                 val mainImageRes = repository.loadMainImagesByTravelId(RecordViewOneViewModel.currentTravleId)
                 mainImageRes.forEach { println(it.toString()) }
@@ -62,7 +61,6 @@ class RecordAddImageViewModel @Inject constructor(
                     _travelName.value = tempData.title
                     _startDate.value = tempData.startDate
                     _endDate.value = tempData.endDate
-                    _nextGroupId.value = groupRes.size + 1
                     _mainImageList.value = mainImageRes
                 }
             }

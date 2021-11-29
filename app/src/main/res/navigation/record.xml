@@ -46,10 +46,6 @@
             app:destination="@id/recordViewManyFragment"
             app:popUpTo="@id/recordViewManyFragment"
             app:popUpToInclusive="true" />
-        <argument
-            android:name="index"
-            android:defaultValue="0"
-            app:argType="integer" />
         <action
             android:id="@+id/action_recordViewOneFragment_to_recordAddImageFragment"
             app:destination="@id/recordAddImageFragment"
@@ -57,16 +53,13 @@
             app:popUpToInclusive="true" />
         <argument
             android:name="travelId"
-            android:defaultValue="0"
             app:argType="integer" />
         <argument
             android:name="day"
-            app:argType="string"
-            android:defaultValue="day1" />
+            app:argType="string" />
         <argument
-            android:name="group"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:name="place"
+            app:argType="string" />
 
     </fragment>
     <fragment

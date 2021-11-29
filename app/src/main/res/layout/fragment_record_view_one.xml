@@ -164,7 +164,6 @@
             android:background="@android:color/transparent"
             android:enabled="false"
             android:maxLines="5"
-            android:text="@{viewModel.currentImage.comment}"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"

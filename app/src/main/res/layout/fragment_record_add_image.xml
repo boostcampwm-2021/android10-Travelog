@@ -81,7 +81,6 @@
             app:layout_constraintTop_toBottomOf="@id/tb_record_add_image"
             app:layout_constraintBottom_toTopOf="@+id/gl_top_record_add_image"
             android:id="@+id/iv_record_add_image"
-            app:setImage="@{viewModel.currentMainImage.url}"
             />
 
         <TextView

@@ -57,11 +57,6 @@ class RecordViewOneFragment : Fragment() {
                 initVariable(args)
                 loadRecord()
             }
-            binding.vpReviewViewOne.post {
-                binding.vpReviewViewOne.setCurrentItem(args.index, false)
-            }
-            setCurrentImage(args.index)
-            setCurrentPosition(args.index)
             imageList.observe(viewLifecycleOwner, { it ->
                 it?.let { adapter.submitList(it) }
             })
@@ -102,9 +97,6 @@ class RecordViewOneFragment : Fragment() {
             }
             tvRecordViewOneSave.setOnClickListener {
                 val currentText = binding.etRecordViewOne.text.toString()
-                if (recordViewOneViewModel.isCommentChanged(currentText) && currentText != "") {
-                    showChangeCommentDialog(currentText)
-                }
             }
             tvRecordViewOneReduce.setOnClickListener {
                 val popup = PopupMenu(requireContext(), it)

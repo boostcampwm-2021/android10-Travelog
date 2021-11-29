@@ -46,7 +46,7 @@ class RecordViewManyMultiViewAdapter(
                 override fun onItemClick(view: View, item: RecordImage) {
                     if (innerViewModel.deleteState.value == false) {
                         val action = RecordViewManyFragmentDirections
-                            .actionRecordViewManyFragmentToRecordViewOneFragment(innerViewModel.findInd(item), item.travelId, item.day, item.group)
+                            .actionRecordViewManyFragmentToRecordViewOneFragment(item.travelId, item.day, item.place)
                         itemView.findNavController().navigate(action)
                     }
                 }

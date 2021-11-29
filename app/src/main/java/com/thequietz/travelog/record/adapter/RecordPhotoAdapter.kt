@@ -13,7 +13,6 @@ import com.thequietz.travelog.record.model.RecordBasicItem
 
 class RecordPhotoAdapter(
     private val navigateToRecordBasicUi: ((Int, String, String, String) -> Unit)? = null,
-    private val navigateToRecordViewUi: ((Int, String, Int) -> Unit)? = null,
     private val addImage: (() -> Unit)? = null,
     private val recordBasicItem: RecordBasicItem.TravelDestination? = null,
     private val recordItem: Record? = null
@@ -30,15 +29,6 @@ class RecordPhotoAdapter(
                         recordItem.title,
                         recordItem.startDate,
                         recordItem.endDate
-                    )
-                }
-
-                // 여행 기록 상세 화면으로 이동 시
-                if (recordBasicItem != null) {
-                    navigateToRecordViewUi?.invoke(
-                        absoluteAdapterPosition,
-                        recordBasicItem.day,
-                        recordBasicItem.group
                     )
                 }
 

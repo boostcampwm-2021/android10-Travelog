@@ -31,18 +31,19 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     class RecordBasicItemViewHolder(
         private val binding: ItemRecyclerRecordBasicBinding,
-        private val navigateToRecordViewUi: (Int, String, Int) -> Unit,
+        private val navigateToRecordViewUi: (String, String) -> Unit,
         private val showMenu: (View, Int) -> Unit
     ) : RecordBasicViewHolder(binding.root) {
         override fun <T : RecordBasicItem> bind(item: T) = with(binding) {
             item as RecordBasicItem.TravelDestination
             root.setOnClickListener {
-                navigateToRecordViewUi.invoke(0, item.day, item.group)
+                navigateToRecordViewUi.invoke(item.day, item.name)
             }
             btnItemRecordBasicMore.setOnClickListener {
                 showMenu.invoke(it, absoluteAdapterPosition)
             }
             tvItemRecordBasicTitle.text = item.name
+            /*
             val adapter =
                 RecordPhotoAdapter(
                     navigateToRecordViewUi = navigateToRecordViewUi,
@@ -51,6 +52,7 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             rvItemRecordBasic.adapter = adapter
             if (item.images.first() == "") return
             adapter.submitList(item.images)
+             */
         }
     }
 
@@ -58,7 +60,7 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 }
 
 class RecordBasicAdapter(
-    private val navigateToRecordViewUi: (Int, String, Int) -> Unit,
+    private val navigateToRecordViewUi: (String, String) -> Unit,
     private val navigateToRecordAddUi: (String) -> Unit,
     private val showMenu: (View, Int) -> Unit,
     private val updateTargetList: (String) -> Unit

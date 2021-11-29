@@ -68,9 +68,9 @@ val SAMPLE_RECORD_IMAGES = listOf(
         endDate = "2021.10.29",
         day = "Day1",
         place = "석굴암",
-        url = "https://tong.visitkorea.or.kr/cms/resource/67/2558467_image2_1.jpg",
-        comment = "comment11",
-        group = 0
+//        url = "https://tong.visitkorea.or.kr/cms/resource/67/2558467_image2_1.jpg",
+//        comment = "comment11",
+//        group = 0
     ),
     RecordImage().copy(
         travelId = 1,
@@ -79,9 +79,9 @@ val SAMPLE_RECORD_IMAGES = listOf(
         endDate = "2021.10.29",
         day = "Day1",
         place = "석굴암",
-        url = "https://tong.visitkorea.or.kr/cms/resource/21/2689521_image2_1.jpg",
-        comment = "comment12",
-        group = 0
+//        url = "https://tong.visitkorea.or.kr/cms/resource/21/2689521_image2_1.jpg",
+//        comment = "comment12",
+//        group = 0
     ),
     RecordImage().copy(
         travelId = 1,
@@ -90,9 +90,9 @@ val SAMPLE_RECORD_IMAGES = listOf(
         endDate = "2021.10.29",
         day = "Day1",
         place = "불국사",
-        url = "https://tong.visitkorea.or.kr/cms/resource/53/1253553_image2_1.jpg",
-        comment = "comment13",
-        group = 1
+//        url = "https://tong.visitkorea.or.kr/cms/resource/53/1253553_image2_1.jpg",
+//        comment = "comment13",
+//        group = 1
     ),
     RecordImage().copy(
         travelId = 1,
@@ -101,9 +101,9 @@ val SAMPLE_RECORD_IMAGES = listOf(
         endDate = "2021.10.29",
         day = "Day1",
         place = "불국사",
-        url = "http://tong.visitkorea.or.kr/cms/resource/22/2654222_image2_1.jpg",
-        comment = "comment21",
-        group = 1
+//        url = "http://tong.visitkorea.or.kr/cms/resource/22/2654222_image2_1.jpg",
+//        comment = "comment21",
+//        group = 1
     ),
     RecordImage().copy(
         travelId = 1,
@@ -112,9 +112,9 @@ val SAMPLE_RECORD_IMAGES = listOf(
         endDate = "2021.10.29",
         day = "Day2",
         place = "강릉",
-        url = "http://tong.visitkorea.or.kr/cms/resource/56/2736256_image2_1.jpg",
-        comment = "comment23",
-        group = 2
+//        url = "http://tong.visitkorea.or.kr/cms/resource/56/2736256_image2_1.jpg",
+//        comment = "comment23",
+//        group = 2
     ),
     RecordImage().copy(
         travelId = 1,
@@ -123,9 +123,9 @@ val SAMPLE_RECORD_IMAGES = listOf(
         endDate = "2021.10.29",
         day = "Day2",
         place = "강릉",
-        url = "http://tong.visitkorea.or.kr/cms/resource/54/644554_image2_1.jpg",
-        comment = "comment22",
-        group = 2
+//        url = "http://tong.visitkorea.or.kr/cms/resource/54/644554_image2_1.jpg",
+//        comment = "comment22",
+//        group = 2
     ),
     RecordImage().copy(
         travelId = 1,
@@ -134,9 +134,9 @@ val SAMPLE_RECORD_IMAGES = listOf(
         endDate = "2021.10.29",
         day = "Day3",
         place = "제주도",
-        url = "http://tong.visitkorea.or.kr/cms/resource/60/489560_image2_1.jpg",
-        comment = "comment31",
-        group = 3
+//        url = "http://tong.visitkorea.or.kr/cms/resource/60/489560_image2_1.jpg",
+//        comment = "comment31",
+//        group = 3
     ),
     RecordImage().copy(
         title = "제주도 여행",
@@ -144,9 +144,9 @@ val SAMPLE_RECORD_IMAGES = listOf(
         endDate = "2021.10.29",
         day = "Day3",
         place = "한라산",
-        url = "http://tong.visitkorea.or.kr/cms/resource/28/2735328_image2_1.png",
-        comment = "comment32",
-        group = 4
+//        url = "http://tong.visitkorea.or.kr/cms/resource/28/2735328_image2_1.png",
+//        comment = "comment32",
+//        group = 4
     ),
     RecordImage().copy(
         travelId = 1,
@@ -155,9 +155,9 @@ val SAMPLE_RECORD_IMAGES = listOf(
         endDate = "2021.10.29",
         day = "Day3",
         place = "혿대",
-        url = "http://tong.visitkorea.or.kr/cms/resource/46/2628546_image2_1.jpg",
-        comment = "comment33",
-        group = 5
+//        url = "http://tong.visitkorea.or.kr/cms/resource/46/2628546_image2_1.jpg",
+//        comment = "comment33",
+//        group = 5
     )
 )
 val areaCodeList = hashMapOf<Int, String>(

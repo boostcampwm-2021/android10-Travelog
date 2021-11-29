@@ -1,5 +1,6 @@
 package com.thequietz.travelog.record.view
 
+/*
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -61,8 +62,5 @@ class RecordAddFragment : Fragment() {
             adapter.submitList(imageList)
         }
     }
-
-    private fun addImage() {
-        getImageUri.launch("image/*")
-    }
 }
+*/

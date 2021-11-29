@@ -1,6 +1,5 @@
 package com.thequietz.travelog.record.viewmodel
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -41,7 +40,7 @@ class RecordBasicViewModel @Inject constructor(
                     repository.loadScheduleDetailOrderByScheduleIdAndDate(travelId)
                 val recordImages = mutableListOf<RecordImage>()
 
-                for ((group, scheduleDetail) in scheduleDetails.withIndex()) {
+                for (scheduleDetail in scheduleDetails) {
                     recordImages.add(
                         RecordImage(
                             travelId = scheduleDetail.scheduleId,
@@ -50,7 +49,6 @@ class RecordBasicViewModel @Inject constructor(
                             endDate = endDate,
                             place = scheduleDetail.destination.name,
                             day = createDayFromDate(startDate, scheduleDetail.date),
-                            group = group,
                             lat = scheduleDetail.destination.geometry.location.latitude,
                             lng = scheduleDetail.destination.geometry.location.longitude
                         )
@@ -81,6 +79,7 @@ class RecordBasicViewModel @Inject constructor(
             createListOfRecyclerViewAdapterItem(recordBasic)
     }
 
+    // TODO: DateUtil와 같은 클래스로 분리 예정
     private fun createDayFromDate(startDate: String, date: String): String {
         val tempStartDate = startDate.split('.').map { it.toInt() }
         val tempDate = date.split('.').map { it.toInt() }
@@ -144,12 +143,9 @@ class RecordBasicViewModel @Inject constructor(
     }
 
     private fun createRecordBasicFromRecordImages(recordImages: List<RecordImage>): RecordBasic {
-        val recordImageList = mutableListOf<String>()
         val recordDestinationList = mutableListOf<RecordBasicItem.TravelDestination>()
 
         for (i in recordImages.indices) {
-            recordImageList.add(recordImages[i].url)
-
             if ((i + 1 < recordImages.size && recordImages[i].place != recordImages[i + 1].place) ||
                 (i != 0 && i == recordImages.lastIndex && recordImages[i - 1].place != recordImages[i].place)
             ) {
@@ -158,13 +154,10 @@ class RecordBasicViewModel @Inject constructor(
                         recordImages[i].place,
                         createDateFromDay(recordImages[i].startDate, recordImages[i].day),
                         recordImages[i].day,
-                        recordImages[i].group,
-                        recordImageList.toList(),
                         recordImages[i].lat,
                         recordImages[i].lng
                     )
                 )
-                recordImageList.clear()
             }
         }
 
@@ -220,6 +213,7 @@ class RecordBasicViewModel @Inject constructor(
         return "${tempDate[0] + 1}.1.1"
     }
 
+    /* 이미지 추가 기능 삭제 예정
     fun addImage(uri: Uri, position: Int) {
         val tempRecordBasicItemList = _recordBasicItemList.value ?: return
         tempRecordBasicItemList.getOrNull(position) ?: return
@@ -274,6 +268,7 @@ class RecordBasicViewModel @Inject constructor(
             )
         }
     }
+     */
 
     fun deleteRecord(position: Int) {
         val tempRecordBasicItemList = _recordBasicItemList.value ?: return
@@ -310,6 +305,7 @@ class RecordBasicViewModel @Inject constructor(
         targetList.value = list
     }
 
+    /* 삭제 예정
     fun getIndexByGroupAndDay(group: Int, day: String): Int {
         val recordImageList = _recordImageList.value ?: return 0
 
@@ -321,4 +317,5 @@ class RecordBasicViewModel @Inject constructor(
 
         return 0
     }
+     */
 }
