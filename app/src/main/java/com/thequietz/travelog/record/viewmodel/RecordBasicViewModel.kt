@@ -78,7 +78,7 @@ class RecordBasicViewModel @Inject constructor(
         _title.value = recordBasic.title
         _date.value = "${recordBasic.startDate} ~ ${recordBasic.endDate}"
         _recordBasicItemList.value =
-            createListOfRecyclerViewAdapterItem(recordBasic.travelDestinations)
+            createListOfRecyclerViewAdapterItem(recordBasic)
     }
 
     private fun createDayFromDate(startDate: String, date: String): String {
@@ -177,21 +177,47 @@ class RecordBasicViewModel @Inject constructor(
         )
     }
 
-    private fun createListOfRecyclerViewAdapterItem(travelDestinations: List<RecordBasicItem.TravelDestination>): List<RecordBasicItem> {
+    private fun createListOfRecyclerViewAdapterItem(recordBasic: RecordBasic): List<RecordBasicItem> {
+        val travelDestinations = recordBasic.travelDestinations
         val list = mutableListOf<RecordBasicItem>()
-        var currDate = ""
-        var day = 0
 
-        for (travelDestination in travelDestinations) {
-            if (currDate != travelDestination.date) {
-                currDate = travelDestination.date
-                day++
-                list.add(RecordBasicItem.RecordBasicHeader("Day$day", currDate))
+        var currDay = 1
+        var currDate = recordBasic.startDate
+        var tempIndex = 0
+
+        while (currDate != recordBasic.endDate) {
+            list.add(RecordBasicItem.RecordBasicHeader("Day$currDay", currDate))
+
+            for (i in tempIndex until travelDestinations.size) {
+                if (travelDestinations[i].date == currDate) {
+                    list.add(travelDestinations[i])
+                    tempIndex = i
+                }
             }
-            list.add(travelDestination)
+
+            currDay++
+            currDate = nextDate(currDate)
         }
 
         return list.toList()
+    }
+
+    private fun nextDate(currDate: String): String {
+        val tempDate = currDate.split('.').map { it.toInt() }
+        val isLeapYear = tempDate[0] % 4 == 0
+        val dayOfMonth =
+            if (isLeapYear) listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+            else listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+
+        if (tempDate[2] + 1 <= dayOfMonth[tempDate[1]]) {
+            return "${tempDate[0]}.${tempDate[1]}.${tempDate[2] + 1}"
+        }
+
+        if (tempDate[1] + 1 <= 12) {
+            return "${tempDate[0]}.${tempDate[1] + 1}.1"
+        }
+
+        return "${tempDate[0] + 1}.1.1"
     }
 
     fun addImage(uri: Uri, position: Int) {
