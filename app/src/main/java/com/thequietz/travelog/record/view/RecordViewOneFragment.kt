@@ -57,7 +57,7 @@ class RecordViewOneFragment : Fragment() {
                 initVariable(args)
                 loadRecord()
             }
-            imageList.observe(viewLifecycleOwner, { it ->
+            dataList.observe(viewLifecycleOwner, { it ->
                 it?.let { adapter.submitList(it) }
             })
         }
@@ -145,7 +145,7 @@ class RecordViewOneFragment : Fragment() {
             .setTitle("삭제 확인")
             .setMessage("현재 이미지를 삭제하시겠습니까?")
             .setNegativeButton("예") { dialog, which ->
-                if (recordViewOneViewModel.currentImage.value?.id != null) {
+                if (recordViewOneViewModel.currentImage.value?.newRecordImageId != null) {
                     CoroutineScope(Dispatchers.IO).launch {
                         recordViewOneViewModel.delete()
                     }

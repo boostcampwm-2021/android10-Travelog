@@ -5,7 +5,7 @@
     <data>
         <variable
             name="item"
-            type="com.thequietz.travelog.record.model.RecordImage" />
+            type="com.thequietz.travelog.data.db.dao.NewRecordImage" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
@@ -20,6 +20,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:paddingHorizontal="5dp"
             android:scaleType="fitXY"
+            app:setImage="@{item.url}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

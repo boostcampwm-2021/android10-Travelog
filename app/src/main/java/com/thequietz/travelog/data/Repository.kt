@@ -5,6 +5,9 @@ import com.google.gson.JsonSyntaxException
 import com.thequietz.travelog.BuildConfig
 import com.thequietz.travelog.api.GuideRecommendService
 import com.thequietz.travelog.api.PlaceService
+import com.thequietz.travelog.data.db.dao.JoinRecordDao
+import com.thequietz.travelog.data.db.dao.NewRecordImage
+import com.thequietz.travelog.data.db.dao.NewRecordImageDao
 import com.thequietz.travelog.data.db.dao.PlaceDao
 import com.thequietz.travelog.data.db.dao.RecommendPlaceDao
 import com.thequietz.travelog.data.db.dao.RecordImageDao
@@ -261,8 +264,17 @@ class GuideRepository @Inject constructor(
 @Singleton
 class RecordRepository @Inject constructor(
     private val recordImageDao: RecordImageDao,
+    private val newRecordImageDao: NewRecordImageDao,
+    private val joinRecordDao: JoinRecordDao,
     private val coroutineScope: CoroutineScope
 ) {
+    fun loadDefaultJoinedRecordByTravelId(travelId: Int, place: String) =
+        joinRecordDao.loadDefaultJoinedRecordByTravelId(travelId, place)
+
+    fun loadJoinedRecordByTravelIdAndPlace(travelId: Int, place: String) =
+        joinRecordDao.loadJoinedRecordByTravelIdAndPlace(travelId, place)
+
+    fun loadAll(travelId: Int) = joinRecordDao.loadJoinedRecordByTravelId(travelId)
     /*fun loadRecordImages() = recordImageDao.loadAllRecordImages()
 
     fun loadLastRecordImageByTravelIdAndDay(travelId: Int, day: String) =
@@ -282,6 +294,8 @@ class RecordRepository @Inject constructor(
         coroutineScope.launch { recordImageDao.updateRecordImageCommentById(comment, id) }
     }
     */
+    fun loadNewRecordImagesByTravelId(travelId: Int) =
+        newRecordImageDao.loadNewRecordImagesByTravelId(travelId)
 
     fun loadRecordImagesByTravelId(travelId: Int) =
         recordImageDao.loadRecordImageByTravelId(travelId)
@@ -293,8 +307,11 @@ class RecordRepository @Inject constructor(
         recordImageDao.loadFirstRowByTravelId(travelId, 1, 0)
 
     fun loadMainImagesByTravelId(travelId: Int) =
-        recordImageDao.loadAnyImageWithDistinctPlaceAndScheduleByTravelId(travelId)
+        newRecordImageDao.loadAnyImageWithDistinctPlaceAndScheduleByTravelId(travelId)
 
+    fun insertNewRecordImages(images: List<NewRecordImage>) {
+        coroutineScope.launch { newRecordImageDao.insert(*images.toTypedArray()) }
+    }
     fun insertRecordImages(images: List<RecordImage>) {
         coroutineScope.launch { recordImageDao.insert(*images.toTypedArray()) }
     }
@@ -304,6 +321,14 @@ class RecordRepository @Inject constructor(
             val data = recordImageDao.loadRecordImageById(id)
             if (data != null) {
                 recordImageDao.delete(data)
+            }
+        }
+    }
+    fun deleteNewRecordImage(id: Int) {
+        coroutineScope.launch {
+            val data = newRecordImageDao.loadRecordImageById(id)
+            if (data != null) {
+                newRecordImageDao.delete(data)
             }
         }
     }

@@ -88,7 +88,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordAddFragment"
-        android:name="com.thequietz.travelog.record.view.RecordAddFragment"
+        android:name="com.thequietz.travelog.record.view.RecordAddImageFragment"
         android:label="RecordAddFragment">
         <argument
             android:name="travelId"

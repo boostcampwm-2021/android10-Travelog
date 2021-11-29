@@ -73,7 +73,11 @@ class RecordViewManyFragment : Fragment() {
         binding.ibRecordViewMany.setOnClickListener {
             val action = RecordViewOneViewModel.currentPosition.value?.let { it ->
                 RecordViewManyFragmentDirections
-                    .actionRecordViewManyFragmentToRecordViewOneFragment(args.travelId, "day1", "")
+                    .actionRecordViewManyFragmentToRecordViewOneFragment(
+                        args.travelId,
+                        RecordViewOneViewModel.currentJoinRecord.recordImage.place,
+                        RecordViewOneViewModel.currentJoinRecord.recordImage.day
+                    )
             }
             if (action != null) {
                 findNavController().navigate(action)

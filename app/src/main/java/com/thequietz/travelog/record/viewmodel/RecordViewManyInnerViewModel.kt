@@ -36,7 +36,7 @@ class RecordViewManyInnerViewModel @Inject constructor(
             }
         }
     }
-    fun findInd(item: RecordImage): Int {
+/*    fun findInd(item: RecordImage): Int {
         var ind = 0
         list.forEachIndexed { idx, it ->
             if (it.id == item.id) {
@@ -45,7 +45,7 @@ class RecordViewManyInnerViewModel @Inject constructor(
             }
         }
         return ind
-    }
+    }*/
     fun changeDeleteState() {
         viewModelScope.launch {
             deleteState.value?.let {

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
+import com.thequietz.travelog.data.db.dao.JoinRecord
 import com.thequietz.travelog.record.model.MyRecord
-import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.record.view.RecordViewManyFragmentArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -35,87 +35,56 @@ class RecordViewManyViewModel @Inject constructor(
     }
 
     fun change2MyRecord(args: RecordViewManyFragmentArgs) {
+        val res = mutableListOf<MyRecord>()
         viewModelScope.launch {
-            val loadData = withContext(Dispatchers.IO) {
+            val placeList = withContext(Dispatchers.IO) {
                 repository.loadRecordImagesByTravelId(args.travelId)
             }
-            val res = mutableListOf<MyRecord>()
-            if (loadData.size != 0) {
-                var currentSchedule = loadData.get(0).day
-                var currentPlace = loadData.get(0).place
-                res.add(
-                    MyRecord.RecordSchedule().copy(
-                        date = currentSchedule
-                    )
-                )
-                res.add(
-                    MyRecord.RecordPlace().copy(
-                        place = currentPlace
-                    )
-                )
-                val currentImageList = mutableListOf<RecordImage>()
-                loadData.forEach {
-                    if (currentSchedule != it.day) { // 일정 다르면
-                        res.add( // 이전 이미지 res에 넣어주고
-                            MyRecord.RecordImageList().copy(
-                                list = currentImageList.toMutableList()
-                            )
-                        )
-                        currentImageList.clear() // 이미지 리스트 초기화
-
-                        currentSchedule = it.day // 일정 갱신해주고
-                        res.add( // res에 schedule넣어주고
-                            MyRecord.RecordSchedule().copy(
-                                date = currentSchedule
-                            )
-                        )
-                        currentPlace = it.place // 장소 갱신해주고
-                        res.add( // res에 Place넣어주고
-                            MyRecord.RecordPlace().copy(
-                                place = currentPlace
-                            )
-                        )
-                        currentImageList.add(it) // 이미지 리스트에 현재 data 넣기
-                    } else {
-                        if (currentPlace != it.place) { // 일정 같은데, 장소 다르면
-                            res.add( // 이전 이미지 res에 넣어주고
-                                MyRecord.RecordImageList().copy(
-                                    list = currentImageList.toMutableList()
-                                )
-                            )
-                            currentImageList.clear() // 이미지리스트 초기화 시키고
-                            currentPlace = it.place // 현재 place 갱신하고
-                            res.add( // res에 현재 place 넣어주거
-                                MyRecord.RecordPlace().copy(
-                                    place = currentPlace
-                                )
-                            )
-                            currentImageList.add(it) // 이미지 리스트에 현재 data 넣기
-                        } else { // 일정, 장소 같으면
-                            currentImageList.add(it) // image리스트에 현재 data 넣기
-                        }
-                    }
+            placeList.forEach {
+                val temp = withContext(Dispatchers.IO) {
+                    repository.loadJoinedRecordByTravelIdAndPlace(args.travelId, it.place)
                 }
-                res.add( // 이미지 res에 넣어주고
-                    MyRecord.RecordImageList().copy(
-                        list = currentImageList.toMutableList()
+                if (temp.isEmpty()) {
+                    val anotherTemp = repository.loadDefaultJoinedRecordByTravelId(args.travelId, it.place)
+                    res.add(
+                        MyRecord.RecordSchedule().copy(
+                            day = anotherTemp.recordImage.day
+                        )
                     )
-                )
-                withContext(Dispatchers.Main) {
-                    _dataList.value = res
-                }
-            } else {
-                withContext(Dispatchers.Main) {
-                    _dataList.value = mutableListOf()
+                    res.add(
+                        MyRecord.RecordPlace().copy(
+                            place = anotherTemp.recordImage.place
+                        )
+                    )
+                    val resList = mutableListOf<JoinRecord>()
+                    resList.add(anotherTemp)
+                    res.add(
+                        MyRecord.RecordImageList().copy(
+                            list = resList
+                        )
+                    )
+                } else {
+                    res.add(
+                        MyRecord.RecordSchedule().copy(
+                            day = temp.get(0).recordImage.day
+                        )
+                    )
+                    res.add(
+                        MyRecord.RecordPlace().copy(
+                            place = temp.get(0).recordImage.place
+                        )
+                    )
+                    res.add(
+                        MyRecord.RecordImageList().copy(
+                            list = temp.toMutableList()
+                        )
+                    )
                 }
             }
-            if (loadData.size == 0) {
-                _travelName
-            }
-            _travelName.value = loadData.get(0).title
-            _startDate.value = loadData.get(0).startDate
-            _endDate.value = loadData.get(0).endDate
-            loadData.forEach { println(it.toString()) }
+            _dataList.value = res
+            _travelName.value = placeList.get(0).title
+            _startDate.value = placeList.get(0).startDate
+            _endDate.value = placeList.get(0).endDate
         }
     }
 }
