@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.thequietz.travelog.data.db.dao.NewRecordImage
 import com.thequietz.travelog.record.model.Record
 import com.thequietz.travelog.record.repository.RecordBasicRepository
 import com.thequietz.travelog.schedule.model.ScheduleModel
@@ -23,6 +24,14 @@ class RecordViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             val scheduleList = repository.loadAllSchedule()
+            val imageList = NewRecordImage(
+                travelId = 1,
+                title = "",
+                day = "",
+                place = "",
+                url = "",
+                comment = ""
+            )
             val recordList = createRecordFromSchedule(scheduleList)
 
             // TODO: 데이터베이스 작업 완료 후 이미지 불러와서 보여줘야 한다.

@@ -42,4 +42,7 @@ abstract class RecordImageDao : BaseDao<RecordImage> {
 
     @Query("DELETE FROM RecordImage WHERE place =:place")
     abstract fun deleteRecordImageByPlace(place: String)
+
+    @Query("DELETE FROM RecordImage WHERE travelId =:travelId")
+    abstract fun deleteRecordImageByTravelId(travelId: Int)
 }
