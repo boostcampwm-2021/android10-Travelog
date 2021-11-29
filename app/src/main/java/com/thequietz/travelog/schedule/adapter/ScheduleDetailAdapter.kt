@@ -13,17 +13,15 @@ import com.thequietz.travelog.databinding.ItemRecyclerScheduleDetailHeaderBindin
 import com.thequietz.travelog.schedule.data.ScheduleDetailItem
 import com.thequietz.travelog.schedule.data.TYPE_CONTENT
 import com.thequietz.travelog.schedule.data.TYPE_HEADER
-import com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel
 
-class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: () -> (Unit)) :
+class ScheduleDetailAdapter(
+    var onAdd: () -> (Unit),
+    var onDelete: (Int) -> (Unit),
+    var onMoveCompleted: (MutableList<ScheduleDetailItem>) -> (Unit),
+    var changeSelected: (Int, String) -> (Unit)
+) :
     ListAdapter<ScheduleDetailItem, RecyclerView.ViewHolder>(ScheduleDiffCallback()),
     ScheduleTouchHelperCallback.OnItemMoveListener {
-    override fun onCurrentListChanged(
-        previousList: MutableList<ScheduleDetailItem>,
-        currentList: MutableList<ScheduleDetailItem>
-    ) {
-        submitList(currentList)
-    }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
         if (toPosition != 0) {
@@ -38,18 +36,18 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: (
                 else
                     newList.add(toPosition + 1, data)
             }
-            viewModel.moveItem(fromPosition, toPosition)
             submitList(newList)
         }
     }
 
     override fun onItemDropped(fromPosition: Int, toPosition: Int) {
         if (toPosition != 0) {
+            onMoveCompleted(currentList.toMutableList())
         }
     }
 
     override fun onItemSwiped(position: Int) {
-        viewModel.deleteSchedule(position)
+        onDelete(position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -90,10 +88,9 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: (
             TYPE_HEADER -> {
                 (holder as HeaderViewHolder).bind(getItem(position))
             }
-            TYPE_CONTENT -> {
+            else -> {
                 (holder as ContentViewHolder).bind(getItem(position))
             }
-            else -> { }
         }
     }
 
@@ -105,12 +102,10 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: (
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ScheduleDetailItem) {
             binding.item = item
-            binding.viewModel = viewModel
             binding.setOnAddClickListener {
-                if (item.index != null && item.name != null) {
-                    viewModel.selectedIndex = item.index - 1
-                    viewModel.selectedDate = item.name
+                if (item.index != null) {
                     onAdd()
+                    changeSelected(item.index - 1, item.name)
                 }
             }
         }
@@ -120,7 +115,6 @@ class ScheduleDetailAdapter(val viewModel: ScheduleDetailViewModel, val onAdd: (
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ScheduleDetailItem) {
             binding.item = item
-            binding.viewModel = viewModel
             item.color.let {
                 binding.viewCircle.backgroundTintList =
                     ColorStateList.valueOf(Color.rgb(it.r, it.g, it.b))
@@ -140,8 +134,9 @@ private class ScheduleDiffCallback : DiffUtil.ItemCallback<ScheduleDetailItem>()
     override fun areItemsTheSame(
         oldItem: ScheduleDetailItem,
         newItem: ScheduleDetailItem
-    ): Boolean =
-        oldItem == newItem
+    ): Boolean {
+        return oldItem.id == newItem.id
+    }
 
     override fun areContentsTheSame(
         oldItem: ScheduleDetailItem,

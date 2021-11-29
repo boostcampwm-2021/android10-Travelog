@@ -79,13 +79,14 @@ class ScheduleTouchHelperCallback(private val itemMoveListener: OnItemMoveListen
         val toPos = target.bindingAdapterPosition
         itemMoveListener.onItemMove(fromPos, toPos)
 
-        val toPosition = if (fromPos > toPos) {
+        positionTo = if (fromPos > toPos) {
             viewHolder.bindingAdapterPosition - 1
         } else if (fromPos < toPos) {
             viewHolder.bindingAdapterPosition + 1
         } else {
             viewHolder.bindingAdapterPosition
         }
+
         isMoved = true
         return true
     }

@@ -1,7 +1,6 @@
 package com.thequietz.travelog.schedule.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -39,33 +38,19 @@ class ScheduleDetailFragment :
             viewModel.loadSchedule(args.schedule)
 
         binding.btnNext.setOnClickListener {
-            val schedules = viewModel.detailList.value?.toTypedArray() ?: return@setOnClickListener
+            val schedule = viewModel.schedule
+            val scheduleDetails =
+                viewModel.detailList.value?.toTypedArray() ?: return@setOnClickListener
             viewModel.saveSchedule()
-            Log.d(
-                "LIST",
-                viewModel.detailList
-                    .value?.fold("", { acc, v -> acc + v.date + "\t" }) ?: ""
-            )
 
             val action =
                 ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToConfirmFragment(
-                    schedules
+                    schedule, scheduleDetails
                 )
             findNavController().navigate(action)
         }
 
         val stateHandle = findNavController().currentBackStackEntry?.savedStateHandle
-
-        viewModel.detailList.observe(viewLifecycleOwner, { list ->
-            targetList.value = mutableListOf()
-            val tempList = list.map {
-                LatLng(
-                    it.destination.geometry.location.latitude,
-                    it.destination.geometry.location.longitude
-                )
-            }.toMutableList()
-            targetList.value = tempList
-        })
 
         stateHandle?.getLiveData<PlaceDetailModel>("result")?.observe(
             viewLifecycleOwner,
@@ -87,30 +72,48 @@ class ScheduleDetailFragment :
         val startDate = args.schedule.date.split("~")[0]
         val endDate = args.schedule.date.split("~")[1]
         viewModel.initItemList(startDate, endDate)
-        adapter = ScheduleDetailAdapter(viewModel) {
-            val action =
-                ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToPlaceRecommendFragment(
-                    args.schedulePlaceArray
-                )
-            this.findNavController().navigate(action)
-        }
+        adapter = ScheduleDetailAdapter(
+            { addItem() },
+            { viewModel.deleteSchedule(it) },
+            { viewModel.moveItem(it) },
+            { idx, date -> viewModel.changeSelected(idx, date) }
+        )
         val callback = ScheduleTouchHelperCallback(adapter)
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(binding.rvSchedule)
         binding.rvSchedule.adapter = adapter
     }
 
+    private fun addItem() {
+        val action =
+            ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToPlaceRecommendFragment(
+                args.schedulePlaceArray
+            )
+        this.findNavController().navigate(action)
+    }
+
     private fun initItemObserver() {
+        viewModel.detailList.observe(viewLifecycleOwner, { list ->
+            targetList.value = mutableListOf()
+            val tempList = list.map {
+                LatLng(
+                    it.destination.geometry.location.latitude,
+                    it.destination.geometry.location.longitude
+                )
+            }.toMutableList()
+            targetList.value = tempList
+        })
+
         viewModel.itemList.observe(viewLifecycleOwner, {
             adapter.submitList(it)
         })
 
-        viewModel.placeDetailList.observe(viewLifecycleOwner, {
-            viewModel.placeDetailList.removeObservers(viewLifecycleOwner)
-        })
-
         viewModel.colorList.observe(viewLifecycleOwner, {
             markerColorList.value = it
+        })
+
+        viewModel.placeDetailList.observe(viewLifecycleOwner, {
+            viewModel.placeDetailList.removeObservers(viewLifecycleOwner)
         })
     }
 
@@ -119,5 +122,10 @@ class ScheduleDetailFragment :
             baseTargetList =
                 args.schedule.schedulePlace.map { LatLng(it.mapY.toDouble(), it.mapX.toDouble()) }
                     .toMutableList()
+    }
+
+    override fun onDestroyView() {
+        binding.rvSchedule.adapter = null
+        super.onDestroyView()
     }
 }
