@@ -86,9 +86,12 @@ class RecordViewOneFragment : Fragment() {
                 }
             )
             ibRecordViewOne.setOnClickListener {
-                val action = RecordViewOneFragmentDirections
-                    .actionRecordViewOneFragmentToRecordViewManyFragment(recordViewOneViewModel.travelId)
-                findNavController().navigate(action)
+                val action =
+                    recordViewOneViewModel.currentImage.value?.let {
+                        val action = RecordViewOneFragmentDirections
+                            .actionRecordViewOneFragmentToRecordViewManyFragment(it.recordImage.travelId)
+                        findNavController().navigate(action)
+                    }
             }
             ibRecordViewOneEditComment.setOnClickListener {
                 binding.etRecordViewOne.isEnabled = !binding.etRecordViewOne.isEnabled
@@ -145,7 +148,7 @@ class RecordViewOneFragment : Fragment() {
             .setTitle("삭제 확인")
             .setMessage("현재 이미지를 삭제하시겠습니까?")
             .setNegativeButton("예") { dialog, which ->
-                if (recordViewOneViewModel.currentImage.value?.newRecordImageId != null) {
+                if (recordViewOneViewModel.currentImage.value?.newRecordImage?.newRecordImageId != null) {
                     CoroutineScope(Dispatchers.IO).launch {
                         recordViewOneViewModel.delete()
                     }

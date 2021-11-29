@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
 import com.thequietz.travelog.data.db.dao.JoinRecord
-import com.thequietz.travelog.data.db.dao.NewRecordImage
-import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.record.view.RecordViewOneFragmentArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,15 +21,18 @@ class RecordViewOneViewModel @Inject constructor(
     companion object {
         private val _currentPosition = MutableLiveData<Int>()
         val currentPosition: LiveData<Int> = _currentPosition
-        var currentJoinRecord: JoinRecord = JoinRecord(RecordImage(), NewRecordImage())
+
+        var _currentJoinRecord = MutableLiveData<JoinRecord>()
+        val currentJoinRecord: LiveData<JoinRecord> = _currentJoinRecord
+
         var currentTravleId: Int = 0
     }
 
     private val _dataList = MutableLiveData<List<JoinRecord>>()
     val dataList: LiveData<List<JoinRecord>> = _dataList
 
-    private val _currentImage = MutableLiveData<NewRecordImage>()
-    val currentImage: LiveData<NewRecordImage> = _currentImage
+    private val _currentImage = MutableLiveData<JoinRecord>()
+    val currentImage: LiveData<JoinRecord> = _currentImage
 
     private val _islistUpdate = MutableLiveData<Boolean>()
     val islistUpdate: LiveData<Boolean> = _islistUpdate
@@ -74,7 +75,7 @@ class RecordViewOneViewModel @Inject constructor(
     }
 
     fun setCurrentImage(position: Int) {
-        _currentImage.value = dataList.value?.get(position)?.newRecordImage
+        _currentImage.value = dataList.value?.get(position)
     }
 
 //    fun isCommentChanged(str: String): Boolean {
@@ -90,7 +91,7 @@ class RecordViewOneViewModel @Inject constructor(
         } else {
             _currentPosition.value = position
             dataList.value?.let {
-                currentJoinRecord = it.get(position)
+                _currentJoinRecord.value = it.get(position)
             }
         }
     }
@@ -119,8 +120,8 @@ class RecordViewOneViewModel @Inject constructor(
                     _islistUpdate.value = true
                     currentPosition.value?.let { setCurrentPosition(it - 1) }
                 }
-                currentImage.value?.newRecordImageId?.let {
-                    repository.deleteNewRecordImage(it)
+                currentImage.value?.newRecordImage?.let {
+                    repository.deleteNewRecordImage(it.newRecordImageId)
                 }
             }
             withContext(Dispatchers.IO) {
