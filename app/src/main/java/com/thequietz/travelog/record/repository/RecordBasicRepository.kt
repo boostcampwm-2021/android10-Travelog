@@ -43,4 +43,10 @@ class RecordBasicRepository @Inject constructor(
             recordImageDao.deleteRecordImageByPlace(place)
         }
     }
+
+    fun deleteRecordImageByTravelId(travelId: Int) {
+        coroutineScope.launch {
+            recordImageDao.deleteRecordImageByTravelId(travelId)
+        }
+    }
 }

@@ -9,6 +9,7 @@ import com.thequietz.travelog.record.model.RecordBasic
 import com.thequietz.travelog.record.model.RecordBasicItem
 import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.record.repository.RecordBasicRepository
+import com.thequietz.travelog.schedule.model.ScheduleDetailModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,6 +20,9 @@ import javax.inject.Inject
 class RecordBasicViewModel @Inject constructor(
     private val repository: RecordBasicRepository
 ) : ViewModel() {
+    private val _isEmpty = MutableLiveData<Boolean>()
+    val isEmpty: LiveData<Boolean> = _isEmpty
+
     private val _title = MutableLiveData<String>()
     val title: LiveData<String> = _title
 
@@ -33,39 +37,27 @@ class RecordBasicViewModel @Inject constructor(
 
     fun loadData(travelId: Int, title: String, startDate: String, endDate: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val recordImages = repository.loadRecordImagesByTravelId(travelId)
+            val oldRecordImages = repository.loadRecordImagesByTravelId(travelId)
+            val scheduleDetails =
+                repository.loadScheduleDetailOrderByScheduleIdAndDate(travelId)
 
-            if (recordImages.isEmpty()) {
-                val scheduleDetails =
-                    repository.loadScheduleDetailOrderByScheduleIdAndDate(travelId)
-                val recordImages = mutableListOf<RecordImage>()
-
-                for (scheduleDetail in scheduleDetails) {
-                    recordImages.add(
-                        RecordImage(
-                            travelId = scheduleDetail.scheduleId,
-                            title = title,
-                            startDate = startDate,
-                            endDate = endDate,
-                            place = scheduleDetail.destination.name,
-                            day = createDayFromDate(startDate, scheduleDetail.date),
-                            lat = scheduleDetail.destination.geometry.location.latitude,
-                            lng = scheduleDetail.destination.geometry.location.longitude
-                        )
-                    )
-                }
-
+            if (oldRecordImages.isEmpty() && scheduleDetails.isEmpty()) {
                 withContext(Dispatchers.Main) {
-                    _recordImageList.value = recordImages.toList()
+                    _isEmpty.value = true
                 }
-
-                repository.insertRecordImages(recordImages.toList())
-
                 return@launch
             }
 
+            val newRecordImages = createRecordImages(scheduleDetails, title, startDate, endDate)
+            val isSameOldAndNew = compareOldAndNewRecordImages(oldRecordImages, newRecordImages)
+
             withContext(Dispatchers.Main) {
-                _recordImageList.value = recordImages
+                _recordImageList.value = newRecordImages
+            }
+
+            if (!isSameOldAndNew) {
+                repository.deleteRecordImageByTravelId(travelId)
+                repository.insertRecordImages(newRecordImages)
             }
         }
     }
@@ -77,6 +69,55 @@ class RecordBasicViewModel @Inject constructor(
         _date.value = "${recordBasic.startDate} ~ ${recordBasic.endDate}"
         _recordBasicItemList.value =
             createListOfRecyclerViewAdapterItem(recordBasic)
+    }
+
+    private fun createRecordImages(
+        scheduleDetails: List<ScheduleDetailModel>,
+        title: String,
+        startDate: String,
+        endDate: String
+    ): List<RecordImage> {
+        val recordImages = mutableListOf<RecordImage>()
+
+        for (scheduleDetail in scheduleDetails) {
+            recordImages.add(
+                RecordImage(
+                    travelId = scheduleDetail.scheduleId,
+                    title = title,
+                    startDate = startDate,
+                    endDate = endDate,
+                    place = scheduleDetail.destination.name,
+                    day = createDayFromDate(startDate, scheduleDetail.date),
+                    lat = scheduleDetail.destination.geometry.location.latitude,
+                    lng = scheduleDetail.destination.geometry.location.longitude
+                )
+            )
+        }
+
+        return recordImages.toList()
+    }
+
+    private fun compareOldAndNewRecordImages(
+        oldRecordImages: List<RecordImage>,
+        newRecordImages: List<RecordImage>
+    ): Boolean {
+        if (oldRecordImages.size != newRecordImages.size) return false
+
+        for (i in oldRecordImages.indices) {
+            if (oldRecordImages[i].id != newRecordImages[i].id ||
+                oldRecordImages[i].title != newRecordImages[i].title ||
+                oldRecordImages[i].startDate != newRecordImages[i].startDate ||
+                oldRecordImages[i].endDate != newRecordImages[i].endDate ||
+                oldRecordImages[i].day != newRecordImages[i].day ||
+                oldRecordImages[i].place != newRecordImages[i].place ||
+                oldRecordImages[i].lat != newRecordImages[i].lat ||
+                oldRecordImages[i].lng != newRecordImages[i].lng
+            ) {
+                return false
+            }
+        }
+
+        return true
     }
 
     // TODO: DateUtil와 같은 클래스로 분리 예정

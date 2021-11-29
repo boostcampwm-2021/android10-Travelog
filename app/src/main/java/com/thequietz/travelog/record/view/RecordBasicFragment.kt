@@ -2,6 +2,7 @@ package com.thequietz.travelog.record.view
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -58,6 +59,12 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
     }
 
     private fun subscribeUi() {
+        viewModel.isEmpty.observe(viewLifecycleOwner) { isEmpty ->
+            if (isEmpty) {
+                Toast.makeText(requireContext(), "데이터가 없습니다. 일정을 추가해주세요.", Toast.LENGTH_LONG).show()
+                findNavController().navigateUp()
+            }
+        }
         viewModel.title.observe(viewLifecycleOwner) { title ->
             binding.tvRecordBasicTitle.text = title
         }

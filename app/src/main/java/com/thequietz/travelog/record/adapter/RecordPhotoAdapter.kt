@@ -41,7 +41,7 @@ class RecordPhotoAdapter(
             if (url != null) {
                 Glide.with(itemView)
                     .load(url)
-                    .placeholder(R.drawable.bg_photo_placeholder)
+                    .placeholder(R.drawable.ic_placeholder)
                     .into(ivItemRecordPhoto)
             } else {
                 ivItemRecordPhoto.setImageResource(R.drawable.ic_add)

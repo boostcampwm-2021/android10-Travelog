@@ -7,7 +7,7 @@ import androidx.room.Query
 
 @Dao
 abstract class NewRecordImageDao : BaseDao<NewRecordImage> {
-    @Query("SELECT * FROM NewRecordImage WHERE travelId =:travelId, day =:day, place =:place")
+    @Query("SELECT * FROM NewRecordImage WHERE travelId =:travelId and day =:day and place =:place")
     abstract fun loadNewRecordImageByTravelIdAndDayAndAPlace(travelId: Int, day: String, place: String): List<NewRecordImage>
 
     @Query("SELECT * FROM NewRecordImage WHERE id =:id")
