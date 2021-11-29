@@ -19,7 +19,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:paddingHorizontal="5dp"
-            app:setImage="@{item.url}"
             android:scaleType="fitXY"
             />
 

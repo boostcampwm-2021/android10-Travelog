@@ -44,7 +44,6 @@ class RecordViewOneViewModel @Inject constructor(
     }
     fun initVariable(args: RecordViewOneFragmentArgs) {
         travelId = args.travelId
-        groupId = args.group
         day = args.day
         currentTravleId = travelId
     }
@@ -64,12 +63,12 @@ class RecordViewOneViewModel @Inject constructor(
         _currentImage.value = _imageList.value?.get(position)
     }
 
-    fun isCommentChanged(str: String): Boolean {
-        if (currentImage.value?.comment != str) {
-            return true
-        }
-        return false
-    }
+//    fun isCommentChanged(str: String): Boolean {
+//        if (currentImage.value?.comment != str) {
+//            return true
+//        }
+//        return false
+//    }
 
     fun setCurrentPosition(position: Int) {
         if (position <0) {
@@ -88,9 +87,6 @@ class RecordViewOneViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 viewModelScope.launch {
                     _islistUpdate.value = true
-                }
-                currentImage.value?.id?.let {
-                    repository.updateRecordImageComment(comment, it)
                 }
             }
             withContext(Dispatchers.IO) {

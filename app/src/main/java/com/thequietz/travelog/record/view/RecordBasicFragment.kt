@@ -2,8 +2,6 @@ package com.thequietz.travelog.record.view
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -30,12 +28,14 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
         )
     }
 
+    /* 이미지 추가 기능 삭제 예정
     private var position = 0
     private val getImageUri: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             uri ?: return@registerForActivityResult
             viewModel.addImage(uri, position)
         }
+     */
 
     override var drawMarker = true
     override var isMarkerNumbered = true
@@ -77,15 +77,12 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
         viewModel.updateTargetList(day, targetList)
     }
 
-    private fun navigateToRecordViewUi(index: Int, day: String, group: Int) {
-        val row = viewModel.getIndexByGroupAndDay(group, day)
-
+    private fun navigateToRecordViewUi(day: String, place: String) {
         val action =
             RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordViewOneFragment(
                 travelId = navArgs.travelId,
-                index = row,
                 day = day,
-                group = group
+                place = place
             )
 
         findNavController().navigate(action)
@@ -104,10 +101,10 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
         PopupMenu(requireActivity(), view).apply {
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
-                    R.id.add_image -> {
-                        this@RecordBasicFragment.position = position
-                        getImageUri.launch("image/*")
-                    }
+//                    R.id.add_image -> {
+//                        this@RecordBasicFragment.position = position
+//                        getImageUri.launch("image/*")
+//                    }
                     R.id.delete_record -> {
                         viewModel.deleteRecord(position)
                     }

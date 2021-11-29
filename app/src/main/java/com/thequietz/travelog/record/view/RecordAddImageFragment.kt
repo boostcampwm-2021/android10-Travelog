@@ -56,9 +56,6 @@ class RecordAddImageFragment : Fragment() {
                                 endDate = recordAddImageViewModel.endDate.value!!,
                                 day = recordAddImageViewModel.currentSchedule,
                                 place = recordAddImageViewModel.currentPlace,
-                                url = it.getItemAt(ind).uri.toString(),
-                                comment = "test입니다~",
-                                group = recordAddImageViewModel.nextGroupId.value!!
                             )
                         )
                         println("getContent  ${recordAddImageViewModel.travelName.value!!}")
@@ -116,9 +113,8 @@ class RecordAddImageFragment : Fragment() {
                 val action = RecordAddImageFragmentDirections
                     .actionRecordAddImageFragmentToRecordViewOneFragment(
                         0,
-                        RecordViewOneViewModel.currentTravleId,
                         "Day1",
-                        0
+                        "" // 장소명
                     )
                 findNavController().navigate(action)
                 true
@@ -140,9 +136,8 @@ class RecordAddImageFragment : Fragment() {
             val action = RecordAddImageFragmentDirections
                 .actionRecordAddImageFragmentToRecordViewOneFragment(
                     0,
-                    RecordViewOneViewModel.currentTravleId,
                     "Day1",
-                    0
+                    "" // 장소명
                 )
             findNavController().navigate(action)
         }

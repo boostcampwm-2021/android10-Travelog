@@ -23,8 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:paddingHorizontal="5dp"
-            android:id="@+id/iv_item_image"
-            app:setImage="@{imageItem.url}" />
+            android:id="@+id/iv_item_image" />
         <CheckBox
             android:layout_width="25dp"
             android:layout_height="25dp"

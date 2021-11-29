@@ -1,5 +1,6 @@
 package com.thequietz.travelog.record.viewmodel
 
+/*
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,8 +31,8 @@ class RecordAddViewModel @Inject constructor(
 
     fun createRecord(travelId: Int, day: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val recordImage = repository.loadLastRecordImageByTravelIdAndDay(travelId, day)
-            val group = repository.loadGroupFromRecordImageByTravelId(travelId)
+            // val recordImage = repository.loadLastRecordImageByTravelIdAndDay(travelId, day)
+            // val group = repository.loadGroupFromRecordImageByTravelId(travelId)
 
             withContext(Dispatchers.Main) {
                 tempRecordImage.value = recordImage
@@ -71,8 +72,6 @@ class RecordAddViewModel @Inject constructor(
                     day = temp.day,
                     // place = newPlace,
                     place = "test",
-                    url = image,
-                    group = tempGroup + 1
                 )
             )
         }
@@ -86,3 +85,4 @@ class RecordAddViewModel @Inject constructor(
         }
     }
 }
+*/

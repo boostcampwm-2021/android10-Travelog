@@ -13,8 +13,8 @@ sealed class RecordBasicItem {
         val name: String,
         val date: String,
         val day: String,
-        val group: Int,
-        val images: List<String> = emptyList(),
+        // val group: Int,
+        // val images: List<String> = emptyList(),
         val lat: Double,
         val lng: Double
     ) : RecordBasicItem()

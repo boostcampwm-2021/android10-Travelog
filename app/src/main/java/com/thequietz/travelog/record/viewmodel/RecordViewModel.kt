@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.record.model.Record
-import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.record.repository.RecordBasicRepository
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +24,8 @@ class RecordViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val scheduleList = repository.loadAllSchedule()
             val recordList = createRecordFromSchedule(scheduleList)
+
+            // TODO: 데이터베이스 작업 완료 후 이미지 불러와서 보여줘야 한다.
 
             withContext(Dispatchers.Main) {
                 _recordList.value = recordList
@@ -49,6 +50,7 @@ class RecordViewModel @Inject constructor(
         return recordList
     }
 
+    /*
     private fun createRecordFromRecordImages(recordImages: List<RecordImage>): List<Record> {
         val recordList = mutableListOf<Record>()
         var travelId = -1
@@ -76,4 +78,5 @@ class RecordViewModel @Inject constructor(
 
         return recordList.toList()
     }
+     */
 }

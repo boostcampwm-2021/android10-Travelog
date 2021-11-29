@@ -213,7 +213,8 @@ class GuideRepository @Inject constructor(
     }
 
     suspend fun loadFestivalData(areaCode: String, pageNo: Int): List<RecommendPlace> {
-        val loadData = recommendPlaceDao.loadRecommendFestivalByAreaCode(areaCode, festivalContentTypeId)
+        val loadData =
+            recommendPlaceDao.loadRecommendFestivalByAreaCode(areaCode, festivalContentTypeId)
         if (loadData.size < pageNo * 10) {
             try {
                 val res = guideRecommendService.requestFestival(
@@ -262,13 +263,25 @@ class RecordRepository @Inject constructor(
     private val recordImageDao: RecordImageDao,
     private val coroutineScope: CoroutineScope
 ) {
-    fun loadRecordImages() = recordImageDao.loadAllRecordImages()
+    /*fun loadRecordImages() = recordImageDao.loadAllRecordImages()
 
     fun loadLastRecordImageByTravelIdAndDay(travelId: Int, day: String) =
         recordImageDao.loadLastRecordImageByTravelIdAndDay(travelId, day)
 
     fun loadGroupFromRecordImageByTravelId(travelId: Int) =
         recordImageDao.loadGroupFromRecordImageByTravelId(travelId)
+
+    fun createRecordImage(recordImage: RecordImage) {
+        coroutineScope.launch { recordImageDao.insert(recordImage) }
+    }
+
+    fun loadNextGroupIdByTravelId(travelId: Int) =
+        recordImageDao.loadDistinctGroupIdByTravelId(travelId)
+
+    fun updateRecordImageComment(comment: String, id: Int) {
+        coroutineScope.launch { recordImageDao.updateRecordImageCommentById(comment, id) }
+    }
+    */
 
     fun loadRecordImagesByTravelId(travelId: Int) =
         recordImageDao.loadRecordImageByTravelId(travelId)
@@ -279,19 +292,8 @@ class RecordRepository @Inject constructor(
     fun loadOneDataByTravelId(travelId: Int) =
         recordImageDao.loadFirstRowByTravelId(travelId, 1, 0)
 
-    fun loadNextGroupIdByTravelId(travelId: Int) =
-        recordImageDao.loadDistinctGroupIdByTravelId(travelId)
-
     fun loadMainImagesByTravelId(travelId: Int) =
         recordImageDao.loadAnyImageWithDistinctPlaceAndScheduleByTravelId(travelId)
-
-    fun createRecordImage(recordImage: RecordImage) {
-        coroutineScope.launch { recordImageDao.insert(recordImage) }
-    }
-
-    fun updateRecordImageComment(comment: String, id: Int) {
-        coroutineScope.launch { recordImageDao.updateRecordImageCommentById(comment, id) }
-    }
 
     fun insertRecordImages(images: List<RecordImage>) {
         coroutineScope.launch { recordImageDao.insert(*images.toTypedArray()) }
