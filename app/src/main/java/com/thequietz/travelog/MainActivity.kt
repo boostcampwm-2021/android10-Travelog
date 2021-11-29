@@ -9,6 +9,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.thequietz.travelog.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +28,21 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
         navController = navHostFragment!!.findNavController()
         binding.bottomNavigation.setupWithNavController(navController)
+
+        val appBarConfig = AppBarConfiguration(navController.graph)
+        binding.toolbar.setupWithNavController(navController, appBarConfig)
+
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            binding.toolbar.title = ""
+
+            /* 화면 전환 시 화면 아이디에 따라 다른 툴바 적용 가능
+            if (destination.id == R.id.guideFragment) {
+                // 검색창 추가, 버튼 추가 등등
+            }
+             */
+        }
     }
+
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         val view: View? = currentFocus
         if (view != null && (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_MOVE) && view is EditText) {
@@ -35,13 +50,12 @@ class MainActivity : AppCompatActivity() {
             view.getLocationOnScreen(scrcoords)
             val x: Float = ev.rawX + view.getLeft() - scrcoords[0]
             val y: Float = ev.rawY + view.getTop() - scrcoords[1]
-            if (x < view.getLeft() || x > view.getRight() || y < view.getTop() || y > view.getBottom()) (
-                this.getSystemService(
-                    Context.INPUT_METHOD_SERVICE
-                ) as InputMethodManager
-                ).hideSoftInputFromWindow(
-                this.window.decorView.applicationWindowToken, 0
-            )
+            if (x < view.getLeft() || x > view.getRight() || y < view.getTop() || y > view.getBottom()) {
+                (this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+                    this.window.decorView.applicationWindowToken,
+                    0
+                )
+            }
         }
         return super.dispatchTouchEvent(ev)
     }
