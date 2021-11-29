@@ -72,6 +72,11 @@ object DatabaseModule {
         return appDatabase.recommendPlaceDao()
     }
 
+   /*@Provides
+   fun provideNewRecordImageDao(appDatabase: AppDatabase): NewRecordImageDao {
+       return appDatabase.newRecordImageDao()
+   }*/
+
     @Provides
     fun provideCoroutineScope() = CoroutineScope(SupervisorJob())
 }
