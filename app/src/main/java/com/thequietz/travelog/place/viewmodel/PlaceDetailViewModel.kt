@@ -5,8 +5,8 @@ import android.text.Html
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.thequietz.travelog.BaseViewModel
 import com.thequietz.travelog.place.model.PlaceDetailGeometry
 import com.thequietz.travelog.place.model.PlaceDetailImage
 import com.thequietz.travelog.place.model.PlaceDetailLocation
@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PlaceDetailViewModel @Inject constructor(
     private val repository: PlaceDetailRepository
-) : ViewModel() {
+) : BaseViewModel() {
     private val TAG = "VIEWMODEL"
 
     private val typeMap = mapOf(
@@ -46,16 +46,15 @@ class PlaceDetailViewModel @Inject constructor(
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.d("ERROR", throwable.stackTraceToString())
-        null
     }
 
     private val handler = Dispatchers.Main + exceptionHandler
 
     fun loadDetailBySearch(placeId: String) {
-        viewModelScope.launch(handler) {
+        viewModelScope.launch(mainDispatchers) {
             val data = repository.loadPlaceDetail(placeId)
 
-            data.let {
+            data?.also {
                 _detail.value = it
             }
             _operation.value = data?.operation?.operation?.fold("", { acc, value ->

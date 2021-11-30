@@ -53,3 +53,8 @@ data class PlaceRecommendWithList(
     val title: String,
     val list: LiveData<List<PlaceRecommendModel>>
 )
+
+data class PlaceRecommendListResponse(
+    val message: String,
+    val data: List<PlaceRecommendModel>
+)
