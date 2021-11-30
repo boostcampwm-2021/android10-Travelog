@@ -29,12 +29,30 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment!!.findNavController()
         binding.bottomNavigation.setupWithNavController(navController)
 
-        val appBarConfig = AppBarConfiguration(navController.graph)
+        val topLevelDestinations =
+            hashSetOf(
+                R.id.guideFragment,
+                R.id.scheduleFragment,
+                R.id.recordFragment,
+                R.id.menuFragment
+            )
+        val appBarConfig = AppBarConfiguration.Builder(topLevelDestinations).build()
         binding.toolbar.setupWithNavController(navController, appBarConfig)
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            binding.toolbar.title = ""
-            if (destination.id == R.id.guideFragment) binding.toolbar.visibility = View.GONE
+            binding.toolbar.visibility = View.VISIBLE
+            binding.toolbar.titleMarginStart = 10
+
+            when (destination.id) {
+                R.id.guideFragment -> binding.toolbar.title = "둘러보기"
+                R.id.scheduleFragment -> binding.toolbar.title = "내 여행 일정"
+                R.id.recordFragment -> binding.toolbar.title = "나만의 여행 기록"
+                R.id.menuFragment -> binding.toolbar.title = "메뉴"
+                R.id.scheduleDetailFragment, R.id.confirmFragment -> {
+                    binding.toolbar.visibility = View.GONE
+                }
+                else -> ""
+            }
         }
     }
 
