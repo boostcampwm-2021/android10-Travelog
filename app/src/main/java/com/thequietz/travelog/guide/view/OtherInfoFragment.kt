@@ -16,6 +16,7 @@ import com.thequietz.travelog.databinding.FragmentOtherInfoBinding
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.adapter.OtherInfoAdapter
 import com.thequietz.travelog.guide.viewmodel.OtherInfoViewModel
+import com.thequietz.travelog.makeSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -89,7 +90,8 @@ class OtherInfoFragment : Fragment() {
                     }
                     if (!binding.rvVacationSpot.canScrollHorizontally(1)) {
                         if (otherInfoViewModel.vacationPageEnd.value == true) {
-                            Toast.makeText(requireContext(), "마지막 페이지입니다", Toast.LENGTH_SHORT).show()
+                            makeSnackBar(binding.clOtherInfo, "마지막 페이지입니다")
+                            // makeToast(requireContext(), "마지막 페이지입니다")
                         }
                     }
                 }
@@ -108,7 +110,8 @@ class OtherInfoFragment : Fragment() {
                     }
                     if (!binding.rvFood.canScrollHorizontally(1)) {
                         if (otherInfoViewModel.foodPageEnd.value == true) {
-                            Toast.makeText(requireContext(), "마지막 페이지입니다", Toast.LENGTH_SHORT).show()
+                            makeSnackBar(binding.clOtherInfo, "마지막 페이지입니다")
+                            // makeToast(requireContext(), "마지막 페이지입니다")
                         }
                     }
                 }
@@ -127,7 +130,8 @@ class OtherInfoFragment : Fragment() {
                     }
                     if (!binding.rvFestival.canScrollHorizontally(1)) {
                         if (otherInfoViewModel.festivalPageEnd.value == true) {
-                            Toast.makeText(requireContext(), "마지막 페이지입니다", Toast.LENGTH_SHORT).show()
+                            makeSnackBar(binding.clOtherInfo, "마지막 페이지입니다")
+                            // makeToast(requireContext(), "마지막 페이지입니다")
                         }
                     }
                 }

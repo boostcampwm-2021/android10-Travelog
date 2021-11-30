@@ -46,8 +46,12 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.guideFragment -> binding.toolbar.title = "둘러보기"
                 R.id.scheduleFragment -> binding.toolbar.title = "내 여행 일정"
+                R.id.otherInfoFragment -> binding.toolbar.title = "세부 추천 정보"
                 R.id.recordFragment -> binding.toolbar.title = "나만의 여행 기록"
                 R.id.menuFragment -> binding.toolbar.title = "메뉴"
+                R.id.recordAddImageFragment -> binding.toolbar.title = "여행 이미지 추가"
+                R.id.recordViewOneFragment -> binding.toolbar.title = "여행 기록 보기"
+                R.id.recordViewManyFragment -> binding.toolbar.title = "여행 기록 보기"
                 R.id.scheduleDetailFragment,
                 R.id.confirmFragment,
                 R.id.placeRecommendFragment,

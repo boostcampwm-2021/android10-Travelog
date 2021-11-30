@@ -11,7 +11,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -20,36 +19,32 @@ import com.thequietz.travelog.TravelogApplication
 import com.thequietz.travelog.databinding.FragmentGuideBinding
 import com.thequietz.travelog.guide.adapter.GuideMultiViewAdapter
 import com.thequietz.travelog.guide.viewmodel.GuideViewModel
+import com.thequietz.travelog.makeSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class GuideFragment : Fragment() {
-    private var _binding: FragmentGuideBinding? = null
-    private val binding get() = _binding!!
-
+    private lateinit var binding: FragmentGuideBinding
     private val guideViewModel by viewModels<GuideViewModel>()
+    private val adapter by lazy { GuideMultiViewAdapter() }
     lateinit var loading: LoadingDialog
 
-    private var _context: Context? = null
-    private var _inputManager: InputMethodManager? = null
-    private val inputManager get() = _inputManager!!
+    private lateinit var _context: Context
+    private lateinit var inputManager: InputMethodManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _context = requireContext()
-        _binding = FragmentGuideBinding.inflate(inflater, container, false)
-        _context?.also {
-            loading = LoadingDialog(it)
-            if (!TravelogApplication.prefs.loadGuideLoadingState()) {
-                loading.show()
-                Handler(Looper.getMainLooper()).postDelayed({
-                    loading.dismiss()
-                    TravelogApplication.prefs.disableGuideLoadingState()
-                }, 4000)
-            }
+        binding = FragmentGuideBinding.inflate(inflater, container, false)
+        loading = LoadingDialog(requireContext())
+        if (!TravelogApplication.prefs.loadGuideLoadingState()) {
+            loading.show()
+            Handler(Looper.getMainLooper()).postDelayed({
+                loading.dismiss()
+                TravelogApplication.prefs.disableGuideLoadingState()
+            }, 4000)
         }
 
         return binding.root
@@ -57,10 +52,8 @@ class GuideFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val adapter = GuideMultiViewAdapter()
-        _inputManager =
-            _context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        _context = requireContext()
+        inputManager = _context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
@@ -109,7 +102,7 @@ class GuideFragment : Fragment() {
 
     private fun searchAction() {
         if (binding.etSearch.text.toString().trim() == "") {
-            Toast.makeText(_context, "검색어를 입력하세요!", Toast.LENGTH_SHORT).show()
+            makeSnackBar(binding.clGuide, "검색어를 입력하세요!")
         } else {
             val action = GuideFragmentDirections
                 .actionGuideFragmentToSpecificGuideFragment(binding.etSearch.text.toString())
@@ -118,14 +111,8 @@ class GuideFragment : Fragment() {
     }
 
     private fun closeKeyboard() {
-        inputManager.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        _inputManager = null
-        _binding = null
-        _context = null
+        val mInputMethodManager: InputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        mInputMethodManager.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
     }
 }

@@ -8,17 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.snackbar.Snackbar
 import com.thequietz.travelog.LoadingDialog
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordViewOneBinding
+import com.thequietz.travelog.makeSnackBar
 import com.thequietz.travelog.record.adapter.ImageViewPagerAdapter
 import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -141,8 +140,7 @@ class RecordViewOneFragment : Fragment() {
                         binding.ibRecordViewOneEditComment.visibility = View.VISIBLE
                     }
                 }
-                Toast.makeText(requireContext(), "현재 내용이 저장되었습니다", Toast.LENGTH_SHORT)
-                    .show()
+                makeSnackBar(binding.clRecordViewOne, "현재 내용이 저장되었습니다")
             }
             .setPositiveButton("아니오") { dialog, which ->
             }.show()
@@ -157,20 +155,9 @@ class RecordViewOneFragment : Fragment() {
                     CoroutineScope(Dispatchers.IO).launch {
                         recordViewOneViewModel.delete()
                     }
-
-                    Snackbar.make(
-                        binding.layoutRecordViewOne,
-                        "이미지가 삭제되었습니다",
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .show()
+                    makeSnackBar(binding.clRecordViewOne, "이미지가 삭제되었습니다")
                 } else {
-                    Snackbar.make(
-                        binding.layoutRecordViewOne,
-                        "삭제할 이미지가 없습니다",
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .show()
+                    makeSnackBar(binding.clRecordViewOne, "삭제할 이미지가 없습니다")
                 }
             }
             .setPositiveButton("아니오") { dialog, which ->

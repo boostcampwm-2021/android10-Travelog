@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="30dp"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:paddingTop="20dp"
         android:paddingBottom="10dp">

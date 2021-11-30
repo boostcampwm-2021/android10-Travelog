@@ -41,7 +41,7 @@ class MenuFragment : Fragment() {
             R.array.schedule_array,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
             binding.spinnerSchedule.adapter = adapter
             viewModel.scheduleAlarmTime.value?.let { binding.spinnerSchedule.setSelection(it) }
         }
@@ -66,7 +66,7 @@ class MenuFragment : Fragment() {
             R.array.record_array,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
             binding.spinnerRecord.adapter = adapter
             viewModel.recordAlarmTime.value?.let { binding.spinnerRecord.setSelection(it, false) }
         }

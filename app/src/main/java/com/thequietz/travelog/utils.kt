@@ -7,14 +7,19 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.snackbar.Snackbar
 import com.itextpdf.text.Document
 import com.itextpdf.text.Image
 import com.itextpdf.text.pdf.PdfWriter
@@ -123,4 +128,22 @@ fun share2Pdf(fileName: String, context: Context): Intent {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_STREAM, contentUrl)
     }
+}
+fun makeSnackBar(layout: ConstraintLayout, text: String) {
+    val snack = Snackbar.make(
+        layout,
+        "$text",
+        Snackbar.LENGTH_SHORT
+    )
+    snack.show()
+    Handler(Looper.getMainLooper()).postDelayed({
+        snack.dismiss()
+    }, 2000)
+}
+fun makeToast(context: Context, text: String) {
+    val toast = Toast.makeText(context, "$text", Toast.LENGTH_SHORT)
+    toast.show()
+    Handler(Looper.getMainLooper()).postDelayed({
+        toast.cancel()
+    }, 2000)
 }
