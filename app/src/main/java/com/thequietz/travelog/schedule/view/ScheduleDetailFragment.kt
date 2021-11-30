@@ -5,6 +5,8 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.gms.maps.model.LatLng
 import com.thequietz.travelog.R
@@ -33,22 +35,11 @@ class ScheduleDetailFragment :
         super.onViewCreated(view, savedInstanceState)
 
         if (args.type == ScheduleControlType.TYPE_CREATE)
-            args.schedule.run { viewModel.createSchedule(name, schedulePlace, date) }
+            args.scheduleModel.run { viewModel.createSchedule(name, schedulePlace, date) }
         else
-            viewModel.loadSchedule(args.schedule)
+            viewModel.loadSchedule(args.scheduleModel)
 
-        binding.btnNext.setOnClickListener {
-            val schedule = viewModel.schedule
-            val scheduleDetails =
-                viewModel.detailList.value?.toTypedArray() ?: return@setOnClickListener
-            viewModel.saveSchedule()
-
-            val action =
-                ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToConfirmFragment(
-                    schedule, scheduleDetails
-                )
-            findNavController().navigate(action)
-        }
+        setToolbar()
 
         val stateHandle = findNavController().currentBackStackEntry?.savedStateHandle
 
@@ -68,9 +59,36 @@ class ScheduleDetailFragment :
         initItemObserver()
     }
 
+    private fun setToolbar() {
+        val navController = findNavController()
+        val appBarConfig = AppBarConfiguration.Builder(navController.graph).build()
+
+        binding.toolbar.apply {
+            setupWithNavController(navController, appBarConfig)
+            title = "일정 설정"
+            inflateMenu(R.menu.menu_schedule_detail)
+            setOnMenuItemClickListener {
+                if (it.itemId == R.id.action_next) {
+                    val schedule = viewModel.schedule
+                    val scheduleDetails = viewModel.detailList.value?.toTypedArray()
+                        ?: return@setOnMenuItemClickListener false
+                    viewModel.saveSchedule()
+
+                    val action =
+                        ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToConfirmFragment(
+                            schedule, scheduleDetails
+                        )
+                    navController.navigate(action)
+                    return@setOnMenuItemClickListener true
+                }
+                return@setOnMenuItemClickListener false
+            }
+        }
+    }
+
     private fun initRecycler() {
-        val startDate = args.schedule.date.split("~")[0]
-        val endDate = args.schedule.date.split("~")[1]
+        val startDate = args.scheduleModel.date.split("~")[0]
+        val endDate = args.scheduleModel.date.split("~")[1]
         viewModel.initItemList(startDate, endDate)
         adapter = ScheduleDetailAdapter(
             { addItem() },
@@ -120,7 +138,7 @@ class ScheduleDetailFragment :
     override fun initTargetList() {
         if (isInitial)
             baseTargetList =
-                args.schedule.schedulePlace.map { LatLng(it.mapY.toDouble(), it.mapX.toDouble()) }
+                args.scheduleModel.schedulePlace.map { LatLng(it.mapY.toDouble(), it.mapX.toDouble()) }
                     .toMutableList()
     }
 
