@@ -100,6 +100,16 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
         })
 
         viewModel.currentSchedule.observe(viewLifecycleOwner, {
+            if (it.isNullOrEmpty()) {
+                binding.llConfirmNoItems.visibility = View.VISIBLE
+                binding.tvConfirmNoItems.visibility = View.VISIBLE
+                binding.vpConfirmPlace.visibility = View.GONE
+                return@observe
+            }
+            binding.llConfirmNoItems.visibility = View.GONE
+            binding.tvConfirmNoItems.visibility = View.GONE
+            binding.vpConfirmPlace.visibility = View.VISIBLE
+
             pageAdapter.submitList(it)
             binding.vpConfirmPlace.let { pager ->
                 pager.post {
