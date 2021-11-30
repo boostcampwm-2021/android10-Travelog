@@ -31,7 +31,7 @@
             app:layout_constraintBottom_toBottomOf="@id/tv_item_record_basic_header_title"
             tools:text="12.26 (토)" />
 
-        <ImageButton
+        <!--ImageButton
             android:id="@+id/btn_item_record_basic_header_add_record"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -40,7 +40,7 @@
             android:backgroundTint="@color/black"
             app:layout_constraintTop_toTopOf="@id/tv_item_record_basic_header_title"
             app:layout_constraintBottom_toBottomOf="@id/tv_item_record_basic_header_title"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" /-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

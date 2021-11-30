@@ -10,16 +10,21 @@
 
         <TextView
             android:id="@+id/tv_item_record_basic_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="26dp"
-            android:textSize="22sp"
+            android:layout_marginHorizontal="26dp"
+            android:layout_marginVertical="12dp"
+            android:background="@drawable/bg_textview"
+            android:padding="12dp"
             android:textColor="@color/black"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="불국사, 석굴암" />
 
-        <ImageView
+        <!--ImageView
             android:id="@+id/btn_item_record_basic_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,9 +32,9 @@
             android:paddingBottom="16dp"
             android:src="@drawable/ic_more"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" /-->
 
-        <androidx.recyclerview.widget.RecyclerView
+        <!--androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_item_record_basic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +45,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/tv_item_record_basic_title"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/item_recycler_record_photo" />
+            tools:listitem="@layout/item_recycler_record_photo" /-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
