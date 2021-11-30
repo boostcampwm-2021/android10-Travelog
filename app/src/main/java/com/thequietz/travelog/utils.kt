@@ -29,21 +29,32 @@ import java.util.Locale
 @BindingAdapter("app:setImage")
 fun loadImage(imageView: ImageView, url: String?) {
     url ?: return
-    Glide.with(imageView.context)
-        .asBitmap()
-        .load(url)
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .transform(CenterCrop(), RoundedCorners(20))
-        .into(imageView)
+    if (url == "empty") {
+        Glide.with(imageView.context)
+            .asBitmap()
+            .load(R.drawable.animation_loading)
+            .transform(CenterCrop(), RoundedCorners(20))
+            .into(imageView)
+        imageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
+    } else {
+        Glide.with(imageView.context)
+            .asBitmap()
+            .load(url)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .transform(CenterCrop(), RoundedCorners(20))
+            .into(imageView)
 
-    imageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
+        imageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
+    }
 }
+
 fun getTodayDate(): String {
     val time = System.currentTimeMillis()
     val date = Date(time)
     val dateFormat = SimpleDateFormat("yyyyMMdd", Locale("ko", "KR"))
     return dateFormat.format(date)
 }
+
 fun addToByteList(list: MutableList<ByteArrayOutputStream>, view: View) {
     view2Bitmap(view)?.let {
         val bm = Bitmap.createBitmap(it)
@@ -105,7 +116,8 @@ fun byteListToPdf(list: MutableList<ByteArrayOutputStream>, fileName: String) {
 
 fun share2Pdf(fileName: String, context: Context): Intent {
     val pdfFile = File(Environment.getExternalStorageDirectory(), "/$fileName.pdf")
-    val contentUrl = FileProvider.getUriForFile(context, context.packageName + ".fileprovider", pdfFile)
+    val contentUrl =
+        FileProvider.getUriForFile(context, context.packageName + ".fileprovider", pdfFile)
     return Intent().apply {
         type = "application/*"
         action = Intent.ACTION_SEND

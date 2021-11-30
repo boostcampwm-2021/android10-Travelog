@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
+import com.thequietz.travelog.data.RecordRepository
+import com.thequietz.travelog.data.db.dao.NewRecordImage
 import com.thequietz.travelog.record.model.RecordBasic
 import com.thequietz.travelog.record.model.RecordBasicItem
 import com.thequietz.travelog.record.model.RecordImage
@@ -18,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecordBasicViewModel @Inject constructor(
-    private val repository: RecordBasicRepository
+    private val repository: RecordBasicRepository,
+    private val recordRepository: RecordRepository
 ) : ViewModel() {
     private val _isEmpty = MutableLiveData<Boolean>()
     val isEmpty: LiveData<Boolean> = _isEmpty
@@ -58,6 +61,24 @@ class RecordBasicViewModel @Inject constructor(
             if (!isSameOldAndNew) {
                 repository.deleteRecordImageByTravelId(travelId)
                 repository.insertRecordImages(newRecordImages)
+                withContext(Dispatchers.IO) {
+                    val temp = mutableListOf<NewRecordImage>()
+                    newRecordImages.forEach {
+                        temp.add(
+                            NewRecordImage().copy(
+                                newTravelId = it.travelId,
+                                newTitle = it.title,
+                                newPlace = it.place,
+                                url = "empty",
+                                comment = "",
+                                isDefault = true
+                            )
+                        )
+                    }
+                    withContext(Dispatchers.IO) {
+                        recordRepository.insertNewRecordImages(temp)
+                    }
+                }
             }
         }
     }

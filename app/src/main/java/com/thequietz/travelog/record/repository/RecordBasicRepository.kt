@@ -24,10 +24,6 @@ class RecordBasicRepository @Inject constructor(
     fun loadRecordImagesByTravelId(travelId: Int) =
         recordImageDao.loadRecordImageByTravelId(travelId)
 
-    fun insertRecordImage(image: RecordImage) {
-        coroutineScope.launch { recordImageDao.insert(image) }
-    }
-
     fun insertRecordImages(images: List<RecordImage>) {
         coroutineScope.launch { recordImageDao.insert(*images.toTypedArray()) }
     }

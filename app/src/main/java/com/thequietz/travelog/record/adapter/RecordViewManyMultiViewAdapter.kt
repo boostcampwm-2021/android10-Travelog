@@ -3,6 +3,7 @@ package com.thequietz.travelog.record.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -143,7 +144,16 @@ class MultiViewImageAdapter(
                     binding.cbDeleteCheck.visibility = View.VISIBLE
                     binding.cbDeleteCheck.setOnCheckedChangeListener { compoundButton, isChecked ->
                         if (isChecked) {
-                            innerViewModel.addCheck(item.newRecordImage.newRecordImageId)
+                            if (item.newRecordImage.isDefault == true) {
+                                Toast.makeText(
+                                    itemView.context,
+                                    "기본이미지는 삭제할 수 없습니다",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                binding.cbDeleteCheck.isChecked = false
+                            } else {
+                                innerViewModel.addCheck(item.newRecordImage.newRecordImageId)
+                            }
                         } else {
                             innerViewModel.deleteCheck(item.newRecordImage.newRecordImageId)
                         }
@@ -154,7 +164,8 @@ class MultiViewImageAdapter(
                     binding.cbDeleteCheck.visibility = View.GONE
                 }
             }
-            binding.cbDeleteCheck.isChecked = innerViewModel.findChecked(item.newRecordImage.newRecordImageId)
+            binding.cbDeleteCheck.isChecked =
+                innerViewModel.findChecked(item.newRecordImage.newRecordImageId)
             binding.executePendingBindings()
         }
     }
@@ -175,6 +186,7 @@ class MultiViewImageAdapter(
         }
     }
 }
+
 class MyRecordDiffUtilCallback : DiffUtil.ItemCallback<MyRecord>() {
     override fun areItemsTheSame(oldItem: MyRecord, newItem: MyRecord): Boolean {
         return oldItem.hashCode() == newItem.hashCode()

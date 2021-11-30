@@ -39,15 +39,13 @@ class RecordViewOneViewModel @Inject constructor(
 
     var day: String = ""
     var place: String = ""
+    var startInd = 0
 
     init {
-        // createRecord()
-        // loadRecord()
-        setCurrentPosition(0)
-        // _currentPosition.value = 0
+        startInd = 0
     }
     fun initVariable(args: RecordViewOneFragmentArgs) {
-        // day = args.day
+        day = args.day
         place = args.place
         currentTravleId = args.travelId
     }
@@ -57,12 +55,19 @@ class RecordViewOneViewModel @Inject constructor(
             val placeList = withContext(Dispatchers.IO) {
                 repository.loadRecordImagesByTravelId(currentTravleId)
             }
-            placeList.forEach {
+            placeList.forEachIndexed { ind, it ->
+                if (it.place == place) {
+                    startInd = res.size
+                }
                 val temp = withContext(Dispatchers.IO) {
                     repository.loadJoinedRecordByTravelIdAndPlace(currentTravleId, it.place)
                 }
                 if (temp.size == 0) {
-                    res.add(repository.loadDefaultJoinedRecordByTravelId(currentTravleId, it.place))
+                    res.add(
+                        withContext(Dispatchers.IO) {
+                            repository.loadDefaultJoinedRecordByTravelId(currentTravleId, it.place)
+                        }
+                    )
                 } else {
                     temp.forEach {
                         res.add(it)
@@ -77,13 +82,6 @@ class RecordViewOneViewModel @Inject constructor(
     fun setCurrentImage(position: Int) {
         _currentImage.value = dataList.value?.get(position)
     }
-
-//    fun isCommentChanged(str: String): Boolean {
-//        if (currentImage.value?.comment != str) {
-//            return true
-//        }
-//        return false
-//    }
 
     fun setCurrentPosition(position: Int) {
         if (position <0) {
@@ -118,10 +116,12 @@ class RecordViewOneViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 viewModelScope.launch {
                     _islistUpdate.value = true
-                    currentPosition.value?.let { setCurrentPosition(it - 1) }
                 }
                 currentImage.value?.newRecordImage?.let {
-                    repository.deleteNewRecordImage(it.newRecordImageId)
+                    if (it.isDefault == false) {
+                        repository.deleteNewRecordImage(it.newRecordImageId)
+                        currentPosition.value?.let { setCurrentPosition(it - 1) }
+                    }
                 }
             }
             withContext(Dispatchers.IO) {

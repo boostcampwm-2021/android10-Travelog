@@ -76,8 +76,8 @@ class RecordViewManyFragment : Fragment() {
                     RecordViewManyFragmentDirections
                         .actionRecordViewManyFragmentToRecordViewOneFragment(
                             args.travelId,
-                            record.recordImage.place,
-                            record.recordImage.day
+                            record.recordImage.day,
+                            record.newRecordImage.newPlace
                         )
                 }
             }

@@ -113,5 +113,5 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
     // LeakCanary
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
+    // debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
 }
