@@ -44,7 +44,7 @@
             android:name="schedulePlaceArray"
             app:argType="com.thequietz.travelog.schedule.model.SchedulePlaceModel[]" />
         <argument
-            android:name="schedule"
+            android:name="scheduleModel"
             app:argType="com.thequietz.travelog.schedule.model.ScheduleModel" />
         <argument
             android:name="type"

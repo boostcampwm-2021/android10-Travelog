@@ -35,9 +35,9 @@ class ScheduleDetailFragment :
         super.onViewCreated(view, savedInstanceState)
 
         if (args.type == ScheduleControlType.TYPE_CREATE)
-            args.schedule.run { viewModel.createSchedule(name, schedulePlace, date) }
+            args.scheduleModel.run { viewModel.createSchedule(name, schedulePlace, date) }
         else
-            viewModel.loadSchedule(args.schedule)
+            viewModel.loadSchedule(args.scheduleModel)
 
         setToolbar()
 
@@ -87,8 +87,8 @@ class ScheduleDetailFragment :
     }
 
     private fun initRecycler() {
-        val startDate = args.schedule.date.split("~")[0]
-        val endDate = args.schedule.date.split("~")[1]
+        val startDate = args.scheduleModel.date.split("~")[0]
+        val endDate = args.scheduleModel.date.split("~")[1]
         viewModel.initItemList(startDate, endDate)
         adapter = ScheduleDetailAdapter(
             { addItem() },
@@ -138,7 +138,7 @@ class ScheduleDetailFragment :
     override fun initTargetList() {
         if (isInitial)
             baseTargetList =
-                args.schedule.schedulePlace.map { LatLng(it.mapY.toDouble(), it.mapX.toDouble()) }
+                args.scheduleModel.schedulePlace.map { LatLng(it.mapY.toDouble(), it.mapX.toDouble()) }
                     .toMutableList()
     }
 
