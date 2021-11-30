@@ -15,7 +15,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="6dp"
-        android:background="@color/purple_500"
         android:minWidth="0dp"
         android:minHeight="0dp"
         android:paddingHorizontal="10dp"

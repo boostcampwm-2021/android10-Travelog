@@ -34,12 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             binding.toolbar.title = ""
-
-            /* 화면 전환 시 화면 아이디에 따라 다른 툴바 적용 가능
-            if (destination.id == R.id.guideFragment) {
-                // 검색창 추가, 버튼 추가 등등
-            }
-             */
+            if (destination.id == R.id.guideFragment) binding.toolbar.visibility = View.GONE
         }
     }
 

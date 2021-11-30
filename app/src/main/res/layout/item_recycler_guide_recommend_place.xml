@@ -24,14 +24,19 @@
             android:layout_marginStart="10dp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="@{item.name}"
             android:textColor="@color/white"
             android:textSize="20sp"
+            android:gravity="end"
+            android:maxLines="2"
+            android:ellipsize="end"
+            app:layout_constraintStart_toStartOf="@id/img_item_recommend_place"
             app:layout_constraintEnd_toEndOf="@id/img_item_recommend_place"
             app:layout_constraintBottom_toBottomOf="@id/img_item_recommend_place"
             android:layout_marginBottom="35dp"
+            android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:id="@+id/tv_item_recommend_place_title" />
 
