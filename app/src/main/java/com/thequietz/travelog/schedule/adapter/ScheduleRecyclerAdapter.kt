@@ -11,7 +11,7 @@ import com.thequietz.travelog.schedule.model.ScheduleModel
 class ScheduleRecyclerAdapter(
     val onClick: (ScheduleModel) -> (Unit),
     val onDelete: (Int) -> (Unit)
-) : ListAdapter<ScheduleModel, RecyclerView.ViewHolder>(diffUtil) {
+) : ListAdapter<ScheduleModel, RecyclerView.ViewHolder>(ScheduleRecyclerDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ScheduleViewHolder(
@@ -27,14 +27,12 @@ class ScheduleRecyclerAdapter(
         val schedule = getItem(position)
         (holder as ScheduleViewHolder).bind(schedule)
     }
+}
 
-    companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<ScheduleModel>() {
-            override fun areItemsTheSame(oldItem: ScheduleModel, newItem: ScheduleModel) =
-                oldItem.id == newItem.id
+private class ScheduleRecyclerDiffUtil : DiffUtil.ItemCallback<ScheduleModel>() {
+    override fun areItemsTheSame(oldItem: ScheduleModel, newItem: ScheduleModel) =
+        oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: ScheduleModel, newItem: ScheduleModel) =
-                oldItem == newItem
-        }
-    }
+    override fun areContentsTheSame(oldItem: ScheduleModel, newItem: ScheduleModel) =
+        oldItem == newItem
 }

@@ -51,6 +51,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.scheduleDetailFragment,
                 R.id.confirmFragment,
                 R.id.placeRecommendFragment,
+                R.id.placeDetailFragment,
+                R.id.placeDetailFragmentFromGuide,
                 R.id.placeSearchFragment -> {
                     binding.toolbar.visibility = View.GONE
                 }

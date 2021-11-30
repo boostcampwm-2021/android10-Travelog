@@ -147,4 +147,10 @@ class SchedulePlaceFragment : Fragment() {
         viewModel.loadPlaceList()
         viewModel.initPlaceSelectedList()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
+    }
 }

@@ -10,6 +10,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.thequietz.travelog.R
 import com.thequietz.travelog.confirm.adapter.ConfirmDayAdapter
@@ -28,10 +30,16 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
     override var isMarkerNumbered = false
     override var drawOrderedPolyline = false
 
+    private var mapFragment: SupportMapFragment? = null
+
     override fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap)
 
-        googleMap.setMinZoomPreference(15F)
+        mapFragment = childFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
+        mapFragment = mapFragment?.also {
+            val mapOptions = GoogleMapOptions().useViewLifecycleInFragment(true)
+            SupportMapFragment.newInstance(mapOptions)
+        }
     }
 
     private lateinit var _context: Context
@@ -137,5 +145,12 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
             val location = it.destination.geometry.location
             LatLng(location.latitude, location.latitude)
         }.toMutableList()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        map.clear()
+        mapFragment?.onDestroyView()
     }
 }

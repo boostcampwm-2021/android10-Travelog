@@ -8,6 +8,9 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleDetailBinding
@@ -24,12 +27,17 @@ class ScheduleDetailFragment :
     GoogleMapFragment<FragmentScheduleDetailBinding, ScheduleDetailViewModel>() {
     override val layoutId = R.layout.fragment_schedule_detail
     override val viewModel by viewModels<ScheduleDetailViewModel>()
-    lateinit var adapter: ScheduleDetailAdapter
-    private val args: ScheduleDetailFragmentArgs by navArgs()
-
     override var drawMarker = true
     override var isMarkerNumbered = true
     override var drawOrderedPolyline = true
+
+    private lateinit var adapter: ScheduleDetailAdapter
+    private val args: ScheduleDetailFragmentArgs by navArgs()
+    private var mapFragment: SupportMapFragment? = null
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        super.onMapReady(googleMap)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,6 +59,12 @@ class ScheduleDetailFragment :
                 stateHandle.remove<PlaceDetailModel>("result")
             }
         )
+
+        mapFragment = childFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
+        mapFragment = mapFragment?.also {
+            val mapOptions = GoogleMapOptions().useViewLifecycleInFragment(true)
+            SupportMapFragment.newInstance(mapOptions)
+        }
     }
 
     override fun initViewModel() {
@@ -138,14 +152,21 @@ class ScheduleDetailFragment :
     override fun initTargetList() {
         if (isInitial)
             baseTargetList =
-                args.scheduleModel.schedulePlace.map { LatLng(it.mapY.toDouble(), it.mapX.toDouble()) }
+                args.scheduleModel.schedulePlace.map {
+                    LatLng(
+                        it.mapY,
+                        it.mapX
+                    )
+                }
                     .toMutableList()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
 
-        baseTargetList.clear()
-        binding.rvSchedule.adapter = null
+        map.clear()
+        mapFragment?.also {
+            it.onDestroyView()
+        }
     }
 }

@@ -28,8 +28,8 @@ import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class OtherInfoFragment : Fragment() {
-    private lateinit var _binding: FragmentOtherInfoBinding
-    private val binding get() = _binding
+    private var _binding: FragmentOtherInfoBinding? = null
+    private val binding get() = _binding!!
     private val otherInfoViewModel by viewModels<OtherInfoViewModel>()
     private val args: OtherInfoFragmentArgs by navArgs()
     private val vacationAdapter by lazy { OtherInfoAdapter() }
@@ -191,5 +191,11 @@ class OtherInfoFragment : Fragment() {
                 it.findNavController().navigate(action)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 }

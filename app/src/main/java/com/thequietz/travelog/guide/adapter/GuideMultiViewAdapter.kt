@@ -2,8 +2,7 @@ package com.thequietz.travelog.guide.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +19,7 @@ import com.thequietz.travelog.guide.model.GuideViewType
 import com.thequietz.travelog.guide.view.GuideFragmentDirections
 import com.thequietz.travelog.place.model.PlaceRecommendModel
 
-class GuideMultiViewAdapter(val frag: Fragment) : ListAdapter<Guide, RecyclerView.ViewHolder>(
+class GuideMultiViewAdapter : ListAdapter<Guide, RecyclerView.ViewHolder>(
     GuideDiffUtilCallback()
 ) {
     class GuideTitleViewHolder(val binding: ItemRecyclerTitleBinding) :
@@ -32,7 +31,6 @@ class GuideMultiViewAdapter(val frag: Fragment) : ListAdapter<Guide, RecyclerVie
     }
 
     class GuideRecommendViewHolder(
-        frag: Fragment,
         val binding: RecyclerGuideRecommendImageBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         val adapter = RecommendMultiViewImageAdapter(object :
@@ -53,8 +51,7 @@ class GuideMultiViewAdapter(val frag: Fragment) : ListAdapter<Guide, RecyclerVie
                         .actionGuideFragmentToPlaceDetailFragmentFromGuide(
                             param, isRecommended = true, isGuide = true
                         )
-                    frag.findNavController().navigate(action)
-                    frag.onDestroyView()
+                    Navigation.findNavController(itemView).navigate(action)
                 }
             })
 
@@ -64,18 +61,19 @@ class GuideMultiViewAdapter(val frag: Fragment) : ListAdapter<Guide, RecyclerVie
 
         fun bind(recommend: Guide.SpecificRecommend) {
             adapter.submitList(recommend.specificRecommendList)
+            binding.executePendingBindings()
         }
     }
 
-    class GuideAllPlaceViewHolder(frag: Fragment, binding: RecyclerAllPlaceImageBinding) :
+    class GuideAllPlaceViewHolder(binding: RecyclerAllPlaceImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val adapter = AllPlaceMultiViewImageAdapter(object :
                 AllPlaceMultiViewImageAdapter.OnItemClickListener {
                 override fun onItemClick(item: Place) {
                     val action = GuideFragmentDirections
                         .actionGuideFragmentToSpecificGuideFragment(item.areaCode.toString())
-                    frag.findNavController().navigate(action)
-                    frag.onDestroyView()
+
+                    Navigation.findNavController(itemView).navigate(action)
                 }
             })
 
@@ -107,7 +105,6 @@ class GuideMultiViewAdapter(val frag: Fragment) : ListAdapter<Guide, RecyclerVie
             }
             GuideViewType.RECOMMEND -> {
                 GuideRecommendViewHolder(
-                    frag,
                     RecyclerGuideRecommendImageBinding.inflate(
                         LayoutInflater.from(parent.context), parent, false
                     )
@@ -115,7 +112,6 @@ class GuideMultiViewAdapter(val frag: Fragment) : ListAdapter<Guide, RecyclerVie
             }
             GuideViewType.ALLPLACE -> {
                 GuideAllPlaceViewHolder(
-                    frag,
                     RecyclerAllPlaceImageBinding.inflate(
                         LayoutInflater.from(parent.context), parent, false
                     )
@@ -158,7 +154,7 @@ class RecommendMultiViewImageAdapter(private val onItemClickListener: OnItemClic
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecommendMultiViewImageAdapter.RecommendMultiViewImageViewHolder {
+    ): RecommendMultiViewImageViewHolder {
         return RecommendMultiViewImageViewHolder(
             ItemRecyclerGuideRecommendPlaceBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
@@ -210,16 +206,6 @@ class AllPlaceMultiViewImageAdapter(
         holder.binding.ivItemPlaceAll.setOnClickListener { view ->
             onItemClickListener.onItemClick(getItem(position))
         }
-    }
-}
-
-private class GuideMultiViewDiffUtil() : DiffUtil.ItemCallback<Guide>() {
-    override fun areItemsTheSame(oldItem: Guide, newItem: Guide): Boolean {
-        return oldItem === newItem
-    }
-
-    override fun areContentsTheSame(oldItem: Guide, newItem: Guide): Boolean {
-        return oldItem == newItem
     }
 }
 

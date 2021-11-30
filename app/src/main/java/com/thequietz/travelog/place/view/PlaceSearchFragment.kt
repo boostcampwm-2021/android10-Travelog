@@ -194,4 +194,10 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
     override fun initTargetList() {
         baseTargetList = mutableListOf()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        googleMap = null
+    }
 }
