@@ -37,17 +37,33 @@
             android:id="@+id/btn_make_plan"
             android:layout_marginTop="10dp"
             />
+
+
         <ImageView
+            android:id="@+id/iv_other_info"
             android:layout_width="0dp"
             android:layout_height="290dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="20dp"
             android:paddingHorizontal="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_make_plan"
-            android:layout_marginTop="25dp"
-            android:id="@+id/iv_other_info"
             android:scaleType="fitXY"
-            app:setImage="@{viewModel.currentPlace.url}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_make_plan"
+            app:setImage="@{viewModel.currentPlace.url}" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="@{viewModel.currentPlace.name}"
+            android:textSize="25sp"
+            tools:text="경기도"
+            tools:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="@id/iv_other_info"
+            app:layout_constraintTop_toTopOf="@id/iv_other_info"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
             />
         <TextView
             android:layout_width="wrap_content"
