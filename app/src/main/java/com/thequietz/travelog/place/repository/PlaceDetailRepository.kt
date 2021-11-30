@@ -26,35 +26,25 @@ class PlaceDetailRepository @Inject constructor(
 
     suspend fun loadPlaceDetail(placeId: String): PlaceDetailModel? {
         return withContext(Dispatchers.IO) {
-            try {
-                val apiKey = BuildConfig.GOOGLE_MAP_KEY
-                val call = searchService.loadPlaceDetail(placeId, "ko", apiKey)
-                val resp = call.awaitResponse()
-                if (!resp.isSuccessful || resp.body() == null) {
-                    Log.d(TAG, resp.errorBody().toString())
-                }
-                resp.body()?.result
-            } catch (t: Throwable) {
-                Log.d(TAG, t.stackTraceToString())
-                null
+            val apiKey = BuildConfig.GOOGLE_MAP_KEY
+            val call = searchService.loadPlaceDetail(placeId, "ko", apiKey)
+            val resp = call.awaitResponse()
+            if (!resp.isSuccessful || resp.body() == null) {
+                Log.d(TAG, resp.errorBody().toString())
             }
+            resp.body()?.result
         }
     }
 
     suspend fun loadPlaceInfo(typeId: Int, id: Long): RecommendInfo? {
         return withContext(Dispatchers.IO) {
-            try {
-                val apiKey = BuildConfig.TOUR_API_KEY
-                val call = recommendService.loadPlaceInfo(typeId, id, apiKey)
-                val response = call.awaitResponse()
-                if (!response.isSuccessful || response.body() == null) {
-                    Log.d(TAG, response.errorBody().toString())
-                }
-                response.body()?.response?.body?.items?.info
-            } catch (t: Throwable) {
-                Log.d(TAG, t.stackTraceToString())
-                null
+            val apiKey = BuildConfig.TOUR_API_KEY
+            val call = recommendService.loadPlaceInfo(typeId, id, apiKey)
+            val response = call.awaitResponse()
+            if (!response.isSuccessful || response.body() == null) {
+                Log.d(TAG, response.errorBody().toString())
             }
+            response.body()?.response?.body?.items?.info
         }
     }
 

@@ -65,6 +65,7 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
         )
 
         googleMap.setOnMarkerClickListener { marker ->
+            marker.id
             val index = markerList.indexOfFirst { it.id == marker.id }
 
             if (index == -1) return@setOnMarkerClickListener false

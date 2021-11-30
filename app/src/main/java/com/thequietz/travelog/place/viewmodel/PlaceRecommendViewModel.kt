@@ -3,8 +3,8 @@ package com.thequietz.travelog.place.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.thequietz.travelog.BaseViewModel
 import com.thequietz.travelog.place.model.PlaceRecommendModel
 import com.thequietz.travelog.place.model.PlaceRecommendWithList
 import com.thequietz.travelog.place.repository.PlaceRecommendRepository
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PlaceRecommendViewModel @Inject constructor(
     private val repository: PlaceRecommendRepository
-) : ViewModel() {
+) : BaseViewModel() {
     private var _landmarkData = MutableLiveData<List<PlaceRecommendModel>>()
     val landmarkData: LiveData<List<PlaceRecommendModel>> = _landmarkData
 
@@ -43,15 +43,15 @@ class PlaceRecommendViewModel @Inject constructor(
     val dataList: LiveData<List<PlaceRecommendWithList>> = _dataList
 
     fun loadData() {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatchers) {
             val deferJobs = listOf(
-                async { _landmarkData.value = repository.loadPlaceData(12) },
-                async { _cultureData.value = repository.loadPlaceData(14) },
-                async { _festivalData.value = repository.loadPlaceData(15) },
-                async { _sportData.value = repository.loadPlaceData(28) },
-                async { _resortData.value = repository.loadPlaceData(32) },
-                async { _shoppingData.value = repository.loadPlaceData(38) },
-                async { _restaurantData.value = repository.loadPlaceData(39) },
+                async { _landmarkData.value = repository.loadPlaceData("관광지") },
+                async { _cultureData.value = repository.loadPlaceData("문화시설") },
+                async { _festivalData.value = repository.loadPlaceData("행사 및 축제") },
+                async { _sportData.value = repository.loadPlaceData("레포츠") },
+                async { _resortData.value = repository.loadPlaceData("숙박시설") },
+                async { _shoppingData.value = repository.loadPlaceData("쇼핑") },
+                async { _restaurantData.value = repository.loadPlaceData("음식점") },
             )
             deferJobs.awaitAll()
             Log.d("STATUS", "HTTP RESPONSE")

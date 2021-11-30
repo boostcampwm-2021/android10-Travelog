@@ -2,8 +2,8 @@ package com.thequietz.travelog.place.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.thequietz.travelog.BaseViewModel
 import com.thequietz.travelog.place.model.PlaceSearchModel
 import com.thequietz.travelog.place.repository.PlaceSearchRepository
 import com.thequietz.travelog.schedule.model.SchedulePlaceModel
@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PlaceSearchViewModel @Inject constructor(
     private val repository: PlaceSearchRepository
-) : ViewModel() {
+) : BaseViewModel() {
     private var _place = MutableLiveData<List<PlaceSearchModel>>()
     val place: LiveData<List<PlaceSearchModel>> get() = _place
 
@@ -32,7 +32,7 @@ class PlaceSearchViewModel @Inject constructor(
     }
 
     fun loadPlaceList(query: String, lat: Double, lng: Double) {
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatchers) {
             val placeList = repository.loadPlaceList(query, lat, lng)
 
             _place.value = placeList
