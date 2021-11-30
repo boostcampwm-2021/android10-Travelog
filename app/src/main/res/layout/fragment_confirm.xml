@@ -39,11 +39,33 @@
             android:layout_marginTop="10dp"
             android:paddingHorizontal="10dp"
             android:orientation="horizontal"
+            app:layout_constraintVertical_chainStyle="packed"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragment_map"
+            app:layout_constraintBottom_toTopOf="@id/ll_confirm_no_items"
             tools:listitem="@layout/item_recycler_confirm_key" />
+
+        <LinearLayout
+            android:id="@+id/ll_confirm_no_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_confirm_header">
+            <TextView
+                android:id="@+id/tv_confirm_no_items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                android:textSize="20sp"
+                android:text="@string/tv_confirm_no_items">
+
+            </TextView>
+        </LinearLayout>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_confirm_place"
