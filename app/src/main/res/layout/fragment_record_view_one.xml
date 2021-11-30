@@ -11,9 +11,10 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_record_view_one"
+        android:id="@+id/cl_record_view_one"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".record.view.RecordViewOneFragment">
 
         <androidx.appcompat.widget.Toolbar

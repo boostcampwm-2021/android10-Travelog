@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="customEditText" parent="@android:style/Widget.EditText">
+        <item name="android:background">@drawable/bg_edit_text</item>
+    </style>
+
+    <style name="customTextView" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="customButton" parent="@android:style/Widget.Button">
+        <item name="background">@drawable/bg_btn</item>
+    </style>
+</resources>

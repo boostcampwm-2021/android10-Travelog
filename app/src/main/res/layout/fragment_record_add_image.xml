@@ -10,8 +10,10 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_record_add_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".record.view.RecordAddImageFragment">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_record_add_image"
@@ -103,6 +105,7 @@
             android:layout_marginTop="7dp"
             android:id="@+id/sp_place"
             android:spinnerMode="dropdown"
+            android:popupBackground="@color/white"
             />
 
         <TextView
@@ -123,6 +126,7 @@
             android:layout_marginTop="7dp"
             android:id="@+id/sp_schedule"
             android:spinnerMode="dropdown"
+            android:popupBackground="@color/white"
             />
 
         <TextView

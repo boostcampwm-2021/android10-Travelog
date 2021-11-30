@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +22,7 @@ import com.thequietz.travelog.LoadingDialog
 import com.thequietz.travelog.R
 import com.thequietz.travelog.data.db.dao.NewRecordImage
 import com.thequietz.travelog.databinding.FragmentRecordAddImageBinding
+import com.thequietz.travelog.makeSnackBar
 import com.thequietz.travelog.record.adapter.RecordAddImageAdapter
 import com.thequietz.travelog.record.viewmodel.RecordAddImageViewModel
 import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel
@@ -58,7 +58,6 @@ class RecordAddImageFragment : Fragment() {
                                 isDefault = false
                             )
                         )
-                        println("getContent  ${recordAddImageViewModel.travelName.value!!}")
                     }
                     recordAddImageViewModel.addImage(res)
                 }
@@ -109,7 +108,7 @@ class RecordAddImageFragment : Fragment() {
                 CoroutineScope(Dispatchers.Main).launch {
                     recordAddImageViewModel.insertImages()
                 }
-                Toast.makeText(requireContext(), "저장 완료", Toast.LENGTH_SHORT).show()
+                makeSnackBar(binding.clRecordAddImage, "저장 완료")
                 RecordViewOneViewModel.currentJoinRecord.value?.let {
                     val action = RecordAddImageFragmentDirections
                         .actionRecordAddImageFragmentToRecordViewOneFragment(

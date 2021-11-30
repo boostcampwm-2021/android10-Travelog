@@ -14,6 +14,7 @@
         android:id="@+id/layout_schedule_select"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:clickable="true"
         android:focusableInTouchMode="true"
         tools:context=".schedule.ScheduleSelectFragment"

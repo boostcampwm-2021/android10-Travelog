@@ -7,16 +7,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.snackbar.Snackbar
 import com.thequietz.travelog.addToByteList
 import com.thequietz.travelog.byteListToPdf
 import com.thequietz.travelog.databinding.FragmentRecordViewManyBinding
+import com.thequietz.travelog.makeSnackBar
 import com.thequietz.travelog.record.adapter.RecordViewManyMultiViewAdapter
 import com.thequietz.travelog.record.viewmodel.RecordViewManyInnerViewModel
 import com.thequietz.travelog.record.viewmodel.RecordViewManyViewModel
@@ -87,12 +86,12 @@ class RecordViewManyFragment : Fragment() {
         }
         binding.ibRecordCamera.setOnClickListener {
             addToByteList(byteList, binding.clRecordViewMany)
-            Toast.makeText(requireContext(), "스크린샷 생성", Toast.LENGTH_SHORT).show()
+            makeSnackBar(binding.clRecordViewMany, "스크린샷 생성")
         }
         binding.ibRecordViewPdf.setOnClickListener {
             val fileName = "recordViewManyPdf"
             byteListToPdf(byteList, fileName)
-            Toast.makeText(requireContext(), "pdf파일 생성", Toast.LENGTH_SHORT).show()
+            makeSnackBar(binding.clRecordViewMany, "pdf파일 생성")
 
             val intent = share2Pdf(fileName, requireContext())
             startActivity(Intent.createChooser(intent, "파일 공유"))
@@ -121,8 +120,7 @@ class RecordViewManyFragment : Fragment() {
                     recordViewInnerViewModel.deleteChecked()
                     recordViewManyViewModel.change2MyRecord(args)
                 }
-                Snackbar.make(binding.clRecordViewMany, "이미지가 삭제되었습니다", Snackbar.LENGTH_SHORT)
-                    .show()
+                makeSnackBar(binding.clRecordViewMany, "이미지가 삭제되었습니다")
             }
             .setPositiveButton("아니오") { dialog, which ->
                 recordViewInnerViewModel.clearChecked()

@@ -28,6 +28,7 @@
             android:layout_marginTop="20dp"
             android:drawableEnd="@drawable/bg_search_btn"
             android:hint="여행지 검색"
+            android:textColorHint="@color/et_search"
             android:inputType="text"
             android:paddingHorizontal="10dp"
             android:singleLine="true"

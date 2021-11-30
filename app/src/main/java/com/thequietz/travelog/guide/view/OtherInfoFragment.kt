@@ -5,21 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentOtherInfoBinding
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.adapter.OtherInfoAdapter
 import com.thequietz.travelog.guide.viewmodel.OtherInfoViewModel
-import com.thequietz.travelog.guide.viewmodel.SpecificGuideViewModel
+import com.thequietz.travelog.makeSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,7 +44,6 @@ class OtherInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentOtherInfoBinding.inflate(inflater, container, false)
-        initToolbar()
         return binding.root
     }
 
@@ -78,22 +74,8 @@ class OtherInfoFragment : Fragment() {
         setListener()
     }
 
-    private fun initToolbar() {
-        with(activity as AppCompatActivity) {
-            setSupportActionBar(binding.tbOtherInfo)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setDisplayShowTitleEnabled(false)
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.img_leftarrow)
-        }
-    }
-
     private fun setListener() {
         with(binding) {
-            tbOtherInfo.setNavigationOnClickListener {
-                val action = OtherInfoFragmentDirections
-                    .actionOtherInfoFragmentToSpecificGuideFragment(SpecificGuideViewModel.previousSearch)
-                findNavController().navigate(action)
-            }
             rvVacationSpot.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
@@ -108,7 +90,8 @@ class OtherInfoFragment : Fragment() {
                     }
                     if (!binding.rvVacationSpot.canScrollHorizontally(1)) {
                         if (otherInfoViewModel.vacationPageEnd.value == true) {
-                            Toast.makeText(requireContext(), "마지막 페이지입니다", Toast.LENGTH_SHORT).show()
+                            makeSnackBar(binding.clOtherInfo, "마지막 페이지입니다")
+                            // makeToast(requireContext(), "마지막 페이지입니다")
                         }
                     }
                 }
@@ -127,7 +110,8 @@ class OtherInfoFragment : Fragment() {
                     }
                     if (!binding.rvFood.canScrollHorizontally(1)) {
                         if (otherInfoViewModel.foodPageEnd.value == true) {
-                            Toast.makeText(requireContext(), "마지막 페이지입니다", Toast.LENGTH_SHORT).show()
+                            makeSnackBar(binding.clOtherInfo, "마지막 페이지입니다")
+                            // makeToast(requireContext(), "마지막 페이지입니다")
                         }
                     }
                 }
@@ -146,7 +130,8 @@ class OtherInfoFragment : Fragment() {
                     }
                     if (!binding.rvFestival.canScrollHorizontally(1)) {
                         if (otherInfoViewModel.festivalPageEnd.value == true) {
-                            Toast.makeText(requireContext(), "마지막 페이지입니다", Toast.LENGTH_SHORT).show()
+                            makeSnackBar(binding.clOtherInfo, "마지막 페이지입니다")
+                            // makeToast(requireContext(), "마지막 페이지입니다")
                         }
                     }
                 }
