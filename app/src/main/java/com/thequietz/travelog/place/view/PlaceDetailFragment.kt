@@ -7,6 +7,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
@@ -32,12 +35,23 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
     private val navArgs: PlaceDetailFragmentArgs by navArgs()
 
     private var isRecommended: Boolean = false
+    private var mapFragment: SupportMapFragment? = null
     private lateinit var adapter: PlaceDetailAdapter
 
     private lateinit var searchModel: PlaceSearchModel
     private lateinit var recommendModel: PlaceRecommendModel
 
     private lateinit var gson: Gson
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        super.onMapReady(googleMap)
+
+        mapFragment = childFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
+        mapFragment = mapFragment?.also {
+            val mapOptions = GoogleMapOptions().useViewLifecycleInFragment(true)
+            SupportMapFragment.newInstance(mapOptions)
+        }
+    }
 
     override fun initViewModel() {
         binding.viewModel = viewModel
@@ -166,6 +180,13 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        map.clear()
+        mapFragment?.onDestroyView()
     }
 }
 

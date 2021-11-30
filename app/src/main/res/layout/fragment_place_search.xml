@@ -62,11 +62,11 @@
             android:id="@+id/rv_place_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
             android:paddingHorizontal="8dp"
+            android:paddingVertical="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_max="300dp"
+            app:layout_constraintHeight_max="360dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll_google_map"
             tools:listitem="@layout/item_recycler_place_search" />

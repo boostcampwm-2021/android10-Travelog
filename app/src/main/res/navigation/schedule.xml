@@ -99,7 +99,7 @@
     <fragment
         android:id="@+id/confirmFragment"
         android:name="com.thequietz.travelog.confirm.view.ConfirmFragment"
-        android:label="ConfirmFragment" >
+        android:label="ConfirmFragment">
         <argument
             android:name="schedule"
             app:argType="com.thequietz.travelog.schedule.model.ScheduleModel" />

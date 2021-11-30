@@ -21,39 +21,46 @@
             android:id="@+id/abl_place_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="0dp"
             android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/tbl_place_detail"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="0dp"
+                android:contentInsetEnd="0dp"
+                android:contentInsetRight="0dp"
                 android:fitsSystemWindows="true"
+                android:paddingVertical="0dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetRight="0dp"
                 app:contentScrim="?attr/colorPrimary"
                 app:expandedTitleTextAppearance="@android:color/transparent"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <LinearLayout
                     android:id="@+id/ll_google_map_detail"
                     android:layout_width="match_parent"
                     android:layout_height="500dp"
-                    android:background="@color/purple_200"
-                    android:fitsSystemWindows="true"
+                    android:layout_marginVertical="0dp"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
+                    android:padding="0dp"
                     app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="1"
                     app:layout_constraintBottom_toTopOf="@id/ll_place_detail"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_chainStyle="packed"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                    app:layout_scrollFlags="scroll|enterAlways">
 
                     <fragment
                         android:id="@+id/fragment_map"
                         android:name="com.google.android.gms.maps.SupportMapFragment"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
                         tools:layout="@layout/abc_search_view" />
 
                 </LinearLayout>
@@ -62,8 +69,11 @@
                     android:id="@+id/tb_place_detail"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:layout_marginVertical="0dp"
+                    android:paddingVertical="0dp"
                     app:layout_collapseMode="pin"
-                    app:title="@{viewModel.detail.name}"/>
+                    app:title="@{viewModel.detail.name}"
+                    app:titleMarginBottom="0dp" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -74,6 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="fill_vertical"
+            android:paddingTop="20dp"
             android:paddingBottom="60dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -85,7 +96,7 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="20dp"
                 android:paddingTop="10dp"
-                android:paddingBottom="30dp"
+                android:paddingBottom="10dp"
                 app:layout_constraintBottom_toTopOf="@id/btn_place_add"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

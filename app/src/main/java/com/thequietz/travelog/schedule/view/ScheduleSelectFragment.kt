@@ -27,7 +27,9 @@ import java.util.TimeZone
 
 @AndroidEntryPoint
 class ScheduleSelectFragment : Fragment() {
-    private lateinit var binding: FragmentScheduleSelectBinding
+    private var _binding: FragmentScheduleSelectBinding? = null
+    private val binding get() = _binding!!
+
     private val scheduleSelectViewModel by viewModels<ScheduleSelectViewModel>()
     private val args: ScheduleSelectFragmentArgs by navArgs()
 
@@ -36,7 +38,7 @@ class ScheduleSelectFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding =
+        _binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_select, container, false)
         initEditText()
         initDatePicker()
@@ -124,5 +126,11 @@ class ScheduleSelectFragment : Fragment() {
         binding.calendar.setOnStartSelectedListener { startDate, _ ->
             scheduleSelectViewModel.setScheduleRange(startDate, startDate)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 }
