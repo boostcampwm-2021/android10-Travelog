@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.os.Environment
 import android.view.View
@@ -29,14 +30,23 @@ import java.util.Locale
 @BindingAdapter("app:setImage")
 fun loadImage(imageView: ImageView, url: String?) {
     url ?: return
-    Glide.with(imageView.context)
-        .asBitmap()
-        .load(url)
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .transform(CenterCrop(), RoundedCorners(20))
-        .into(imageView)
+    if (url == "empty") {
+        Glide.with(imageView.context)
+            .asBitmap()
+            .load(R.drawable.animation_loading)
+            .transform(CenterCrop(), RoundedCorners(20))
+            .into(imageView)
+        imageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
+    } else {
+        Glide.with(imageView.context)
+            .asBitmap()
+            .load(url)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .transform(CenterCrop(), RoundedCorners(20))
+            .into(imageView)
 
-    imageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
+        imageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
+    }
 }
 fun getTodayDate(): String {
     val time = System.currentTimeMillis()

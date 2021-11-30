@@ -55,7 +55,6 @@ class RecordAddImageViewModel @Inject constructor(
                 val placeAndScheduleRes = repository.loadPlaceAndScheduleByTravelId(RecordViewOneViewModel.currentTravleId)
                 val tempData = repository.loadOneDataByTravelId(RecordViewOneViewModel.currentTravleId)
                 val mainImageRes = repository.loadMainImagesByTravelId(RecordViewOneViewModel.currentTravleId)
-                mainImageRes.forEach { println(it.toString()) }
                 withContext(Dispatchers.Main) {
                     _placeAndScheduleList.value = placeAndScheduleRes
                     _travelName.value = tempData.title

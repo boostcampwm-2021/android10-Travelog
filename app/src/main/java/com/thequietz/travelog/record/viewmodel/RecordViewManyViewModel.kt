@@ -41,21 +41,29 @@ class RecordViewManyViewModel @Inject constructor(
                 repository.loadRecordImagesByTravelId(args.travelId)
             }
             placeList.forEach {
+                println("anotherTemp  ${args.travelId}  ${it.place}  ${res.size}")
+
                 val temp = withContext(Dispatchers.IO) {
                     repository.loadJoinedRecordByTravelIdAndPlace(args.travelId, it.place)
                 }
+                println("temp size  ${temp.size}")
+                temp.forEach { println(it.toString()) }
                 if (temp.isEmpty()) {
-                    val anotherTemp = repository.loadDefaultJoinedRecordByTravelId(args.travelId, it.place)
-                    res.add(
-                        MyRecord.RecordSchedule().copy(
-                            day = anotherTemp.recordImage.day
+                    val anotherTemp = withContext(Dispatchers.IO) {
+                        repository.loadDefaultJoinedRecordByTravelId(args.travelId, it.place)
+                    }
+                    if (anotherTemp != null) {
+                        res.add(
+                            MyRecord.RecordSchedule().copy(
+                                day = anotherTemp.recordImage.day
+                            )
                         )
-                    )
-                    res.add(
-                        MyRecord.RecordPlace().copy(
-                            place = anotherTemp.recordImage.place
+                        res.add(
+                            MyRecord.RecordPlace().copy(
+                                place = anotherTemp.recordImage.place
+                            )
                         )
-                    )
+                    }
                     val resList = mutableListOf<JoinRecord>()
                     resList.add(anotherTemp)
                     res.add(

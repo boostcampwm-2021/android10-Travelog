@@ -268,13 +268,20 @@ class RecordRepository @Inject constructor(
     private val joinRecordDao: JoinRecordDao,
     private val coroutineScope: CoroutineScope
 ) {
+    fun loadAnyJoinedRecordByTravelIdAndPlaceAndDay(travelId: Int, day: String, place: String) =
+        joinRecordDao.loadStartJoinedRecordByTravelIdAndDayAndPlace(travelId, day, place, true, 1, 0)
+
     fun loadDefaultJoinedRecordByTravelId(travelId: Int, place: String) =
         joinRecordDao.loadDefaultJoinedRecordByTravelId(travelId, place)
 
     fun loadJoinedRecordByTravelIdAndPlace(travelId: Int, place: String) =
         joinRecordDao.loadJoinedRecordByTravelIdAndPlace(travelId, place)
 
-    fun loadAll(travelId: Int) = joinRecordDao.loadJoinedRecordByTravelId(travelId)
+    fun loadAllIncludeDefault(travelId: Int) =
+        joinRecordDao.loadJoinedRecordByTravelIdIncludeDefault(travelId)
+
+    fun loadAll(travelId: Int) =
+        joinRecordDao.loadJoinedRecordByTravelId(travelId)
     /*fun loadRecordImages() = recordImageDao.loadAllRecordImages()
 
     fun loadLastRecordImageByTravelIdAndDay(travelId: Int, day: String) =
@@ -307,7 +314,7 @@ class RecordRepository @Inject constructor(
         recordImageDao.loadFirstRowByTravelId(travelId, 1, 0)
 
     fun loadMainImagesByTravelId(travelId: Int) =
-        newRecordImageDao.loadAnyImageWithDistinctPlaceAndScheduleByTravelId(travelId)
+        newRecordImageDao.loadAnyImageWithDistinctPlaceByTravelId(travelId)
 
     fun insertNewRecordImages(images: List<NewRecordImage>) {
         coroutineScope.launch { newRecordImageDao.insert(*images.toTypedArray()) }

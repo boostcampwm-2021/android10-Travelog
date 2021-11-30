@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.GuideRepository
 import com.thequietz.travelog.data.RecordRepository
+import com.thequietz.travelog.data.db.dao.NewRecordImage
 import com.thequietz.travelog.guide.model.Guide
+import com.thequietz.travelog.record.model.RecordImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -63,6 +65,7 @@ class GuideViewModel @Inject internal constructor(
                 withContext(Dispatchers.Main) {
                     _dataList.value = res
                 }
+
                 /*val record = mutableListOf<RecordImage>()
                 val newRecord = mutableListOf<NewRecordImage>()
                 record.add(
@@ -89,14 +92,15 @@ class GuideViewModel @Inject internal constructor(
                     lat = 0.0,
                     lng = 0.0
                 ))
-                record.add(RecordImage().copy(
+                record.add(
+                    RecordImage().copy(
                     id = 3,
                     travelId = 1,
                     title = "제주도여행",
                     startDate = "20211130",
                     endDate = "20211134",
                     day = "day3",
-                    place = "place4",
+                    place = "place3",
                     lat = 0.0,
                     lng = 0.0
                 ))
@@ -186,6 +190,43 @@ class GuideViewModel @Inject internal constructor(
                     comment = "comment1",
                     isDefault = false
                 ))
+                newRecord.add(NewRecordImage().copy(
+                    newRecordImageId = 8,
+                    newTravelId = 1,
+                    newTitle = "제주도여행",
+                    newPlace = "place1",
+                    url = "empty",
+                    comment = "comment11",
+                    isDefault = true
+                ))
+                newRecord.add(NewRecordImage().copy(
+                    newRecordImageId = 9,
+                    newTravelId = 1,
+                    newTitle = "제주도여행",
+                    newPlace = "place2",
+                    url = "empty",
+                    comment = "comment11",
+                    isDefault = true
+                ))
+                newRecord.add(NewRecordImage().copy(
+                    newRecordImageId = 10,
+                    newTravelId = 1,
+                    newTitle = "제주도여행",
+                    newPlace = "place3",
+                    url = "empty",
+                    comment = "comment11",
+                    isDefault = true
+                ))
+                newRecord.add(
+                    NewRecordImage().copy(
+                        newRecordImageId = 11,
+                        newTravelId = 1,
+                        newTitle = "제주도여행",
+                        newPlace = "place4",
+                        url = "empty",
+                        comment = "comment11",
+                        isDefault = true
+                    ))
                 withContext(Dispatchers.IO) {
                     recordRepository.insertRecordImages(record)
                     recordRepository.insertNewRecordImages(newRecord)
@@ -198,11 +239,13 @@ class GuideViewModel @Inject internal constructor(
                     val t = withContext(Dispatchers.IO) {
                         recordRepository.loadAll(1)
                     }
-                    t.forEach {
+                    println("t Size  ${t.size}  ${recordList.size}  ${newRecordList.size}")
+                    t.forEach{
                         println(it.toString())
                     }
-                    println("size  ${t.size}  ${recordList.size}  ${newRecordList.size}")
                 }*/
+
+
             }
         }
     }

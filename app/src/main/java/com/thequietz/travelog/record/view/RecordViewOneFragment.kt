@@ -2,6 +2,8 @@ package com.thequietz.travelog.record.view
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
+import com.thequietz.travelog.LoadingDialog
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordViewOneBinding
 import com.thequietz.travelog.record.adapter.ImageViewPagerAdapter
@@ -30,13 +33,15 @@ class RecordViewOneFragment : Fragment() {
     private val recordViewOneViewModel by viewModels<RecordViewOneViewModel>()
     private val args: RecordViewOneFragmentArgs by navArgs()
     private val adapter by lazy { ImageViewPagerAdapter() }
-
+    lateinit var loading : LoadingDialog
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRecordViewOneBinding.inflate(inflater, container, false)
+        loading = LoadingDialog(requireContext())
+        loading.show()
         return binding.root
     }
 
@@ -46,22 +51,21 @@ class RecordViewOneFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             viewModel = recordViewOneViewModel
             vpReviewViewOne.adapter = adapter
-
             ciReviewViewOne.attachToRecyclerView(binding.vpReviewViewOne.getChildAt(0) as RecyclerView)
         }
         with(recordViewOneViewModel) {
-            // 아이템 초기화
-            // createRecord()
-            // loadRecord()
-            CoroutineScope(Dispatchers.IO).launch {
-                initVariable(args)
-                loadRecord()
-            }
+            setListener()
+            initVariable(args)
+            loadRecord()
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd,true)
+                loading.dismiss()
+            }, 1000)
+
             dataList.observe(viewLifecycleOwner, { it ->
                 it?.let { adapter.submitList(it) }
             })
         }
-        setListener()
     }
 
     private fun setListener() {
@@ -69,6 +73,7 @@ class RecordViewOneFragment : Fragment() {
             vpReviewViewOne.registerOnPageChangeCallback(object :
                     ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
+                        println("onPageSelected  ${position}")
                         if (recordViewOneViewModel.islistUpdate.value == true) {
                             RecordViewOneViewModel.currentPosition.value?.let {
                                 super.onPageSelected(it)
@@ -100,6 +105,7 @@ class RecordViewOneFragment : Fragment() {
             }
             tvRecordViewOneSave.setOnClickListener {
                 val currentText = binding.etRecordViewOne.text.toString()
+                showChangeCommentDialog(currentText)
             }
             tvRecordViewOneReduce.setOnClickListener {
                 val popup = PopupMenu(requireContext(), it)
@@ -152,6 +158,7 @@ class RecordViewOneFragment : Fragment() {
                     CoroutineScope(Dispatchers.IO).launch {
                         recordViewOneViewModel.delete()
                     }
+
                     Snackbar.make(
                         binding.layoutRecordViewOne,
                         "이미지가 삭제되었습니다",

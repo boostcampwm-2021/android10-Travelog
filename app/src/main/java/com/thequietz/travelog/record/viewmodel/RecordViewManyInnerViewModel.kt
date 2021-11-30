@@ -84,7 +84,7 @@ class RecordViewManyInnerViewModel @Inject constructor(
     fun deleteChecked() {
         checkedList.value?.let { list ->
             list.forEach {
-                repository.deleteRecordImage(it)
+                repository.deleteNewRecordImage(it)
             }
         }
         clearChecked()

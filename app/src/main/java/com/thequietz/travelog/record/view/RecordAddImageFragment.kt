@@ -110,13 +110,15 @@ class RecordAddImageFragment : Fragment() {
                     recordAddImageViewModel.insertImages()
                 }
                 Toast.makeText(requireContext(), "저장 완료", Toast.LENGTH_SHORT).show()
-                val action = RecordAddImageFragmentDirections
-                    .actionRecordAddImageFragmentToRecordViewOneFragment(
-                        0,
-                        "Day1",
-                        "" // 장소명
-                    )
-                findNavController().navigate(action)
+                RecordViewOneViewModel.currentJoinRecord.value?.let {
+                    val action = RecordAddImageFragmentDirections
+                        .actionRecordAddImageFragmentToRecordViewOneFragment(
+                            it.recordImage.travelId,
+                            it.recordImage.day,
+                            it.recordImage.place
+                        )
+                    findNavController().navigate(action)
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -133,13 +135,15 @@ class RecordAddImageFragment : Fragment() {
             }
         }
         binding.tbRecordAddImage.setNavigationOnClickListener {
-            val action = RecordAddImageFragmentDirections
-                .actionRecordAddImageFragmentToRecordViewOneFragment(
-                    0,
-                    "Day1",
-                    "" // 장소명
-                )
-            findNavController().navigate(action)
+            RecordViewOneViewModel.currentJoinRecord.value?.let {
+                val action = RecordAddImageFragmentDirections
+                    .actionRecordAddImageFragmentToRecordViewOneFragment(
+                        it.recordImage.travelId,
+                        it.recordImage.day,
+                        it.recordImage.place
+                    )
+                findNavController().navigate(action)
+            }
         }
         binding.spPlace.onItemSelectedListener = (
             object : AdapterView.OnItemSelectedListener {

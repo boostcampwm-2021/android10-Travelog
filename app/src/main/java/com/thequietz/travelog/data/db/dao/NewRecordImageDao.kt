@@ -21,8 +21,8 @@ abstract class NewRecordImageDao : BaseDao<NewRecordImage> {
     @Query("SELECT * FROM NewRecordImage WHERE newTravelId =:travelId LIMIT :limit OFFSET :offset ")
     abstract fun loadFirstRowByTravelId(travelId: Int, limit: Int, offset: Int): NewRecordImage
 
-    @Query("SELECT * FROM NewRecordImage WHERE newTravelId =:travelId GROUP BY newPlace")
-    abstract fun loadAnyImageWithDistinctPlaceAndScheduleByTravelId(travelId: Int): List<NewRecordImage>
+    @Query("SELECT * FROM NewRecordImage WHERE newTravelId =:travelId GROUP BY newPlace ORDER BY isDefault")
+    abstract fun loadAnyImageWithDistinctPlaceByTravelId(travelId: Int): List<NewRecordImage>
 
     @Query("UPDATE NewRecordImage SET comment =:comment WHERE newRecordImageId =:id")
     abstract fun updateRecordImageCommentById(comment: String, id: Int)
@@ -31,26 +31,36 @@ abstract class NewRecordImageDao : BaseDao<NewRecordImage> {
 @Dao
 abstract class JoinRecordDao : BaseDao<JoinRecord> {
     @Query(
-        "SELECT RecordImage.*, NewRecordImage.* FROM RecordImage " +
-            "INNER JOIN NewRecordImage ON RecordImage.travelId = NewRecordImage.newTravelId " +
-            "AND RecordImage.place = NewRecordImage.newPlace WHERE NewRecordImage.newTravelId =:travelId " +
-            "AND NewRecordImage.isDefault !=:value ORDER BY RecordImage.day"
+        "SELECT * FROM (SELECT * FROM RecordImage, NewRecordImage) AS `Temp` WHERE `Temp`.travelId = `Temp`.newTravelId " +
+            "AND `Temp`.place = `Temp`.newPlace AND `Temp`.travelId =:travelId " +
+            "AND `Temp`.day =:day AND `Temp`.place =:place " +
+            "AND `Temp`.isDefault !=:value LIMIT :limit OFFSET :offset"
+    )
+    abstract fun loadStartJoinedRecordByTravelIdAndDayAndPlace(travelId: Int, day: String, place: String, value: Boolean = true, limit: Int, offset: Int): JoinRecord
+    @Query(
+        "SELECT * FROM (SELECT * FROM RecordImage, NewRecordImage) AS `Temp` WHERE `Temp`.travelId = `Temp`.newTravelId " +
+            "AND `Temp`.place = `Temp`.newPlace AND `Temp`.travelId =:travelId " +
+            "ORDER BY `Temp`.day"
+    )
+    abstract fun loadJoinedRecordByTravelIdIncludeDefault(travelId: Int): List<JoinRecord>
+    @Query(
+        "SELECT * FROM (SELECT * FROM RecordImage, NewRecordImage) AS `Temp` WHERE `Temp`.travelId = `Temp`.newTravelId " +
+            "AND `Temp`.place = `Temp`.newPlace AND `Temp`.travelId =:travelId " +
+            "AND `Temp`.isDefault !=:value ORDER BY `Temp`.day"
     )
     abstract fun loadJoinedRecordByTravelId(travelId: Int, value: Boolean = true): List<JoinRecord>
 
     @Query(
-        "SELECT RecordImage.*, NewRecordImage.* FROM RecordImage " +
-            "INNER JOIN NewRecordImage ON RecordImage.travelId = NewRecordImage.newTravelId " +
-            "AND RecordImage.place = NewRecordImage.newPlace WHERE NewRecordImage.newTravelId =:travelId " +
-            "AND NewRecordImage.newPlace =:place AND NewRecordImage.isDefault =:value ORDER BY RecordImage.day"
+        "SELECT * FROM (SELECT * FROM RecordImage, NewRecordImage) AS `Temp` WHERE `Temp`.travelId = `Temp`.newTravelId " +
+            "AND `Temp`.place = `Temp`.newPlace AND `Temp`.travelId =:travelId " +
+            "AND `Temp`.place =:place AND `Temp`.isDefault =:value ORDER BY `Temp`.day"
     )
     abstract fun loadDefaultJoinedRecordByTravelId(travelId: Int, place: String, value: Boolean = true): JoinRecord
 
     @Query(
-        "SELECT RecordImage.*, NewRecordImage.* FROM RecordImage " +
-            "INNER JOIN NewRecordImage ON RecordImage.travelId = NewRecordImage.newTravelId " +
-            "AND RecordImage.place = NewRecordImage.newPlace WHERE NewRecordImage.newTravelId =:travelId " +
-            "AND NewRecordImage.newPlace =:place AND NewRecordImage.isDefault !=:value ORDER BY RecordImage.day"
+        "SELECT * FROM (SELECT * FROM RecordImage, NewRecordImage) AS `Temp` WHERE `Temp`.travelId = `Temp`.newTravelId " +
+            "AND `Temp`.place = `Temp`.newPlace AND `Temp`.travelId =:travelId " +
+            "AND `Temp`.place =:place AND `Temp`.isDefault !=:value ORDER BY `Temp`.day"
     )
     abstract fun loadJoinedRecordByTravelIdAndPlace(travelId: Int, place: String, value: Boolean = true): List<JoinRecord>
 }

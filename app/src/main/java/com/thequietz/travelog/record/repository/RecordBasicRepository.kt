@@ -1,5 +1,7 @@
 package com.thequietz.travelog.record.repository
 
+import com.thequietz.travelog.data.db.dao.NewRecordImage
+import com.thequietz.travelog.data.db.dao.NewRecordImageDao
 import com.thequietz.travelog.data.db.dao.RecordImageDao
 import com.thequietz.travelog.data.db.dao.ScheduleDao
 import com.thequietz.travelog.data.db.dao.ScheduleDetailDao
@@ -23,10 +25,6 @@ class RecordBasicRepository @Inject constructor(
 
     fun loadRecordImagesByTravelId(travelId: Int) =
         recordImageDao.loadRecordImageByTravelId(travelId)
-
-    fun insertRecordImage(image: RecordImage) {
-        coroutineScope.launch { recordImageDao.insert(image) }
-    }
 
     fun insertRecordImages(images: List<RecordImage>) {
         coroutineScope.launch { recordImageDao.insert(*images.toTypedArray()) }
