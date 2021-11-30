@@ -21,9 +21,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.thequietz.travelog.LoadingDialog
 import com.thequietz.travelog.R
+import com.thequietz.travelog.data.db.dao.NewRecordImage
 import com.thequietz.travelog.databinding.FragmentRecordAddImageBinding
 import com.thequietz.travelog.record.adapter.RecordAddImageAdapter
-import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.record.viewmodel.RecordAddImageViewModel
 import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,18 +44,18 @@ class RecordAddImageFragment : Fragment() {
     private val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             val clipData = result.data?.clipData
-            val res = mutableListOf<RecordImage>()
+            val res = mutableListOf<NewRecordImage>()
             CoroutineScope(Dispatchers.IO).launch {
                 clipData?.let {
                     (0 until it.itemCount).forEachIndexed { ind, item ->
                         res.add(
-                            RecordImage().copy(
-                                travelId = RecordViewOneViewModel.currentTravleId,
-                                title = recordAddImageViewModel.travelName.value!!,
-                                startDate = recordAddImageViewModel.startDate.value!!,
-                                endDate = recordAddImageViewModel.endDate.value!!,
-                                day = recordAddImageViewModel.currentSchedule,
-                                place = recordAddImageViewModel.currentPlace,
+                            NewRecordImage().copy(
+                                newTravelId = RecordViewOneViewModel.currentTravleId,
+                                newTitle = recordAddImageViewModel.travelName.value!!,
+                                newPlace = recordAddImageViewModel.currentPlace,
+                                url = clipData.getItemAt(ind).uri.toString(),
+                                comment = "",
+                                isDefault = false
                             )
                         )
                         println("getContent  ${recordAddImageViewModel.travelName.value!!}")

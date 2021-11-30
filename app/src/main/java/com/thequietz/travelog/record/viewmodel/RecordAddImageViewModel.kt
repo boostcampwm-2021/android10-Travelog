@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
+import com.thequietz.travelog.data.db.dao.NewRecordImage
 import com.thequietz.travelog.record.model.PlaceAndSchedule
-import com.thequietz.travelog.record.model.RecordImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,14 +18,14 @@ class RecordAddImageViewModel @Inject constructor(
     val repository: RecordRepository
 ) : ViewModel() {
 
-    private val _imageList = MutableLiveData<List<RecordImage>>()
-    val imageList: LiveData<List<RecordImage>> = _imageList
+    private val _imageList = MutableLiveData<List<NewRecordImage>>()
+    val imageList: LiveData<List<NewRecordImage>> = _imageList
 
     private val _placeAndScheduleList = MutableLiveData<List<PlaceAndSchedule>>()
     val placeAndScheduleList: LiveData<List<PlaceAndSchedule>> = _placeAndScheduleList
 
-    private val _mainImageList = MutableLiveData<List<RecordImage>>()
-    val mainImageList: LiveData<List<RecordImage>> = _mainImageList
+    private val _mainImageList = MutableLiveData<List<NewRecordImage>>()
+    val mainImageList: LiveData<List<NewRecordImage>> = _mainImageList
 
     private val _travelName = MutableLiveData<String>()
     val travelName: LiveData<String> = _travelName
@@ -39,8 +39,8 @@ class RecordAddImageViewModel @Inject constructor(
     private val _nextGroupId = MutableLiveData<Int>()
     val nextGroupId: LiveData<Int> = _nextGroupId
 
-    private val _currentMainImage = MutableLiveData<RecordImage>()
-    val currentMainImage: LiveData<RecordImage> = _currentMainImage
+    private val _currentMainImage = MutableLiveData<NewRecordImage>()
+    val currentMainImage: LiveData<NewRecordImage> = _currentMainImage
 
     var currentPlace = ""
     var currentSchedule = ""
@@ -67,7 +67,7 @@ class RecordAddImageViewModel @Inject constructor(
         }
     }
 
-    fun addImage(newImgList: List<RecordImage>) {
+    fun addImage(newImgList: List<NewRecordImage>) {
         viewModelScope.launch {
             imageList.value?.let {
                 val res = it.toMutableList()
@@ -82,7 +82,7 @@ class RecordAddImageViewModel @Inject constructor(
     }
     fun insertImages() {
         imageList.value?.let {
-            repository.insertRecordImages(it)
+            repository.insertNewRecordImages(it)
         }
     }
 

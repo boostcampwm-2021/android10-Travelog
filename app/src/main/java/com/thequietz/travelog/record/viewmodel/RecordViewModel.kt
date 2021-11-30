@@ -25,10 +25,9 @@ class RecordViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val scheduleList = repository.loadAllSchedule()
             val imageList = NewRecordImage(
-                travelId = 1,
-                title = "",
-                day = "",
-                place = "",
+                newTravelId = 1,
+                newTitle = "",
+                newPlace = "",
                 url = "",
                 comment = ""
             )

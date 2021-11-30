@@ -7,12 +7,12 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.thequietz.travelog.data.db.dao.JoinRecord
 import com.thequietz.travelog.databinding.ItemRecyclerRecordManyDateBinding
 import com.thequietz.travelog.databinding.ItemRecyclerRecordManyImagesBinding
 import com.thequietz.travelog.databinding.ItemRecyclerRecordManyPlaceBinding
 import com.thequietz.travelog.databinding.RecyclerRecordManyImageBinding
 import com.thequietz.travelog.record.model.MyRecord
-import com.thequietz.travelog.record.model.RecordImage
 import com.thequietz.travelog.record.model.ViewType
 import com.thequietz.travelog.record.view.RecordViewManyFragmentDirections
 import com.thequietz.travelog.record.viewmodel.RecordViewManyInnerViewModel
@@ -43,10 +43,14 @@ class RecordViewManyMultiViewAdapter(
         val adapter = MultiViewImageAdapter(
             innerViewModel,
             object : MultiViewImageAdapter.OnItemClickListener {
-                override fun onItemClick(view: View, item: RecordImage) {
+                override fun onItemClick(view: View, item: JoinRecord) {
                     if (innerViewModel.deleteState.value == false) {
                         val action = RecordViewManyFragmentDirections
-                            .actionRecordViewManyFragmentToRecordViewOneFragment(item.travelId, item.day, item.place)
+                            .actionRecordViewManyFragmentToRecordViewOneFragment(
+                                item.recordImage.travelId,
+                                item.recordImage.day,
+                                item.recordImage.place
+                            )
                         itemView.findNavController().navigate(action)
                     }
                 }
@@ -119,18 +123,18 @@ class MultiViewImageAdapter(
     val innerViewModel: RecordViewManyInnerViewModel,
     private val onItemClickListener: OnItemClickListener
 ) :
-    ListAdapter<RecordImage, MultiViewImageAdapter.MultiViewImageViewHolder>(
-        RecordImageDiffUtilCallback()
+    ListAdapter<JoinRecord, MultiViewImageAdapter.MultiViewImageViewHolder>(
+        JoinRecordDiffUtilCallback()
     ) {
     interface OnItemClickListener {
-        fun onItemClick(view: View, item: RecordImage)
+        fun onItemClick(view: View, item: JoinRecord)
     }
 
     class MultiViewImageViewHolder(val binding: ItemRecyclerRecordManyImagesBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             innerViewModel: RecordViewManyInnerViewModel,
-            item: RecordImage
+            item: JoinRecord
         ) {
             binding.imageItem = item
             binding.viewModel = innerViewModel
@@ -139,9 +143,9 @@ class MultiViewImageAdapter(
                     binding.cbDeleteCheck.visibility = View.VISIBLE
                     binding.cbDeleteCheck.setOnCheckedChangeListener { compoundButton, isChecked ->
                         if (isChecked) {
-                            innerViewModel.addCheck(item.id)
+                            innerViewModel.addCheck(item.newRecordImage.newRecordImageId)
                         } else {
-                            innerViewModel.deleteCheck(item.id)
+                            innerViewModel.deleteCheck(item.newRecordImage.newRecordImageId)
                         }
                     }
                 } else {
@@ -150,7 +154,7 @@ class MultiViewImageAdapter(
                     binding.cbDeleteCheck.visibility = View.GONE
                 }
             }
-            binding.cbDeleteCheck.isChecked = innerViewModel.findChecked(item.id)
+            binding.cbDeleteCheck.isChecked = innerViewModel.findChecked(item.newRecordImage.newRecordImageId)
             binding.executePendingBindings()
         }
     }

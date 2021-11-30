@@ -2,15 +2,16 @@ package com.thequietz.travelog.record.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.thequietz.travelog.data.db.dao.JoinRecord
 
 sealed class MyRecord {
-    data class RecordSchedule(val date: String = "") : MyRecord()
+    data class RecordSchedule(val day: String = "") : MyRecord()
     data class RecordPlace(
         val place: String = ""
     ) : MyRecord()
 
     data class RecordImageList(
-        var list: MutableList<RecordImage> = mutableListOf()
+        var list: MutableList<JoinRecord> = mutableListOf()
     ) : MyRecord()
 }
 

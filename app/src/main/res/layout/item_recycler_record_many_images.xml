@@ -5,7 +5,7 @@
     <data>
         <variable
             name="imageItem"
-            type="com.thequietz.travelog.record.model.RecordImage" />
+            type="com.thequietz.travelog.data.db.dao.JoinRecord" />
         <variable
             name="viewModel"
             type="com.thequietz.travelog.record.viewmodel.RecordViewManyInnerViewModel" />
@@ -23,6 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:paddingHorizontal="5dp"
+            app:setImage="@{imageItem.newRecordImage.url}"
             android:id="@+id/iv_item_image" />
         <CheckBox
             android:layout_width="25dp"

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
-import com.thequietz.travelog.record.model.RecordImage
+import com.thequietz.travelog.data.db.dao.JoinRecord
 import com.thequietz.travelog.record.view.RecordViewOneFragmentArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -21,46 +21,61 @@ class RecordViewOneViewModel @Inject constructor(
     companion object {
         private val _currentPosition = MutableLiveData<Int>()
         val currentPosition: LiveData<Int> = _currentPosition
+
+        var _currentJoinRecord = MutableLiveData<JoinRecord>()
+        val currentJoinRecord: LiveData<JoinRecord> = _currentJoinRecord
+
         var currentTravleId: Int = 0
     }
 
-    private val _imageList = MutableLiveData<List<RecordImage>>()
-    val imageList: LiveData<List<RecordImage>> = this._imageList
+    private val _dataList = MutableLiveData<List<JoinRecord>>()
+    val dataList: LiveData<List<JoinRecord>> = _dataList
 
-    private val _currentImage = MutableLiveData<RecordImage>()
-    val currentImage: LiveData<RecordImage> = _currentImage
+    private val _currentImage = MutableLiveData<JoinRecord>()
+    val currentImage: LiveData<JoinRecord> = _currentImage
 
     private val _islistUpdate = MutableLiveData<Boolean>()
     val islistUpdate: LiveData<Boolean> = _islistUpdate
 
-    var travelId: Int = 0
-    var groupId: Int = 0
     var day: String = ""
+    var place: String = ""
 
     init {
         // createRecord()
         // loadRecord()
-        _currentPosition.value = 0
+        setCurrentPosition(0)
+        // _currentPosition.value = 0
     }
     fun initVariable(args: RecordViewOneFragmentArgs) {
-        travelId = args.travelId
-        day = args.day
-        currentTravleId = travelId
+        // day = args.day
+        place = args.place
+        currentTravleId = args.travelId
     }
     fun loadRecord() {
+        val res = mutableListOf<JoinRecord>()
         viewModelScope.launch {
-            val res = withContext(Dispatchers.IO) {
-                repository.loadRecordImagesByTravelId(travelId)
+            val placeList = withContext(Dispatchers.IO) {
+                repository.loadRecordImagesByTravelId(currentTravleId)
             }
-            _imageList.value = res
-
-            println("viewOneFragment  ${imageList.value?.size}")
+            placeList.forEach {
+                val temp = withContext(Dispatchers.IO) {
+                    repository.loadJoinedRecordByTravelIdAndPlace(currentTravleId, it.place)
+                }
+                if (temp.size == 0) {
+                    res.add(repository.loadDefaultJoinedRecordByTravelId(currentTravleId, it.place))
+                } else {
+                    temp.forEach {
+                        res.add(it)
+                    }
+                }
+            }
+            _dataList.value = res
             // setCurrentImage(currentInd)
         }
     }
 
     fun setCurrentImage(position: Int) {
-        _currentImage.value = _imageList.value?.get(position)
+        _currentImage.value = dataList.value?.get(position)
     }
 
 //    fun isCommentChanged(str: String): Boolean {
@@ -75,6 +90,9 @@ class RecordViewOneViewModel @Inject constructor(
             return
         } else {
             _currentPosition.value = position
+            dataList.value?.let {
+                _currentJoinRecord.value = it.get(position)
+            }
         }
     }
 
@@ -102,8 +120,8 @@ class RecordViewOneViewModel @Inject constructor(
                     _islistUpdate.value = true
                     currentPosition.value?.let { setCurrentPosition(it - 1) }
                 }
-                currentImage.value?.id?.let {
-                    repository.deleteRecordImage(it)
+                currentImage.value?.newRecordImage?.let {
+                    repository.deleteNewRecordImage(it.newRecordImageId)
                 }
             }
             withContext(Dispatchers.IO) {
