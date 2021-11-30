@@ -143,7 +143,9 @@ class ScheduleDetailFragment :
     }
 
     override fun onDestroyView() {
-        binding.rvSchedule.adapter = null
         super.onDestroyView()
+
+        baseTargetList.clear()
+        binding.rvSchedule.adapter = null
     }
 }

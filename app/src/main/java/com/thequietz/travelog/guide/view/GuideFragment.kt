@@ -24,20 +24,23 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class GuideFragment : Fragment() {
-    private lateinit var binding: FragmentGuideBinding
+    private var _binding: FragmentGuideBinding? = null
+    private val binding get() = _binding!!
+
     private val guideViewModel by viewModels<GuideViewModel>()
     private val adapter by lazy { GuideMultiViewAdapter(this) }
     lateinit var loading: LoadingDialog
 
     private lateinit var _context: Context
-    private lateinit var inputManager: InputMethodManager
+    private var _inputManager: InputMethodManager? = null
+    private val inputManager get() = _inputManager!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentGuideBinding.inflate(inflater, container, false)
+        _binding = FragmentGuideBinding.inflate(inflater, container, false)
         loading = LoadingDialog(requireContext())
         if (!TravelogApplication.prefs.loadGuideLoadingState()) {
             loading.show()
@@ -53,7 +56,7 @@ class GuideFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _context = requireContext()
-        inputManager = _context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        _inputManager = _context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         with(binding) {
             lifecycleOwner = viewLifecycleOwner
@@ -111,8 +114,13 @@ class GuideFragment : Fragment() {
     }
 
     private fun closeKeyboard() {
-        val mInputMethodManager: InputMethodManager =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        mInputMethodManager.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
+        inputManager.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _inputManager = null
+        _binding = null
     }
 }
