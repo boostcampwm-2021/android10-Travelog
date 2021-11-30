@@ -224,27 +224,28 @@ class RecordBasicViewModel @Inject constructor(
 
         var currDay = 1
         var currDate = recordBasic.startDate
+        val lastDate = recordBasic.endDate.nextDate()
         var tempIndex = 0
 
-        while (currDate != recordBasic.endDate) {
+        while (currDate != lastDate) {
             list.add(RecordBasicItem.RecordBasicHeader("Day$currDay", currDate))
 
             for (i in tempIndex until travelDestinations.size) {
                 if (travelDestinations[i].date == currDate) {
                     list.add(travelDestinations[i])
-                    tempIndex = i
+                    tempIndex = i + 1
                 }
             }
 
             currDay++
-            currDate = nextDate(currDate)
+            currDate = currDate.nextDate()
         }
 
         return list.toList()
     }
 
-    private fun nextDate(currDate: String): String {
-        val tempDate = currDate.split('.').map { it.toInt() }
+    private fun String.nextDate(): String {
+        val tempDate = this.split('.').map { it.toInt() }
         val isLeapYear = tempDate[0] % 4 == 0
         val dayOfMonth =
             if (isLeapYear) listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
