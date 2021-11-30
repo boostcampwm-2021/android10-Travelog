@@ -8,9 +8,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceRecommendBinding
@@ -29,15 +30,11 @@ class PlaceRecommendFragment : Fragment() {
     private val viewModel: PlaceRecommendViewModel by viewModels()
     private val navArgs: PlaceRecommendFragmentArgs by navArgs()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_place_recommend, container, false)
@@ -59,13 +56,7 @@ class PlaceRecommendFragment : Fragment() {
                 )
         }
 
-        binding.etPlaceRecommendSearch.setOnClickListener {
-            val action =
-                PlaceRecommendFragmentDirections.actionPlaceRecommendFragmentToPlaceSearchFragment(
-                    navArgs.schedulePlaceArray
-                )
-            view.findNavController().navigate(action)
-        }
+        setToolbar()
 
         viewModel.dataList.observe(viewLifecycleOwner, {
             binding.lifecycleOwner = viewLifecycleOwner
@@ -76,5 +67,26 @@ class PlaceRecommendFragment : Fragment() {
         })
 
         viewModel.loadData()
+    }
+
+    private fun setToolbar() {
+        val navController = findNavController()
+        val appBarConfig = AppBarConfiguration.Builder(navController.graph).build()
+
+        binding.toolbar.apply {
+            setupWithNavController(navController, appBarConfig)
+            title = "일정 설정"
+            inflateMenu(R.menu.menu_place_recommend)
+            setOnMenuItemClickListener {
+                if (it.itemId == R.id.action_search) {
+                    val action =
+                        PlaceRecommendFragmentDirections.actionPlaceRecommendFragmentToPlaceSearchFragment(
+                            navArgs.schedulePlaceArray
+                        )
+                    navController.navigate(action)
+                }
+                return@setOnMenuItemClickListener false
+            }
+        }
     }
 }

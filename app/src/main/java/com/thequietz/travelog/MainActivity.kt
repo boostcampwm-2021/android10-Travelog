@@ -48,10 +48,13 @@ class MainActivity : AppCompatActivity() {
                 R.id.scheduleFragment -> binding.toolbar.title = "내 여행 일정"
                 R.id.recordFragment -> binding.toolbar.title = "나만의 여행 기록"
                 R.id.menuFragment -> binding.toolbar.title = "메뉴"
-                R.id.scheduleDetailFragment, R.id.confirmFragment -> {
+                R.id.scheduleDetailFragment,
+                R.id.confirmFragment,
+                R.id.placeRecommendFragment,
+                R.id.placeSearchFragment -> {
                     binding.toolbar.visibility = View.GONE
                 }
-                else -> ""
+                else -> binding.toolbar.title = ""
             }
         }
     }

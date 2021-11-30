@@ -2,14 +2,15 @@ package com.thequietz.travelog.place.view
 
 import android.content.Context
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -120,18 +121,6 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
         binding.rvPlaceSearch.adapter = adapter
         binding.rvPlaceSearch.layoutManager = LinearLayoutManager(_context)
 
-        binding.etPlaceSearch.setOnKeyListener { v, code, event ->
-            if (code != KeyEvent.KEYCODE_ENTER || event.action != KeyEvent.ACTION_DOWN) return@setOnKeyListener false
-
-            val query = (v as EditText).text.toString()
-            val location = viewModel.location.value
-            if (location == null) return@setOnKeyListener false
-
-            viewModel.loadPlaceList(query, location.mapY, location.mapX)
-            inputManager.hideSoftInputFromWindow(view.windowToken, 0)
-            true
-        }
-
         viewModel.place.observe(viewLifecycleOwner, {
             val nextList = it.map { model ->
                 val loc = model.geometry.location
@@ -151,8 +140,6 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
         viewModel.selectLocation(locations[0])
         viewModel.initPlaceList()
 
-        binding.etPlaceSearch.requestFocus()
-
         findNavController().apply {
             currentBackStackEntry?.savedStateHandle
                 ?.getLiveData<PlaceDetailModel>("result")?.observe(
@@ -162,6 +149,41 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
                         popBackStack()
                     }
                 )
+        }
+
+        setToolbar()
+    }
+
+    private fun setToolbar() {
+        val navController = findNavController()
+        val appBarConfig = AppBarConfiguration.Builder(navController.graph).build()
+
+        binding.toolbar.apply {
+            setupWithNavController(navController, appBarConfig)
+            title = "일정 설정"
+            inflateMenu(R.menu.menu_with_search)
+
+            val searchView = (menu.findItem(R.id.action_search).actionView as SearchView)
+            searchView.apply {
+                queryHint = "목적지를 입력해보세요!"
+                setIconifiedByDefault(false)
+
+                setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        val location = viewModel.location.value ?: return false
+
+                        viewModel.loadPlaceList(query ?: "", location.mapY, location.mapX)
+                        searchView.clearFocus()
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        return false
+                    }
+                })
+
+                requestFocus()
+            }
         }
     }
 

@@ -15,24 +15,13 @@
         android:layout_height="match_parent"
         tools:context=".place.view.PlaceSearchFragment">
 
-        <EditText
-            android:id="@+id/et_place_search"
-            style="@style/customEditText"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
-            android:drawableEnd="@drawable/bg_search_btn"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:singleLine="true"
-            android:paddingHorizontal="10dp"
-            android:text="@={viewModel.query}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0"
-            app:layout_constraintVertical_chainStyle="packed" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_place_location"
@@ -45,7 +34,7 @@
             app:layout_constraintBottom_toTopOf="@id/ll_google_map"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_place_search"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             tools:listitem="@layout/item_recycler_place_location" />
 
         <LinearLayout
