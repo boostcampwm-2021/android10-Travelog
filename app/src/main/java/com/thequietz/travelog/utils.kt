@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.os.Environment
 import android.view.View
@@ -48,12 +47,14 @@ fun loadImage(imageView: ImageView, url: String?) {
         imageView.setColorFilter(Color.parseColor("#BDBDBD"), PorterDuff.Mode.MULTIPLY)
     }
 }
+
 fun getTodayDate(): String {
     val time = System.currentTimeMillis()
     val date = Date(time)
     val dateFormat = SimpleDateFormat("yyyyMMdd", Locale("ko", "KR"))
     return dateFormat.format(date)
 }
+
 fun addToByteList(list: MutableList<ByteArrayOutputStream>, view: View) {
     view2Bitmap(view)?.let {
         val bm = Bitmap.createBitmap(it)
@@ -115,7 +116,8 @@ fun byteListToPdf(list: MutableList<ByteArrayOutputStream>, fileName: String) {
 
 fun share2Pdf(fileName: String, context: Context): Intent {
     val pdfFile = File(Environment.getExternalStorageDirectory(), "/$fileName.pdf")
-    val contentUrl = FileProvider.getUriForFile(context, context.packageName + ".fileprovider", pdfFile)
+    val contentUrl =
+        FileProvider.getUriForFile(context, context.packageName + ".fileprovider", pdfFile)
     return Intent().apply {
         type = "application/*"
         action = Intent.ACTION_SEND

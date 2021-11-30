@@ -42,16 +42,12 @@ class RecordViewOneViewModel @Inject constructor(
     var startInd = 0
 
     init {
-        // createRecord()
-        // loadRecord()
-        // _currentPosition.value = 0
         startInd = 0
     }
     fun initVariable(args: RecordViewOneFragmentArgs) {
         day = args.day
         place = args.place
         currentTravleId = args.travelId
-
     }
     fun loadRecord() {
         val res = mutableListOf<JoinRecord>()
@@ -67,9 +63,11 @@ class RecordViewOneViewModel @Inject constructor(
                     repository.loadJoinedRecordByTravelIdAndPlace(currentTravleId, it.place)
                 }
                 if (temp.size == 0) {
-                    res.add( withContext(Dispatchers.IO) {
-                        repository.loadDefaultJoinedRecordByTravelId(currentTravleId, it.place)
-                    })
+                    res.add(
+                        withContext(Dispatchers.IO) {
+                            repository.loadDefaultJoinedRecordByTravelId(currentTravleId, it.place)
+                        }
+                    )
                 } else {
                     temp.forEach {
                         res.add(it)
@@ -84,13 +82,6 @@ class RecordViewOneViewModel @Inject constructor(
     fun setCurrentImage(position: Int) {
         _currentImage.value = dataList.value?.get(position)
     }
-
-//    fun isCommentChanged(str: String): Boolean {
-//        if (currentImage.value?.comment != str) {
-//            return true
-//        }
-//        return false
-//    }
 
     fun setCurrentPosition(position: Int) {
         if (position <0) {

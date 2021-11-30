@@ -33,7 +33,7 @@ class RecordViewOneFragment : Fragment() {
     private val recordViewOneViewModel by viewModels<RecordViewOneViewModel>()
     private val args: RecordViewOneFragmentArgs by navArgs()
     private val adapter by lazy { ImageViewPagerAdapter() }
-    lateinit var loading : LoadingDialog
+    lateinit var loading: LoadingDialog
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,7 +58,7 @@ class RecordViewOneFragment : Fragment() {
             initVariable(args)
             loadRecord()
             Handler(Looper.getMainLooper()).postDelayed({
-                binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd,true)
+                binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd, true)
                 loading.dismiss()
             }, 1000)
 
@@ -73,7 +73,6 @@ class RecordViewOneFragment : Fragment() {
             vpReviewViewOne.registerOnPageChangeCallback(object :
                     ViewPager2.OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
-                        println("onPageSelected  ${position}")
                         if (recordViewOneViewModel.islistUpdate.value == true) {
                             RecordViewOneViewModel.currentPosition.value?.let {
                                 super.onPageSelected(it)

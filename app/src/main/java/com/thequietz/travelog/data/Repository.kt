@@ -282,25 +282,7 @@ class RecordRepository @Inject constructor(
 
     fun loadAll(travelId: Int) =
         joinRecordDao.loadJoinedRecordByTravelId(travelId)
-    /*fun loadRecordImages() = recordImageDao.loadAllRecordImages()
 
-    fun loadLastRecordImageByTravelIdAndDay(travelId: Int, day: String) =
-        recordImageDao.loadLastRecordImageByTravelIdAndDay(travelId, day)
-
-    fun loadGroupFromRecordImageByTravelId(travelId: Int) =
-        recordImageDao.loadGroupFromRecordImageByTravelId(travelId)
-
-    fun createRecordImage(recordImage: RecordImage) {
-        coroutineScope.launch { recordImageDao.insert(recordImage) }
-    }
-
-    fun loadNextGroupIdByTravelId(travelId: Int) =
-        recordImageDao.loadDistinctGroupIdByTravelId(travelId)
-
-    fun updateRecordImageComment(comment: String, id: Int) {
-        coroutineScope.launch { recordImageDao.updateRecordImageCommentById(comment, id) }
-    }
-    */
     fun loadNewRecordImagesByTravelId(travelId: Int) =
         newRecordImageDao.loadNewRecordImagesByTravelId(travelId)
 

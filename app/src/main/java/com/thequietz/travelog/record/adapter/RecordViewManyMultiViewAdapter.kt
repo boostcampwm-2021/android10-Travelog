@@ -16,9 +16,7 @@ import com.thequietz.travelog.databinding.RecyclerRecordManyImageBinding
 import com.thequietz.travelog.record.model.MyRecord
 import com.thequietz.travelog.record.model.ViewType
 import com.thequietz.travelog.record.view.RecordViewManyFragmentDirections
-import com.thequietz.travelog.record.view.RecordViewOneFragmentDirections
 import com.thequietz.travelog.record.viewmodel.RecordViewManyInnerViewModel
-import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel
 
 class RecordViewManyMultiViewAdapter(
     val innerViewModel: RecordViewManyInnerViewModel
