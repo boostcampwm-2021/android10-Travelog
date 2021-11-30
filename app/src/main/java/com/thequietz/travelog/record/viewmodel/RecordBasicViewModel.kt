@@ -173,14 +173,21 @@ class RecordBasicViewModel @Inject constructor(
         // TODO("2달 이상 고려해야함.")
 
         if (tempDate[2] + tempDay <= dayOfMonth[tempDate[1]]) {
-            return "${tempDate[0]}.${tempDate[1]}.${tempDate[2] + tempDay}"
+            return "${tempDate[0]}.${tempDate[1].toStringDate()}.${(tempDate[2] + tempDay).toStringDate()}"
         }
 
         if (tempDate[1] + 1 <= 12) {
-            return "${tempDate[0]}.${tempDate[1] + 1}.${(tempDate[2] + tempDay) % dayOfMonth[tempDate[1]]}"
+            return "${tempDate[0]}.${(tempDate[1] + 1).toStringDate()}.${((tempDate[2] + tempDay) % dayOfMonth[tempDate[1]]).toStringDate()}"
         }
 
-        return "${tempDate[0] + 1}.1.${(tempDate[2] + tempDay) % dayOfMonth[tempDate[1]]}"
+        return "${tempDate[0] + 1}.01.${((tempDate[2] + tempDay) % dayOfMonth[tempDate[1]]).toStringDate()}"
+    }
+
+    private fun Int.toStringDate(): String {
+        if (this / 10 == 0) {
+            return "0$this"
+        }
+        return "$this"
     }
 
     private fun createRecordBasicFromRecordImages(recordImages: List<RecordImage>): RecordBasic {
@@ -244,14 +251,14 @@ class RecordBasicViewModel @Inject constructor(
             else listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
         if (tempDate[2] + 1 <= dayOfMonth[tempDate[1]]) {
-            return "${tempDate[0]}.${tempDate[1]}.${tempDate[2] + 1}"
+            return "${tempDate[0]}.${(tempDate[1]).toStringDate()}.${(tempDate[2] + 1).toStringDate()}"
         }
 
         if (tempDate[1] + 1 <= 12) {
-            return "${tempDate[0]}.${tempDate[1] + 1}.1"
+            return "${tempDate[0]}.${(tempDate[1] + 1).toStringDate()}.01"
         }
 
-        return "${tempDate[0] + 1}.1.1"
+        return "${tempDate[0] + 1}.01.01"
     }
 
     /* 이미지 추가 기능 삭제 예정

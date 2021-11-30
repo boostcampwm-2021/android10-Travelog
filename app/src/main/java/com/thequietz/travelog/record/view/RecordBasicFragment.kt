@@ -23,7 +23,6 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
     private val adapter by lazy {
         RecordBasicAdapter(
             ::navigateToRecordViewUi,
-            ::navigateToRecordAddUi,
             ::showMenu,
             ::updateTargetList
         )
@@ -95,6 +94,7 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
         findNavController().navigate(action)
     }
 
+    /*
     private fun navigateToRecordAddUi(day: String) {
         val action = RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordAddFragment(
             travelId = navArgs.travelId,
@@ -103,6 +103,7 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
 
         findNavController().navigate(action)
     }
+    */
 
     private fun showMenu(view: View, position: Int) {
         PopupMenu(requireActivity(), view).apply {
