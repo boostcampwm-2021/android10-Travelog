@@ -21,7 +21,7 @@ class RecordViewModel @Inject constructor(
     private var _recordList = MutableLiveData<List<Record>>()
     val recordList: LiveData<List<Record>> = _recordList
 
-    init {
+    fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
             val scheduleList = repository.loadAllSchedule()
             val imageList = NewRecordImage(

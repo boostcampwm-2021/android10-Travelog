@@ -1,6 +1,7 @@
 package com.thequietz.travelog
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import com.thequietz.travelog.data.SharedPreference
 import dagger.hilt.android.HiltAndroidApp
 
@@ -13,5 +14,6 @@ class TravelogApplication : Application() {
     override fun onCreate() {
         prefs = SharedPreference(applicationContext)
         super.onCreate()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 }

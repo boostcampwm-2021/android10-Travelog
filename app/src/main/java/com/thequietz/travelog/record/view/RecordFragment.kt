@@ -29,6 +29,7 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
         val adapter = RecordAdapter(::navigateToRecordBasicUi)
         binding.rvRecord.adapter = adapter
 
+        viewModel.loadData()
         viewModel.recordList.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
