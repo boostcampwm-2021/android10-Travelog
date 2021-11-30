@@ -39,15 +39,14 @@
             app:layout_constraintStart_toEndOf="@id/tv_day"
             app:layout_constraintTop_toTopOf="@id/tv_day" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_add"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/bg_btn_add"
+            android:background="@drawable/ic_add"
+            android:backgroundTint="@color/blue_travelog"
             android:onClick="@{onAddClickListener}"
-            android:text="+ 추가하기"
-            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

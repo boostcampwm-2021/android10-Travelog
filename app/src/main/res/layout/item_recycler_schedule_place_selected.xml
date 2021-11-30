@@ -12,7 +12,6 @@
             android:id="@+id/btn_selected_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/purple_200"
             android:drawableEnd="@drawable/ic_remove_item"
             android:minWidth="0dp"
             android:minHeight="0dp"

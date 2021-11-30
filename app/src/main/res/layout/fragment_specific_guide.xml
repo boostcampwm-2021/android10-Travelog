@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.thequietz.travelog.guide.viewmodel.SpecificGuideViewModel" />
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
     </data>
 
     <ScrollView
@@ -21,43 +23,44 @@
             tools:context=".guide.view.SpecificGuideFragment">
 
             <TextView
+                android:id="@+id/tv_specific_place"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.currentSearch}"
-                android:textStyle="bold"
-                android:textSize="40sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
-                android:id="@+id/tv_specific_place"
-                />
+                android:layout_marginTop="20dp"
+                android:text="@{viewModel.currentSearch}"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:text="@string/tv_noData"
-                android:visibility="@{viewModel.noData == true ? View.VISIBLE : View.GONE}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_specific_place"
-                android:textStyle="bold"
                 android:textColor="@color/black"
                 android:textSize="25sp"
-                android:layout_marginTop="15dp"
-                />
+                android:textStyle="bold"
+                android:visibility="@{viewModel.noData == true ? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_specific_place" />
+
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
+                android:id="@+id/rv_specific_place"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:foregroundGravity="center"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_specific_place"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2"
-                android:orientation="vertical"
-                android:layout_marginTop="15dp"
-                tools:listitem="@layout/item_recycler_guide_place_all"
-                android:id="@+id/rv_specific_place"
                 tools:itemCount="10"
-                />
+                tools:listitem="@layout/item_recycler_guide_place_all" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

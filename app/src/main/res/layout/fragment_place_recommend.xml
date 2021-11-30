@@ -10,12 +10,13 @@
 
         <TextView
             android:id="@+id/et_place_recommend_search"
+            style="@style/customEditText"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp"
-            android:background="@color/et_search"
-            android:drawableEnd="@drawable/ic_search"
+            android:drawableEnd="@drawable/bg_search_btn"
+            android:paddingHorizontal="10dp"
             android:importantForAutofill="no"
             android:singleLine="true"
             app:layout_constraintBottom_toTopOf="@id/rv_place_recommend"
