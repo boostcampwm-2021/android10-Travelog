@@ -21,9 +21,9 @@
         <action
             android:id="@+id/action_recordBasicFragment_to_recordViewOneFragment"
             app:destination="@id/recordViewOneFragment" />
-        <action
+        <!--action
             android:id="@+id/action_recordBasicFragment_to_recordAddFragment"
-            app:destination="@id/recordAddFragment" />
+            app:destination="@id/recordAddFragment" /-->
         <argument
             android:name="travelId"
             app:argType="integer" />
@@ -86,7 +86,7 @@
             app:popUpTo="@id/recordViewOneFragment"
             app:popUpToInclusive="true" />
     </fragment>
-    <fragment
+    <!--fragment
         android:id="@+id/recordAddFragment"
         android:name="com.thequietz.travelog.record.view.RecordAddImageFragment"
         android:label="RecordAddFragment">
@@ -96,6 +96,6 @@
         <argument
             android:name="day"
             app:argType="string" />
-    </fragment>
+    </fragment-->
 
 </navigation>
