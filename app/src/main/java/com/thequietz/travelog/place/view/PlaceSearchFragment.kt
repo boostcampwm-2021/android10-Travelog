@@ -14,6 +14,8 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.thequietz.travelog.R
@@ -44,12 +46,10 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
     private lateinit var inputManager: InputMethodManager
 
     private val navArgs: PlaceSearchFragmentArgs by navArgs()
-    private var googleMap: GoogleMap? = null
+    private var mapFragment: SupportMapFragment? = null
 
     override fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap)
-
-        this.googleMap = googleMap
 
         if (navArgs.schedulePlaceArray.isEmpty()) {
             return
@@ -84,6 +84,12 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
             }
             true
         }
+
+        mapFragment = childFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
+        mapFragment = mapFragment?.also {
+            val mapOptions = GoogleMapOptions().useViewLifecycleInFragment(true)
+            SupportMapFragment.newInstance(mapOptions)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -96,7 +102,7 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
         locationAdapter = PlaceLocationAdapter(object : PlaceLocationAdapter.OnItemClickListener {
             override fun onItemClick(model: SchedulePlaceModel) {
                 viewModel.selectLocation(model)
-                googleMap?.moveCamera(CameraUpdateFactory.newLatLng(LatLng(model.mapY, model.mapX)))
+                map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(model.mapY, model.mapX)))
             }
         })
 
@@ -198,6 +204,7 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
     override fun onDestroyView() {
         super.onDestroyView()
 
-        googleMap = null
+        map.clear()
+        mapFragment?.onDestroyView()
     }
 }
