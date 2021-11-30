@@ -104,7 +104,7 @@ class RecordBasicViewModel @Inject constructor(
         if (oldRecordImages.size != newRecordImages.size) return false
 
         for (i in oldRecordImages.indices) {
-            if (oldRecordImages[i].id != newRecordImages[i].id ||
+            if (oldRecordImages[i].travelId != newRecordImages[i].travelId ||
                 oldRecordImages[i].title != newRecordImages[i].title ||
                 oldRecordImages[i].startDate != newRecordImages[i].startDate ||
                 oldRecordImages[i].endDate != newRecordImages[i].endDate ||
@@ -193,17 +193,17 @@ class RecordBasicViewModel @Inject constructor(
     private fun createRecordBasicFromRecordImages(recordImages: List<RecordImage>): RecordBasic {
         val recordDestinationList = mutableListOf<RecordBasicItem.TravelDestination>()
 
-        for (i in recordImages.indices) {
-            if ((i + 1 < recordImages.size && recordImages[i].place != recordImages[i + 1].place) ||
-                (i != 0 && i == recordImages.lastIndex && recordImages[i - 1].place != recordImages[i].place)
+        for (recordImage in recordImages) {
+            if (recordDestinationList.isEmpty() ||
+                recordImage.place != recordDestinationList.last().name
             ) {
                 recordDestinationList.add(
                     RecordBasicItem.TravelDestination(
-                        recordImages[i].place,
-                        createDateFromDay(recordImages[i].startDate, recordImages[i].day),
-                        recordImages[i].day,
-                        recordImages[i].lat,
-                        recordImages[i].lng
+                        recordImage.place,
+                        createDateFromDay(recordImage.startDate, recordImage.day),
+                        recordImage.day,
+                        recordImage.lat,
+                        recordImage.lng
                     )
                 )
             }
