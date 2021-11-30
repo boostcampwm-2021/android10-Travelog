@@ -5,5 +5,5 @@ data class Record(
     val title: String,
     val startDate: String,
     val endDate: String,
-    val images: List<String> = emptyList()
+    val images: List<String> = listOf("", "", "")
 )

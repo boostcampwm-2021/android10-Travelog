@@ -14,7 +14,7 @@ class RecordAdapter(
 ) : ListAdapter<Record, RecordAdapter.RecordViewHolder>(diffUtil) {
     inner class RecordViewHolder(private val binding: ItemRecyclerRecordBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val layoutManager = object : LinearLayoutManager(itemView.context) {
+        val layoutManager = object : LinearLayoutManager(itemView.context, HORIZONTAL, false) {
             override fun canScrollHorizontally(): Boolean = false
         }
 
