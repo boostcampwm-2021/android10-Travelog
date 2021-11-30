@@ -15,14 +15,19 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding: ItemRecyclerRecordBasicHeaderBinding,
         private val updateTargetList: (String) -> Unit
     ) : RecordBasicViewHolder(binding.root) {
+        private lateinit var item: RecordBasicItem.RecordBasicHeader
+
         override fun <T : RecordBasicItem> bind(item: T) = with(binding) {
-            item as RecordBasicItem.RecordBasicHeader
+            this@RecordBasicHeaderViewHolder.item = item as RecordBasicItem.RecordBasicHeader
             root.setOnClickListener {
                 updateTargetList(item.day)
             }
             tvItemRecordBasicHeaderTitle.text = item.day
             tvItemRecordBasicHeaderDate.text = item.date
         }
+
+        override fun getDay(): String = item.day
+        override fun getDate(): String = item.date
     }
 
     class RecordBasicItemViewHolder(
@@ -30,14 +35,18 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val navigateToRecordViewUi: (String, String) -> Unit,
         private val showMenu: (View, Int) -> Unit
     ) : RecordBasicViewHolder(binding.root) {
+        private lateinit var item: RecordBasicItem.TravelDestination
+
         override fun <T : RecordBasicItem> bind(item: T) = with(binding) {
-            item as RecordBasicItem.TravelDestination
+            this@RecordBasicItemViewHolder.item = item as RecordBasicItem.TravelDestination
             root.setOnClickListener {
                 navigateToRecordViewUi.invoke(item.day, item.name)
             }
+            /*
             btnItemRecordBasicMore.setOnClickListener {
                 showMenu.invoke(it, absoluteAdapterPosition)
             }
+             */
             tvItemRecordBasicTitle.text = item.name
             /*
             val adapter =
@@ -50,9 +59,16 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             adapter.submitList(item.images)
              */
         }
+
+        override fun getDay(): String = item.day
+        override fun getDate(): String = item.date
     }
 
     abstract fun <T : RecordBasicItem> bind(item: T)
+
+    abstract fun getDay(): String
+
+    abstract fun getDate(): String
 }
 
 class RecordBasicAdapter(
