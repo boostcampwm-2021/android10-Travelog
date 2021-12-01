@@ -10,7 +10,7 @@ enum class ScheduleControlType {
 }
 
 const val requestImage = 99
-const val festivalContentTypeId = 999
+// const val festivalContentTypeId = 999
 val SAMPLE_SCHEDULES = listOf(
     ScheduleModel(
         0,

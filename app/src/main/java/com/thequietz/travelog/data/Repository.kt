@@ -15,7 +15,6 @@ import com.thequietz.travelog.getTodayDate
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.RecommendPlace
 import com.thequietz.travelog.record.model.RecordImage
-import com.thequietz.travelog.util.festivalContentTypeId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -215,9 +214,9 @@ class GuideRepository @Inject constructor(
         }
     }
 
-    suspend fun loadFestivalData(areaCode: String, pageNo: Int): List<RecommendPlace> {
+    suspend fun loadFestivalData(areaCode: String, contentTypeId: Int, pageNo: Int): List<RecommendPlace> {
         val loadData =
-            recommendPlaceDao.loadRecommendFestivalByAreaCode(areaCode, festivalContentTypeId)
+            recommendPlaceDao.loadRecommendFestivalByAreaCode(areaCode, contentTypeId)
         if (loadData.size < pageNo * 10) {
             try {
                 val res = guideRecommendService.requestFestival(
@@ -238,8 +237,9 @@ class GuideRepository @Inject constructor(
                             if (it.eventStartDate == null) {
                                 recommendPlaceDao.insert(
                                     it.copy(
-                                        contentTypeId = festivalContentTypeId,
-                                        eventStartDate = ""
+                                        contentTypeId = contentTypeId,
+                                        eventStartDate = "",
+                                        readCount = it.readCount ?: "0"
                                     )
                                 )
                             } else {

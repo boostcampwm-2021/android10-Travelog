@@ -94,8 +94,9 @@ class OtherInfoViewModel @Inject internal constructor(
     fun initFestivalData() {
         viewModelScope.launch {
             currentPlace.value?.let {
+                val contentTypeId = 15
                 val res = withContext(Dispatchers.IO) {
-                    repository.loadFestivalData(it.areaCode.toString(), festivalPageInd)
+                    repository.loadFestivalData(it.areaCode.toString(), contentTypeId, festivalPageInd)
                 }
                 _festivalList.value = res
             }
@@ -151,7 +152,8 @@ class OtherInfoViewModel @Inject internal constructor(
             val currentRes = festivalList.value?.toMutableList()
             val res = withContext(Dispatchers.IO) {
                 currentPlace.value?.let {
-                    repository.loadFestivalData(it.areaCode.toString(), festivalPageInd)
+                    val contentTypeId = 15
+                    repository.loadFestivalData(it.areaCode.toString(), contentTypeId, festivalPageInd)
                 }
             }
             res?.forEach {
@@ -197,7 +199,8 @@ class OtherInfoViewModel @Inject internal constructor(
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO) {
                 currentPlace.value?.let {
-                    repository.loadFestivalData(it.areaCode.toString(), 1)
+                    val contentTypeId = 15
+                    repository.loadFestivalData(it.areaCode.toString(), contentTypeId, 1)
                 }
             }
             res?.let {
