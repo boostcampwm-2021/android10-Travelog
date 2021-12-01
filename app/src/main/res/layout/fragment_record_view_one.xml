@@ -17,14 +17,6 @@
         android:background="@color/white"
         tools:context=".record.view.RecordViewOneFragment">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tb_record_view_one"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/top_gl_record_view_one"
             android:layout_width="wrap_content"
@@ -70,7 +62,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/top_gl_record_view_one"
             app:layout_constraintStart_toStartOf="@id/left_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/tb_record_view_one" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_record_view_one_date"
@@ -93,7 +85,7 @@
             android:layout_marginTop="3dp"
             app:layout_constraintBottom_toTopOf="@id/tv_record_view_one_reduce"
             app:layout_constraintEnd_toEndOf="@id/right_gl_record_view_one"
-            app:layout_constraintTop_toBottomOf="@id/tb_record_view_one" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_record_view_one_schedule"
