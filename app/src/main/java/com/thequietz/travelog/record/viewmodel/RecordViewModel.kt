@@ -50,10 +50,6 @@ class RecordViewModel @Inject constructor(
                 }
             }
 
-            for (i in images.size - 1 until 3) {
-                images.add("")
-            }
-
             val record = Record(
                 travelId = schedule.id,
                 title = schedule.name,
