@@ -57,10 +57,13 @@ class RecordViewOneFragment : Fragment() {
             initVariable(args)
             loadRecord()
             Handler(Looper.getMainLooper()).postDelayed({
-                if (recordViewOneViewModel.imageId != -1) {
-                    binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.index, true)
-                } else {
-                    binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd, true)
+                when (recordViewOneViewModel.from) {
+                    "manyView", "viewManyGridBtn", "addImage" -> {
+                        binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.index, true)
+                    }
+                    "" -> {
+                        binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd, true)
+                    }
                 }
                 // binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd, true)
                 loading.dismiss()

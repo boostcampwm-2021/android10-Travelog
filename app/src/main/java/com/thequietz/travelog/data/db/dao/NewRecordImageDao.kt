@@ -71,6 +71,18 @@ abstract class JoinRecordDao : BaseDao<JoinRecord> {
             "AND `Temp`.newPlace =:place AND `Temp`.isDefault !=:value ORDER BY `Temp`.day"
     )
     abstract fun loadJoinedRecordByTravelIdAndPlace(travelId: Int, place: String, value: Boolean = true): List<JoinRecord>
+    @Query(
+        "SELECT * FROM (SELECT * FROM RecordImage, NewRecordImage) AS `Temp` WHERE `Temp`.travelId = `Temp`.newTravelId " +
+            "AND `Temp`.place = `Temp`.newPlace AND `Temp`.newTravelId =:travelId " +
+            "GROUP BY `Temp`.newPlace, `Temp`.day ORDER BY `Temp`.day ASC"
+    )
+    abstract fun loadAnyJoinedRecordByTravelIdAndPlace(travelId: Int): List<JoinRecord>
+    @Query(
+        "SELECT * FROM (SELECT * FROM RecordImage, NewRecordImage) AS `Temp` WHERE `Temp`.travelId = `Temp`.newTravelId " +
+            "AND `Temp`.place = `Temp`.newPlace AND `Temp`.newTravelId =:travelId " +
+            "GROUP BY `Temp`.place, `Temp`.day ORDER BY `Temp`.day ASC, `Temp`.isDefault ASC"
+    )
+    abstract fun loadDistinctPlaceAndDayFromJoinedRecordByTravelId(travelId: Int): List<JoinRecord>
 }
 
 @Entity(tableName = "NewRecordImage")

@@ -118,7 +118,9 @@ class RecordViewManyFragment : Fragment() {
                         .actionRecordViewManyFragmentToRecordViewOneFragment(
                             args.travelId,
                             record.recordImage.day,
-                            record.newRecordImage.newPlace
+                            record.newRecordImage.newPlace,
+                            RecordViewOneViewModel.currentJoinRecord.value!!.newRecordImage.newRecordImageId,
+                            from = "viewManyGridBtn"
                         )
                 }
             }

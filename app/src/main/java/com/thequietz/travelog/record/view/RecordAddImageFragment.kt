@@ -114,7 +114,9 @@ class RecordAddImageFragment : Fragment() {
                         .actionRecordAddImageFragmentToRecordViewOneFragment(
                             it.recordImage.travelId,
                             it.recordImage.day,
-                            it.recordImage.place
+                            it.recordImage.place,
+                            RecordViewOneViewModel.currentJoinRecord.value!!.newRecordImage.newRecordImageId,
+                            from = "addImage"
                         )
                     findNavController().navigate(action)
                 }
@@ -139,7 +141,9 @@ class RecordAddImageFragment : Fragment() {
                     .actionRecordAddImageFragmentToRecordViewOneFragment(
                         it.recordImage.travelId,
                         it.recordImage.day,
-                        it.recordImage.place
+                        it.recordImage.place,
+                        RecordViewOneViewModel.currentJoinRecord.value!!.newRecordImage.newRecordImageId,
+                        from = "addImage"
                     )
                 findNavController().navigate(action)
             }

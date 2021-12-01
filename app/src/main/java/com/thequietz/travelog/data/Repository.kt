@@ -279,6 +279,9 @@ class RecordRepository @Inject constructor(
     fun loadJoinedRecordByTravelIdAndPlace(travelId: Int, place: String) =
         joinRecordDao.loadJoinedRecordByTravelIdAndPlace(travelId, place)
 
+    fun loadAnyJoinedrecordByTravelId(travelId: Int) =
+        joinRecordDao.loadAnyJoinedRecordByTravelIdAndPlace(travelId)
+
     fun loadJoinedAll(travelId: Int) =
         joinRecordDao.loadAllJoined(travelId)
 
@@ -293,6 +296,9 @@ class RecordRepository @Inject constructor(
 
     fun loadNewRecordImagesByTravelId(travelId: Int) =
         newRecordImageDao.loadNewRecordImagesByTravelId(travelId)
+
+    fun loadDistinctJoinedRecordByTravelId(travelId: Int) =
+        joinRecordDao.loadDistinctPlaceAndDayFromJoinedRecordByTravelId(travelId)
 
     fun loadRecordImagesByTravelId(travelId: Int) =
         recordImageDao.loadRecordImageByTravelId(travelId)
