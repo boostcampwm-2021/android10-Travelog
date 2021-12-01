@@ -24,7 +24,7 @@ class OtherInfoAdapter :
                 val param = Gson().toJson(
                     PlaceRecommendModel(
                         item.name,
-                        item.url,
+                        item.url ?: "",
                         item.description,
                         item.latitude,
                         item.longitude,

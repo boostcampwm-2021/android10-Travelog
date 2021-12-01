@@ -44,6 +44,7 @@ class PlaceDetailRepository @Inject constructor(
             if (!response.isSuccessful || response.body() == null) {
                 Log.d(TAG, response.errorBody().toString())
             }
+            Log.d(TAG, response.body().toString())
             response.body()?.response?.body?.items?.info
         }
     }
@@ -57,7 +58,7 @@ class PlaceDetailRepository @Inject constructor(
                 if (!response.isSuccessful || response.body() == null) {
                     Log.d(TAG, response.errorBody().toString())
                 }
-
+                Log.d(TAG, response.body().toString())
                 val items = response.body()?.response?.body?.items
                 gson.toJson(items)
             } catch (t: Throwable) {

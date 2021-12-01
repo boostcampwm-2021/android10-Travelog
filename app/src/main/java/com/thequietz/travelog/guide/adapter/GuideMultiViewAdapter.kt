@@ -39,7 +39,7 @@ class GuideMultiViewAdapter : ListAdapter<Guide, RecyclerView.ViewHolder>(
                     val param = Gson().toJson(
                         PlaceRecommendModel(
                             item.name,
-                            item.url,
+                            item.url ?: "",
                             item.description,
                             item.latitude,
                             item.longitude,

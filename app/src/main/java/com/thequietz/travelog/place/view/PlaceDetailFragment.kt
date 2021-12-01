@@ -2,6 +2,7 @@ package com.thequietz.travelog.place.view
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.viewModels
@@ -89,7 +90,10 @@ class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceD
         isRecommended = navArgs.isRecommended
 
         when (isRecommended) {
-            true -> recommendModel = gson.fromJson(navArgs.param, PlaceRecommendModel::class.java)
+            true -> {
+                recommendModel = gson.fromJson(navArgs.param, PlaceRecommendModel::class.java)
+                Log.d("TAG", recommendModel.toString() + "$isRecommended")
+            }
             false -> searchModel = gson.fromJson(navArgs.param, PlaceSearchModel::class.java)
         }
 
