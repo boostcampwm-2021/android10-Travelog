@@ -168,7 +168,6 @@ class RecordAddImageFragment : Fragment() {
             setSupportActionBar(binding.tbRecordAddImage)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setDisplayShowTitleEnabled(false)
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.img_leftarrow)
         }
     }
 

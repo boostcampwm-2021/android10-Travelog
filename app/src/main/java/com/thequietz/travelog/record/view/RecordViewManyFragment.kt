@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
@@ -11,6 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordViewManyBinding
 import com.thequietz.travelog.makePdf
 import com.thequietz.travelog.makeSnackBar
@@ -60,7 +64,50 @@ class RecordViewManyFragment : Fragment() {
                 it?.let { adapter.submitList(it) }
             })
         }
+        setToolbar()
         setListener()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == R.id.action_delete) {
+            item.isChecked = !item.isChecked
+            true
+        } else super.onOptionsItemSelected(item)
+    }
+
+    private fun setToolbar() {
+        val navController = findNavController()
+        val appBarConfig = AppBarConfiguration.Builder(navController.graph).build()
+
+        binding.tbRecordViewMany.apply {
+            setupWithNavController(navController, appBarConfig)
+            inflateMenu(R.menu.menu_record_view_many)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.action_delete -> {
+                        if (recordViewInnerViewModel.deleteState.value == false) {
+                            recordViewInnerViewModel.changeDeleteState()
+                        } else {
+                            if (recordViewInnerViewModel.checkedList.value?.size != 0) {
+                                showDeleteDialog()
+                            }
+                            recordViewInnerViewModel.changeDeleteState()
+                        }
+                    }
+                    R.id.action_share -> {
+                        recordViewManyViewModel.travelName.value?.let { str ->
+                            makePdf(
+                                binding.rvRecordViewMany,
+                                binding.clRecordViewMany,
+                                str,
+                                requireContext()
+                            )
+                        }
+                    }
+                }
+                return@setOnMenuItemClickListener false
+            }
+        }
     }
 
     fun setListener() {
@@ -78,24 +125,6 @@ class RecordViewManyFragment : Fragment() {
             if (action != null) {
                 findNavController().navigate(action)
             }
-        }
-        binding.ibRecordViewPdf.setOnClickListener {
-            recordViewManyViewModel.travelName.value?.let {
-                makePdf(binding.rvRecordViewMany, binding.clRecordViewMany, it, requireContext())
-            }
-        }
-        binding.ibRecordDelete.setOnClickListener {
-            recordViewInnerViewModel.changeDeleteState()
-            binding.ibRecordDelete.visibility = View.GONE
-            binding.tvRecordDelete.visibility = View.VISIBLE
-        }
-        binding.tvRecordDelete.setOnClickListener {
-            binding.tvRecordDelete.visibility = View.GONE
-            binding.ibRecordDelete.visibility = View.VISIBLE
-            if (recordViewInnerViewModel.checkedList.value?.size != 0) {
-                showDeleteDialog()
-            }
-            recordViewInnerViewModel.changeDeleteState()
         }
     }
 
