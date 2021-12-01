@@ -50,12 +50,7 @@ class RecordAddImageFragment : Fragment() {
                     (0 until it.itemCount).forEachIndexed { ind, item ->
                         res.add(
                             NewRecordImage().copy(
-                                newTravelId = RecordViewOneViewModel.currentTravleId,
-                                newTitle = recordAddImageViewModel.travelName.value!!,
-                                newPlace = recordAddImageViewModel.currentPlace.value!!,
                                 url = clipData.getItemAt(ind).uri.toString(),
-                                comment = "",
-                                isDefault = false
                             )
                         )
                     }
@@ -118,6 +113,7 @@ class RecordAddImageFragment : Fragment() {
                             RecordViewOneViewModel.currentJoinRecord.value!!.newRecordImage.newRecordImageId,
                             from = "addImage"
                         )
+                    println("record to ${recordAddImageViewModel.currentPlace}")
                     findNavController().navigate(action)
                 }
                 true

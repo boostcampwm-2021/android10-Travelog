@@ -12,11 +12,12 @@ interface GuideRecommendService {
         @Query("areaCode") area: String,
         @Query("sigunguCode") secondCode: String,
         @Query("ServiceKey") key: String,
+        @Query("pageNo") pageNo: Int,
         @Query("contentTypeId") typeId: Int = 14,
         @Query("MobileOS") os: String = "AND",
         @Query("MobileApp") appName: String = "Travelog",
         @Query("_type") contentType: String = "json",
-        @Query("arrange") arrange: String = "P",
+        @Query("arrange") arrange: String = "P"
     ): RecommendResponse
 
     @GET("/openapi/service/rest/KorService/areaBasedList")

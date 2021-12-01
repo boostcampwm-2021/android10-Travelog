@@ -132,7 +132,8 @@ class GuideRepository @Inject constructor(
 
     suspend fun loadRecommendPlaceData(
         areaCode: String = "1",
-        sigunguCode: String = "10"
+        sigunguCode: String = "10",
+        pageNo: Int = 1
     ): List<RecommendPlace> {
         val loadData =
             recommendPlaceDao.loadRecommendPlaceByAreaCodeAndSigunguCode(areaCode, sigunguCode)
@@ -141,7 +142,8 @@ class GuideRepository @Inject constructor(
                 val res = guideRecommendService.requestRecommendPlace(
                     areaCode,
                     sigunguCode,
-                    NEW_TOUR_API_KEY
+                    NEW_TOUR_API_KEY,
+                    pageNo
                 ).response.body.items.item
                 coroutineScope.launch {
                     res.forEach {
@@ -312,6 +314,9 @@ class RecordRepository @Inject constructor(
     fun loadMainImagesByTravelId(travelId: Int) =
         newRecordImageDao.loadAnyImageWithDistinctPlaceByTravelId(travelId)
 
+    fun insertEachNewRecordImages(image: NewRecordImage) {
+        coroutineScope.launch { newRecordImageDao.insert(image) }
+    }
     fun insertNewRecordImages(images: List<NewRecordImage>) {
         coroutineScope.launch { newRecordImageDao.insert(*images.toTypedArray()) }
     }

@@ -138,6 +138,9 @@ class RecordViewManyFragment : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     recordViewInnerViewModel.deleteChecked()
                     recordViewManyViewModel.change2MyRecord(args)
+                    CoroutineScope(Dispatchers.Main).launch {
+                        adapter.notifyDataSetChanged()
+                    }
                 }
                 makeSnackBar(binding.clRecordViewMany, "이미지가 삭제되었습니다")
             }
