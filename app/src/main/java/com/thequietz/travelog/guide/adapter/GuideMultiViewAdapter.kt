@@ -71,7 +71,7 @@ class GuideMultiViewAdapter : ListAdapter<Guide, RecyclerView.ViewHolder>(
                 AllPlaceMultiViewImageAdapter.OnItemClickListener {
                 override fun onItemClick(item: Place) {
                     val action = GuideFragmentDirections
-                        .actionGuideFragmentToSpecificGuideFragment(item.areaCode.toString())
+                        .actionGuideFragmentToSpecificGuideFragment(item.areaCode.toString(), "Click")
 
                     Navigation.findNavController(itemView).navigate(action)
                 }
