@@ -25,7 +25,7 @@ data class RecommendPlace(
     @SerializedName("title") val name: String = "",
     @SerializedName("firstimage") val url: String = "",
     @SerializedName("addr1") val description: String = "",
-    @SerializedName("readcount") val readCount: String,
+    @SerializedName("readcount") val readCount: String = "",
     @SerializedName("mapx") val longitude: Double = 0.0,
     @SerializedName("mapy") val latitude: Double = 0.0,
     @PrimaryKey @SerializedName("contentid") val contentId: Long,

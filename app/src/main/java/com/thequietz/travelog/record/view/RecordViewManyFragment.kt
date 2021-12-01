@@ -1,7 +1,6 @@
 package com.thequietz.travelog.record.view
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,20 +11,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.thequietz.travelog.addToByteList
-import com.thequietz.travelog.byteListToPdf
 import com.thequietz.travelog.databinding.FragmentRecordViewManyBinding
+import com.thequietz.travelog.makePdf
 import com.thequietz.travelog.makeSnackBar
 import com.thequietz.travelog.record.adapter.RecordViewManyMultiViewAdapter
 import com.thequietz.travelog.record.viewmodel.RecordViewManyInnerViewModel
 import com.thequietz.travelog.record.viewmodel.RecordViewManyViewModel
 import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel
-import com.thequietz.travelog.share2Pdf
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
 
 @AndroidEntryPoint
 class RecordViewManyFragment : Fragment() {
@@ -35,7 +31,6 @@ class RecordViewManyFragment : Fragment() {
     private val recordViewInnerViewModel by viewModels<RecordViewManyInnerViewModel>()
     private val adapter by lazy { RecordViewManyMultiViewAdapter(recordViewInnerViewModel) }
     private val args: RecordViewManyFragmentArgs by navArgs()
-    val byteList = mutableListOf<ByteArrayOutputStream>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -84,17 +79,10 @@ class RecordViewManyFragment : Fragment() {
                 findNavController().navigate(action)
             }
         }
-        binding.ibRecordCamera.setOnClickListener {
-            addToByteList(byteList, binding.clRecordViewMany)
-            makeSnackBar(binding.clRecordViewMany, "스크린샷 생성")
-        }
         binding.ibRecordViewPdf.setOnClickListener {
-            val fileName = "recordViewManyPdf"
-            byteListToPdf(byteList, fileName)
-            makeSnackBar(binding.clRecordViewMany, "pdf파일 생성")
-
-            val intent = share2Pdf(fileName, requireContext())
-            startActivity(Intent.createChooser(intent, "파일 공유"))
+            recordViewManyViewModel.travelName.value?.let {
+                makePdf(binding.rvRecordViewMany, binding.clRecordViewMany, it, requireContext())
+            }
         }
         binding.ibRecordDelete.setOnClickListener {
             recordViewInnerViewModel.changeDeleteState()
@@ -105,13 +93,13 @@ class RecordViewManyFragment : Fragment() {
             binding.tvRecordDelete.visibility = View.GONE
             binding.ibRecordDelete.visibility = View.VISIBLE
             if (recordViewInnerViewModel.checkedList.value?.size != 0) {
-                showDeleteDiaglog()
+                showDeleteDialog()
             }
             recordViewInnerViewModel.changeDeleteState()
         }
     }
 
-    private fun showDeleteDiaglog() {
+    private fun showDeleteDialog() {
         AlertDialog.Builder(requireContext())
             .setTitle("삭제 확인")
             .setMessage("선택된 이미지를 삭제하시겠습니까?")
