@@ -49,6 +49,7 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 showMenu.invoke(it, absoluteAdapterPosition)
             }
              */
+            tvItemRecordBasicSeq.text = item.seq.toString()
             tvItemRecordBasicTitle.text = item.name
             /*
             val adapter =

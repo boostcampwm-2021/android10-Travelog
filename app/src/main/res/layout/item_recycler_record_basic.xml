@@ -8,19 +8,44 @@
         android:background="@color/white"
         android:layout_height="wrap_content">
 
+        <View
+            android:layout_width="2dp"
+            android:layout_height="0dp"
+            android:background="@color/gray"
+            app:layout_constraintStart_toStartOf="@id/tv_item_record_basic_seq"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tv_item_record_basic_seq" />
+
+        <TextView
+            android:id="@+id/tv_item_record_basic_seq"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="26dp"
+            android:background="@drawable/shape_circle"
+            android:backgroundTint="#3C95FF"
+            android:textColor="@color/white"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="1" />
+
         <TextView
             android:id="@+id/tv_item_record_basic_title"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="26dp"
-            android:layout_marginVertical="12dp"
-            android:background="@drawable/bg_textview"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="26dp"
+            android:layout_marginVertical="8dp"
+            android:background="@drawable/bg_white_round"
+            android:elevation="3dp"
             android:padding="12dp"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_item_record_basic_seq"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="불국사, 석굴암" />
 
