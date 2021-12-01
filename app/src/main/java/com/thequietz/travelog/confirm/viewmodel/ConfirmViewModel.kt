@@ -1,6 +1,5 @@
 package com.thequietz.travelog.confirm.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,12 +7,13 @@ import com.thequietz.travelog.schedule.model.ScheduleDetailModel
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import com.thequietz.travelog.util.addOneDate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.SortedMap
 import javax.inject.Inject
 
 @HiltViewModel
 class ConfirmViewModel @Inject constructor() : ViewModel() {
-    private var _schedules = MutableLiveData<Map<String, List<ScheduleDetailModel>>>()
-    val schedules: LiveData<Map<String, List<ScheduleDetailModel>>> get() = _schedules
+    private var _schedules = MutableLiveData<SortedMap<String, List<ScheduleDetailModel>>>()
+    val schedules: LiveData<SortedMap<String, List<ScheduleDetailModel>>> get() = _schedules
 
     private var _currentSchedule = MutableLiveData<List<ScheduleDetailModel>>()
     val currentSchedule: LiveData<List<ScheduleDetailModel>> get() = _currentSchedule
@@ -25,22 +25,21 @@ class ConfirmViewModel @Inject constructor() : ViewModel() {
         var nowDate = schedule.date.split("~")[0]
         val endDate = schedule.date.split("~")[1]
 
-        val dateSet = hashSetOf<String>().apply {
-            while (nowDate != endDate) {
-                add(nowDate)
-                nowDate = addOneDate(nowDate)
-            }
-            add(endDate)
-        }.sortedBy { it }
+        val dateSet = mutableListOf<String>()
+        while (nowDate != endDate) {
+            dateSet.add(nowDate)
+            nowDate = addOneDate(nowDate)
+        }
+        dateSet.add(endDate)
+
         val newDataMap = hashMapOf<String, List<ScheduleDetailModel>>()
 
         dateSet.forEachIndexed { idx, it ->
-            newDataMap["Day ${idx + 1}"] =
+            newDataMap["Day ${String.format("%02d", idx + 1)}"] =
                 scheduleDetails.filter { schedule -> schedule.date == it }.toList()
         }
-        Log.d("List-schedules", newDataMap.map { it.value.map { t -> t.id } }.toString())
 
-        _schedules.value = newDataMap
+        _schedules.value = newDataMap.toSortedMap()
     }
 
     fun updateSchedule(key: String) {
