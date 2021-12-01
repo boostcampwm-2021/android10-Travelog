@@ -73,7 +73,7 @@ class RecordBasicViewModel @Inject constructor(
                             newTitle = recordImage.title,
                             newPlace = recordImage.place,
                             url = "empty",
-                            comment = "",
+                            comment = "코멘트를 남겨주세요!",
                             isDefault = true
                         )
                     )

@@ -50,12 +50,7 @@ class RecordAddImageFragment : Fragment() {
                     (0 until it.itemCount).forEachIndexed { ind, item ->
                         res.add(
                             NewRecordImage().copy(
-                                newTravelId = RecordViewOneViewModel.currentTravleId,
-                                newTitle = recordAddImageViewModel.travelName.value!!,
-                                newPlace = recordAddImageViewModel.currentPlace.value!!,
                                 url = clipData.getItemAt(ind).uri.toString(),
-                                comment = "",
-                                isDefault = false
                             )
                         )
                     }
@@ -114,8 +109,11 @@ class RecordAddImageFragment : Fragment() {
                         .actionRecordAddImageFragmentToRecordViewOneFragment(
                             it.recordImage.travelId,
                             it.recordImage.day,
-                            it.recordImage.place
+                            it.recordImage.place,
+                            RecordViewOneViewModel.currentJoinRecord.value!!.newRecordImage.newRecordImageId,
+                            from = "addImage"
                         )
+                    println("record to ${recordAddImageViewModel.currentPlace}")
                     findNavController().navigate(action)
                 }
                 true
@@ -139,7 +137,9 @@ class RecordAddImageFragment : Fragment() {
                     .actionRecordAddImageFragmentToRecordViewOneFragment(
                         it.recordImage.travelId,
                         it.recordImage.day,
-                        it.recordImage.place
+                        it.recordImage.place,
+                        RecordViewOneViewModel.currentJoinRecord.value!!.newRecordImage.newRecordImageId,
+                        from = "addImage"
                     )
                 findNavController().navigate(action)
             }
@@ -153,7 +153,7 @@ class RecordAddImageFragment : Fragment() {
                     id: Long
                 ) {
                     recordAddImageViewModel.placeAndScheduleList.value?.let {
-                        recordAddImageViewModel.setCurrentPlaceAndSchedule(it.get(position))
+                        recordAddImageViewModel.setCurrentPlaceAndSchedule(position)
                         recordAddImageViewModel.setMainImage(position)
                     }
                 }

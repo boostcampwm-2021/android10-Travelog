@@ -7,13 +7,12 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.thequietz.travelog.R
 import com.thequietz.travelog.data.db.dao.JoinRecord
 import com.thequietz.travelog.databinding.ItemRecyclerRecordManyDateBinding
 import com.thequietz.travelog.databinding.ItemRecyclerRecordManyImagesBinding
 import com.thequietz.travelog.databinding.ItemRecyclerRecordManyPlaceBinding
 import com.thequietz.travelog.databinding.RecyclerRecordManyImageBinding
-import com.thequietz.travelog.makeSnackBar
+import com.thequietz.travelog.makeToast
 import com.thequietz.travelog.record.model.MyRecord
 import com.thequietz.travelog.record.model.ViewType
 import com.thequietz.travelog.record.view.RecordViewManyFragmentDirections
@@ -47,11 +46,14 @@ class RecordViewManyMultiViewAdapter(
             object : MultiViewImageAdapter.OnItemClickListener {
                 override fun onItemClick(view: View, item: JoinRecord) {
                     if (innerViewModel.deleteState.value == false) {
+                        println("viewmany ind  ${item.newRecordImage.newRecordImageId}")
                         val action = RecordViewManyFragmentDirections
                             .actionRecordViewManyFragmentToRecordViewOneFragment(
                                 item.recordImage.travelId,
                                 item.recordImage.day,
-                                item.recordImage.place
+                                item.recordImage.place,
+                                item.newRecordImage.newRecordImageId,
+                                from = "manyView"
                             )
                         itemView.findNavController().navigate(action)
                     }
@@ -146,15 +148,7 @@ class MultiViewImageAdapter(
                     binding.cbDeleteCheck.setOnCheckedChangeListener { compoundButton, isChecked ->
                         if (isChecked) {
                             if (item.newRecordImage.isDefault == true) {
-                                makeSnackBar(
-                                    itemView.findViewById(R.id.cl_record_view_many),
-                                    "기본이미지는 삭제할 수 없습니다"
-                                )
-                                /*Toast.makeText(
-                                    itemView.context,
-                                    "기본이미지는 삭제할 수 없습니다",
-                                    Toast.LENGTH_SHORT
-                                ).show()*/
+                                makeToast(itemView.context, "기본이미지는 삭제할 수 없습니다")
                                 binding.cbDeleteCheck.isChecked = false
                             } else {
                                 innerViewModel.addCheck(item.newRecordImage.newRecordImageId)

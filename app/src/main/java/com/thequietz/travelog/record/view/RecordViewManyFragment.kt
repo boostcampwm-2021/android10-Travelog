@@ -102,6 +102,7 @@ class RecordViewManyFragment : Fragment() {
                                 str,
                                 requireContext()
                             )
+                            adapter.notifyItemChanged(0)
                         }
                     }
                 }
@@ -118,7 +119,9 @@ class RecordViewManyFragment : Fragment() {
                         .actionRecordViewManyFragmentToRecordViewOneFragment(
                             args.travelId,
                             record.recordImage.day,
-                            record.newRecordImage.newPlace
+                            record.newRecordImage.newPlace,
+                            RecordViewOneViewModel.currentJoinRecord.value!!.newRecordImage.newRecordImageId,
+                            from = "viewManyGridBtn"
                         )
                 }
             }
@@ -136,6 +139,9 @@ class RecordViewManyFragment : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     recordViewInnerViewModel.deleteChecked()
                     recordViewManyViewModel.change2MyRecord(args)
+                    CoroutineScope(Dispatchers.Main).launch {
+                        adapter.notifyDataSetChanged()
+                    }
                 }
                 makeSnackBar(binding.clRecordViewMany, "이미지가 삭제되었습니다")
             }

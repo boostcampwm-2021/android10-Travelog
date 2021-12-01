@@ -82,12 +82,14 @@ class RecordViewManyInnerViewModel @Inject constructor(
         }
     }
     fun deleteChecked() {
-        checkedList.value?.let { list ->
-            list.forEach {
-                repository.deleteNewRecordImage(it)
+        viewModelScope.launch {
+            checkedList.value?.let { list ->
+                list.forEach {
+                    repository.deleteNewRecordImage(it)
+                }
             }
+            clearChecked()
         }
-        clearChecked()
     }
     fun findChecked(id: Int): Boolean {
         var flag = false

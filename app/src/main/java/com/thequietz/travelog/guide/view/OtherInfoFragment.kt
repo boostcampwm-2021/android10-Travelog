@@ -194,10 +194,6 @@ class OtherInfoFragment : Fragment() {
                     }
                 }
             }
-            slLayout.setOnRefreshListener {
-                otherInfoViewModel.initPlace(thisPlace)
-                slLayout.isRefreshing = false
-            }
         }
     }
 

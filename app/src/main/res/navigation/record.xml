@@ -60,6 +60,14 @@
         <argument
             android:name="place"
             app:argType="string" />
+        <argument
+            android:name="index"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+        <argument
+            android:name="from"
+            app:argType="string"
+            android:defaultValue=""/>
 
 
     </fragment>

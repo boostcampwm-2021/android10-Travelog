@@ -40,15 +40,23 @@ class RecordViewOneViewModel @Inject constructor(
     var day: String = ""
     var place: String = ""
     var startInd = 0
+    var imageId = 0
+    var index = 0
+    var from = ""
 
     init {
         startInd = 0
     }
+
     fun initVariable(args: RecordViewOneFragmentArgs) {
         day = args.day
         place = args.place
         currentTravleId = args.travelId
+        imageId = args.index
+        from = args.from
+        println("from  $from")
     }
+
     fun loadRecord() {
         val res = mutableListOf<JoinRecord>()
         viewModelScope.launch {
@@ -68,8 +76,14 @@ class RecordViewOneViewModel @Inject constructor(
                             repository.loadDefaultJoinedRecordByTravelId(currentTravleId, it.place)
                         }
                     )
+                    if (res.last().newRecordImage.newRecordImageId == imageId) {
+                        index = res.size - 1
+                    }
                 } else {
-                    temp.forEach {
+                    temp.forEachIndexed { ind, it ->
+                        if (it.newRecordImage.newRecordImageId == imageId) {
+                            index = res.size
+                        }
                         res.add(it)
                     }
                 }
@@ -84,12 +98,15 @@ class RecordViewOneViewModel @Inject constructor(
     }
 
     fun setCurrentPosition(position: Int) {
-        if (position <0) {
+        if (position < 0) {
             return
         } else {
-            _currentPosition.value = position
-            dataList.value?.let {
-                _currentJoinRecord.value = it.get(position)
+            viewModelScope.launch {
+                _currentPosition.value = position
+
+                dataList.value?.let {
+                    _currentJoinRecord.value = it.get(position)
+                }
             }
         }
     }

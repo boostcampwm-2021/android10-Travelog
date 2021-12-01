@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thequietz.travelog.data.RecordRepository
+import com.thequietz.travelog.data.db.dao.JoinRecord
 import com.thequietz.travelog.data.db.dao.NewRecordImage
 import com.thequietz.travelog.record.model.PlaceAndSchedule
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,8 +25,8 @@ class RecordAddImageViewModel @Inject constructor(
     private val _placeAndScheduleList = MutableLiveData<List<PlaceAndSchedule>>()
     val placeAndScheduleList: LiveData<List<PlaceAndSchedule>> = _placeAndScheduleList
 
-    private val _mainImageList = MutableLiveData<List<NewRecordImage>>()
-    val mainImageList: LiveData<List<NewRecordImage>> = _mainImageList
+    private val _mainImageList = MutableLiveData<List<JoinRecord>>()
+    val mainImageList: LiveData<List<JoinRecord>> = _mainImageList
 
     private val _travelName = MutableLiveData<String>()
     val travelName: LiveData<String> = _travelName
@@ -35,9 +36,6 @@ class RecordAddImageViewModel @Inject constructor(
 
     private val _endDate = MutableLiveData<String>()
     val endDate: LiveData<String> = _endDate
-
-    private val _nextGroupId = MutableLiveData<Int>()
-    val nextGroupId: LiveData<Int> = _nextGroupId
 
     private val _currentMainImage = MutableLiveData<NewRecordImage>()
     val currentMainImage: LiveData<NewRecordImage> = _currentMainImage
@@ -57,9 +55,18 @@ class RecordAddImageViewModel @Inject constructor(
     fun initVariables() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val placeAndScheduleRes = repository.loadPlaceAndScheduleByTravelId(RecordViewOneViewModel.currentTravleId)
+                val tempPlaceAndScheduleRes = repository.loadDistinctJoinedRecordByTravelId(RecordViewOneViewModel.currentTravleId)
+                val placeAndScheduleRes = mutableListOf<PlaceAndSchedule>()
                 val tempData = repository.loadOneDataByTravelId(RecordViewOneViewModel.currentTravleId)
-                val mainImageRes = repository.loadMainImagesByTravelId(RecordViewOneViewModel.currentTravleId)
+                val mainImageRes = repository.loadAnyJoinedrecordByTravelId(RecordViewOneViewModel.currentTravleId)
+                tempPlaceAndScheduleRes.forEach {
+                    placeAndScheduleRes.add(
+                        PlaceAndSchedule().copy(
+                            place = it.recordImage.place,
+                            day = it.recordImage.day
+                        )
+                    )
+                }
                 withContext(Dispatchers.Main) {
                     _placeAndScheduleList.value = placeAndScheduleRes
                     _travelName.value = tempData.title
@@ -92,13 +99,14 @@ class RecordAddImageViewModel @Inject constructor(
 
     fun setMainImage(position: Int) {
         mainImageList.value?.let {
-            _currentMainImage.value = it.get(position)
+            _currentMainImage.value = it.get(position).newRecordImage
         }
     }
 
-    fun setCurrentPlaceAndSchedule(data: PlaceAndSchedule) {
-        val temp = data.toString().split("-")
-        _currentPlace.value = temp.get(0).substring(0, temp.get(0).length - 1)
-        _currentSchedule.value = temp.get(1).substring(1, temp.get(1).length)
+    fun setCurrentPlaceAndSchedule(position: Int) {
+        placeAndScheduleList.value?.let {
+            _currentPlace.value = it.get(position).place
+            _currentSchedule.value = it.get(position).day
+        }
     }
 }

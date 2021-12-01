@@ -57,7 +57,15 @@ class RecordViewOneFragment : Fragment() {
             initVariable(args)
             loadRecord()
             Handler(Looper.getMainLooper()).postDelayed({
-                binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd, true)
+                when (recordViewOneViewModel.from) {
+                    "manyView", "viewManyGridBtn", "addImage" -> {
+                        binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.index, true)
+                    }
+                    "" -> {
+                        binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd, true)
+                    }
+                }
+                // binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd, true)
                 loading.dismiss()
             }, 1000)
 
