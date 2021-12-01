@@ -64,7 +64,7 @@ class RecordBasicViewModel @Inject constructor(
             if (!isSameOldAndNew) {
                 repository.deleteRecordImageByTravelId(travelId)
                 repository.insertRecordImages(newRecordImages)
-
+                repository.deleteNewRecordImageByTravelIdAndIsDefault(travelId, true)
                 val tempNewRecordImages = mutableListOf<NewRecordImage>()
                 newRecordImages.forEach { recordImage ->
                     tempNewRecordImages.add(

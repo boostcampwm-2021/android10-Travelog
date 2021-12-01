@@ -49,4 +49,10 @@ class RecordBasicRepository @Inject constructor(
             recordImageDao.deleteRecordImageByTravelId(travelId)
         }
     }
+
+    fun deleteNewRecordImageByTravelIdAndIsDefault(travelId: Int, isDefault: Boolean) {
+        coroutineScope.launch {
+            newRecordImageDao.deleteNewRecordImageByTravelIdAndIsDefault(travelId, isDefault)
+        }
+    }
 }
