@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.otherInfoFragment,
                 R.id.scheduleDetailFragment,
                 R.id.schedulePlaceFragment,
+                R.id.scheduleSelectFragment,
                 R.id.confirmFragment,
                 R.id.placeRecommendFragment,
                 R.id.placeSearchFragment,

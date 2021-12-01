@@ -75,7 +75,6 @@ class PlaceRecommendFragment : Fragment() {
 
         binding.toolbar.apply {
             setupWithNavController(navController, appBarConfig)
-            title = "일정 설정"
             inflateMenu(R.menu.menu_place_recommend)
             setOnMenuItemClickListener {
                 if (it.itemId == R.id.action_search) {

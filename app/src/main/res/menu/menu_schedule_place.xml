@@ -9,7 +9,7 @@
         app:showAsAction="collapseActionView|ifRoom" />
     <item
         android:id="@+id/action_next"
-        android:icon="@drawable/ic_baseline_check_24"
-        android:title="완료"
+        android:icon="@drawable/ic_next_24"
+        android:title="다음"
         app:showAsAction="always" />
 </menu>
