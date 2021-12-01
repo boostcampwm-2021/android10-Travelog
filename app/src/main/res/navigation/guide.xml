@@ -24,8 +24,16 @@
         <argument
             android:name="item"
             app:argType="string" />
+        <argument
+            android:name="from"
+            app:argType="string" />
         <action
             android:id="@+id/action_specificGuideFragment_to_otherInfoFragment"
+            app:destination="@id/otherInfoFragment" />
+        <action
+            android:id="@+id/action_directly_specificGuideFragment_to_otherInfoFragment"
+            app:popUpToInclusive="false"
+            app:popUpTo="@id/guideFragment"
             app:destination="@id/otherInfoFragment" />
     </fragment>
     <fragment

@@ -41,7 +41,7 @@ class SpecificGuideFragment : Fragment() {
             currentPlaceList.observe(viewLifecycleOwner, { it ->
                 it?.let { adapter.submitList(it) }
             })
-            initCurrentItem(args)
+            initCurrentItem(args, this@SpecificGuideFragment)
         }
 
         findNavController().apply {
