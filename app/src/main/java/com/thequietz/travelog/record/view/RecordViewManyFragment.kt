@@ -102,6 +102,7 @@ class RecordViewManyFragment : Fragment() {
                                 str,
                                 requireContext()
                             )
+                            adapter.notifyItemChanged(0)
                         }
                     }
                 }
