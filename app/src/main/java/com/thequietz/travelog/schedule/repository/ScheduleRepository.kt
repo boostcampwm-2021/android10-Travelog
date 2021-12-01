@@ -49,11 +49,13 @@ class ScheduleRepository @Inject constructor(
         coroutineScope.launch {
             if (scheduleDetails.isNotEmpty()) {
                 scheduleDetailDao.deleteScheduleDetailsByScheduleId(scheduleDetails[0].scheduleId)
-                scheduleDetails.forEach {
-                    scheduleDetailDao.insert(it)
-                }
+                scheduleDetailDao.insert(*scheduleDetails.map { it.copy(id = 0) }.toTypedArray())
             }
         }
+    }
+
+    fun deleteSchedulesByScheduleId(id: Int) {
+        scheduleDetailDao.deleteScheduleDetailsByScheduleId(id)
     }
 
     fun loadScheduleDateList() = scheduleDao.loadAllDates()

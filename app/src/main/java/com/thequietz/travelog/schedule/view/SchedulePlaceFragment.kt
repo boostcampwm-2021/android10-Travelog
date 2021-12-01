@@ -2,16 +2,18 @@ package com.thequietz.travelog.schedule.view
 
 import android.content.Context
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
@@ -46,15 +48,11 @@ class SchedulePlaceFragment : Fragment() {
         this.alpha = 0.4F
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_place, container, false)
@@ -66,26 +64,7 @@ class SchedulePlaceFragment : Fragment() {
         mContext = context as Context
         gson = Gson()
 
-        binding.etSearch.setOnKeyListener { v, code, _ ->
-            if (code !== KeyEvent.KEYCODE_ENTER) return@setOnKeyListener false
-
-            val keyword = (v as EditText).text.toString()
-            if (keyword.isEmpty()) {
-                viewModel.loadPlaceList()
-            } else {
-                viewModel.searchPlaceList(keyword)
-            }
-            true
-        }
-
-        binding.btnSelectDate.setOnClickListener {
-            val placeList = viewModel.placeSelectedList.value
-            val action =
-                SchedulePlaceFragmentDirections.actionSchedulePlaceFragmentToScheduleSelectFragment(
-                    placeList?.toTypedArray() ?: arrayOf()
-                )
-            it.findNavController().navigate(action)
-        }
+        setToolbar()
 
         viewModel.placeList.observe(viewLifecycleOwner, {
 
@@ -119,10 +98,10 @@ class SchedulePlaceFragment : Fragment() {
 
         viewModel.placeSelectedList.observe(viewLifecycleOwner, {
             if (it.size == 0) {
-                binding.btnSelectDate.setDisable()
+                binding.toolbar.menu.findItem(R.id.action_next).isEnabled = false
                 binding.rvSelectItem.visibility = View.GONE
             } else {
-                binding.btnSelectDate.setEnable()
+                binding.toolbar.menu.findItem(R.id.action_next).isEnabled = true
                 binding.rvSelectItem.visibility = View.VISIBLE
             }
 
@@ -146,6 +125,53 @@ class SchedulePlaceFragment : Fragment() {
 
         viewModel.loadPlaceList()
         viewModel.initPlaceSelectedList()
+    }
+
+    private fun setToolbar() {
+        val navController = findNavController()
+        val appBarConfig = AppBarConfiguration.Builder(navController.graph).build()
+
+        binding.toolbar.apply {
+            setupWithNavController(navController, appBarConfig)
+            title = ""
+            inflateMenu(R.menu.menu_schedule_place)
+
+            val searchView = (menu.findItem(R.id.action_search).actionView as SearchView)
+            searchView.apply {
+                queryHint = "목적지를 검색해보세요!"
+                setIconifiedByDefault(false)
+
+                setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        if (query.isNullOrEmpty()) {
+                            viewModel.loadPlaceList()
+                        } else {
+                            viewModel.searchPlaceList(query)
+                        }
+                        isIconified = true
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        return false
+                    }
+                })
+            }
+
+            setOnMenuItemClickListener {
+                if (it.itemId == R.id.action_next) {
+                    val placeList = viewModel.placeSelectedList.value
+                    val action =
+                        SchedulePlaceFragmentDirections.actionSchedulePlaceFragmentToScheduleSelectFragment(
+                            placeList?.toTypedArray() ?: arrayOf()
+                        )
+                    findNavController().navigate(action)
+
+                    return@setOnMenuItemClickListener true
+                }
+                return@setOnMenuItemClickListener false
+            }
+        }
     }
 
     override fun onDestroyView() {
