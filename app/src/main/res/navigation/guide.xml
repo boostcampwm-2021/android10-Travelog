@@ -46,6 +46,10 @@
             android:id="@+id/action_directly_specificGuideFragment_to_otherInfoFragment"
             app:popUpToInclusive="false"
             app:popUpTo="@id/guideFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:destination="@id/otherInfoFragment" />
     </fragment>
     <fragment
