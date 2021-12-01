@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/guideFragment"
         android:name="com.thequietz.travelog.guide.view.GuideFragment"
-        android:label="GuideFragment"
+        android:label="둘러보기"
         tools:layout="@layout/fragment_guide">
         <action
             android:id="@+id/action_guideFragment_to_specificGuideFragment"
@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/specificGuideFragment"
         android:name="com.thequietz.travelog.guide.view.SpecificGuideFragment"
-        android:label="SpecificGuideFragment">
+        android:label="상세 지역 선택">
         <argument
             android:name="item"
             app:argType="string" />
@@ -31,7 +31,7 @@
     <fragment
         android:id="@+id/otherInfoFragment"
         android:name="com.thequietz.travelog.guide.view.OtherInfoFragment"
-        android:label="OtherInfoFragment">
+        android:label="추천 정보">
         <argument
             android:name="item"
             app:argType="string" />
