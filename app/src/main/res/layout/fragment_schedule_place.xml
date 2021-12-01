@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.thequietz.travelog.schedule.viewmodel.SchedulePlaceViewModel" />
@@ -12,8 +13,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_schedule_place"
         android:layout_width="match_parent"
-        android:background="@color/white"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".schedule.view.SchedulePlaceFragment">
 
         <androidx.appcompat.widget.Toolbar
@@ -22,7 +23,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:textSize="20sp"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_search"
@@ -59,29 +60,34 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginHorizontal="14dp"
-            android:layout_marginVertical="14dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="0dp"
             android:paddingHorizontal="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/rv_select_item"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_empty_result"
-            tools:listitem="@layout/item_recycler_schedule_place" />
+            app:layout_constraintTop_toBottomOf="@id/tv_search"
+            tools:listitem="@layout/item_recycler_schedule_place"
+            app:layout_constraintVertical_chainStyle="packed"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_select_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4dp"
-            android:paddingHorizontal="16dp"
+            android:background="@color/white"
             android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="0dp"
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rv_select_search"
+            tools:listitem="@layout/item_recycler_schedule_place_selected"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:listitem="@layout/item_recycler_schedule_place_selected" />
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
