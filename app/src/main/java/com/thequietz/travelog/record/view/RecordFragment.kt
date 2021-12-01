@@ -30,8 +30,8 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
         binding.rvRecord.adapter = adapter
 
         viewModel.loadData()
-        viewModel.recordList.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+        viewModel.recordList.observe(viewLifecycleOwner) { recordList ->
+            adapter.submitList(recordList)
         }
 
         return binding.root

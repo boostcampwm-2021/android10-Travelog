@@ -10,6 +10,7 @@ data class RecordBasic(
 
 sealed class RecordBasicItem {
     data class TravelDestination(
+        var seq: Int = 0,
         val name: String,
         val date: String,
         val day: String,

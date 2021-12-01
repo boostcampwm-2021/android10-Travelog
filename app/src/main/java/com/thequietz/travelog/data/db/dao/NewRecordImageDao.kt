@@ -9,6 +9,9 @@ import com.thequietz.travelog.record.model.RecordImage
 
 @Dao
 abstract class NewRecordImageDao : BaseDao<NewRecordImage> {
+    @Query("SELECT * FROM NewRecordImage ORDER BY newTravelId")
+    abstract fun loadAllNewRecordImages(): List<NewRecordImage>
+
     @Query("SELECT * FROM NewRecordImage WHERE newTravelId =:travelId")
     abstract fun loadNewRecordImagesByTravelId(travelId: Int): List<NewRecordImage>
 

@@ -64,24 +64,20 @@ class RecordBasicViewModel @Inject constructor(
             if (!isSameOldAndNew) {
                 repository.deleteRecordImageByTravelId(travelId)
                 repository.insertRecordImages(newRecordImages)
-                withContext(Dispatchers.IO) {
-                    val temp = mutableListOf<NewRecordImage>()
-                    newRecordImages.forEach {
-                        temp.add(
-                            NewRecordImage().copy(
-                                newTravelId = it.travelId,
-                                newTitle = it.title,
-                                newPlace = it.place,
-                                url = "empty",
-                                comment = "",
-                                isDefault = true
-                            )
+                val tempNewRecordImages = mutableListOf<NewRecordImage>()
+                newRecordImages.forEach { recordImage ->
+                    tempNewRecordImages.add(
+                        NewRecordImage().copy(
+                            newTravelId = recordImage.travelId,
+                            newTitle = recordImage.title,
+                            newPlace = recordImage.place,
+                            url = "empty",
+                            comment = "",
+                            isDefault = true
                         )
-                    }
-                    withContext(Dispatchers.IO) {
-                        recordRepository.insertNewRecordImages(temp)
-                    }
+                    )
                 }
+                recordRepository.insertNewRecordImages(tempNewRecordImages)
             }
         }
     }
@@ -153,11 +149,11 @@ class RecordBasicViewModel @Inject constructor(
             ) {
                 recordDestinationList.add(
                     RecordBasicItem.TravelDestination(
-                        recordImage.place,
-                        createDateFromDay(recordImage.startDate, recordImage.day),
-                        recordImage.day,
-                        recordImage.lat,
-                        recordImage.lng
+                        name = recordImage.place,
+                        date = createDateFromDay(recordImage.startDate, recordImage.day),
+                        day = recordImage.day,
+                        lat = recordImage.lat,
+                        lng = recordImage.lng
                     )
                 )
             }
@@ -182,10 +178,12 @@ class RecordBasicViewModel @Inject constructor(
         var tempIndex = 0
 
         while (currDate != lastDate) {
+            var seq = 1
             list.add(RecordBasicItem.RecordBasicHeader("Day$currDay", currDate))
 
             for (i in tempIndex until travelDestinations.size) {
                 if (travelDestinations[i].date == currDate) {
+                    travelDestinations[i].seq = seq++
                     list.add(travelDestinations[i])
                     tempIndex = i + 1
                 }

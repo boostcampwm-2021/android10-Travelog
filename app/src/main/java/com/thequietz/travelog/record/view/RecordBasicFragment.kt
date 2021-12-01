@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -12,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
+import com.thequietz.travelog.LoadingDialog
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordBasicBinding
 import com.thequietz.travelog.map.GoogleMapFragment
@@ -66,9 +68,14 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
         RecordBasicAdapter(
             ::navigateToRecordViewUi,
             ::showMenu,
-            ::updateTargetList
+            ::updateTargetList,
+            ::scrollToPosition
         )
     }
+    private val layoutManager by lazy {
+        binding.rvRecordBasic.layoutManager as LinearLayoutManager
+    }
+    private val loadingDialog by lazy { LoadingDialog(requireContext()) }
 
     /* 이미지 추가 기능 삭제 예정
     private var position = 0
@@ -89,35 +96,55 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
     inner class RecordBasicRecyclerViewScrollListener : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-
-            val position =
-                (recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
-
+            val position = layoutManager.findFirstCompletelyVisibleItemPosition()
             if (tempPosition == position) return
-
-            val viewHolder =
-                recyclerView.findViewHolderForAdapterPosition(position) as RecordBasicViewHolder
+            val viewHolder = recyclerView.findViewHolderForAdapterPosition(position) ?: return
+            viewHolder as RecordBasicViewHolder
             val day = viewHolder.getDay()
             val date = viewHolder.getDate()
-
             if (tempDay == day) return
-
             updateTargetList(day)
             binding.tvItemRecordBasicHeaderDay.text = day
             binding.tvItemRecordBasicHeaderDate.text = date
-
             tempPosition = position
             tempDay = day
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        loadingDialog.show()
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
+    private fun initView() {
         binding.rvRecordBasic.adapter = adapter
-        binding.rvRecordBasic.addOnScrollListener(RecordBasicRecyclerViewScrollListener())
+        updateNavigationUi()
+        disableDragInAppBarLayout()
+        setListener()
+    }
 
+    private fun updateNavigationUi() = with(binding) {
         val appBarConfiguration = AppBarConfiguration(findNavController().graph)
+        collapsingToolbarLayout.setupWithNavController(
+            toolbar,
+            findNavController(),
+            appBarConfiguration
+        )
+    }
 
-        binding.appBarLayout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
+    private fun disableDragInAppBarLayout() {
+        val params = binding.appBarLayout.layoutParams as CoordinatorLayout.LayoutParams
+        val behavior = AppBarLayout.Behavior()
+        behavior.setDragCallback(object : AppBarLayout.Behavior.DragCallback() {
+            override fun canDrag(appBarLayout: AppBarLayout): Boolean = false
+        })
+        params.behavior = behavior
+    }
+
+    private fun setListener() = with(binding) {
+        rvRecordBasic.addOnScrollListener(RecordBasicRecyclerViewScrollListener())
+        appBarLayout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
                 if (state == State.COLLAPSED) {
                     binding.collapsingToolbarLayout.title = viewModel.title.value ?: ""
@@ -126,22 +153,15 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
                 }
             }
         })
-
-        binding.collapsingToolbarLayout.apply {
-            setupWithNavController(
-                binding.toolbar,
-                findNavController(),
-                appBarConfiguration
-            )
-            title = ""
+        layoutItemRecordBasicHeader.setOnClickListener {
+            val position =
+                adapter.getPositionOfHeaderFromDay(binding.tvItemRecordBasicHeaderDay.text.toString())
+            scrollToPosition(position)
         }
-
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun initViewModel() {
         viewModel.loadData(navArgs.travelId, navArgs.title, navArgs.startDate, navArgs.endDate)
-
         subscribeUi()
     }
 
@@ -154,6 +174,7 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
             if (isEmpty) {
                 Toast.makeText(requireContext(), "데이터가 없습니다. 일정을 추가해주세요.", Toast.LENGTH_LONG).show()
                 findNavController().navigateUp()
+                loadingDialog.dismiss()
             }
         }
         viewModel.title.observe(viewLifecycleOwner) { title ->
@@ -162,17 +183,23 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
         viewModel.date.observe(viewLifecycleOwner) { date ->
             binding.tvRecordBasicSchedule.text = date
         }
+        viewModel.recordImageList.observe(viewLifecycleOwner) {
+            viewModel.createData()
+        }
         viewModel.recordBasicItemList.observe(viewLifecycleOwner) { recordBasicItemList ->
             updateTargetList()
             adapter.submitList(recordBasicItemList)
-        }
-        viewModel.recordImageList.observe(viewLifecycleOwner) {
-            viewModel.createData()
+            loadingDialog.dismiss()
         }
     }
 
     private fun updateTargetList(day: String = "Day1") {
         viewModel.updateTargetList(day, targetList)
+    }
+
+    private fun scrollToPosition(position: Int) {
+        if (position < 0) return
+        layoutManager.scrollToPositionWithOffset(position, 0)
     }
 
     private fun navigateToRecordViewUi(day: String, place: String) {

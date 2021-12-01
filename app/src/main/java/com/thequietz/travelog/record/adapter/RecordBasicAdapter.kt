@@ -13,7 +13,8 @@ import com.thequietz.travelog.record.model.RecordBasicItem
 sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     class RecordBasicHeaderViewHolder(
         private val binding: ItemRecyclerRecordBasicHeaderBinding,
-        private val updateTargetList: (String) -> Unit
+        private val updateTargetList: (String) -> Unit,
+        private val scrollToPosition: (Int) -> Unit
     ) : RecordBasicViewHolder(binding.root) {
         private lateinit var item: RecordBasicItem.RecordBasicHeader
 
@@ -21,6 +22,7 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             this@RecordBasicHeaderViewHolder.item = item as RecordBasicItem.RecordBasicHeader
             root.setOnClickListener {
                 updateTargetList(item.day)
+                scrollToPosition(absoluteAdapterPosition)
             }
             tvItemRecordBasicHeaderTitle.text = item.day
             tvItemRecordBasicHeaderDate.text = item.date
@@ -47,6 +49,7 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 showMenu.invoke(it, absoluteAdapterPosition)
             }
              */
+            tvItemRecordBasicSeq.text = item.seq.toString()
             tvItemRecordBasicTitle.text = item.name
             /*
             val adapter =
@@ -74,7 +77,8 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 class RecordBasicAdapter(
     private val navigateToRecordViewUi: (String, String) -> Unit,
     private val showMenu: (View, Int) -> Unit,
-    private val updateTargetList: (String) -> Unit
+    private val updateTargetList: (String) -> Unit,
+    private val scrollToPosition: (Int) -> Unit
 ) : ListAdapter<RecordBasicItem, RecordBasicViewHolder>(RecordBasicDiffUtil()) {
     override fun getItemViewType(position: Int): Int {
         return when (currentList[position]) {
@@ -92,7 +96,8 @@ class RecordBasicAdapter(
                         parent,
                         false
                     ),
-                    updateTargetList
+                    updateTargetList,
+                    scrollToPosition
                 )
             }
             else -> {
@@ -111,6 +116,15 @@ class RecordBasicAdapter(
 
     override fun onBindViewHolder(holder: RecordBasicViewHolder, position: Int) {
         holder.bind(currentList[position])
+    }
+
+    fun getPositionOfHeaderFromDay(day: String): Int {
+        for ((position, item) in currentList.withIndex()) {
+            if (item is RecordBasicItem.RecordBasicHeader && item.day == day) {
+                return position
+            }
+        }
+        return -1
     }
 
     companion object {

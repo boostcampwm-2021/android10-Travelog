@@ -61,10 +61,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.placeRecommendFragment,
                 R.id.placeSearchFragment,
                 R.id.recordBasicFragment -> binding.toolbar.visibility = View.GONE
-                R.id.placeDetailFragment,
-                R.id.placeDetailFragmentFromGuide -> {
-                    binding.toolbar.visibility = View.GONE
-                }
                 else -> binding.toolbar.title = ""
             }
         }
