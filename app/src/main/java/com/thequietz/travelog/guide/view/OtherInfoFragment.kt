@@ -8,9 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentOtherInfoBinding
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.adapter.OtherInfoAdapter
@@ -71,14 +74,29 @@ class OtherInfoFragment : Fragment() {
             })
         }
 
-        binding.btnMakePlan.setOnClickListener {
-            findNavController().apply {
-                previousBackStackEntry?.savedStateHandle?.set("toSchedulePlace", true)
-                popBackStack()
+        setToolbar()
+        setListener()
+    }
+
+    private fun setToolbar() {
+        val navController = findNavController()
+        val appBarConfig = AppBarConfiguration.Builder(navController.graph).build()
+
+        binding.toolbar.apply {
+            setupWithNavController(navController, appBarConfig)
+            title = "추천 정보"
+            inflateMenu(R.menu.menu_other_info)
+            setOnMenuItemClickListener {
+                if (it.itemId == R.id.action_schedule) {
+                    findNavController().apply {
+                        previousBackStackEntry?.savedStateHandle?.set("toSchedulePlace", true)
+                        popBackStack()
+                    }
+                    return@setOnMenuItemClickListener true
+                }
+                return@setOnMenuItemClickListener false
             }
         }
-
-        setListener()
     }
 
     private fun setListener() {
