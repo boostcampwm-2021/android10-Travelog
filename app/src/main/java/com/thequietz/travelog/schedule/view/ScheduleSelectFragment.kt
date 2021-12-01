@@ -115,19 +115,32 @@ class ScheduleSelectFragment : Fragment() {
     }
 
     private fun initDatePicker() {
-        binding.btnSelectRange.setOnClickListener {
-            val builder =
-                MaterialDatePicker.Builder.dateRangePicker()
-                    .setTitleText("여행 일정을 선택해 주세요")
-                    .setCalendarConstraints(
-                        CalendarConstraints
-                            .Builder()
-                            .setStart(Calendar.getInstance().timeInMillis)
-                            .build()
-                    )
-            val picker = builder.build()
-            var start: String
-            var end: String
+        val builder =
+            MaterialDatePicker.Builder.dateRangePicker()
+                .setTitleText("여행 일정을 선택해 주세요")
+                .setCalendarConstraints(
+                    CalendarConstraints
+                        .Builder()
+                        .setStart(Calendar.getInstance().timeInMillis)
+                        .build()
+                )
+        val picker = builder.build()
+        var start: String
+        var end: String
+
+        binding.tvStartDateSelected.setOnClickListener {
+            picker.show(childFragmentManager, "date_picker")
+            picker.addOnPositiveButtonClickListener { selection ->
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = selection?.first ?: 0
+                start = SimpleDateFormat("yyyy.MM.dd").format(calendar.time).toString()
+                calendar.timeInMillis = selection?.second ?: 0
+                end = SimpleDateFormat("yyyy.MM.dd").format(calendar.time).toString()
+                scheduleSelectViewModel.setScheduleRange(start, end)
+            }
+        }
+
+        binding.tvEndDateSelected.setOnClickListener {
             picker.show(childFragmentManager, "date_picker")
             picker.addOnPositiveButtonClickListener { selection ->
                 val calendar = Calendar.getInstance()
