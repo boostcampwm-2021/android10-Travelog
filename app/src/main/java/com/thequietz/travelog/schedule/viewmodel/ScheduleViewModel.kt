@@ -24,5 +24,6 @@ class ScheduleViewModel @Inject internal constructor(
 
     fun deleteSchedule(id: Int) {
         repository.deleteSchedule(id)
+        repository.deleteSchedulesByScheduleId(id)
     }
 }
