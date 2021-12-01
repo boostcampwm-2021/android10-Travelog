@@ -60,7 +60,7 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
         _context = requireContext()
         dayAdapter = ConfirmDayAdapter(object : ConfirmDayAdapter.OnClickListener {
             override fun onClick(index: Int) {
-                viewModel.updateSchedule("Day ${index + 1}")
+                viewModel.updateSchedule("Day ${String.format("%02d", index + 1)}")
             }
         })
         pageAdapter = ConfirmPagerAdapter()
