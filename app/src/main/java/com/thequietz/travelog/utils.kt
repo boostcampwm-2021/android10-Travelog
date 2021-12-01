@@ -115,6 +115,7 @@ fun makePdf(
             }
         snackbar.show()
     } catch (e: IOException) {
+        println("something wrong..")
         e.printStackTrace()
     }
 }

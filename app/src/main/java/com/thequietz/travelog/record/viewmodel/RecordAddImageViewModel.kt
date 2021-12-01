@@ -96,9 +96,10 @@ class RecordAddImageViewModel @Inject constructor(
         }
     }
 
-    fun setCurrentPlaceAndSchedule(data: PlaceAndSchedule) {
-        val temp = data.toString().split("-")
-        _currentPlace.value = temp.get(0).substring(0, temp.get(0).length - 1)
-        _currentSchedule.value = temp.get(1).substring(1, temp.get(1).length)
+    fun setCurrentPlaceAndSchedule(position: Int) {
+        placeAndScheduleList.value?.let {
+            _currentPlace.value = it.get(position).place
+            _currentSchedule.value = it.get(position).day
+        }
     }
 }

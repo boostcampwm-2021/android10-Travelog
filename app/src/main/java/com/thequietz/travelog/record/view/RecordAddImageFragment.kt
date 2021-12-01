@@ -153,7 +153,7 @@ class RecordAddImageFragment : Fragment() {
                     id: Long
                 ) {
                     recordAddImageViewModel.placeAndScheduleList.value?.let {
-                        recordAddImageViewModel.setCurrentPlaceAndSchedule(it.get(position))
+                        recordAddImageViewModel.setCurrentPlaceAndSchedule(position)
                         recordAddImageViewModel.setMainImage(position)
                     }
                 }
