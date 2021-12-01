@@ -30,7 +30,10 @@ class RecordAdapter(
             tvItemRecordTitle.text = item.title
             tvItemRecordSchedule.text = "${item.startDate} ~ ${item.endDate.substring(5)}"
             val adapter =
-                RecordPhotoAdapter(navigateToRecordBasicUi = navigateToRecordBasicUi, recordItem = item)
+                RecordPhotoAdapter(
+                    navigateToRecordBasicUi = navigateToRecordBasicUi,
+                    recordItem = item
+                )
             rvItemRecordPhoto.adapter = adapter
             rvItemRecordPhoto.layoutManager = layoutManager
             adapter.submitList(item.images)

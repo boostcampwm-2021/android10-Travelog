@@ -24,16 +24,9 @@ class RecordViewModel @Inject constructor(
     fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
             val scheduleList = repository.loadAllSchedule()
-            val imageList = NewRecordImage(
-                newTravelId = 1,
-                newTitle = "",
-                newPlace = "",
-                url = "",
-                comment = ""
-            )
-            val recordList = createRecordFromSchedule(scheduleList)
+            val newImageList = repository.loadAllNewRecordImages()
 
-            // TODO: 데이터베이스 작업 완료 후 이미지 불러와서 보여줘야 한다.
+            val recordList = createRecordFromSchedule(scheduleList, newImageList)
 
             withContext(Dispatchers.Main) {
                 _recordList.value = recordList
@@ -41,15 +34,32 @@ class RecordViewModel @Inject constructor(
         }
     }
 
-    private fun createRecordFromSchedule(scheduleList: List<ScheduleModel>): List<Record> {
+    private fun createRecordFromSchedule(
+        scheduleList: List<ScheduleModel>,
+        newImageList: List<NewRecordImage>
+    ): List<Record> {
         val recordList = mutableListOf<Record>()
+        val images = mutableListOf<String>()
 
         for (schedule in scheduleList) {
+            images.clear()
+
+            for (newImage in newImageList) {
+                if (newImage.newTravelId == schedule.id) {
+                    images.add(newImage.url)
+                }
+            }
+
+            for (i in images.size - 1 until 3) {
+                images.add("")
+            }
+
             val record = Record(
                 travelId = schedule.id,
                 title = schedule.name,
                 startDate = schedule.date.split('~').first(),
-                endDate = schedule.date.split('~').last()
+                endDate = schedule.date.split('~').last(),
+                images = images.toList()
             )
 
             recordList.add(record)

@@ -1,5 +1,6 @@
 package com.thequietz.travelog.record.repository
 
+import com.thequietz.travelog.data.db.dao.NewRecordImageDao
 import com.thequietz.travelog.data.db.dao.RecordImageDao
 import com.thequietz.travelog.data.db.dao.ScheduleDao
 import com.thequietz.travelog.data.db.dao.ScheduleDetailDao
@@ -14,9 +15,12 @@ class RecordBasicRepository @Inject constructor(
     private val scheduleDao: ScheduleDao,
     private val scheduleDetailDao: ScheduleDetailDao,
     private val recordImageDao: RecordImageDao,
+    private val newRecordImageDao: NewRecordImageDao,
     private val coroutineScope: CoroutineScope
 ) {
     fun loadAllSchedule() = scheduleDao.loadAllSchedule()
+
+    fun loadAllNewRecordImages() = newRecordImageDao.loadAllNewRecordImages()
 
     fun loadScheduleDetailOrderByScheduleIdAndDate(scheduleId: Int) =
         scheduleDetailDao.loadScheduleDetailsByScheduleIdOrderByScheduleIdAndDate(scheduleId)
