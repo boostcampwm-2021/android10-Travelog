@@ -133,13 +133,13 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
     }
 
     private fun setToolbar() {
-        val navController = findNavController()
-        val appBarConfig = AppBarConfiguration.Builder(navController.graph).build()
-
         binding.toolbar.apply {
+            val navController = findNavController()
+            val appBarConfig = AppBarConfiguration.Builder(navController.graph).build()
+
             setupWithNavController(navController, appBarConfig)
             title = "일정 확인"
-            inflateMenu(R.menu.menu_schedule_detail)
+            inflateMenu(R.menu.menu_with_complete)
             setOnMenuItemClickListener {
                 if (it.itemId == R.id.action_next) {
                     val action =

@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.thequietz.travelog.R
@@ -52,27 +54,48 @@ class ScheduleSelectFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = scheduleSelectViewModel
+        setToolbar()
+    }
+
+    private fun setToolbar() {
+        binding.toolbar.apply {
+            val navController = findNavController()
+            val appBarConfig = AppBarConfiguration.Builder(navController.graph).build()
+            setupWithNavController(navController, appBarConfig)
+            inflateMenu(R.menu.menu_with_complete)
+
+            setOnMenuItemClickListener {
+                if (it.itemId == R.id.action_next) {
+                    val keyword = scheduleSelectViewModel.travelName.value?.toString()
+                    if (keyword == null || keyword.isEmpty()) {
+                        return@setOnMenuItemClickListener false
+                    }
+
+                    val schedule = ScheduleModel(
+                        name = keyword,
+                        schedulePlace = args.placeList.toList(),
+                        date = scheduleSelectViewModel.startDate.value.toString() + "~" + scheduleSelectViewModel.endDate.value.toString()
+                    )
+
+                    val action =
+                        ScheduleSelectFragmentDirections.actionScheduleSelectFragmentToScheduleDetailFragment(
+                            args.placeList,
+                            schedule,
+                            ScheduleControlType.TYPE_CREATE
+                        )
+                    findNavController().navigate(action)
+
+                    return@setOnMenuItemClickListener true
+                }
+                return@setOnMenuItemClickListener false
+            }
+        }
     }
 
     private fun initNextButton() {
-        binding.btnNext.setOnClickListener {
-            val keyword = scheduleSelectViewModel.travelName.value?.toString()
-            if (keyword == null || keyword.isEmpty()) {
-                return@setOnClickListener
-            }
-            val schedule = ScheduleModel(
-                name = keyword,
-                schedulePlace = args.placeList.toList(),
-                date = scheduleSelectViewModel.startDate.value.toString() + "~" + scheduleSelectViewModel.endDate.value.toString()
-            )
-            val action =
-                ScheduleSelectFragmentDirections.actionScheduleSelectFragmentToScheduleDetailFragment(
-                    args.placeList,
-                    schedule,
-                    ScheduleControlType.TYPE_CREATE
-                )
-            it.findNavController().navigate(action)
-        }
+        scheduleSelectViewModel.btnEnable.observe(viewLifecycleOwner, {
+            binding.toolbar.menu.findItem(R.id.action_next).isEnabled = it
+        })
     }
 
     @SuppressLint("ClickableViewAccessibility")

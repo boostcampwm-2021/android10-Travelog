@@ -133,7 +133,6 @@ class SchedulePlaceFragment : Fragment() {
 
         binding.toolbar.apply {
             setupWithNavController(navController, appBarConfig)
-            title = ""
             inflateMenu(R.menu.menu_schedule_place)
 
             val searchView = (menu.findItem(R.id.action_search).actionView as SearchView)

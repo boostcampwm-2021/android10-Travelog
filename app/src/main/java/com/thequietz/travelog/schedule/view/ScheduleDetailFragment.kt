@@ -79,8 +79,7 @@ class ScheduleDetailFragment :
 
         binding.toolbar.apply {
             setupWithNavController(navController, appBarConfig)
-            title = "일정 설정"
-            inflateMenu(R.menu.menu_schedule_detail)
+            inflateMenu(R.menu.menu_with_complete)
             setOnMenuItemClickListener {
                 if (it.itemId == R.id.action_next) {
                     val schedule = viewModel.schedule
