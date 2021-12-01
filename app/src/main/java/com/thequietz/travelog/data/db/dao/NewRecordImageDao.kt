@@ -9,7 +9,7 @@ import com.thequietz.travelog.record.model.RecordImage
 
 @Dao
 abstract class NewRecordImageDao : BaseDao<NewRecordImage> {
-    @Query("SELECT * FROM NewRecordImage ORDER BY newTravelId")
+    @Query("SELECT * FROM NewRecordImage")
     abstract fun loadAllNewRecordImages(): List<NewRecordImage>
 
     @Query("SELECT * FROM NewRecordImage WHERE newTravelId =:travelId")
@@ -33,6 +33,11 @@ abstract class NewRecordImageDao : BaseDao<NewRecordImage> {
 
 @Dao
 abstract class JoinRecordDao : BaseDao<JoinRecord> {
+    @Query(
+        "SELECT * FROM (SELECT * FROM RecordImage, NewRecordImage) AS `Temp` WHERE `Temp`.travelId = `Temp`.newTravelId " +
+            "AND `Temp`.place = `Temp`.newPlace AND `Temp`.travelId =:travelId "
+    )
+    abstract fun loadAllJoined(travelId: Int): List<JoinRecord>
     @Query(
         "SELECT * FROM (SELECT * FROM RecordImage, NewRecordImage) AS `Temp` WHERE `Temp`.travelId = `Temp`.newTravelId " +
             "AND `Temp`.place = `Temp`.newPlace AND `Temp`.travelId =:travelId " +
@@ -62,8 +67,8 @@ abstract class JoinRecordDao : BaseDao<JoinRecord> {
 
     @Query(
         "SELECT * FROM (SELECT * FROM RecordImage, NewRecordImage) AS `Temp` WHERE `Temp`.travelId = `Temp`.newTravelId " +
-            "AND `Temp`.place = `Temp`.newPlace AND `Temp`.travelId =:travelId " +
-            "AND `Temp`.place =:place AND `Temp`.isDefault !=:value ORDER BY `Temp`.day"
+            "AND `Temp`.place = `Temp`.newPlace AND `Temp`.newTravelId =:travelId " +
+            "AND `Temp`.newPlace =:place AND `Temp`.isDefault !=:value ORDER BY `Temp`.day"
     )
     abstract fun loadJoinedRecordByTravelIdAndPlace(travelId: Int, place: String, value: Boolean = true): List<JoinRecord>
 }

@@ -37,7 +37,7 @@ class RecordAddImageFragment : Fragment() {
     private val binding get() = _binding
     private val recordAddImageViewModel by viewModels<RecordAddImageViewModel>()
     private val adapter by lazy { RecordAddImageAdapter() }
-    lateinit var placeSpinnerAdapter: ArrayAdapter<String>
+    lateinit var destinationSpinnerAdapter: ArrayAdapter<String>
     lateinit var scheduleSpinnerAdapter: ArrayAdapter<String>
     lateinit var loading: LoadingDialog
 
@@ -52,7 +52,7 @@ class RecordAddImageFragment : Fragment() {
                             NewRecordImage().copy(
                                 newTravelId = RecordViewOneViewModel.currentTravleId,
                                 newTitle = recordAddImageViewModel.travelName.value!!,
-                                newPlace = recordAddImageViewModel.currentPlace,
+                                newPlace = recordAddImageViewModel.currentPlace.value!!,
                                 url = clipData.getItemAt(ind).uri.toString(),
                                 comment = "",
                                 isDefault = false
@@ -144,7 +144,7 @@ class RecordAddImageFragment : Fragment() {
                 findNavController().navigate(action)
             }
         }
-        binding.spPlace.onItemSelectedListener = (
+        binding.spDestination.onItemSelectedListener = (
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -153,29 +153,8 @@ class RecordAddImageFragment : Fragment() {
                     id: Long
                 ) {
                     recordAddImageViewModel.placeAndScheduleList.value?.let {
-                        recordAddImageViewModel.currentPlace = it.get(position).place
-                        recordAddImageViewModel.currentSchedule = it.get(position).day
+                        recordAddImageViewModel.setCurrentPlaceAndSchedule(it.get(position))
                         recordAddImageViewModel.setMainImage(position)
-                        binding.spSchedule.setSelection(position)
-                    }
-                }
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
-            }
-            )
-        binding.spSchedule.onItemSelectedListener = (
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    recordAddImageViewModel.placeAndScheduleList.value?.let {
-                        recordAddImageViewModel.currentPlace = it.get(position).place
-                        recordAddImageViewModel.currentSchedule = it.get(position).day
-                        recordAddImageViewModel.setMainImage(position)
-                        binding.spPlace.setSelection(position)
                     }
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -194,30 +173,30 @@ class RecordAddImageFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        placeSpinnerAdapter = ArrayAdapter(
+        destinationSpinnerAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            mutableListOf("일정을 선택하세요")
+        )
+        /*scheduleSpinnerAdapter = ArrayAdapter(
             requireContext(),
             R.layout.support_simple_spinner_dropdown_item,
             mutableListOf("날짜를 선택하세요")
-        )
-        scheduleSpinnerAdapter = ArrayAdapter(
-            requireContext(),
-            R.layout.support_simple_spinner_dropdown_item,
-            mutableListOf("날짜를 선택하세요")
-        )
-        binding.spPlace.adapter = placeSpinnerAdapter
-        binding.spSchedule.adapter = scheduleSpinnerAdapter
+        )*/
+        binding.spDestination.adapter = destinationSpinnerAdapter
+        // binding.spSchedule.adapter = scheduleSpinnerAdapter
     }
 
     private fun addDataToAdapter() {
-        placeSpinnerAdapter.clear()
+        destinationSpinnerAdapter.clear()
         recordAddImageViewModel.placeAndScheduleList.value?.forEach {
-            placeSpinnerAdapter.add(it.place)
+            destinationSpinnerAdapter.add(it.toString())
         }
-        placeSpinnerAdapter.notifyDataSetChanged()
-        scheduleSpinnerAdapter.clear()
+        destinationSpinnerAdapter.notifyDataSetChanged()
+        /*scheduleSpinnerAdapter.clear()
         recordAddImageViewModel.placeAndScheduleList.value?.forEach {
             scheduleSpinnerAdapter.add(it.day)
         }
-        scheduleSpinnerAdapter.notifyDataSetChanged()
+        scheduleSpinnerAdapter.notifyDataSetChanged()*/
     }
 }
