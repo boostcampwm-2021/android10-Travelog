@@ -41,7 +41,6 @@ class SpecificGuideViewModel @Inject internal constructor(
         frag: SpecificGuideFragment
     ) {
         viewModelScope.launch {
-            var previousSearchChanged = false
             try {
                 val code = args.item.toInt()
                 val res = withContext(Dispatchers.IO) {
@@ -49,9 +48,6 @@ class SpecificGuideViewModel @Inject internal constructor(
                 }
                 _currentPlaceList.value = res
                 _currentSearch.value = areaCodeList.get(res.get(0).areaCode.toInt())
-                if (previousSearch != res.get(0).areaCode.toString()) {
-                    previousSearchChanged = true
-                }
                 previousSearch = res.get(0).areaCode.toString()
                 _noData.value = currentPlaceList.value?.size == 0
             } catch (e: NumberFormatException) {
@@ -60,13 +56,10 @@ class SpecificGuideViewModel @Inject internal constructor(
                 }
                 _currentPlaceList.value = res
                 _currentSearch.value = args.item
-                if (previousSearch != args.item) {
-                    previousSearchChanged = true
-                }
                 previousSearch = args.item
                 _noData.value = currentPlaceList.value?.size == 0
             }
-            if (args.from == "Click" && previousSearchChanged) {
+            if (args.from == "Click") {
                 if (currentPlaceList.value?.size == 1) {
                     frag.view?.let {
                         val param = Gson().toJson(currentPlaceList.value?.get(0))

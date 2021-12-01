@@ -42,8 +42,13 @@ class RecordAddImageViewModel @Inject constructor(
     private val _currentMainImage = MutableLiveData<NewRecordImage>()
     val currentMainImage: LiveData<NewRecordImage> = _currentMainImage
 
-    var currentPlace = ""
-    var currentSchedule = ""
+    private val _currentPlace = MutableLiveData<String>()
+    val currentPlace: LiveData<String> = _currentPlace
+
+    private val _currentSchedule = MutableLiveData<String>()
+    val currentSchedule: LiveData<String> = _currentSchedule
+    /*var currentPlace = ""
+    var currentSchedule = ""*/
 
     init {
         _imageList.value = listOf()
@@ -89,5 +94,11 @@ class RecordAddImageViewModel @Inject constructor(
         mainImageList.value?.let {
             _currentMainImage.value = it.get(position)
         }
+    }
+
+    fun setCurrentPlaceAndSchedule(data: PlaceAndSchedule) {
+        val temp = data.toString().split("-")
+        _currentPlace.value = temp.get(0).substring(0, temp.get(0).length - 1)
+        _currentSchedule.value = temp.get(1).substring(1, temp.get(1).length)
     }
 }
