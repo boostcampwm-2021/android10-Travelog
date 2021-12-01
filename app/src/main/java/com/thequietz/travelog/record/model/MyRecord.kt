@@ -34,4 +34,8 @@ data class RecordImage(
 data class PlaceAndSchedule(
     val place: String = "",
     val day: String = ""
-)
+) {
+    override fun toString(): String {
+        return "$place - $day"
+    }
+}

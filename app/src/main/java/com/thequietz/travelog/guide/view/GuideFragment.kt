@@ -127,7 +127,7 @@ class GuideFragment : Fragment() {
             makeSnackBar(binding.clGuide, "검색어를 입력하세요!")
         } else {
             val action = GuideFragmentDirections
-                .actionGuideFragmentToSpecificGuideFragment(binding.etSearch.text.toString())
+                .actionGuideFragmentToSpecificGuideFragment(binding.etSearch.text.toString(), "Search")
             findNavController().navigate(action)
         }
     }

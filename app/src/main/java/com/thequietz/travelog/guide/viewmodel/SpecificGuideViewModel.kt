@@ -4,15 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.Navigation
+import com.google.gson.Gson
 import com.thequietz.travelog.data.GuideRepository
 import com.thequietz.travelog.guide.Place
+import com.thequietz.travelog.guide.view.SpecificGuideFragment
 import com.thequietz.travelog.guide.view.SpecificGuideFragmentArgs
+import com.thequietz.travelog.guide.view.SpecificGuideFragmentDirections
 import com.thequietz.travelog.util.areaCodeList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.NumberFormatException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,6 +24,7 @@ class SpecificGuideViewModel @Inject internal constructor(
 ) : ViewModel() {
     companion object {
         var previousSearch = ""
+        var flag = false
     }
 
     private val _currentPlaceList = MutableLiveData<List<Place>>()
@@ -32,7 +36,10 @@ class SpecificGuideViewModel @Inject internal constructor(
     private val _noData = MutableLiveData<Boolean>()
     val noData: LiveData<Boolean> = _noData
 
-    fun initCurrentItem(args: SpecificGuideFragmentArgs) {
+    fun initCurrentItem(
+        args: SpecificGuideFragmentArgs,
+        frag: SpecificGuideFragment
+    ) {
         viewModelScope.launch {
             try {
                 val code = args.item.toInt()
@@ -51,6 +58,16 @@ class SpecificGuideViewModel @Inject internal constructor(
                 _currentSearch.value = args.item
                 previousSearch = args.item
                 _noData.value = currentPlaceList.value?.size == 0
+            }
+            if (args.from == "Click") {
+                if (currentPlaceList.value?.size == 1) {
+                    frag.view?.let {
+                        val param = Gson().toJson(currentPlaceList.value?.get(0))
+                        val action = SpecificGuideFragmentDirections
+                            .actionDirectlySpecificGuideFragmentToOtherInfoFragment(param)
+                        Navigation.findNavController(it).navigate(action)
+                    }
+                }
             }
         }
     }

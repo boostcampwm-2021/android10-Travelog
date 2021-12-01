@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -154,7 +152,7 @@ class OtherInfoFragment : Fragment() {
                         otherInfoViewModel.vacationAgain()
                     }
                     if (otherInfoViewModel.vacationSpotList.value?.size == 0) {
-                        Toast.makeText(requireContext(), "해당 데이터가 없습니다", Toast.LENGTH_SHORT).show()
+                        makeSnackBar(binding.clOtherInfo, "해당 데이터가 없습니다")
                     }
                 }
             }
@@ -164,7 +162,7 @@ class OtherInfoFragment : Fragment() {
                         otherInfoViewModel.foodAgain()
                     }
                     if (otherInfoViewModel.foodList.value?.size == 0) {
-                        Toast.makeText(requireContext(), "해당 데이터가 없습니다", Toast.LENGTH_SHORT).show()
+                        makeSnackBar(binding.clOtherInfo, "해당 데이터가 없습니다")
                     }
                 }
             }
@@ -174,7 +172,7 @@ class OtherInfoFragment : Fragment() {
                         otherInfoViewModel.festivalAgain()
                     }
                     if (otherInfoViewModel.festivalList.value?.size == 0) {
-                        Toast.makeText(requireContext(), "해당 데이터가 없습니다", Toast.LENGTH_SHORT).show()
+                        makeSnackBar(binding.clOtherInfo, "해당 데이터가 없습니다")
                     }
                 }
             }
