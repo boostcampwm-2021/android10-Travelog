@@ -13,7 +13,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
 
         <!-- Custom Font Style. -->
-        <item name="fontFamily">@font/godo_font_family</item>
+        <item name="fontFamily">@font/noto_font_family</item>
         <item name="editTextStyle">@style/customEditText</item>
         <item name="android:textViewStyle">@style/customTextView</item>
         <item name="android:buttonStyle">@style/customButton</item>
