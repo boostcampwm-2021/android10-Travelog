@@ -12,166 +12,162 @@
         <import type="android.view.View" />
     </data>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/sl_layout"
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_other_info"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            tools:context=".guide.view.OtherInfoFragment">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_other_info"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/white"
-                tools:context=".guide.view.OtherInfoFragment">
+                android:textSize="20sp"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:textSize="20sp"
-                    app:layout_constraintTop_toTopOf="parent"/>
+            <ImageView
+                android:id="@+id/iv_other_info"
+                android:layout_width="0dp"
+                android:layout_height="290dp"
+                android:layout_marginTop="20dp"
+                android:paddingHorizontal="10dp"
+                android:scaleType="fitXY"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:setImage="@{viewModel.currentPlace.url}" />
 
-                <ImageView
-                    android:id="@+id/iv_other_info"
-                    android:layout_width="0dp"
-                    android:layout_height="290dp"
-                    android:layout_marginTop="20dp"
-                    android:paddingHorizontal="10dp"
-                    android:scaleType="fitXY"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/toolbar"
-                    app:setImage="@{viewModel.currentPlace.url}" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="5dp"
+                android:text="@{viewModel.currentPlace.name}"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/iv_other_info"
+                app:layout_constraintTop_toTopOf="@id/iv_other_info"
+                tools:text="경기도"
+                tools:textColor="@color/black" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="5dp"
-                    android:text="@{viewModel.currentPlace.name}"
-                    android:textColor="@color/white"
-                    android:textSize="25sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@id/iv_other_info"
-                    app:layout_constraintTop_toTopOf="@id/iv_other_info"
-                    tools:text="경기도"
-                    tools:textColor="@color/black" />
+            <TextView
+                android:id="@+id/tv_vacation_spot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="25dp"
+                android:text="관광지"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_other_info" />
 
-                <TextView
-                    android:id="@+id/tv_vacation_spot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="25dp"
-                    android:text="관광지"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/iv_other_info" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_vacation_spot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="5dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_vacation_spot" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_vacation_spot"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="5dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@id/tv_vacation_spot" />
+            <ImageView
+                android:id="@+id/iv_no_vation"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="40dp"
+                android:src="@drawable/img_refresh"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="@{viewModel.vacationSpotList.size() == 0 ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@id/tv_vacation_spot"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_vacation_spot" />
 
-                <ImageView
-                    android:id="@+id/iv_no_vation"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="40dp"
-                    android:src="@drawable/img_refresh"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:visibility="@{viewModel.vacationSpotList.size() == 0 ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_vacation_spot"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_vacation_spot" />
+            <TextView
+                android:id="@+id/tv_food"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:text="먹거리"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_vacation_spot" />
 
-                <TextView
-                    android:id="@+id/tv_food"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="30dp"
-                    android:text="먹거리"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rv_vacation_spot" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_food"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="5dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_food" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_food"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="5dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@id/tv_food" />
+            <ImageView
+                android:id="@+id/iv_no_food"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="40dp"
+                android:src="@drawable/img_refresh"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="@{viewModel.foodList.size() == 0 ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@id/tv_food"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_food" />
 
-                <ImageView
-                    android:id="@+id/iv_no_food"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="40dp"
-                    android:src="@drawable/img_refresh"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:visibility="@{viewModel.foodList.size() == 0 ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_food"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_food" />
+            <TextView
+                android:id="@+id/tv_fesetival"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:text="행사/공연/축제"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_food" />
 
-                <TextView
-                    android:id="@+id/tv_fesetival"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="30dp"
-                    android:text="행사/공연/축제"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rv_food" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_festival"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="5dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tv_fesetival" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_festival"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="5dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@id/tv_fesetival" />
+            <ImageView
+                android:id="@+id/iv_no_festival"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="40dp"
+                android:src="@drawable/img_refresh"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="@{viewModel.festivalList.size() == 0 ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@id/tv_fesetival"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_fesetival" />
 
-                <ImageView
-                    android:id="@+id/iv_no_festival"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="40dp"
-                    android:src="@drawable/img_refresh"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:visibility="@{viewModel.festivalList.size() == 0 ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_fesetival"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_fesetival" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

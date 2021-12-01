@@ -17,9 +17,13 @@ class SplashFragment : Fragment() {
     ): View {
         binding = FragmentSplashBinding.inflate(inflater, container, false)
 
-        val anim = AnimationUtils.loadAnimation(requireActivity().applicationContext, R.anim.anim_plane)
+        val airPlaneAnim = AnimationUtils.loadAnimation(requireActivity().applicationContext, R.anim.anim_plane)
+        val textAnim = AnimationUtils.loadAnimation(requireActivity().applicationContext, R.anim.anim_travelog_fade_in)
+        binding.tvSplashSubtitle.startAnimation(textAnim)
+        binding.tvSplashTitle.startAnimation(textAnim)
+        binding.tvSplashTeamName.startAnimation(textAnim)
         // binding.ivSplash.animation = anim
-        binding.ivSplash.startAnimation(anim)
+        binding.ivSplash.startAnimation(airPlaneAnim)
         return binding.root
     }
 }
