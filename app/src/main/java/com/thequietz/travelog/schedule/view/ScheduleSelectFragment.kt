@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleSelectBinding
@@ -116,7 +117,14 @@ class ScheduleSelectFragment : Fragment() {
     private fun initDatePicker() {
         binding.btnSelectRange.setOnClickListener {
             val builder =
-                MaterialDatePicker.Builder.dateRangePicker().setTitleText("여행 일정을 선택해 주세요")
+                MaterialDatePicker.Builder.dateRangePicker()
+                    .setTitleText("여행 일정을 선택해 주세요")
+                    .setCalendarConstraints(
+                        CalendarConstraints
+                            .Builder()
+                            .setStart(Calendar.getInstance().timeInMillis)
+                            .build()
+                    )
             val picker = builder.build()
             var start: String
             var end: String
