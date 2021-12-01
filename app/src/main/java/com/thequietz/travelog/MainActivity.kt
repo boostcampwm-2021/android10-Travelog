@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.recordViewOneFragment -> binding.toolbar.title = "여행 기록 보기"
                 R.id.recordViewManyFragment -> binding.toolbar.title = "여행 기록 보기"
                 R.id.scheduleDetailFragment,
+                R.id.schedulePlaceFragment,
                 R.id.confirmFragment,
                 R.id.placeRecommendFragment,
                 R.id.placeSearchFragment,
