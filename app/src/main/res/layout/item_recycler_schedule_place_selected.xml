@@ -18,6 +18,8 @@
             android:minHeight="0dp"
             android:paddingHorizontal="6dp"
             android:paddingVertical="4dp"
+            android:layout_margin="0dp"
+            android:layout_marginBottom="10dp"
             android:textColor="@color/white"
             android:textStyle="bold"
             tools:text="@string/tv_item_selected" />
