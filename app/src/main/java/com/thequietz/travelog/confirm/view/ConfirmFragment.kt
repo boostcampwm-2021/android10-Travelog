@@ -101,6 +101,8 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
 
         viewModel.currentSchedule.observe(viewLifecycleOwner, {
             if (it.isNullOrEmpty()) {
+                val (_, _, mapX, mapY) = navArgs.defaultPlace
+                targetList.value = mutableListOf(LatLng(mapY, mapX))
                 binding.llConfirmNoItems.visibility = View.VISIBLE
                 binding.tvConfirmNoItems.visibility = View.VISIBLE
                 binding.vpConfirmPlace.visibility = View.GONE

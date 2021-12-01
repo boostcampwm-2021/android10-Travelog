@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -71,6 +72,14 @@ class OtherInfoFragment : Fragment() {
                 it?.let { festivalAdapter.submitList(it) }
             })
         }
+
+        binding.btnMakePlan.setOnClickListener {
+            findNavController().apply {
+                previousBackStackEntry?.savedStateHandle?.set("toSchedulePlace", true)
+                popBackStack()
+            }
+        }
+
         setListener()
     }
 
@@ -82,7 +91,8 @@ class OtherInfoFragment : Fragment() {
                     with(binding.rvVacationSpot) {
                         val visibleItemCount = childCount
                         val totalItemCount = layoutManager?.itemCount!!
-                        val firstVisibleItem = (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                        val firstVisibleItem =
+                            (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                         if (totalItemCount <= (firstVisibleItem + visibleItemCount) && (visibleItemCount - vacationPrevItemCount == 1)) {
                             otherInfoViewModel.addVacationData()
                         }
@@ -102,7 +112,8 @@ class OtherInfoFragment : Fragment() {
                     with(binding.rvFood) {
                         val visibleItemCount = childCount
                         val totalItemCount = layoutManager?.itemCount!!
-                        val firstVisibleItem = (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                        val firstVisibleItem =
+                            (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                         if (totalItemCount <= (firstVisibleItem + visibleItemCount) && (visibleItemCount - foodPrevItemCount == 1)) {
                             otherInfoViewModel.addFoodData()
                         }
@@ -122,7 +133,8 @@ class OtherInfoFragment : Fragment() {
                     with(binding.rvFestival) {
                         val visibleItemCount = childCount
                         val totalItemCount = layoutManager?.itemCount!!
-                        val firstVisibleItem = (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                        val firstVisibleItem =
+                            (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                         if (totalItemCount <= (firstVisibleItem + visibleItemCount) && (visibleItemCount - festivalPrevItemCount == 1)) {
                             otherInfoViewModel.addFestivalData()
                         }
@@ -169,11 +181,6 @@ class OtherInfoFragment : Fragment() {
             slLayout.setOnRefreshListener {
                 otherInfoViewModel.initPlace(thisPlace)
                 slLayout.isRefreshing = false
-            }
-            btnMakePlan.setOnClickListener {
-                val action = OtherInfoFragmentDirections
-                    .actionOtherInfoFragmentToSchedulePlaceFragmentFromGuide()
-                it.findNavController().navigate(action)
             }
         }
     }

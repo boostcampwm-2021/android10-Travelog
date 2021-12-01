@@ -90,7 +90,7 @@ class ScheduleDetailFragment :
 
                     val action =
                         ScheduleDetailFragmentDirections.actionScheduleDetailFragmentToConfirmFragment(
-                            schedule, scheduleDetails
+                            schedule, scheduleDetails, args.schedulePlaceArray[0]
                         )
                     navController.navigate(action)
                     return@setOnMenuItemClickListener true

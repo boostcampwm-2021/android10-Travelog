@@ -111,6 +111,9 @@
             app:destination="@id/scheduleFragment"
             app:popUpTo="@id/scheduleFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="defaultPlace"
+            app:argType="com.thequietz.travelog.schedule.model.SchedulePlaceModel" />
     </fragment>
 
 </navigation>
