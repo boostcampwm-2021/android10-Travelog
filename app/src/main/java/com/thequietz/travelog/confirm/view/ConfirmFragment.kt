@@ -60,7 +60,7 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
         _context = requireContext()
         dayAdapter = ConfirmDayAdapter(object : ConfirmDayAdapter.OnClickListener {
             override fun onClick(index: Int) {
-                viewModel.updateSchedule("Day ${index + 1}")
+                viewModel.updateSchedule("Day ${String.format("%02d", index + 1)}")
             }
         })
         pageAdapter = ConfirmPagerAdapter()
@@ -133,13 +133,13 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
     }
 
     private fun setToolbar() {
-        val navController = findNavController()
-        val appBarConfig = AppBarConfiguration.Builder(navController.graph).build()
-
         binding.toolbar.apply {
+            val navController = findNavController()
+            val appBarConfig = AppBarConfiguration.Builder(navController.graph).build()
+
             setupWithNavController(navController, appBarConfig)
             title = "일정 확인"
-            inflateMenu(R.menu.menu_schedule_detail)
+            inflateMenu(R.menu.menu_with_complete)
             setOnMenuItemClickListener {
                 if (it.itemId == R.id.action_next) {
                     val action =

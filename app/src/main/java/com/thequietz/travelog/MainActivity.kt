@@ -46,23 +46,37 @@ class MainActivity : AppCompatActivity() {
             binding.toolbar.visibility = View.VISIBLE
             binding.toolbar.titleMarginStart = 10
 
-            when (destination.id) {
-                R.id.guideFragment -> binding.toolbar.title = "둘러보기"
-                R.id.scheduleFragment -> binding.toolbar.title = "내 여행 일정"
-                R.id.otherInfoFragment -> binding.toolbar.title = "세부 추천 정보"
-                R.id.recordFragment -> binding.toolbar.title = "나만의 여행 기록"
-                R.id.menuFragment -> binding.toolbar.title = "메뉴"
-                R.id.recordAddImageFragment -> binding.toolbar.title = "여행 이미지 추가"
-                R.id.recordViewOneFragment -> binding.toolbar.title = "여행 기록 보기"
-                R.id.recordViewManyFragment -> binding.toolbar.title = "여행 기록 보기"
+            val customToolbarFragmentSet = setOf(
+                R.id.otherInfoFragment,
                 R.id.scheduleDetailFragment,
                 R.id.schedulePlaceFragment,
+                R.id.scheduleSelectFragment,
                 R.id.confirmFragment,
                 R.id.placeRecommendFragment,
                 R.id.placeSearchFragment,
-                R.id.recordBasicFragment -> binding.toolbar.visibility = View.GONE
-                else -> binding.toolbar.title = ""
+                R.id.recordBasicFragment,
+                R.id.placeDetailFragment,
+                R.id.placeDetailFragmentFromGuide,
+                R.id.recordViewManyFragment,
+                R.id.recordAddImageFragment
+            )
+
+            when (destination.id) {
+                R.id.guideFragment -> binding.toolbar.title = "둘러보기"
+                R.id.specificGuideFragment -> binding.toolbar.title = "상세 지역 선택"
+
+                R.id.scheduleFragment -> binding.toolbar.title = "내 여행 일정"
+                R.id.scheduleDetailFragment -> binding.toolbar.title = "일정 설정"
+
+                R.id.recordFragment -> binding.toolbar.title = "나만의 여행 기록"
+                R.id.recordAddImageFragment -> binding.toolbar.title = "여행 이미지 추가"
+                R.id.recordViewOneFragment -> binding.toolbar.title = "여행 기록"
+
+                R.id.menuFragment -> binding.toolbar.title = "메뉴"
             }
+
+            if (customToolbarFragmentSet.contains(destination.id))
+                binding.toolbar.visibility = View.GONE
         }
     }
 

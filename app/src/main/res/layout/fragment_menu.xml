@@ -10,24 +10,21 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/tv_permission_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
             android:text="서비스 권한 설정"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/tv_alarm_setting"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_alarm_setting"
@@ -38,7 +35,6 @@
             android:text="알림 권한"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@id/tv_schedule_alarm"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_permission_setting" />
 
@@ -57,11 +53,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:text="일정 알림"
             android:textColor="@color/black"
             android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@id/tv_record_alarm"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_alarm_setting" />
 
@@ -80,12 +75,12 @@
             android:id="@+id/spinner_schedule"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:popupBackground="@color/white"
             app:layout_constraintBottom_toTopOf="@id/tv_record_alarm"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_schedule_alarm"
-            android:popupBackground="@color/white"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_schedule_alarm" />
 
         <TextView
             android:id="@+id/tv_record_alarm"
@@ -96,7 +91,6 @@
             android:text="일정 기록 알림"
             android:textColor="@color/black"
             android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@id/spinner_record"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/spinner_schedule" />
 
@@ -115,12 +109,11 @@
             android:id="@+id/spinner_record"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_record_alarm"
             android:popupBackground="@color/white"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_record_alarm" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
