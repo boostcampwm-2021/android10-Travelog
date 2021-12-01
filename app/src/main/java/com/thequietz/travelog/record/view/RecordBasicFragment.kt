@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
+import com.thequietz.travelog.LoadingDialog
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordBasicBinding
 import com.thequietz.travelog.map.GoogleMapFragment
@@ -74,6 +75,7 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
     private val layoutManager by lazy {
         binding.rvRecordBasic.layoutManager as LinearLayoutManager
     }
+    private val loadingDialog by lazy { LoadingDialog(requireContext()) }
 
     /* 이미지 추가 기능 삭제 예정
     private var position = 0
@@ -110,6 +112,7 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        loadingDialog.show()
         super.onViewCreated(view, savedInstanceState)
         initView()
     }
@@ -171,6 +174,7 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
             if (isEmpty) {
                 Toast.makeText(requireContext(), "데이터가 없습니다. 일정을 추가해주세요.", Toast.LENGTH_LONG).show()
                 findNavController().navigateUp()
+                loadingDialog.dismiss()
             }
         }
         viewModel.title.observe(viewLifecycleOwner) { title ->
@@ -185,6 +189,7 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
         viewModel.recordBasicItemList.observe(viewLifecycleOwner) { recordBasicItemList ->
             updateTargetList()
             adapter.submitList(recordBasicItemList)
+            loadingDialog.dismiss()
         }
     }
 
