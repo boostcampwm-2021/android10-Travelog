@@ -231,6 +231,8 @@ class GuideRepository @Inject constructor(
                     emptyRecommendList
                 } else {
                     val resList = res.response.body.items.item.filter { it.url != null }
+                    println("recList")
+                    resList.forEach { println(it.toString()) }
                     coroutineScope.launch {
                         resList.forEach {
                             if (it.eventStartDate == null) {
