@@ -40,7 +40,8 @@ class RecordViewOneViewModel @Inject constructor(
     var day: String = ""
     var place: String = ""
     var startInd = 0
-
+    var imageId = 0
+    var index = 0
     init {
         startInd = 0
     }
@@ -48,6 +49,8 @@ class RecordViewOneViewModel @Inject constructor(
         day = args.day
         place = args.place
         currentTravleId = args.travelId
+        imageId = args.index
+        println("place  $place")
     }
     fun loadRecord() {
         val res = mutableListOf<JoinRecord>()
@@ -68,8 +71,14 @@ class RecordViewOneViewModel @Inject constructor(
                             repository.loadDefaultJoinedRecordByTravelId(currentTravleId, it.place)
                         }
                     )
+                    if (res.last().newRecordImage.newRecordImageId == imageId) {
+                        index = res.size - 1
+                    }
                 } else {
-                    temp.forEach {
+                    temp.forEachIndexed { ind, it ->
+                        if (it.newRecordImage.newRecordImageId == imageId) {
+                            index = res.size
+                        }
                         res.add(it)
                     }
                 }

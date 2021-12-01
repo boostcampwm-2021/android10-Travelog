@@ -47,11 +47,13 @@ class RecordViewManyMultiViewAdapter(
             object : MultiViewImageAdapter.OnItemClickListener {
                 override fun onItemClick(view: View, item: JoinRecord) {
                     if (innerViewModel.deleteState.value == false) {
+                        println("viewmany ind  ${item.newRecordImage.newRecordImageId}")
                         val action = RecordViewManyFragmentDirections
                             .actionRecordViewManyFragmentToRecordViewOneFragment(
                                 item.recordImage.travelId,
                                 item.recordImage.day,
-                                item.recordImage.place
+                                item.recordImage.place,
+                                item.newRecordImage.newRecordImageId
                             )
                         itemView.findNavController().navigate(action)
                     }
@@ -150,11 +152,6 @@ class MultiViewImageAdapter(
                                     itemView.findViewById(R.id.cl_record_view_many),
                                     "기본이미지는 삭제할 수 없습니다"
                                 )
-                                /*Toast.makeText(
-                                    itemView.context,
-                                    "기본이미지는 삭제할 수 없습니다",
-                                    Toast.LENGTH_SHORT
-                                ).show()*/
                                 binding.cbDeleteCheck.isChecked = false
                             } else {
                                 innerViewModel.addCheck(item.newRecordImage.newRecordImageId)

@@ -41,12 +41,9 @@ class RecordViewManyViewModel @Inject constructor(
                 repository.loadRecordImagesByTravelId(args.travelId)
             }
             placeList.forEach {
-                println("anotherTemp  ${args.travelId}  ${it.place}  ${res.size}")
-
                 val temp = withContext(Dispatchers.IO) {
                     repository.loadJoinedRecordByTravelIdAndPlace(args.travelId, it.place)
                 }
-                println("temp size  ${temp.size}")
                 temp.forEach { println(it.toString()) }
                 if (temp.isEmpty()) {
                     val anotherTemp = withContext(Dispatchers.IO) {

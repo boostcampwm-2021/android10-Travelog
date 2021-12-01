@@ -57,7 +57,12 @@ class RecordViewOneFragment : Fragment() {
             initVariable(args)
             loadRecord()
             Handler(Looper.getMainLooper()).postDelayed({
-                binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd, true)
+                if (recordViewOneViewModel.imageId != -1) {
+                    binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.index, true)
+                } else {
+                    binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd, true)
+                }
+                // binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd, true)
                 loading.dismiss()
             }, 1000)
 
