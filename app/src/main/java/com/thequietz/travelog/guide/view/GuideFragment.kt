@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -14,7 +15,9 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.thequietz.travelog.LoadingDialog
+import com.thequietz.travelog.R
 import com.thequietz.travelog.TravelogApplication
 import com.thequietz.travelog.databinding.FragmentGuideBinding
 import com.thequietz.travelog.guide.adapter.GuideMultiViewAdapter
@@ -66,6 +69,25 @@ class GuideFragment : Fragment() {
                 it?.let { adapter.submitList(it) }
             })
         }
+
+        findNavController().apply {
+            currentBackStackEntry?.savedStateHandle
+                ?.also {
+                    it.getLiveData<Boolean>("toSchedulePlace").observe(
+                        viewLifecycleOwner,
+                        { isClicked ->
+                            if (isClicked) {
+                                Log.d("TAG", "Move to Schedule")
+                                it.remove<Boolean>("toSchedulePlace")
+                                requireActivity()
+                                    .findViewById<BottomNavigationView>(R.id.bottom_navigation)
+                                    .selectedItemId = R.id.schedule
+                            }
+                        }
+                    )
+                }
+        }
+
         setClickListener()
     }
 

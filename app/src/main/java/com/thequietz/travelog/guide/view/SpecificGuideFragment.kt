@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.thequietz.travelog.databinding.FragmentSpecificGuideBinding
 import com.thequietz.travelog.guide.adapter.AllPlaceAdapter
@@ -41,6 +42,17 @@ class SpecificGuideFragment : Fragment() {
                 it?.let { adapter.submitList(it) }
             })
             initCurrentItem(args)
+        }
+
+        findNavController().apply {
+            currentBackStackEntry?.savedStateHandle
+                ?.getLiveData<Boolean>("toSchedulePlace")?.observe(
+                    viewLifecycleOwner,
+                    {
+                        previousBackStackEntry?.savedStateHandle?.set("toSchedulePlace", it)
+                        popBackStack()
+                    }
+                )
         }
     }
 }
