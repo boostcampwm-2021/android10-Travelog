@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.thequietz.travelog.data.GuideRepository
-import com.thequietz.travelog.util.dateToString
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,9 +33,9 @@ class ScheduleSelectViewModel @Inject internal constructor(
         }
     }
 
-    fun setScheduleRange(startDate: Date, endDate: Date) {
-        _startDate.value = dateToString(startDate)
-        _endDate.value = dateToString(endDate)
+    fun setScheduleRange(startDate: String, endDate: String) {
+        _startDate.value = startDate
+        _endDate.value = endDate
         checkNextButtonEnable()
     }
 

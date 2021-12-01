@@ -16,9 +16,9 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:clickable="true"
+        android:focusable="true"
         android:focusableInTouchMode="true"
-        tools:context=".schedule.ScheduleSelectFragment"
-        android:focusable="true">
+        tools:context=".schedule.ScheduleSelectFragment">
 
         <ImageButton
             android:id="@+id/btn_back"
@@ -27,9 +27,9 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/ic_close"
+            android:contentDescription="TODO"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="TODO" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_next"
@@ -57,17 +57,17 @@
 
         <EditText
             android:id="@+id/et_travel_name"
+            style="@style/Widget.AppCompat.EditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
-            style="@style/Widget.AppCompat.EditText"
+            android:hint="@string/et_put_travel_name"
+            android:importantForAutofill="no"
+            android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_travel_name"
-            android:inputType="text"
-            android:importantForAutofill="no"
-            android:hint="@string/et_put_travel_name"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_travel_name" />
 
         <TextView
             android:id="@+id/tv_select_date"
@@ -81,21 +81,79 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_travel_name" />
 
-        <com.andrewjapar.rangedatepicker.CalendarPicker
-            android:id="@+id/calendar"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="24dp"
-            android:clipToPadding="false"
-            android:scrollbarStyle="outsideOverlay"
-            android:layout_marginTop="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_select_date"
-            app:picker_type="range" />
+        <Button
+            android:id="@+id/btn_select_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/red_travelog"
+            android:text="여행 기간 선택하기"
+            app:layout_constraintStart_toEndOf="@id/tv_select_date"
+            app:layout_constraintTop_toBottomOf="@id/et_travel_name" />
+
+        <TextView
+            android:id="@+id/tv_start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:text="시작일"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/tv_select_date"
+            app:layout_constraintTop_toBottomOf="@id/btn_select_range" />
+
+        <TextView
+            android:id="@+id/tv_start_date_selected"
+            style="@style/customEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/light_blue_travelog"
+            android:gravity="center"
+            android:textColor="@{viewModel.startDate == null ? @color/white : @color/black}"
+            android:padding="10dp"
+            android:text="@{viewModel.startDate ?? @string/tv_add_start_date}"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/tv_start_date"
+            app:layout_constraintTop_toBottomOf="@id/tv_start_date" />
+
+        <TextView
+            android:id="@+id/tv_wave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="~"
+            app:layout_constraintEnd_toEndOf="@id/tv_start_date_selected"
+            app:layout_constraintStart_toStartOf="@id/tv_start_date"
+            app:layout_constraintTop_toBottomOf="@id/tv_start_date_selected" />
+
+        <TextView
+            android:id="@+id/tv_end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="종료일"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/tv_start_date"
+            app:layout_constraintTop_toBottomOf="@id/tv_wave" />
+
+        <TextView
+            android:id="@+id/tv_end_date_selected"
+            style="@style/customEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/light_blue_travelog"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="@{viewModel.startDate == null ? @color/white : @color/black}"
+            android:text="@{viewModel.endDate ?? @string/tv_add_start_date}"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/tv_end_date"
+            app:layout_constraintTop_toBottomOf="@id/tv_end_date" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

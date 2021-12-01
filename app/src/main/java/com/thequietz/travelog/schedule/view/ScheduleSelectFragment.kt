@@ -15,15 +15,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleSelectBinding
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import com.thequietz.travelog.schedule.viewmodel.ScheduleSelectViewModel
 import com.thequietz.travelog.util.ScheduleControlType
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
-import java.util.TimeZone
 
 @AndroidEntryPoint
 class ScheduleSelectFragment : Fragment() {
@@ -114,17 +114,21 @@ class ScheduleSelectFragment : Fragment() {
     }
 
     private fun initDatePicker() {
-        val start = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault())
-        val end = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault())
-        end.add(Calendar.MONTH, 12)
-        binding.calendar.apply {
-            setRangeDate(start.time, end.time)
-        }
-        binding.calendar.setOnRangeSelectedListener { startDate, endDate, _, _ ->
-            scheduleSelectViewModel.setScheduleRange(startDate, endDate)
-        }
-        binding.calendar.setOnStartSelectedListener { startDate, _ ->
-            scheduleSelectViewModel.setScheduleRange(startDate, startDate)
+        binding.btnSelectRange.setOnClickListener {
+            val builder =
+                MaterialDatePicker.Builder.dateRangePicker().setTitleText("여행 일정을 선택해 주세요")
+            val picker = builder.build()
+            var start: String
+            var end: String
+            picker.show(childFragmentManager, "date_picker")
+            picker.addOnPositiveButtonClickListener { selection ->
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = selection?.first ?: 0
+                start = SimpleDateFormat("yyyy.MM.dd").format(calendar.time).toString()
+                calendar.timeInMillis = selection?.second ?: 0
+                end = SimpleDateFormat("yyyy.MM.dd").format(calendar.time).toString()
+                scheduleSelectViewModel.setScheduleRange(start, end)
+            }
         }
     }
 
