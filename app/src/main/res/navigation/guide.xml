@@ -12,10 +12,18 @@
         tools:layout="@layout/fragment_guide">
         <action
             android:id="@+id/action_guideFragment_to_specificGuideFragment"
-            app:destination="@id/specificGuideFragment" />
+            app:destination="@id/specificGuideFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/action_guideFragment_to_placeDetailFragmentFromGuide"
-            app:destination="@id/placeDetailFragmentFromGuide" />
+            app:destination="@id/placeDetailFragmentFromGuide"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
     <fragment
         android:id="@+id/specificGuideFragment"
@@ -29,11 +37,19 @@
             app:argType="string" />
         <action
             android:id="@+id/action_specificGuideFragment_to_otherInfoFragment"
-            app:destination="@id/otherInfoFragment" />
+            app:destination="@id/otherInfoFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"/>
         <action
             android:id="@+id/action_directly_specificGuideFragment_to_otherInfoFragment"
             app:popUpToInclusive="false"
             app:popUpTo="@id/guideFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right"
             app:destination="@id/otherInfoFragment" />
     </fragment>
     <fragment
@@ -47,10 +63,18 @@
             android:id="@+id/action_otherInfoFragment_to_specificGuideFragment"
             app:destination="@id/specificGuideFragment"
             app:popUpTo="@id/specificGuideFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/action_otherInfoFragment_to_placeDetailFragmentFromGuide"
-            app:destination="@id/placeDetailFragmentFromGuide" />
+            app:destination="@id/placeDetailFragmentFromGuide"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left"
+            app:popEnterAnim="@anim/from_left"
+            app:popExitAnim="@anim/to_right" />
     </fragment>
     <fragment
         android:id="@+id/placeDetailFragmentFromGuide"
