@@ -42,7 +42,7 @@
                 android:id="@+id/iv_other_info"
                 android:layout_width="0dp"
                 android:layout_height="290dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:paddingHorizontal="10dp"
                 android:scaleType="fitXY"
                 app:layout_constraintEnd_toEndOf="parent"

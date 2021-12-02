@@ -8,6 +8,7 @@
         <variable
             name="viewModel"
             type="com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel" />
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -138,7 +139,8 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vp_review_view_one"
                 android:layout_width="match_parent"
-                android:layout_height="400dp" />
+                android:layout_height="400dp" >
+            </androidx.viewpager2.widget.ViewPager2>
             <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
@@ -146,9 +148,20 @@
                 android:layout_gravity="bottom|center"
                 app:spi_visibleDotCount="5"
                 />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이미지가 없습니다"
+                android:layout_gravity="center"
+                android:layout_marginTop="150dp"
+                android:visibility="@{viewModel.currentImage.newRecordImage.isDefault == true ? View.VISIBLE : View.GONE}"
+                />
+
         </FrameLayout>
+
         <EditText
             android:hint="코멘트를 작성해보세요"
+            android:text="@{viewModel.currentImage.newRecordImage.comment}"
             android:id="@+id/et_record_view_one"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

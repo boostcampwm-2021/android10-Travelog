@@ -121,6 +121,7 @@ class RecordViewOneViewModel @Inject constructor(
                 viewModelScope.launch {
                     _islistUpdate.value = true
                 }
+                repository.updateCommentByImageId(comment, currentImage.value!!.newRecordImage.newRecordImageId)
             }
             withContext(Dispatchers.IO) {
                 loadRecord()
