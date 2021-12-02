@@ -14,11 +14,13 @@
         android:layout_height="match_parent">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/iv_item_tutorial_viewPager_image"
             app:setImage="@{item.url}"
+            android:adjustViewBounds="true"
+            android:scaleType="fitStart"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

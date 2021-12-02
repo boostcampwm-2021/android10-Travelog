@@ -26,10 +26,12 @@ class TutorialActivity : AppCompatActivity() {
     }
     fun setViewPager() {
         binding.lifecycleOwner = this
+        binding.viewModel = tutorialViewModel
         binding.vpTutorial.registerOnPageChangeCallback(object :
                 ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
+                    tutorialViewModel.setCurrentImg(position)
                 }
             }
         )
@@ -39,7 +41,10 @@ class TutorialActivity : AppCompatActivity() {
     }
     fun setListener() {
         binding.btnTutorialSkip.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            TravelogApplication.prefs.disableTutorialLoadingState()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }
     }
 }
