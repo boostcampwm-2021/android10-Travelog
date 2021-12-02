@@ -40,7 +40,7 @@ class RecordPhotoAdapter(
             }
 
             if (url == "empty") {
-                ivItemRecordPhoto.visibility = View.GONE
+                cvItemRecordPhoto.visibility = View.GONE
                 return@with
             }
 
