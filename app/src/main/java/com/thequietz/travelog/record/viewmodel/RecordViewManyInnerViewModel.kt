@@ -24,30 +24,33 @@ class RecordViewManyInnerViewModel @Inject constructor(
     private val _checkedList = MutableLiveData<List<NewRecordImage>>()
     val checkedList: LiveData<List<NewRecordImage>> = _checkedList
 
-
     var list = mutableListOf<RecordImage>()
+
     init {
         _deleteState.value = false
         _checkedList.value = mutableListOf()
         loadList()
     }
+
     fun loadList() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                list = repository.loadRecordImagesByTravelId(RecordViewOneViewModel.currentTravleId).toMutableList()
+                list = repository.loadRecordImagesByTravelId(RecordViewOneViewModel.currentTravleId)
+                    .toMutableList()
             }
         }
     }
-/*    fun findInd(item: RecordImage): Int {
-        var ind = 0
-        list.forEachIndexed { idx, it ->
-            if (it.id == item.id) {
-                ind = idx
-                return@forEachIndexed
+
+    /*    fun findInd(item: RecordImage): Int {
+            var ind = 0
+            list.forEachIndexed { idx, it ->
+                if (it.id == item.id) {
+                    ind = idx
+                    return@forEachIndexed
+                }
             }
-        }
-        return ind
-    }*/
+            return ind
+        }*/
     fun changeDeleteState() {
         viewModelScope.launch {
             deleteState.value?.let {
@@ -55,6 +58,7 @@ class RecordViewManyInnerViewModel @Inject constructor(
             }
         }
     }
+
     fun addCheck(img: NewRecordImage) {
         viewModelScope.launch {
             checkedList.value?.let {
@@ -64,6 +68,7 @@ class RecordViewManyInnerViewModel @Inject constructor(
             }
         }
     }
+
     fun deleteCheck(img: NewRecordImage) {
         viewModelScope.launch {
             checkedList.value?.let {
@@ -77,12 +82,13 @@ class RecordViewManyInnerViewModel @Inject constructor(
                 }
                 if (ind != -1) {
                     res.removeAt(ind)
-                    res.sortBy { it -> it.newRecordImageId}
+                    res.sortBy { it -> it.newRecordImageId }
                 }
                 _checkedList.value = res
             }
         }
     }
+
     fun deleteChecked() {
         viewModelScope.launch {
             checkedList.value?.let {
@@ -102,6 +108,7 @@ class RecordViewManyInnerViewModel @Inject constructor(
             println("delete end")
         }*/
     }
+
     fun findChecked(img: NewRecordImage): Boolean {
         var flag = false
         checkedList.value?.let { list ->
@@ -114,6 +121,7 @@ class RecordViewManyInnerViewModel @Inject constructor(
         }
         return flag
     }
+
     fun clearChecked() {
         viewModelScope.launch {
             _checkedList.value = mutableListOf()

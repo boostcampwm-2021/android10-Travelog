@@ -18,9 +18,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/iv_item_tutorial_viewPager_image"
-            app:setImage="@{item.url}"
+            app:setCenterImage="@{item.url}"
             android:adjustViewBounds="true"
-            android:scaleType="fitStart"
+            android:scaleType="centerInside"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,6 +55,23 @@ fun loadImage(imageView: ImageView, url: String?) {
     }
 }
 
+@BindingAdapter("app:setCenterImage")
+fun loadCenterImage(imageView: ImageView, url: String?) {
+    url ?: return
+    if (url == "empty") {
+        Glide.with(imageView.context)
+            .asBitmap()
+            .load(R.drawable.animation_loading)
+            .into(imageView)
+    } else {
+        Glide.with(imageView.context)
+            .asBitmap()
+            .load(url)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(imageView)
+    }
+}
+
 fun getTodayDate(): String {
     val time = System.currentTimeMillis()
     val date = Date(time)
