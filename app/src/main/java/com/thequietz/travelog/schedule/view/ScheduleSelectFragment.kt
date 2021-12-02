@@ -66,7 +66,7 @@ class ScheduleSelectFragment : Fragment() {
             inflateMenu(R.menu.menu_with_save)
 
             setOnMenuItemClickListener {
-                if (it.itemId == R.id.action_next) {
+                if (it.itemId == R.id.action_save) {
                     val keyword = scheduleSelectViewModel.travelName.value?.toString()
                     if (keyword == null || keyword.isEmpty()) {
                         return@setOnMenuItemClickListener false
