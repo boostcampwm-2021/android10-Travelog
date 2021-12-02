@@ -163,9 +163,11 @@ class ScheduleDetailFragment :
     override fun onDestroyView() {
         super.onDestroyView()
 
-        map.clear()
-        mapFragment?.also {
-            it.onDestroyView()
+        if (binding != null){
+            map.clear()
+            mapFragment?.also {
+                it.onDestroyView()
+            }
         }
     }
 }
