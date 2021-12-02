@@ -115,6 +115,7 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
             mapType = GoogleMap.MAP_TYPE_NORMAL
             setMinZoomPreference(6f)
 
+            // viewLifecycleOwnerLiveData 추가
             viewLifecycleOwnerLiveData.observe(viewLifecycleOwner, {
                 if (it == null)
                     return@observe
