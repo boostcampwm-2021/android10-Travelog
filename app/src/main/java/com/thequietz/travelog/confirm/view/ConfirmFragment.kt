@@ -6,8 +6,6 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMapOptions
@@ -134,14 +132,10 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
 
     private fun setToolbar() {
         binding.toolbar.apply {
-            val navController = findNavController()
-            val appBarConfig = AppBarConfiguration.Builder(navController.graph).build()
-
-            setupWithNavController(navController, appBarConfig)
             title = "일정 확인"
-            inflateMenu(R.menu.menu_with_complete)
+            inflateMenu(R.menu.menu_with_close)
             setOnMenuItemClickListener {
-                if (it.itemId == R.id.action_next) {
+                if (it.itemId == R.id.action_close) {
                     val action =
                         ConfirmFragmentDirections.actionConfirmFragmentToScheduleFragment()
                     findNavController().navigate(action)
