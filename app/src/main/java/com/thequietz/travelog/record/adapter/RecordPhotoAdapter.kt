@@ -1,6 +1,7 @@
 package com.thequietz.travelog.record.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -36,6 +37,11 @@ class RecordPhotoAdapter(
                 if (url == null) {
                     addImage?.invoke()
                 }
+            }
+
+            if (url == "empty") {
+                ivItemRecordPhoto.visibility = View.GONE
+                return@with
             }
 
             if (url != null) {
