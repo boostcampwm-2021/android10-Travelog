@@ -3,7 +3,6 @@ package com.thequietz.travelog.record.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.thequietz.travelog.databinding.ItemRecyclerRecordBinding
@@ -14,10 +13,6 @@ class RecordAdapter(
 ) : ListAdapter<Record, RecordAdapter.RecordViewHolder>(diffUtil) {
     inner class RecordViewHolder(private val binding: ItemRecyclerRecordBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val layoutManager = object : LinearLayoutManager(itemView.context, HORIZONTAL, false) {
-            override fun canScrollHorizontally(): Boolean = false
-        }
-
         fun bind(item: Record) = with(binding) {
             root.setOnClickListener {
                 navigateToRecordBasicUi.invoke(
@@ -35,7 +30,6 @@ class RecordAdapter(
                     recordItem = item
                 )
             rvItemRecordPhoto.adapter = adapter
-            rvItemRecordPhoto.layoutManager = layoutManager
             adapter.submitList(item.images)
         }
     }
