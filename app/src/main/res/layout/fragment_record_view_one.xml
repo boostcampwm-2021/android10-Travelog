@@ -148,6 +148,7 @@
                 />
         </FrameLayout>
         <EditText
+            android:hint="코멘트를 작성해보세요"
             android:id="@+id/et_record_view_one"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
