@@ -30,7 +30,13 @@ class RecordFragment : Fragment(R.layout.fragment_record) {
         binding.rvRecord.adapter = adapter
 
         viewModel.loadData()
+
         viewModel.recordList.observe(viewLifecycleOwner) { recordList ->
+            if (recordList.isEmpty()) {
+                binding.tvNoRecord.visibility = View.VISIBLE
+            } else {
+                binding.tvNoRecord.visibility = View.INVISIBLE
+            }
             adapter.submitList(recordList)
         }
 

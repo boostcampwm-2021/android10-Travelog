@@ -1,7 +1,9 @@
 package com.thequietz.travelog.record.view
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -58,6 +60,31 @@ abstract class AppBarStateChangeListener : AppBarLayout.OnOffsetChangedListener 
     abstract fun onStateChanged(appBarLayout: AppBarLayout, state: State)
 }
 
+class RecordBasicRecyclerViewScrollListener(
+    private val binding: FragmentRecordBasicBinding,
+    private val layoutManager: LinearLayoutManager,
+    private val updateTargetList: (String) -> Unit
+) : RecyclerView.OnScrollListener() {
+    private var tempPosition = -1
+    private var tempDay = ""
+
+    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        super.onScrolled(recyclerView, dx, dy)
+        val position = layoutManager.findFirstCompletelyVisibleItemPosition()
+        if (tempPosition == position) return
+        val viewHolder = recyclerView.findViewHolderForAdapterPosition(position) ?: return
+        viewHolder as RecordBasicViewHolder
+        val day = viewHolder.getDay()
+        val date = viewHolder.getDate()
+        if (tempDay == day) return
+        updateTargetList(day)
+        binding.tvItemRecordBasicHeaderDay.text = day
+        binding.tvItemRecordBasicHeaderDate.text = date
+        tempPosition = position
+        tempDay = day
+    }
+}
+
 @AndroidEntryPoint
 class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, RecordBasicViewModel>() {
     override val layoutId = R.layout.fragment_record_basic
@@ -86,35 +113,31 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
         }
      */
 
+    private lateinit var scrollListener: RecordBasicRecyclerViewScrollListener
+
     override var drawMarker = true
     override var isMarkerNumbered = true
     override var drawOrderedPolyline = true
 
-    private var tempPosition = -1
-    private var tempDay = ""
-
-    inner class RecordBasicRecyclerViewScrollListener : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            val position = layoutManager.findFirstCompletelyVisibleItemPosition()
-            if (tempPosition == position) return
-            val viewHolder = recyclerView.findViewHolderForAdapterPosition(position) ?: return
-            viewHolder as RecordBasicViewHolder
-            val day = viewHolder.getDay()
-            val date = viewHolder.getDate()
-            if (tempDay == day) return
-            updateTargetList(day)
-            binding.tvItemRecordBasicHeaderDay.text = day
-            binding.tvItemRecordBasicHeaderDate.text = date
-            tempPosition = position
-            tempDay = day
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        viewModel.loadData(navArgs.travelId, navArgs.title, navArgs.startDate, navArgs.endDate)
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         loadingDialog.show()
         super.onViewCreated(view, savedInstanceState)
         initView()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        binding.rvRecordBasic.clearOnScrollListeners()
     }
 
     private fun initView() {
@@ -143,7 +166,12 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
     }
 
     private fun setListener() = with(binding) {
-        rvRecordBasic.addOnScrollListener(RecordBasicRecyclerViewScrollListener())
+        scrollListener = RecordBasicRecyclerViewScrollListener(
+            binding,
+            binding.rvRecordBasic.layoutManager as LinearLayoutManager,
+            ::updateTargetList
+        )
+        rvRecordBasic.addOnScrollListener(scrollListener)
         appBarLayout.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
             override fun onStateChanged(appBarLayout: AppBarLayout, state: State) {
                 if (state == State.COLLAPSED) {
@@ -161,7 +189,6 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
     }
 
     override fun initViewModel() {
-        viewModel.loadData(navArgs.travelId, navArgs.title, navArgs.startDate, navArgs.endDate)
         subscribeUi()
     }
 
@@ -182,6 +209,7 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
         }
         viewModel.date.observe(viewLifecycleOwner) { date ->
             binding.tvRecordBasicSchedule.text = date
+            binding.tvItemRecordBasicHeaderDate.text = date
         }
         viewModel.recordImageList.observe(viewLifecycleOwner) {
             viewModel.createData()
@@ -194,6 +222,7 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
     }
 
     private fun updateTargetList(day: String = "Day1") {
+        binding.tvItemRecordBasicHeaderDay.text = day
         viewModel.updateTargetList(day, targetList)
     }
 

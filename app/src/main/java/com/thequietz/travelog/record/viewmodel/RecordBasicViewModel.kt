@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
-import com.thequietz.travelog.data.RecordRepository
 import com.thequietz.travelog.data.db.dao.NewRecordImage
 import com.thequietz.travelog.record.model.RecordBasic
 import com.thequietz.travelog.record.model.RecordBasicItem
@@ -17,14 +16,14 @@ import com.thequietz.travelog.util.createDayFromDate
 import com.thequietz.travelog.util.nextDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class RecordBasicViewModel @Inject constructor(
-    private val repository: RecordBasicRepository,
-    private val recordRepository: RecordRepository
+    private val repository: RecordBasicRepository
 ) : ViewModel() {
     private val _isEmpty = MutableLiveData<Boolean>()
     val isEmpty: LiveData<Boolean> = _isEmpty
@@ -57,28 +56,34 @@ class RecordBasicViewModel @Inject constructor(
             val newRecordImages = createRecordImages(scheduleDetails, title, startDate, endDate)
             val isSameOldAndNew = compareOldAndNewRecordImages(oldRecordImages, newRecordImages)
 
-            withContext(Dispatchers.Main) {
-                _recordImageList.value = newRecordImages
+            if (!isSameOldAndNew) {
+                launch(Dispatchers.IO) {
+                    repository.deleteNewRecordImageByTravelIdAndIsDefault(travelId, true)
+                    val tempNewRecordImages = mutableListOf<NewRecordImage>()
+                    newRecordImages.forEach { recordImage ->
+                        tempNewRecordImages.add(
+                            NewRecordImage().copy(
+                                newTravelId = recordImage.travelId,
+                                newTitle = recordImage.title,
+                                newPlace = recordImage.place,
+                                url = "empty",
+                                comment = "코멘트를 남겨주세요!",
+                                isDefault = true
+                            )
+                        )
+                    }
+                    delay(500)
+                    repository.insertNewRecordImages(tempNewRecordImages.toList())
+                }
+                launch(Dispatchers.IO) {
+                    repository.deleteRecordImageByTravelId(travelId)
+                    delay(500)
+                    repository.insertRecordImages(newRecordImages)
+                }
             }
 
-            if (!isSameOldAndNew) {
-                repository.deleteRecordImageByTravelId(travelId)
-                repository.insertRecordImages(newRecordImages)
-
-                val tempNewRecordImages = mutableListOf<NewRecordImage>()
-                newRecordImages.forEach { recordImage ->
-                    tempNewRecordImages.add(
-                        NewRecordImage().copy(
-                            newTravelId = recordImage.travelId,
-                            newTitle = recordImage.title,
-                            newPlace = recordImage.place,
-                            url = "empty",
-                            comment = "코멘트를 남겨주세요!",
-                            isDefault = true
-                        )
-                    )
-                }
-                recordRepository.insertNewRecordImages(tempNewRecordImages)
+            withContext(Dispatchers.Main) {
+                _recordImageList.value = newRecordImages
             }
         }
     }

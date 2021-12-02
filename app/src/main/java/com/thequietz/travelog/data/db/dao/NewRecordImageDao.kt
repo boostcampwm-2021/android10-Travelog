@@ -29,6 +29,9 @@ abstract class NewRecordImageDao : BaseDao<NewRecordImage> {
 
     @Query("UPDATE NewRecordImage SET comment =:comment WHERE newRecordImageId =:id")
     abstract fun updateRecordImageCommentById(comment: String, id: Int)
+
+    @Query("DELETE FROM NewRecordImage WHERE newTravelId =:travelId AND isDefault =:isDefault")
+    abstract fun deleteNewRecordImageByTravelIdAndIsDefault(travelId: Int, isDefault: Boolean)
 }
 
 @Dao
