@@ -4,33 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.thequietz.travelog.TutorialViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/blue_travelog"
         tools:context=".TutorialActivity">
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/right_gl_tutorial"
             android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.85" />
+            app:layout_constraintGuide_percent="0.9" />
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/left_gl_tutorial"
             android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.15" />
+            app:layout_constraintGuide_percent="0.1" />
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/top_gl_tutorial"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.15" />
+            app:layout_constraintGuide_percent="0.05" />
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/bottom_gl_tutorial"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.6" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/btn_bottom_gl_tutorial"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:orientation="horizontal"
@@ -45,10 +54,12 @@
             app:layout_constraintBottom_toTopOf="@id/bottom_gl_tutorial"
             android:id="@+id/fl_tutorial"
             >
+
             <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_tutorial"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/vp_tutorial"/>
+                android:layout_height="match_parent" />
+
             <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
@@ -56,14 +67,31 @@
                 android:id="@+id/ci_tutorial"
                 app:spi_visibleDotCount="3"/>
         </FrameLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/left_gl_tutorial"
+            app:layout_constraintEnd_toEndOf="@id/right_gl_tutorial"
+            app:layout_constraintTop_toBottomOf="@id/fl_tutorial"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:text="@{viewModel.currentImg.text}"
+            tools:text="세부 정보를 확인하여 일정을 선택할 수 있어요dddddddddddddddddddddddddddddddddddddddd"
+            android:id="@+id/tv_tutorial_information"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="건너뛰기"
+            android:text="바로 시작하기"
+            android:textStyle="bold"
             android:id="@+id/btn_tutorial_skip"
             app:layout_constraintStart_toStartOf="@id/left_gl_tutorial"
             app:layout_constraintEnd_toEndOf="@id/right_gl_tutorial"
-            app:layout_constraintTop_toBottomOf="@id/bottom_gl_tutorial"
+            app:layout_constraintTop_toBottomOf="@id/btn_bottom_gl_tutorial"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/blue_travelog"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

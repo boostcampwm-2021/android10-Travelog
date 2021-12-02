@@ -29,7 +29,8 @@ class TutorialViewPagerAdapter : ListAdapter<TutorialImg, TutorialViewPagerAdapt
     }
 }
 data class TutorialImg(
-    val url: String = ""
+    val url: String = "",
+    val text: String = ""
 )
 class TutorialImgDiffUtilCallback : DiffUtil.ItemCallback<TutorialImg>() {
     override fun areItemsTheSame(oldItem: TutorialImg, newItem: TutorialImg): Boolean {

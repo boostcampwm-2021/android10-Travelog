@@ -12,7 +12,9 @@ import javax.inject.Inject
 class SplashViewModel @Inject internal constructor(
     val guideRepository: GuideRepository
 ) : ViewModel() {
-    init {
+
+    fun caching() {
+        println("splash caching")
         CoroutineScope(Dispatchers.IO).launch {
             guideRepository.loadAllPlaceData()
         }

@@ -151,10 +151,10 @@ class MultiViewImageAdapter(
                                 makeToast(itemView.context, "기본이미지는 삭제할 수 없습니다")
                                 binding.cbDeleteCheck.isChecked = false
                             } else {
-                                innerViewModel.addCheck(item.newRecordImage.newRecordImageId)
+                                innerViewModel.addCheck(item.newRecordImage)
                             }
                         } else {
-                            innerViewModel.deleteCheck(item.newRecordImage.newRecordImageId)
+                            innerViewModel.deleteCheck(item.newRecordImage)
                         }
                     }
                 } else {
@@ -164,7 +164,7 @@ class MultiViewImageAdapter(
                 }
             }
             binding.cbDeleteCheck.isChecked =
-                innerViewModel.findChecked(item.newRecordImage.newRecordImageId)
+                innerViewModel.findChecked(item.newRecordImage)
             binding.executePendingBindings()
         }
     }

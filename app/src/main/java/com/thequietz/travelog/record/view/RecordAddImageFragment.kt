@@ -44,13 +44,27 @@ class RecordAddImageFragment : Fragment() {
     private val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             val clipData = result.data?.clipData
-            val res = mutableListOf<NewRecordImage>()
-            CoroutineScope(Dispatchers.IO).launch {
-                clipData?.let {
-                    (0 until it.itemCount).forEachIndexed { ind, item ->
+            if (clipData != null) {
+                val res = mutableListOf<NewRecordImage>()
+                CoroutineScope(Dispatchers.IO).launch {
+                    clipData?.let {
+                        (0 until it.itemCount).forEachIndexed { ind, item ->
+                            res.add(
+                                NewRecordImage().copy(
+                                    url = clipData.getItemAt(ind).uri.toString(),
+                                )
+                            )
+                        }
+                        recordAddImageViewModel.addImage(res)
+                    }
+                }
+            } else {
+                val res = mutableListOf<NewRecordImage>()
+                CoroutineScope(Dispatchers.IO).launch {
+                    result.data?.let {
                         res.add(
                             NewRecordImage().copy(
-                                url = clipData.getItemAt(ind).uri.toString(),
+                                url = it.data.toString()
                             )
                         )
                     }

@@ -14,7 +14,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashBinding
     private val splashViewModel by viewModels<SplashViewModel>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
@@ -28,8 +27,17 @@ class SplashActivity : AppCompatActivity() {
         binding.ivSplash.startAnimation(airPlaneAnim)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, TutorialActivity::class.java))
-        }, 5000)
+            if (TravelogApplication.prefs.loadTutorialLoadingState()) {
+                splashViewModel.caching()
+                val intent = Intent(this, TutorialActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, MainActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+            }
+        }, 3000)
         setContentView(binding.root)
     }
 }

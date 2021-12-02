@@ -11,5 +11,5 @@ interface BaseDao<T> {
     fun insert(vararg obj: T): List<Long>
 
     @Delete
-    fun delete(obj: T)
+    fun delete(vararg obj: T)
 }

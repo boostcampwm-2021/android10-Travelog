@@ -97,14 +97,13 @@ dependencies {
 
     // Circle ImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // scrolling Indicator
     implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.2.1"
 
     //
     implementation 'com.google.android.gms:play-services-maps:18.0.0'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
-
-    // pdf
-    implementation 'com.itextpdf:itextpdf:5.0.6'
 
     // ViewPager2
     implementation "androidx.viewpager2:viewpager2:1.0.0"
