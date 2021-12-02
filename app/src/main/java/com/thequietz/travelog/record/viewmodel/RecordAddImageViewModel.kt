@@ -92,8 +92,16 @@ class RecordAddImageViewModel @Inject constructor(
         }
     }
     fun insertImages() {
-        imageList.value?.let {
-            repository.insertNewRecordImages(it)
+        imageList.value?.forEach {
+            repository.insertEachNewRecordImages(
+                it.copy(
+                    newTravelId = RecordViewOneViewModel.currentTravleId,
+                    newTitle = travelName.value!!,
+                    newPlace = currentPlace.value!!,
+                    comment = "코멘트",
+                    isDefault = false
+                )
+            )
         }
     }
 

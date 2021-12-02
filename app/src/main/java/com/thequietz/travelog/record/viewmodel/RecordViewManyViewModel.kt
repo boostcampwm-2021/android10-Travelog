@@ -36,6 +36,8 @@ class RecordViewManyViewModel @Inject constructor(
 
     fun change2MyRecord(args: RecordViewManyFragmentArgs) {
         val res = mutableListOf<MyRecord>()
+        println("change2MyRecord start")
+
         viewModelScope.launch {
             val placeList = withContext(Dispatchers.IO) {
                 repository.loadRecordImagesByTravelId(args.travelId)
@@ -90,6 +92,7 @@ class RecordViewManyViewModel @Inject constructor(
             _travelName.value = placeList.get(0).title
             _startDate.value = placeList.get(0).startDate
             _endDate.value = placeList.get(0).endDate
+            println("change2MyRecord end  ${dataList.value?.size}")
         }
     }
 }

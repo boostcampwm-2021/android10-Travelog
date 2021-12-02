@@ -89,6 +89,7 @@ class RecordViewManyInnerViewModel @Inject constructor(
                 }
             }
             clearChecked()
+            println("delete end")
         }
     }
     fun findChecked(id: Int): Boolean {

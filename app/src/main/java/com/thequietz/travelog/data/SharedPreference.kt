@@ -7,12 +7,12 @@ class SharedPreference(context: Context) {
     private val prefsFilename = "prefs"
     private val prefs = context.getSharedPreferences(prefsFilename, 0)
 
-    fun disableGuideLoadingState(state: Boolean = true) {
+    /*fun disableGuideLoadingState(state: Boolean = true) {
         val editor = prefs.edit()
         editor.putBoolean("loading", state).apply()
         editor.apply()
     }
-    fun loadGuideLoadingState() = prefs.getBoolean("loading", false)
+    fun loadGuideLoadingState() = prefs.getBoolean("loading", false)*/
 
     var alarmPermission: Boolean
         get() = prefs.getBoolean("alarm", false)
