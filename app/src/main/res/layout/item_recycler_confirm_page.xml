@@ -21,8 +21,8 @@
 
         <ImageView
             android:id="@+id/iv_confirm_page"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="92dp"
+            android:layout_height="92dp"
             android:layout_marginEnd="10dp"
             tools:src="@tools:sample/avatars" />
 
