@@ -314,6 +314,9 @@ class RecordRepository @Inject constructor(
     fun loadMainImagesByTravelId(travelId: Int) =
         newRecordImageDao.loadAnyImageWithDistinctPlaceByTravelId(travelId)
 
+    fun updateCommentByImageId(comment: String, id: Int) =
+        newRecordImageDao.updateRecordImageCommentById(comment, id)
+
     fun insertEachNewRecordImages(image: NewRecordImage) {
         coroutineScope.launch { newRecordImageDao.insert(image) }
     }
