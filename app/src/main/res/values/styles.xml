@@ -2,13 +2,18 @@
 <resources>
     <style name="customEditText" parent="@android:style/Widget.EditText">
         <item name="android:background">@drawable/bg_edit_text</item>
+        <item name="android:includeFontPadding">false</item>
     </style>
 
     <style name="customTextView" parent="@android:style/Widget.TextView">
         <item name="android:textColor">@color/black</item>
+        <item name="android:includeFontPadding">false</item>
+
     </style>
 
     <style name="customButton" parent="@android:style/Widget.Button">
         <item name="background">@drawable/bg_btn</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 </resources>
