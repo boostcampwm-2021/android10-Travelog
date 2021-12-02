@@ -78,18 +78,15 @@
             app:layout_constraintStart_toStartOf="@id/tv_select_date"
             app:layout_constraintTop_toBottomOf="@id/tv_select_date" />
 
-        <TextView
+        <Button
             android:id="@+id/tv_start_date_selected"
-            style="@style/customEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:backgroundTint="@color/light_blue_travelog"
             android:gravity="center"
-            android:textColor="@{viewModel.startDate == null ? @color/white : @color/black}"
-            android:padding="10dp"
             android:text="@{viewModel.startDate ?? @string/tv_add_start_date}"
-            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="@id/tv_start_date"
             app:layout_constraintTop_toBottomOf="@id/tv_start_date" />
 
@@ -102,21 +99,17 @@
             app:layout_constraintStart_toStartOf="@id/tv_end_date_selected"
             app:layout_constraintTop_toTopOf="@id/tv_start_date" />
 
-        <TextView
+        <Button
             android:id="@+id/tv_end_date_selected"
-            style="@style/customEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:backgroundTint="@color/light_blue_travelog"
-            android:gravity="center"
-            android:padding="10dp"
-            android:textColor="@{viewModel.startDate == null ? @color/white : @color/black}"
             android:text="@{viewModel.endDate ?? @string/tv_add_start_date}"
-            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_start_date_selected"
-            app:layout_constraintTop_toBottomOf="@id/tv_end_date"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/tv_end_date" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
