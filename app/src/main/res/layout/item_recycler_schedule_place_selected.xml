@@ -15,6 +15,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:drawableEnd="@drawable/ic_remove_item"
+            android:insetTop="3dp"
+            android:insetBottom="3dp"
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:paddingHorizontal="6dp"
