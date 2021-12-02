@@ -1,5 +1,6 @@
 package com.thequietz.travelog
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.thequietz.travelog.databinding.ActivitySplashBinding
 import dagger.hilt.android.AndroidEntryPoint
 
+@SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashBinding
@@ -27,7 +29,7 @@ class SplashActivity : AppCompatActivity() {
         binding.ivSplash.startAnimation(airPlaneAnim)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            if (TravelogApplication.prefs.loadTutorialLoadingState()) {
+            if (!TravelogApplication.prefs.loadTutorialLoadingState()) {
                 splashViewModel.caching()
                 val intent = Intent(this, TutorialActivity::class.java)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
