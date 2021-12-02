@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -172,6 +173,8 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
             searchView.apply {
                 queryHint = "목적지를 입력해보세요!"
                 setIconifiedByDefault(false)
+                (this.findViewById(androidx.appcompat.R.id.search_src_text) as TextView)
+                    .includeFontPadding = false
 
                 setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
