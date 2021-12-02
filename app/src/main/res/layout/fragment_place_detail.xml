@@ -189,23 +189,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/btn_place_add"
+            <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="12dp"
-                android:background="@color/blue_travelog"
-                android:insetTop="3dp"
-                android:insetBottom="3dp"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingVertical="0dp"
-                android:text="@string/btn_place_add"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
+                app:cardCornerRadius="6dp">
+
+                <Button
+                    android:id="@+id/btn_place_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue_travelog"
+                    android:insetTop="3dp"
+                    android:insetBottom="3dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:paddingVertical="0dp"
+                    android:text="@string/btn_place_add"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
         </RelativeLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

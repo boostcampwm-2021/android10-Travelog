@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:background="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
+        android:background="@color/white"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_selected_item"
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:drawableEnd="@drawable/ic_remove_item"
-            android:insetTop="3dp"
-            android:insetBottom="3dp"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:paddingHorizontal="6dp"
-            android:paddingVertical="0dp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            tools:text="@string/tv_item_selected" />
+            app:cardCornerRadius="8dp">
+
+            <Button
+                android:id="@+id/btn_selected_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:drawableEnd="@drawable/ic_remove_item"
+                android:insetTop="3dp"
+                android:insetBottom="3dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="0dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                tools:text="@string/tv_item_selected" />
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </layout>
