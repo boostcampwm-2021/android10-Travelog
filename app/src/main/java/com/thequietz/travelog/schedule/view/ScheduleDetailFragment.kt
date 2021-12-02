@@ -79,9 +79,9 @@ class ScheduleDetailFragment :
 
         binding.toolbar.apply {
             setupWithNavController(navController, appBarConfig)
-            inflateMenu(R.menu.menu_with_complete)
+            inflateMenu(R.menu.menu_with_save)
             setOnMenuItemClickListener {
-                if (it.itemId == R.id.action_next) {
+                if (it.itemId == R.id.action_save) {
                     val schedule = viewModel.schedule
                     val scheduleDetails = viewModel.detailList.value?.toTypedArray()
                         ?: return@setOnMenuItemClickListener false
@@ -163,9 +163,11 @@ class ScheduleDetailFragment :
     override fun onDestroyView() {
         super.onDestroyView()
 
-        map.clear()
-        mapFragment?.also {
-            it.onDestroyView()
+        if (binding != null){
+            map.clear()
+            mapFragment?.also {
+                it.onDestroyView()
+            }
         }
     }
 }

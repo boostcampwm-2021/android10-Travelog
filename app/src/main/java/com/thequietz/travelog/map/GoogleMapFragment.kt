@@ -66,7 +66,8 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
     private var targetCount: Int = 0
 
     protected var markerList: MutableList<Marker> = mutableListOf()
-    protected var markerColorList: MutableLiveData<List<ColorRGB>> = MutableLiveData(mutableListOf())
+    protected var markerColorList: MutableLiveData<List<ColorRGB>> =
+        MutableLiveData(mutableListOf())
 
     private var polylineList: MutableList<Polyline> = mutableListOf()
 
@@ -113,16 +114,22 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
         map.apply {
             mapType = GoogleMap.MAP_TYPE_NORMAL
             setMinZoomPreference(6f)
-            setOnMapLoadedCallback {
-                targetList.observe(viewLifecycleOwner, {
-                    updateMapViewBound()
-                    moveCameraByTargetCount(targetCount)
-                    drawMarker()
-                })
-                markerColorList.observe(viewLifecycleOwner, {
-                    drawMarker()
-                })
-            }
+
+            // viewLifecycleOwnerLiveData 추가
+            viewLifecycleOwnerLiveData.observe(viewLifecycleOwner, {
+                if (it == null)
+                    return@observe
+                setOnMapLoadedCallback {
+                    targetList.observe(it, {
+                        updateMapViewBound()
+                        moveCameraByTargetCount(targetCount)
+                        drawMarker()
+                    })
+                    markerColorList.observe(it, {
+                        drawMarker()
+                    })
+                }
+            })
             uiSettings.apply {
                 isZoomControlsEnabled = true
             }

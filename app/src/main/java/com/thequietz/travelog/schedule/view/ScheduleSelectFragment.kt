@@ -63,7 +63,7 @@ class ScheduleSelectFragment : Fragment() {
             val navController = findNavController()
             val appBarConfig = AppBarConfiguration.Builder(navController.graph).build()
             setupWithNavController(navController, appBarConfig)
-            inflateMenu(R.menu.menu_with_complete)
+            inflateMenu(R.menu.menu_with_save)
 
             setOnMenuItemClickListener {
                 if (it.itemId == R.id.action_next) {
@@ -95,7 +95,7 @@ class ScheduleSelectFragment : Fragment() {
 
     private fun initNextButton() {
         scheduleSelectViewModel.btnEnable.observe(viewLifecycleOwner, {
-            binding.toolbar.menu.findItem(R.id.action_next).isEnabled = it
+            binding.toolbar.menu.findItem(R.id.action_save).isEnabled = it
         })
     }
 
