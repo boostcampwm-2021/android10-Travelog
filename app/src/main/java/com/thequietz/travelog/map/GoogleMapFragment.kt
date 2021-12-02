@@ -116,6 +116,8 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
             setMinZoomPreference(6f)
 
             viewLifecycleOwnerLiveData.observe(viewLifecycleOwner, {
+                if (it == null)
+                    return@observe
                 setOnMapLoadedCallback {
                     targetList.observe(it, {
                         updateMapViewBound()
