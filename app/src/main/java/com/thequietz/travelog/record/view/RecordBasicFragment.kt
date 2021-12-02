@@ -1,7 +1,9 @@
 package com.thequietz.travelog.record.view
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -117,6 +119,15 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
     override var isMarkerNumbered = true
     override var drawOrderedPolyline = true
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        viewModel.loadData(navArgs.travelId, navArgs.title, navArgs.startDate, navArgs.endDate)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         loadingDialog.show()
         super.onViewCreated(view, savedInstanceState)
@@ -178,7 +189,6 @@ class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, Record
     }
 
     override fun initViewModel() {
-        viewModel.loadData(navArgs.travelId, navArgs.title, navArgs.startDate, navArgs.endDate)
         subscribeUi()
     }
 

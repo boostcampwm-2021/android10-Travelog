@@ -1,5 +1,6 @@
 package com.thequietz.travelog.record.repository
 
+import com.thequietz.travelog.data.db.dao.NewRecordImage
 import com.thequietz.travelog.data.db.dao.NewRecordImageDao
 import com.thequietz.travelog.data.db.dao.RecordImageDao
 import com.thequietz.travelog.data.db.dao.ScheduleDao
@@ -30,6 +31,10 @@ class RecordBasicRepository @Inject constructor(
 
     fun insertRecordImages(images: List<RecordImage>) {
         coroutineScope.launch { recordImageDao.insert(*images.toTypedArray()) }
+    }
+
+    fun insertNewRecordImages(images: List<NewRecordImage>) {
+        coroutineScope.launch { newRecordImageDao.insert(*images.toTypedArray()) }
     }
 
     fun deleteRecordImageById(id: Int) {
