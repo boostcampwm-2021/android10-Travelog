@@ -197,12 +197,12 @@ class ScheduleDetailViewModel @Inject internal constructor(
                 detailCount = 0
             } else {
                 detailCount++
-                detailList.value?.first { it.id == item.id }.let {
+                detailList.value?.firstOrNull { it.id == item.id }.let {
                     it?.date = date
                     if (it != null)
                         tempDetails.add(it)
                 }
-                colorList.value?.find { it.id == item.id }.let {
+                colorList.value?.firstOrNull { it.id == item.id }.let {
                     if (it != null)
                         tempColors.add(it)
                 }

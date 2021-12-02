@@ -47,6 +47,9 @@ class ScheduleDetailAdapter(
     }
 
     override fun onItemSwiped(position: Int) {
+        val newList = currentList.toMutableList()
+        newList.removeAt(position)
+        submitList(newList)
         onDelete(position)
     }
 
