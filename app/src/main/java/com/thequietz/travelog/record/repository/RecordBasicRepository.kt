@@ -60,4 +60,24 @@ class RecordBasicRepository @Inject constructor(
             newRecordImageDao.deleteNewRecordImageByTravelIdAndIsDefault(travelId, isDefault)
         }
     }
+
+    fun deleteAndInsertRecordImages(travelId: Int, recordImages: List<RecordImage>) {
+        coroutineScope.launch {
+            recordImageDao.deleteAndInsertRecordImages(travelId, recordImages)
+        }
+    }
+
+    fun deleteAndInsertNewRecordImages(
+        travelId: Int,
+        isDefault: Boolean,
+        tempNewRecordImages: List<NewRecordImage>
+    ) {
+        coroutineScope.launch {
+            newRecordImageDao.deleteAndInsertNewRecordImages(
+                travelId,
+                isDefault,
+                tempNewRecordImages
+            )
+        }
+    }
 }

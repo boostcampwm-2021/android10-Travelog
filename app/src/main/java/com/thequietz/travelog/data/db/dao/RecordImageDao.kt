@@ -2,6 +2,7 @@ package com.thequietz.travelog.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import com.thequietz.travelog.record.model.PlaceAndSchedule
 import com.thequietz.travelog.record.model.RecordImage
 
@@ -45,4 +46,10 @@ abstract class RecordImageDao : BaseDao<RecordImage> {
 
     @Query("DELETE FROM RecordImage WHERE travelId =:travelId")
     abstract fun deleteRecordImageByTravelId(travelId: Int)
+
+    @Transaction
+    open fun deleteAndInsertRecordImages(travelId: Int, recordImages: List<RecordImage>) {
+        deleteRecordImageByTravelId(travelId)
+        insert(*recordImages.toTypedArray())
+    }
 }
