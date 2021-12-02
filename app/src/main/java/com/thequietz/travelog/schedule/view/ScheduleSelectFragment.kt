@@ -21,6 +21,7 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleSelectBinding
+import com.thequietz.travelog.onThrottleClick
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import com.thequietz.travelog.schedule.viewmodel.ScheduleSelectViewModel
 import com.thequietz.travelog.util.ScheduleControlType
@@ -151,7 +152,28 @@ class ScheduleSelectFragment : Fragment() {
         var start: String
         var end: String
 
-        binding.tvStartDateSelected.setOnClickListener {
+        binding.tvStartDateSelected.onThrottleClick {
+            binding.tvEndDateSelected.isClickable = false
+            picker.show(childFragmentManager, "date_picker")
+            picker.addOnPositiveButtonClickListener { selection ->
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = selection?.first ?: 0
+                start = SimpleDateFormat("yyyy.MM.dd").format(calendar.time).toString()
+                calendar.timeInMillis = selection?.second ?: 0
+                end = SimpleDateFormat("yyyy.MM.dd").format(calendar.time).toString()
+                scheduleSelectViewModel.setScheduleRange(start, end)
+                binding.tvEndDateSelected.isClickable = true
+            }
+            picker.addOnCancelListener {
+                binding.tvEndDateSelected.isClickable = true
+            }
+            picker.addOnDismissListener {
+                binding.tvEndDateSelected.isClickable = true
+            }
+        }
+
+        binding.tvEndDateSelected.onThrottleClick {
+            binding.tvStartDateSelected.isClickable = false
             picker.show(childFragmentManager, "date_picker")
             picker.addOnPositiveButtonClickListener { selection ->
                 val calendar = Calendar.getInstance()
@@ -161,17 +183,11 @@ class ScheduleSelectFragment : Fragment() {
                 end = SimpleDateFormat("yyyy.MM.dd").format(calendar.time).toString()
                 scheduleSelectViewModel.setScheduleRange(start, end)
             }
-        }
-
-        binding.tvEndDateSelected.setOnClickListener {
-            picker.show(childFragmentManager, "date_picker")
-            picker.addOnPositiveButtonClickListener { selection ->
-                val calendar = Calendar.getInstance()
-                calendar.timeInMillis = selection?.first ?: 0
-                start = SimpleDateFormat("yyyy.MM.dd").format(calendar.time).toString()
-                calendar.timeInMillis = selection?.second ?: 0
-                end = SimpleDateFormat("yyyy.MM.dd").format(calendar.time).toString()
-                scheduleSelectViewModel.setScheduleRange(start, end)
+            picker.addOnCancelListener {
+                binding.tvStartDateSelected.isClickable = true
+            }
+            picker.addOnDismissListener {
+                binding.tvStartDateSelected.isClickable = true
             }
         }
     }
