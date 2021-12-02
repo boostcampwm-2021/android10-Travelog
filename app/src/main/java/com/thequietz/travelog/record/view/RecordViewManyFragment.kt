@@ -61,7 +61,10 @@ class RecordViewManyFragment : Fragment() {
         with(recordViewManyViewModel) {
             change2MyRecord(args)
             dataList.observe(viewLifecycleOwner, { it ->
-                it?.let { adapter.submitList(it) }
+                it?.let {
+                    println("viweMany  observe")
+                    adapter.submitList(it.toMutableList())
+                }
             })
         }
         setToolbar()

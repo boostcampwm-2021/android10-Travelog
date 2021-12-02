@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".TutorialActivity">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/right_gl_tutorial"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/left_gl_tutorial"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.15" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/top_gl_tutorial"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottom_gl_tutorial"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.85" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="@id/left_gl_tutorial"
+            app:layout_constraintEnd_toEndOf="@id/right_gl_tutorial"
+            app:layout_constraintTop_toTopOf="@id/top_gl_tutorial"
+            app:layout_constraintBottom_toTopOf="@id/bottom_gl_tutorial"
+            android:id="@+id/fl_tutorial"
+            >
+            <androidx.viewpager2.widget.ViewPager2
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/vp_tutorial"/>
+            <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom|center"
+                android:id="@+id/ci_tutorial"
+                app:spi_visibleDotCount="3"/>
+        </FrameLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="건너뛰기"
+            android:id="@+id/btn_tutorial_skip"
+            app:layout_constraintStart_toStartOf="@id/left_gl_tutorial"
+            app:layout_constraintEnd_toEndOf="@id/right_gl_tutorial"
+            app:layout_constraintTop_toBottomOf="@id/bottom_gl_tutorial"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

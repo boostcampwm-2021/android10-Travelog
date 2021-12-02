@@ -3,8 +3,6 @@ package com.thequietz.travelog.guide.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -16,9 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.thequietz.travelog.LoadingDialog
 import com.thequietz.travelog.R
-import com.thequietz.travelog.TravelogApplication
 import com.thequietz.travelog.databinding.FragmentGuideBinding
 import com.thequietz.travelog.guide.adapter.GuideMultiViewAdapter
 import com.thequietz.travelog.guide.viewmodel.GuideViewModel
@@ -30,7 +26,6 @@ class GuideFragment : Fragment() {
     private lateinit var binding: FragmentGuideBinding
     private val guideViewModel by viewModels<GuideViewModel>()
     private val adapter by lazy { GuideMultiViewAdapter() }
-    lateinit var loading: LoadingDialog
 
     private lateinit var _context: Context
     private lateinit var inputManager: InputMethodManager
@@ -41,15 +36,6 @@ class GuideFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentGuideBinding.inflate(inflater, container, false)
-        loading = LoadingDialog(requireContext())
-        if (!TravelogApplication.prefs.loadGuideLoadingState()) {
-            loading.show()
-            Handler(Looper.getMainLooper()).postDelayed({
-                loading.dismiss()
-                TravelogApplication.prefs.disableGuideLoadingState()
-            }, 4000)
-        }
-
         return binding.root
     }
 
