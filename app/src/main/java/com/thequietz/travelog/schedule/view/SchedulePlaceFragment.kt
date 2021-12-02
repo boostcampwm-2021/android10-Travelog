@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
@@ -36,18 +35,6 @@ class SchedulePlaceFragment : Fragment() {
     private lateinit var gson: Gson
 
     private val viewModel: SchedulePlaceViewModel by viewModels()
-
-    private fun Button.setEnable() {
-        this.isEnabled = true
-        this.isClickable = true
-        this.alpha = 1F
-    }
-
-    private fun Button.setDisable() {
-        this.isEnabled = false
-        this.isClickable = false
-        this.alpha = 0.4F
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

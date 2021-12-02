@@ -1,6 +1,7 @@
 package com.thequietz.travelog.place.view
 
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -48,6 +49,8 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
 
     private val navArgs: PlaceSearchFragmentArgs by navArgs()
     private var mapFragment: SupportMapFragment? = null
+
+    private val DP = (Resources.getSystem().displayMetrics.density + 0.5F).toInt()
 
     override fun onMapReady(googleMap: GoogleMap) {
         super.onMapReady(googleMap)
@@ -168,7 +171,6 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
         binding.toolbar.apply {
             setupWithNavController(navController, appBarConfig)
             inflateMenu(R.menu.menu_with_search)
-
             val searchView = (menu.findItem(R.id.action_search).actionView as SearchView)
             searchView.apply {
                 queryHint = "목적지를 입력해보세요!"
