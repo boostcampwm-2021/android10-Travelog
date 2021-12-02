@@ -33,6 +33,10 @@ fun registerAlarm(context: Context, type: AlarmType, alarmTime: String) {
 
     val calendar = Calendar.getInstance().apply {
         var today = dateToString(Date(System.currentTimeMillis()))
+        /*if(type == AlarmType.Schedule)
+            today = today.replace(".", "-") + " " + "18:30:00"
+        else
+            today = today.replace(".", "-") + " " + "18:35:00"*/
         today = today.replace(".", "-") + " " + alarmTime
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         time = dateFormat.parse(today)

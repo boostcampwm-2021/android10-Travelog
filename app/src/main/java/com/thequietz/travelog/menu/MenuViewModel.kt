@@ -20,8 +20,6 @@ class MenuViewModel @Inject internal constructor(
 ) : ViewModel() {
 
     private val pref = TravelogApplication.prefs
-    private var scheduleAlarmSettingFlag = -1
-    private var recordAlarmSettingFlag = -1
 
     private val _alarmPermission = MutableLiveData<Boolean>()
     val alarmPermission: LiveData<Boolean> = _alarmPermission
@@ -48,10 +46,6 @@ class MenuViewModel @Inject internal constructor(
         _recordAlarm.value = pref.recordAlarmPermission
         _recordAlarmTime.value = pref.recordTime
         _scheduleAlarmTime.value = pref.scheduleTime
-        if (alarmPermission.value == true && scheduleAlarm.value == true) scheduleAlarmSettingFlag--
-        else if (alarmPermission.value == false && scheduleAlarm.value == false) scheduleAlarmSettingFlag++
-        if (alarmPermission.value == true && recordAlarm.value == true) recordAlarmSettingFlag--
-        else if (alarmPermission.value == false && recordAlarm.value == false) recordAlarmSettingFlag++
     }
 
     fun alarmPermissionChange(isChecked: Boolean) {
@@ -101,18 +95,10 @@ class MenuViewModel @Inject internal constructor(
     }
 
     private fun makeScheduleAlarms() {
-        if (scheduleAlarmSettingFlag != 1) {
-            scheduleAlarmSettingFlag++
-            return
-        }
         registerAlarm(context, AlarmType.Schedule, getScheduleTime())
     }
 
     private fun makeRecordAlarms() {
-        if (recordAlarmSettingFlag != 1) {
-            recordAlarmSettingFlag++
-            return
-        }
         registerAlarm(context, AlarmType.Record, getRecordTime())
     }
 
