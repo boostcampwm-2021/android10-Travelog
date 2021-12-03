@@ -54,7 +54,6 @@ class RecordViewOneViewModel @Inject constructor(
         currentTravleId = args.travelId
         imageId = args.index
         from = args.from
-        println("from  $from")
     }
 
     fun loadRecord() {
@@ -89,22 +88,23 @@ class RecordViewOneViewModel @Inject constructor(
                 }
             }
             _dataList.value = res
-            // setCurrentImage(currentInd)
         }
-    }
-
-    fun setCurrentImage(position: Int) {
-        _currentImage.value = dataList.value?.get(position)
     }
 
     fun setCurrentPosition(position: Int) {
         if (position < 0) {
-            return
+            _currentPosition.value = 0
+            dataList.value?.let {
+                _currentJoinRecord.value = it.get(0)
+                _currentImage.value = it.get(0)
+                _currentJoinRecord.value = it.get(0)
+            }
         } else {
             viewModelScope.launch {
                 _currentPosition.value = position
-
                 dataList.value?.let {
+                    _currentJoinRecord.value = it.get(position)
+                    _currentImage.value = it.get(position)
                     _currentJoinRecord.value = it.get(position)
                 }
             }
@@ -121,7 +121,7 @@ class RecordViewOneViewModel @Inject constructor(
                 viewModelScope.launch {
                     _islistUpdate.value = true
                 }
-                repository.updateCommentByImageId(comment, currentImage.value!!.newRecordImage.newRecordImageId)
+                repository.updateCommentByImageId(comment, currentJoinRecord.value!!.newRecordImage.newRecordImageId)
             }
             withContext(Dispatchers.IO) {
                 loadRecord()
@@ -135,10 +135,10 @@ class RecordViewOneViewModel @Inject constructor(
                 viewModelScope.launch {
                     _islistUpdate.value = true
                 }
-                currentImage.value?.newRecordImage?.let {
+                currentJoinRecord.value?.newRecordImage?.let {
                     if (it.isDefault == false) {
                         repository.deleteNewRecordImage(it.newRecordImageId)
-                        currentPosition.value?.let { setCurrentPosition(it - 1) }
+                        // currentPosition.value?.let { setCurrentPosition(it - 1) }
                     }
                 }
             }
