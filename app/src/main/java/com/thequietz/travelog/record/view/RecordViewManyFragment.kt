@@ -62,7 +62,6 @@ class RecordViewManyFragment : Fragment() {
             change2MyRecord(args)
             dataList.observe(viewLifecycleOwner, { it ->
                 it?.let {
-                    println("viweMany  observe")
                     adapter.submitList(it.toMutableList())
                 }
             })

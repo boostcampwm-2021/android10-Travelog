@@ -14,7 +14,6 @@ class SplashViewModel @Inject internal constructor(
 ) : ViewModel() {
 
     fun caching() {
-        println("splash caching")
         CoroutineScope(Dispatchers.IO).launch {
             guideRepository.loadAllPlaceData()
         }

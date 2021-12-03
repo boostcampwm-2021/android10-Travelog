@@ -54,7 +54,6 @@ class GuideRepository @Inject constructor(
                         placeDao.insert(it)
                     }
                 }
-                println("from server..")
                 allRes
             } catch (e: JsonSyntaxException) {
                 emptyList
@@ -63,7 +62,6 @@ class GuideRepository @Inject constructor(
                 emptyList
             }
         } else {
-            println("from cache..")
             loadData
         }
     }
@@ -73,7 +71,6 @@ class GuideRepository @Inject constructor(
         return if (loadData.isEmpty()) {
             try {
                 val res = placeService.requestALLDoSi().data
-                println("from server..")
                 res
             } catch (e: JsonSyntaxException) {
                 emptyList
@@ -82,7 +79,6 @@ class GuideRepository @Inject constructor(
                 emptyList
             }
         } else {
-            println("from cache..")
             loadData
         }
     }
@@ -97,7 +93,6 @@ class GuideRepository @Inject constructor(
                         placeDao.insert(it)
                     }
                 }
-                println("from server..")
                 res
             } catch (e: JsonSyntaxException) {
                 emptyList
@@ -106,7 +101,6 @@ class GuideRepository @Inject constructor(
                 emptyList
             }
         } else {
-            println("from cache..")
             loadData
         }
     }
@@ -116,7 +110,6 @@ class GuideRepository @Inject constructor(
         return if (loadData.isEmpty()) {
             try {
                 val res = placeService.requestAllByKeyword(keyword).data
-                println("from server..")
                 res
             } catch (e: JsonSyntaxException) {
                 emptyList
@@ -125,7 +118,6 @@ class GuideRepository @Inject constructor(
                 emptyList
             }
         } else {
-            println("from cache..")
             loadData
         }
     }
@@ -158,7 +150,6 @@ class GuideRepository @Inject constructor(
                         }
                     }
                 }
-                println("from server..")
                 res
             } catch (e: JsonSyntaxException) {
                 emptyRecommendList
@@ -167,7 +158,6 @@ class GuideRepository @Inject constructor(
                 emptyRecommendList
             }
         } else {
-            println("from cache..")
             loadData
         }
     }
@@ -201,7 +191,6 @@ class GuideRepository @Inject constructor(
                             )
                         }
                     }
-                    println("from server..")
                     resList
                 }
             } catch (e: JsonSyntaxException) {
@@ -211,7 +200,6 @@ class GuideRepository @Inject constructor(
                 return emptyRecommendList
             }
         } else {
-            println("from cache..")
             return loadData
         }
     }
@@ -232,7 +220,6 @@ class GuideRepository @Inject constructor(
                     emptyRecommendList
                 } else {
                     val resList = res.response.body.items.item.filter { it.url != null }
-                    println("recList")
                     resList.forEach { println(it.toString()) }
                     coroutineScope.launch {
                         resList.forEach {
@@ -249,7 +236,6 @@ class GuideRepository @Inject constructor(
                             }
                         }
                     }
-                    println("from server..")
                     resList
                 }
             } catch (e: JsonSyntaxException) {
@@ -259,7 +245,6 @@ class GuideRepository @Inject constructor(
                 return emptyRecommendList
             }
         } else {
-            println("from cache..")
             return loadData
         }
     }
