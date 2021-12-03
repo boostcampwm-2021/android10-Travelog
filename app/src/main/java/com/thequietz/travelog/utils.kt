@@ -67,7 +67,8 @@ fun loadCenterImage(imageView: ImageView, url: String?) {
         Glide.with(imageView.context)
             .asBitmap()
             .load(url)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .into(imageView)
     }
 }
