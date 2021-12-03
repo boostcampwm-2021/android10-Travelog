@@ -24,31 +24,31 @@ class TutorialViewModel @Inject constructor(
         res.add(
             TutorialImg().copy(
                 url = Uri.parse("android.resource://com.thequietz.travelog/" + R.drawable.img_tutorial_recommend).toString(),
-                text = "선택한 지역에 대한 관광지, 먹거리, 행사 정보를 추천받을 수 있어요"
+                text = "선택한 지역에 대한 \n관광지, 먹거리, 행사 정보를 \n추천받을 수 있어요"
             )
         )
         res.add(
             TutorialImg().copy(
                 url = Uri.parse("android.resource://com.thequietz.travelog/" + R.drawable.img_tutorial_specific_info).toString(),
-                text = "검색한 장소에 대한 상세정보와 위치정보를 확인할 수 있어요"
+                text = "검색한 장소에 대한 \n상세정보와 위치정보를 \n확인할 수 있어요"
             )
         )
         res.add(
             TutorialImg().copy(
                 url = Uri.parse("android.resource://com.thequietz.travelog/" + R.drawable.img_tutorial_schedule).toString(),
-                text = "추가한 일정들을 이용하여 여행 경로를 한눈에 확인할 수 있어요"
+                text = "추가한 일정들을 이용하여 \n여행경로를 한눈에 \n학인할 수 있어요"
             )
         )
         res.add(
             TutorialImg().copy(
                 url = Uri.parse("android.resource://com.thequietz.travelog/" + R.drawable.img_tutorial_record).toString(),
-                text = "여행 중 찍은 이미지를 추가할 수 있고, 한줄 내용도 작성할 수 있어요"
+                text = "여행 중 찍은 이미지를 \n추가할 수 있고, 한 줄 내용도 \n작성할 수 있어요"
             )
         )
         res.add(
             TutorialImg().copy(
                 url = Uri.parse("android.resource://com.thequietz.travelog/" + R.drawable.img_tutorial_alarm).toString(),
-                text = "알림설정을 통해 일정을 미리 확인하거나, 잊지 않고 여행 기록을 남길 수 있어요"
+                text = "알림설정을 통해 \n일정을 미리 확인하거나, 잊지 않고 \n여행 기록을 남길 수 있어요"
             )
         )
         _tutorialImgList.value = res

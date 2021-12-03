@@ -46,7 +46,6 @@ class RecordViewManyMultiViewAdapter(
             object : MultiViewImageAdapter.OnItemClickListener {
                 override fun onItemClick(view: View, item: JoinRecord) {
                     if (innerViewModel.deleteState.value == false) {
-                        println("viewmany ind  ${item.newRecordImage.newRecordImageId}")
                         val action = RecordViewManyFragmentDirections
                             .actionRecordViewManyFragmentToRecordViewOneFragment(
                                 item.recordImage.travelId,

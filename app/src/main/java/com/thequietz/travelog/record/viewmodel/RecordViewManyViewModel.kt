@@ -36,7 +36,6 @@ class RecordViewManyViewModel @Inject constructor(
 
     fun change2MyRecord(args: RecordViewManyFragmentArgs) {
         val res = mutableListOf<MyRecord>()
-        println("change2MyRecord start")
 
         viewModelScope.launch {
             val placeList = withContext(Dispatchers.IO) {
@@ -46,7 +45,6 @@ class RecordViewManyViewModel @Inject constructor(
                 val temp = withContext(Dispatchers.IO) {
                     repository.loadJoinedRecordByTravelIdAndPlace(args.travelId, it.place)
                 }
-                temp.forEach { println(it.toString()) }
                 if (temp.isEmpty()) {
                     val anotherTemp = withContext(Dispatchers.IO) {
                         repository.loadDefaultJoinedRecordByTravelId(args.travelId, it.place)
@@ -92,7 +90,6 @@ class RecordViewManyViewModel @Inject constructor(
             _travelName.value = placeList.get(0).title
             _startDate.value = placeList.get(0).startDate
             _endDate.value = placeList.get(0).endDate
-            println("change2MyRecord end  ${dataList.value?.size}")
         }
     }
 }

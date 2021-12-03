@@ -17,7 +17,6 @@ import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -68,6 +67,8 @@ fun loadCenterImage(imageView: ImageView, url: String?) {
             .asBitmap()
             .load(url)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
+            // .diskCacheStrategy(DiskCacheStrategy.NONE)
+            // .skipMemoryCache(true)
             .into(imageView)
     }
 }
@@ -87,8 +88,9 @@ fun makePdf(
     val recyclerViewBitmap = getBitmapFromView(recyclerview)
     try {
         val fOut = FileOutputStream(
-            Environment.getExternalStorageDirectory().toString() + "/$fileName.pdf"
+            context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString() + "/$fileName.pdf"
         )
+
         var maxPageNum: Int = (recyclerViewBitmap.height / recyclerview.height)
         if (recyclerViewBitmap.height % recyclerview.height != 0) {
             maxPageNum++
@@ -122,13 +124,6 @@ fun makePdf(
             .setAction("공유하기") {
                 val intent = share2Pdf(fileName, context)
                 context.startActivity(Intent.createChooser(intent, "파일 공유"))
-                // val file = File(Environment.getExternalStorageDirectory().toString() + "/${fileName}.pdf")
-                // val uri = Uri.fromFile(file)
-                // val intent = Intent().apply {
-                //    action = Intent.ACTION_VIEW
-                //    setDataAndType(uri, "application/*")
-                // }
-                // startActivity(intent)
             }
         snackbar.show()
     } catch (e: IOException) {
@@ -199,68 +194,8 @@ private fun getNextView(tempView: View): View {
     return view
 }
 
-/*fun addToByteList(list: MutableList<ByteArrayOutputStream>, view: View) {
-    view2Bitmap(view)?.let {
-        val bm = Bitmap.createBitmap(it)
-        val canvas = Canvas(bm)
-        canvas.drawColor(Color.WHITE)
-        view.draw(canvas)
-
-        val bytes = ByteArrayOutputStream()
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-
-        list.add(bytes)
-    }
-}
-
-fun view2Bitmap(view: View): Bitmap? {
-    val bitmap = Bitmap.createBitmap(
-        view.width,
-        view.height, Bitmap.Config.ARGB_8888
-    )
-    val canvas = Canvas(bitmap)
-    view.draw(canvas)
-    return bitmap
-}
-
-fun byteListToPdf(list: MutableList<ByteArrayOutputStream>, fileName: String) {
-    val document = Document()
-    PdfWriter.getInstance(
-        document,
-        FileOutputStream(
-            Environment.getExternalStorageDirectory().toString() + "/$fileName.pdf"
-        )
-    )
-    document.open()
-    if (list.size != 0) {
-        list.forEachIndexed { ind, it ->
-            val file = File(Environment.getExternalStorageDirectory(), "./temp.jpg")
-            try {
-                file.createNewFile()
-                val fo = FileOutputStream(file)
-                fo.write(it.toByteArray())
-
-                val image = Image.getInstance(file.toString())
-                val scaler =
-                    (((document.pageSize.width - document.leftMargin()) - document.rightMargin()) / image.width) * 80
-
-                image.scalePercent(scaler)
-                image.alignment = (Image.ALIGN_CENTER or Image.ALIGN_TOP)
-                document.add(image)
-                if (ind == (list.size - 1)) {
-                    document.close()
-                }
-                file.delete()
-            } catch (e: IOException) {
-                println("something wrong")
-            }
-        }
-    }
-}
-*/
-
 fun share2Pdf(fileName: String, context: Context): Intent {
-    val pdfFile = File(Environment.getExternalStorageDirectory(), "/$fileName.pdf")
+    val pdfFile = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString() + "/$fileName.pdf")
     val contentUrl =
         FileProvider.getUriForFile(context, context.packageName + ".fileprovider", pdfFile)
     return Intent().apply {

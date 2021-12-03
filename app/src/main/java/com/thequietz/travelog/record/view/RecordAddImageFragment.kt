@@ -127,7 +127,6 @@ class RecordAddImageFragment : Fragment() {
                             RecordViewOneViewModel.currentJoinRecord.value!!.newRecordImage.newRecordImageId,
                             from = "addImage"
                         )
-                    println("record to ${recordAddImageViewModel.currentPlace}")
                     findNavController().navigate(action)
                 }
                 true
