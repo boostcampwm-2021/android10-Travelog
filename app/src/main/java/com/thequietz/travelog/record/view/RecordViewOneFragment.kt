@@ -60,9 +60,11 @@ class RecordViewOneFragment : Fragment() {
                 when (recordViewOneViewModel.from) {
                     "manyView", "viewManyGridBtn", "addImage" -> {
                         binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.index, true)
+                        recordViewOneViewModel.setCurrentPosition(recordViewOneViewModel.index)
                     }
                     "" -> {
                         binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd, true)
+                        recordViewOneViewModel.setCurrentPosition(recordViewOneViewModel.startInd)
                     }
                 }
                 // binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd, true)
@@ -84,14 +86,18 @@ class RecordViewOneFragment : Fragment() {
                             RecordViewOneViewModel.currentPosition.value?.let {
                                 super.onPageSelected(it)
                                 vpReviewViewOne.post {
-                                    vpReviewViewOne.setCurrentItem(it, false)
+                                    vpReviewViewOne.setCurrentItem(it, true)
                                 }
                                 recordViewOneViewModel.resetIsListUpdate()
                             }
                         } else {
                             super.onPageSelected(position)
-                            recordViewOneViewModel.setCurrentImage(position)
                             recordViewOneViewModel.setCurrentPosition(position)
+                            vpReviewViewOne.post {
+                                RecordViewOneViewModel.currentPosition.value?.let {
+                                    vpReviewViewOne.setCurrentItem(it, true)
+                                }
+                            }
                         }
                     }
                 }
@@ -140,14 +146,18 @@ class RecordViewOneFragment : Fragment() {
             .setTitle("내용 변경")
             .setMessage("현재 내용을 저장하시겠습니까?")
             .setNegativeButton("예") { dialog, which ->
-                CoroutineScope(Dispatchers.IO).launch {
+                recordViewOneViewModel.updateComment(currentText)
+                binding.etRecordViewOne.isEnabled = !binding.etRecordViewOne.isEnabled
+                binding.tvRecordViewOneSave.visibility = View.GONE
+                binding.ibRecordViewOneEditComment.visibility = View.VISIBLE
+                /*CoroutineScope(Dispatchers.IO).launch {
                     recordViewOneViewModel.updateComment(currentText)
                     CoroutineScope(Dispatchers.Main).launch {
                         binding.etRecordViewOne.isEnabled = !binding.etRecordViewOne.isEnabled
                         binding.tvRecordViewOneSave.visibility = View.GONE
                         binding.ibRecordViewOneEditComment.visibility = View.VISIBLE
                     }
-                }
+                }*/
                 makeSnackBar(binding.clRecordViewOne, "현재 내용이 저장되었습니다")
             }
             .setPositiveButton("아니오") { dialog, which ->
@@ -160,8 +170,23 @@ class RecordViewOneFragment : Fragment() {
             .setMessage("현재 이미지를 삭제하시겠습니까?")
             .setNegativeButton("예") { dialog, which ->
                 if (recordViewOneViewModel.currentImage.value?.newRecordImage?.newRecordImageId != null) {
+                    recordViewOneViewModel.delete()
                     CoroutineScope(Dispatchers.IO).launch {
                         recordViewOneViewModel.delete()
+                        RecordViewOneViewModel.currentPosition.value?.let {
+                            recordViewOneViewModel.setCurrentPosition(it)
+                        }
+                        RecordViewOneViewModel.currentPosition.value?.let {
+                            if (it == 0) {
+                                binding.vpReviewViewOne.post {
+                                    binding.vpReviewViewOne.setCurrentItem(0, true)
+                                }
+                            } else {
+                                binding.vpReviewViewOne.post {
+                                    binding.vpReviewViewOne.setCurrentItem(it, true)
+                                }
+                            }
+                        }
                     }
                     makeSnackBar(binding.clRecordViewOne, "이미지가 삭제되었습니다")
                 } else {
