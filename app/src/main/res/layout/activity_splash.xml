@@ -18,10 +18,10 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="308dp"
             android:src="@drawable/img_airplane"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/tv_splash_subtitle"
+            app:layout_constraintBottom_toBottomOf="@id/tv_splash_title"/>
 
         <TextView
             android:id="@+id/tv_splash_subtitle"
