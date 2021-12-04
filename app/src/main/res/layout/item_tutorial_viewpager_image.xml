@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="item"
             type="com.thequietz.travelog.TutorialImg" />
@@ -12,16 +13,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
+            android:id="@+id/iv_item_tutorial_viewPager_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/iv_item_tutorial_viewPager_image"
-            app:setCenterImage="@{item.url}"
-            android:adjustViewBounds="true"
-            android:scaleType="centerInside"
-            />
+            app:setCenterImage="@{item.url}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
