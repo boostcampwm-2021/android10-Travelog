@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.thequietz.travelog.TutorialViewModel" />
@@ -14,83 +15,78 @@
         android:layout_height="match_parent"
         android:background="@color/blue_travelog"
         tools:context=".TutorialActivity">
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/right_gl_tutorial"
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9" />
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/left_gl_tutorial"
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.1" />
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/top_gl_tutorial"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.025" />
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/bottom_gl_tutorial"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.6" />
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/btn_bottom_gl_tutorial"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.85" />
 
-        <FrameLayout
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_top"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.19" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.91" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_tutorial"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="40dp"
+            app:layout_constraintBottom_toTopOf="@id/gl_bottom"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/top_gl_tutorial"
-            app:layout_constraintBottom_toTopOf="@id/tv_tutorial_information"
-            android:id="@+id/fl_tutorial"
-            >
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/vp_tutorial"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/gl_top" />
 
-            <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="bottom|center"
-                android:id="@+id/ci_tutorial"
-                app:spi_visibleDotCount="3"/>
-        </FrameLayout>
         <TextView
+            android:id="@+id/tv_tutorial_information"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/left_gl_tutorial"
-            app:layout_constraintEnd_toEndOf="@id/right_gl_tutorial"
-            app:layout_constraintBottom_toTopOf="@id/btn_tutorial_skip"
-            android:padding="10dp"
             android:text="@{viewModel.currentImg.text}"
-            tools:text="알림설정을 통해 \n일정을 미리 확인하거나, 잊지 않고 \n여행 기록을 남길 수 있어요"
             android:textAlignment="center"
-            android:id="@+id/tv_tutorial_information"
             android:textColor="@color/white"
             android:textSize="18sp"
-            />
-        <Button
+            app:layout_constraintBottom_toTopOf="@id/gl_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="알림설정을 통해 \n일정을 미리 확인하거나, 잊지 않고 \n여행 기록을 남길 수 있어요" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="-10dp"
+            android:background="@drawable/bg_shadow_top_indigo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@id/gl_bottom" />
+
+        <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
+            android:id="@+id/ci_tutorial"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/gl_bottom"
+            app:spi_dotColor="@color/white"
+            app:spi_dotSelectedColor="@color/white"
+            app:spi_visibleDotCount="5" />
+
+        <TextView
+            android:id="@+id/btn_tutorial_skip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="바로 시작하기"
-            android:textStyle="bold"
-            android:id="@+id/btn_tutorial_skip"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="20dp"
             android:backgroundTint="@color/white"
-            android:textColor="@color/blue_travelog"
-            />
+            android:text="건너뛰기"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/ci_tutorial"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ci_tutorial" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
