@@ -31,14 +31,14 @@
                     android:layout_marginTop="?attr/actionBarSize"
                     android:orientation="vertical"
                     android:paddingBottom="10dp"
-                    app:layout_collapseMode="parallax">
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0">
 
                     <TextView
                         android:id="@+id/tv_record_basic_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="26dp"
-                        android:layout_marginTop="26dp"
                         android:textColor="@color/black"
                         android:textSize="28sp"
                         android:textStyle="bold"
