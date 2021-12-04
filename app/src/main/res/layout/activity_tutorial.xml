@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.05" />
+            app:layout_constraintGuide_percent="0.025" />
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/bottom_gl_tutorial"
             android:layout_width="wrap_content"
@@ -48,13 +48,12 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="@id/left_gl_tutorial"
-            app:layout_constraintEnd_toEndOf="@id/right_gl_tutorial"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/top_gl_tutorial"
-            app:layout_constraintBottom_toTopOf="@id/bottom_gl_tutorial"
+            app:layout_constraintBottom_toTopOf="@id/tv_tutorial_information"
             android:id="@+id/fl_tutorial"
             >
-
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vp_tutorial"
                 android:layout_width="match_parent"
@@ -72,8 +71,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@id/left_gl_tutorial"
             app:layout_constraintEnd_toEndOf="@id/right_gl_tutorial"
-            app:layout_constraintTop_toBottomOf="@id/fl_tutorial"
-            app:layout_constraintBottom_toBottomOf="@id/btn_bottom_gl_tutorial"
+            app:layout_constraintBottom_toTopOf="@id/btn_tutorial_skip"
             android:padding="10dp"
             android:text="@{viewModel.currentImg.text}"
             tools:text="알림설정을 통해 \n일정을 미리 확인하거나, 잊지 않고 \n여행 기록을 남길 수 있어요"
@@ -88,9 +86,8 @@
             android:text="바로 시작하기"
             android:textStyle="bold"
             android:id="@+id/btn_tutorial_skip"
-            app:layout_constraintStart_toStartOf="@id/left_gl_tutorial"
-            app:layout_constraintEnd_toEndOf="@id/right_gl_tutorial"
-            app:layout_constraintTop_toBottomOf="@id/btn_bottom_gl_tutorial"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:backgroundTint="@color/white"
             android:textColor="@color/blue_travelog"
             />
