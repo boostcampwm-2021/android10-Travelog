@@ -87,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:overScrollMode="never"
-                android:paddingBottom="300dp"
+                android:paddingBottom="400dp"
                 android:clipToPadding="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
