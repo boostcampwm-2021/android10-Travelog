@@ -60,12 +60,10 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
         }
         val initLocation = navArgs.schedulePlaceArray[0]
 
-        googleMap.moveCamera(
-            CameraUpdateFactory.newLatLng(
-                LatLng(
-                    initLocation.mapY,
-                    initLocation.mapX
-                )
+        baseTargetList = mutableListOf(
+            LatLng(
+                initLocation.mapY,
+                initLocation.mapX
             )
         )
 
