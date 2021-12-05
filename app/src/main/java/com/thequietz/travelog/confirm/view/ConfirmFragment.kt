@@ -25,7 +25,7 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
     override val layoutId = R.layout.fragment_confirm
     override val viewModel: ConfirmViewModel by viewModels()
     override var drawMarker = true
-    override var isMarkerNumbered = false
+    override var isMarkerNumbered = true
     override var drawOrderedPolyline = false
 
     private var mapFragment: SupportMapFragment? = null
@@ -75,14 +75,12 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
                         return
                     }
 
-                    val currentItem = viewModel.currentSchedule.value?.get(position)
-                    val location = currentItem?.destination?.geometry?.location
-                    val lat = location?.latitude
-                    val lng = location?.longitude
+                    val coordinates = viewModel.currentSchedule.value?.map { e ->
+                        val loc = e.destination.geometry.location
+                        LatLng(loc.latitude, loc.longitude)
+                    }?.toMutableList() ?: mutableListOf()
 
-                    if (lat != null && lng != null) {
-                        targetList.value = mutableListOf(LatLng(lat, lng))
-                    }
+                    targetList.value = coordinates
                 }
             })
 
@@ -117,14 +115,12 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
                 }
             }
 
-            val currentItem = it.firstOrNull()
-            val location = currentItem?.destination?.geometry?.location
-            val lat = location?.latitude
-            val lng = location?.longitude
+            val coordinates = viewModel.currentSchedule.value?.map { e ->
+                val loc = e.destination.geometry.location
+                LatLng(loc.latitude, loc.longitude)
+            }?.toMutableList() ?: mutableListOf()
 
-            if (lat != null && lng != null) {
-                targetList.value = mutableListOf(LatLng(lat, lng))
-            }
+            targetList.value = coordinates
         })
 
         viewModel.getSchedulesByNavArgs(navArgs.schedule, navArgs.scheduleDetails)
