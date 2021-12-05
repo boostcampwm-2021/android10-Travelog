@@ -27,7 +27,7 @@ class SplashActivity : AppCompatActivity() {
         binding.tvSplashTitle.startAnimation(textAnim)
         binding.tvSplashTeamName.startAnimation(textAnim)
         binding.ivSplash.startAnimation(airPlaneAnim)
-        TravelogApplication.prefs.disableTutorialLoadingState(false)
+        // TravelogApplication.prefs.disableTutorialLoadingState(false)
         Handler(Looper.getMainLooper()).postDelayed({
             if (!TravelogApplication.prefs.loadTutorialLoadingState()) {
                 splashViewModel.caching()

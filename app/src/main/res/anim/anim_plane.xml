@@ -31,8 +31,8 @@
 
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <translate
-        android:duration="4000"
-        android:fromXDelta="0.0"
+        android:duration="3000"
+        android:fromXDelta="-100.0"
         android:fromYDelta="0.0"
         android:toXDelta="2000.0"
         android:toYDelta="0.0"
