@@ -9,6 +9,7 @@ plugins {
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file("local.properties").newDataInputStream())
+def googleMapApiKey = properties.getProperty('newGoogleMapKey')
 
 android {
     compileSdk 31
@@ -24,6 +25,7 @@ android {
         buildConfigField "String", "GOOGLE_MAP_KEY", properties["google_map_key"]
         buildConfigField "String", "TOUR_API_KEY", properties["tour_api_key"]
         buildConfigField "String", "NEW_TOUR_API_KEY", properties["new_tour_api_key"]
+        manifestPlaceholders = [googleMapKey:googleMapApiKey]
     }
 
     buildTypes {
