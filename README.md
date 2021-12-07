@@ -32,3 +32,5 @@
 [프로젝트 기획서](https://www.figma.com/file/CTdl5gMrRULedXTQDf9qFN/Travelog?node-id=2%3A2)
 ### 📋 BackLog
 [백로그 스프레드시트](https://docs.google.com/spreadsheets/d/1UiRq6OGraDb5Sh_aJBq2KBqGeNkcAnVD2nxQRc9Y9ek/edit?usp=sharing)
+### 🔍Notion
+[노션 링크](https://wind-knight-242.notion.site/15-10-Android10-621b268dde244615a20378c453f486f9)
