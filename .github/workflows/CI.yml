@@ -82,7 +82,7 @@ jobs:
     - name: Access google map key
       env:
         google_map_key: ${{ secrets.GOOGLE_MAP_KEY }}
-        run: echo newGoogleMapKey=google_map_key >> ./local.properties
+      run: echo newGoogleMapKey=google_map_key >> ./local.properties
       
     - name: Build with Gradle
       run: ./gradlew build
