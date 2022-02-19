@@ -1,4 +1,4 @@
-package com.thequietz.travelog
+package com.thequietz.travelog.common
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

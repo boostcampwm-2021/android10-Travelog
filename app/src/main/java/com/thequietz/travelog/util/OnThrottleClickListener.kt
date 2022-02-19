@@ -1,4 +1,4 @@
-package com.thequietz.travelog
+package com.thequietz.travelog.util
 
 import android.view.View
 

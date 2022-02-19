@@ -15,10 +15,10 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
-import com.thequietz.travelog.LoadingDialog
+import com.thequietz.travelog.common.LoadingDialog
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordBasicBinding
-import com.thequietz.travelog.map.GoogleMapFragment
+import com.thequietz.travelog.common.GoogleMapFragment
 import com.thequietz.travelog.record.adapter.RecordBasicAdapter
 import com.thequietz.travelog.record.adapter.RecordBasicViewHolder
 import com.thequietz.travelog.record.viewmodel.RecordBasicViewModel

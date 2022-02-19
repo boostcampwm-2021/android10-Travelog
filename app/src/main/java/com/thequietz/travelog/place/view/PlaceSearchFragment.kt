@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceSearchBinding
-import com.thequietz.travelog.map.GoogleMapFragment
+import com.thequietz.travelog.common.GoogleMapFragment
 import com.thequietz.travelog.place.adapter.PlaceLocationAdapter
 import com.thequietz.travelog.place.adapter.PlaceSearchAdapter
 import com.thequietz.travelog.place.model.PlaceDetailModel

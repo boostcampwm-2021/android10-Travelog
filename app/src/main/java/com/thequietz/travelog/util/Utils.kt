@@ -1,4 +1,4 @@
-package com.thequietz.travelog
+package com.thequietz.travelog.util
 
 import android.content.Context
 import android.content.Intent
@@ -25,6 +25,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.snackbar.Snackbar
+import com.thequietz.travelog.R
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

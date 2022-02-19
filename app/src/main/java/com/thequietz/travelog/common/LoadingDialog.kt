@@ -1,4 +1,4 @@
-package com.thequietz.travelog
+package com.thequietz.travelog.common
 
 import android.app.Dialog
 import android.content.Context
@@ -6,6 +6,7 @@ import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.widget.ImageView
+import com.thequietz.travelog.R
 
 class LoadingDialog(context: Context) : Dialog(context) {
     override fun onCreate(savedInstanceState: Bundle?) {

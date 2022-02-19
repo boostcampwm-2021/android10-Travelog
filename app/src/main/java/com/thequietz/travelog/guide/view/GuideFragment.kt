@@ -18,7 +18,7 @@ import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentGuideBinding
 import com.thequietz.travelog.guide.adapter.GuideMultiViewAdapter
 import com.thequietz.travelog.guide.viewmodel.GuideViewModel
-import com.thequietz.travelog.makeSnackBar
+import com.thequietz.travelog.util.makeSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

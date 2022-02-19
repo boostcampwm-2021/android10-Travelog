@@ -16,7 +16,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentPlaceDetailBinding
-import com.thequietz.travelog.map.GoogleMapFragment
+import com.thequietz.travelog.common.GoogleMapFragment
 import com.thequietz.travelog.place.adapter.PlaceDetailAdapter
 import com.thequietz.travelog.place.model.PlaceDetailLocation
 import com.thequietz.travelog.place.model.PlaceRecommendModel

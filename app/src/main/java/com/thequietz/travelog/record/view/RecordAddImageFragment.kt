@@ -18,11 +18,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.thequietz.travelog.LoadingDialog
+import com.thequietz.travelog.common.LoadingDialog
 import com.thequietz.travelog.R
 import com.thequietz.travelog.data.db.dao.NewRecordImage
 import com.thequietz.travelog.databinding.FragmentRecordAddImageBinding
-import com.thequietz.travelog.makeSnackBar
+import com.thequietz.travelog.util.makeSnackBar
 import com.thequietz.travelog.record.adapter.RecordAddImageAdapter
 import com.thequietz.travelog.record.viewmodel.RecordAddImageViewModel
 import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel

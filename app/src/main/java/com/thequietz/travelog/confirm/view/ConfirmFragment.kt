@@ -16,7 +16,7 @@ import com.thequietz.travelog.confirm.adapter.ConfirmDayAdapter
 import com.thequietz.travelog.confirm.adapter.ConfirmPagerAdapter
 import com.thequietz.travelog.confirm.viewmodel.ConfirmViewModel
 import com.thequietz.travelog.databinding.FragmentConfirmBinding
-import com.thequietz.travelog.map.GoogleMapFragment
+import com.thequietz.travelog.common.GoogleMapFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

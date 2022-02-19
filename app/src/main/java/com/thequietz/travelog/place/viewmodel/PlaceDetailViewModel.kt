@@ -6,7 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.thequietz.travelog.BaseViewModel
+import com.thequietz.travelog.common.BaseViewModel
 import com.thequietz.travelog.place.model.PlaceDetailGeometry
 import com.thequietz.travelog.place.model.PlaceDetailImage
 import com.thequietz.travelog.place.model.PlaceDetailLocation

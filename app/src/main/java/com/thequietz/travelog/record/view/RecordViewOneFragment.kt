@@ -14,10 +14,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.thequietz.travelog.LoadingDialog
+import com.thequietz.travelog.common.LoadingDialog
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordViewOneBinding
-import com.thequietz.travelog.makeSnackBar
+import com.thequietz.travelog.util.makeSnackBar
 import com.thequietz.travelog.record.adapter.ImageViewPagerAdapter
 import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel
 import dagger.hilt.android.AndroidEntryPoint

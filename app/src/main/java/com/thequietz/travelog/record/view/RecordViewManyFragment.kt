@@ -16,8 +16,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentRecordViewManyBinding
-import com.thequietz.travelog.makePdf
-import com.thequietz.travelog.makeSnackBar
+import com.thequietz.travelog.util.makePdf
+import com.thequietz.travelog.util.makeSnackBar
 import com.thequietz.travelog.record.adapter.RecordViewManyMultiViewAdapter
 import com.thequietz.travelog.record.viewmodel.RecordViewManyInnerViewModel
 import com.thequietz.travelog.record.viewmodel.RecordViewManyViewModel

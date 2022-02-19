@@ -11,7 +11,7 @@ import com.thequietz.travelog.data.db.dao.NewRecordImageDao
 import com.thequietz.travelog.data.db.dao.PlaceDao
 import com.thequietz.travelog.data.db.dao.RecommendPlaceDao
 import com.thequietz.travelog.data.db.dao.RecordImageDao
-import com.thequietz.travelog.getTodayDate
+import com.thequietz.travelog.util.getTodayDate
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.RecommendPlace
 import com.thequietz.travelog.record.model.RecordImage

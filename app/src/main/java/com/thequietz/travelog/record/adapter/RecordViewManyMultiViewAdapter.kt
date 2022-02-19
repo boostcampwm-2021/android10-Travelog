@@ -12,7 +12,7 @@ import com.thequietz.travelog.databinding.ItemRecyclerRecordManyDateBinding
 import com.thequietz.travelog.databinding.ItemRecyclerRecordManyImagesBinding
 import com.thequietz.travelog.databinding.ItemRecyclerRecordManyPlaceBinding
 import com.thequietz.travelog.databinding.RecyclerRecordManyImageBinding
-import com.thequietz.travelog.makeToast
+import com.thequietz.travelog.util.makeToast
 import com.thequietz.travelog.record.model.MyRecord
 import com.thequietz.travelog.record.model.ViewType
 import com.thequietz.travelog.record.view.RecordViewManyFragmentDirections

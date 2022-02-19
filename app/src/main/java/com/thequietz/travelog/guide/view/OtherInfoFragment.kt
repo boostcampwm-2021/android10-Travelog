@@ -18,7 +18,7 @@ import com.thequietz.travelog.databinding.FragmentOtherInfoBinding
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.adapter.OtherInfoAdapter
 import com.thequietz.travelog.guide.viewmodel.OtherInfoViewModel
-import com.thequietz.travelog.makeSnackBar
+import com.thequietz.travelog.util.makeSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

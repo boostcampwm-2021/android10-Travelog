@@ -14,7 +14,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.FragmentScheduleDetailBinding
-import com.thequietz.travelog.map.GoogleMapFragment
+import com.thequietz.travelog.common.GoogleMapFragment
 import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.schedule.adapter.ScheduleDetailAdapter
 import com.thequietz.travelog.schedule.adapter.ScheduleTouchHelperCallback

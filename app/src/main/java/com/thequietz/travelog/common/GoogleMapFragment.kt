@@ -1,4 +1,4 @@
-package com.thequietz.travelog.map
+package com.thequietz.travelog.common
 
 import android.Manifest
 import android.content.pm.PackageManager

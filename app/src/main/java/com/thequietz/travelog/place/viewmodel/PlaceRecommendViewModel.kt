@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.thequietz.travelog.BaseViewModel
+import com.thequietz.travelog.common.BaseViewModel
 import com.thequietz.travelog.place.model.PlaceRecommendModel
 import com.thequietz.travelog.place.model.PlaceRecommendWithList
 import com.thequietz.travelog.place.repository.PlaceRecommendRepository
