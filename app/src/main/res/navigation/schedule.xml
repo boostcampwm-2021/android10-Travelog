@@ -155,5 +155,4 @@
             android:name="defaultPlace"
             app:argType="com.thequietz.travelog.schedule.model.SchedulePlaceModel" />
     </fragment>
-
 </navigation>

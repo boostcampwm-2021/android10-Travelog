@@ -68,8 +68,6 @@
             android:name="from"
             app:argType="string"
             android:defaultValue=""/>
-
-
     </fragment>
     <fragment
         android:id="@+id/recordViewManyFragment"
@@ -106,5 +104,4 @@
             android:name="day"
             app:argType="string" />
     </fragment>
-
 </navigation>

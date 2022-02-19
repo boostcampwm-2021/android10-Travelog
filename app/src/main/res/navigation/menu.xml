@@ -10,5 +10,4 @@
         android:name="com.thequietz.travelog.menu.MenuFragment"
         android:label="MenuFragment"
         tools:layout="@layout/fragment_menu" />
-
 </navigation>

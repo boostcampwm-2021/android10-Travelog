@@ -94,5 +94,4 @@
         android:id="@+id/splashFragment"
         android:name="com.thequietz.travelog.SplashFragment"
         android:label="SplashFragment" />
-
 </navigation>
