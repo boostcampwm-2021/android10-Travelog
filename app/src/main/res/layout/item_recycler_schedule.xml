@@ -13,7 +13,7 @@
 
         <variable
             name="schedule"
-            type="com.thequietz.travelog.schedule.model.ScheduleModel" />
+            type="com.thequietz.travelog.ui.schedule.model.ScheduleModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

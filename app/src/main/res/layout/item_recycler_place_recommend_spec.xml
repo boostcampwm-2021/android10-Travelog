@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="com.thequietz.travelog.place.model.PlaceRecommendModel" />
+            type="com.thequietz.travelog.ui.place.model.PlaceRecommendModel" />
     </data>
 
     <LinearLayout

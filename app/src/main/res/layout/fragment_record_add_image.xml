@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.thequietz.travelog.record.viewmodel.RecordAddImageViewModel" />
+            type="com.thequietz.travelog.ui.record.viewmodel.RecordAddImageViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".record.view.RecordAddImageFragment">
+        tools:context=".ui.record.view.RecordAddImageFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_record_add_image"

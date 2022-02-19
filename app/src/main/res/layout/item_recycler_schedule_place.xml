@@ -6,7 +6,7 @@
 
         <variable
             name="model"
-            type="com.thequietz.travelog.schedule.model.SchedulePlaceModel" />
+            type="com.thequietz.travelog.ui.schedule.model.SchedulePlaceModel" />
     </data>
 
     <RelativeLayout

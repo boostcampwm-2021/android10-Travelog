@@ -6,7 +6,7 @@
     <data>
         <variable
             name="scheduleItem"
-            type="com.thequietz.travelog.record.model.MyRecord.RecordSchedule" />
+            type="com.thequietz.travelog.ui.record.model.MyRecord.RecordSchedule" />
     </data>
 
 

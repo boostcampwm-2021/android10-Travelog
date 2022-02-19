@@ -18,7 +18,6 @@ import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -26,7 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
 import com.thequietz.travelog.R
-import com.thequietz.travelog.schedule.data.ColorRGB
+import com.thequietz.travelog.ui.schedule.data.ColorRGB
 
 abstract class GoogleMapFragment<VDB : ViewDataBinding>(
    @LayoutRes layoutId: Int

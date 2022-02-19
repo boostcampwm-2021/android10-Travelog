@@ -12,11 +12,11 @@ import com.thequietz.travelog.data.db.dao.RecommendPlaceDao
 import com.thequietz.travelog.data.db.dao.RecordImageDao
 import com.thequietz.travelog.data.db.dao.ScheduleDao
 import com.thequietz.travelog.data.db.dao.ScheduleDetailDao
-import com.thequietz.travelog.guide.Place
-import com.thequietz.travelog.guide.RecommendPlace
-import com.thequietz.travelog.record.model.RecordImage
-import com.thequietz.travelog.schedule.model.ScheduleDetailModel
-import com.thequietz.travelog.schedule.model.ScheduleModel
+import com.thequietz.travelog.ui.guide.Place
+import com.thequietz.travelog.ui.guide.RecommendPlace
+import com.thequietz.travelog.ui.record.model.RecordImage
+import com.thequietz.travelog.ui.schedule.model.ScheduleDetailModel
+import com.thequietz.travelog.ui.schedule.model.ScheduleModel
 
 @Database(entities = [ScheduleModel::class, ScheduleDetailModel::class, RecordImage::class, Place::class, RecommendPlace::class, NewRecordImage::class, JoinRecord::class], version = 1)
 @TypeConverters(Converters::class)

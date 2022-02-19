@@ -8,7 +8,7 @@
             type="com.thequietz.travelog.data.db.dao.JoinRecord" />
         <variable
             name="viewModel"
-            type="com.thequietz.travelog.record.viewmodel.RecordViewManyInnerViewModel" />
+            type="com.thequietz.travelog.ui.record.viewmodel.RecordViewManyInnerViewModel" />
         <import type="android.view.View"/>
     </data>
 

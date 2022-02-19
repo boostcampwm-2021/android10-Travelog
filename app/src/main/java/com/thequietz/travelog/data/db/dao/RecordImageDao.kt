@@ -3,8 +3,8 @@ package com.thequietz.travelog.data.db.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.thequietz.travelog.record.model.PlaceAndSchedule
-import com.thequietz.travelog.record.model.RecordImage
+import com.thequietz.travelog.ui.record.model.PlaceAndSchedule
+import com.thequietz.travelog.ui.record.model.RecordImage
 
 @Dao
 abstract class RecordImageDao : BaseDao<RecordImage> {

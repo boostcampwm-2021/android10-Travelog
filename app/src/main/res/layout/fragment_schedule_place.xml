@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.thequietz.travelog.schedule.viewmodel.SchedulePlaceViewModel" />
+            type="com.thequietz.travelog.ui.schedule.viewmodel.SchedulePlaceViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".schedule.view.SchedulePlaceFragment">
+        tools:context=".ui.schedule.view.SchedulePlaceFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"

@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:layout_height="wrap_content"
     android:layout_marginVertical="16dp"
-    tools:context=".place.view.PlaceReviewLayout">
+    tools:context=".ui.place.view.PlaceReviewLayout">
 
     <TextView
         android:id="@+id/tv_item_place_review"

@@ -1,7 +1,7 @@
 package com.thequietz.travelog.api
 
-import com.thequietz.travelog.place.model.PlaceDetailModelResponse
-import com.thequietz.travelog.place.model.PlaceSearchModelResponse
+import com.thequietz.travelog.ui.place.model.PlaceDetailModelResponse
+import com.thequietz.travelog.ui.place.model.PlaceSearchModelResponse
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

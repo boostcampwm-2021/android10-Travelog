@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Transaction
-import com.thequietz.travelog.record.model.RecordImage
+import com.thequietz.travelog.ui.record.model.RecordImage
 
 @Dao
 abstract class NewRecordImageDao : BaseDao<NewRecordImage> {

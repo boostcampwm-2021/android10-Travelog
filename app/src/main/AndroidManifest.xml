@@ -38,7 +38,7 @@
             android:windowSoftInputMode="adjustPan" />
 
         <receiver
-            android:name=".menu.alarm.AlarmReceiver"
+            android:name="com.thequietz.travelog.ui.menu.alarm.AlarmReceiver"
             android:exported="false" />
 
         <provider

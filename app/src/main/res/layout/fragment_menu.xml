@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.thequietz.travelog.menu.MenuViewModel" />
+            type="com.thequietz.travelog.ui.menu.MenuViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

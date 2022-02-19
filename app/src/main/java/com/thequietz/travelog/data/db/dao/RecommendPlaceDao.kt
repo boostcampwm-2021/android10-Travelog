@@ -2,7 +2,7 @@ package com.thequietz.travelog.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.thequietz.travelog.guide.RecommendPlace
+import com.thequietz.travelog.ui.guide.RecommendPlace
 
 @Dao
 abstract class RecommendPlaceDao : BaseDao<RecommendPlace> {

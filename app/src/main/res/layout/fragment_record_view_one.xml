@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel" />
+            type="com.thequietz.travelog.ui.record.viewmodel.RecordViewOneViewModel" />
         <import type="android.view.View" />
     </data>
 
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".record.view.RecordViewOneFragment">
+        tools:context=".ui.record.view.RecordViewOneFragment">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/top_gl_record_view_one"

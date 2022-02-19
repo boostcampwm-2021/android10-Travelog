@@ -6,7 +6,7 @@
 
         <variable
             name="item"
-            type="com.thequietz.travelog.schedule.data.ScheduleDetailItem" />
+            type="com.thequietz.travelog.ui.schedule.data.ScheduleDetailItem" />
 
         <variable
             name="onAddClickListener"

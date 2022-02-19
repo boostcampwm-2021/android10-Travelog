@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.thequietz.travelog.guide.viewmodel.OtherInfoViewModel" />
+            type="com.thequietz.travelog.ui.guide.viewmodel.OtherInfoViewModel" />
 
         <import type="android.view.View" />
     </data>
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
-            tools:context=".guide.view.OtherInfoFragment">
+            tools:context=".ui.guide.view.OtherInfoFragment">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"

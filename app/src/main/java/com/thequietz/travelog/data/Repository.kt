@@ -12,9 +12,9 @@ import com.thequietz.travelog.data.db.dao.PlaceDao
 import com.thequietz.travelog.data.db.dao.RecommendPlaceDao
 import com.thequietz.travelog.data.db.dao.RecordImageDao
 import com.thequietz.travelog.util.getTodayDate
-import com.thequietz.travelog.guide.Place
-import com.thequietz.travelog.guide.RecommendPlace
-import com.thequietz.travelog.record.model.RecordImage
+import com.thequietz.travelog.ui.guide.Place
+import com.thequietz.travelog.ui.guide.RecommendPlace
+import com.thequietz.travelog.ui.record.model.RecordImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

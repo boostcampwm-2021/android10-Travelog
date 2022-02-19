@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.thequietz.travelog.schedule.viewmodel.ScheduleDetailViewModel" />
+            type="com.thequietz.travelog.ui.schedule.viewmodel.ScheduleDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

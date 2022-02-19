@@ -6,14 +6,14 @@
     <data>
         <variable
             name="viewModel"
-            type="com.thequietz.travelog.confirm.viewmodel.ConfirmViewModel" />
+            type="com.thequietz.travelog.ui.confirm.viewmodel.ConfirmViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".confirm.view.ConfirmFragment">
+        tools:context=".ui.confirm.view.ConfirmFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
