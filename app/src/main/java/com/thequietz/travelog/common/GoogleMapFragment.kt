@@ -2,11 +2,7 @@ package com.thequietz.travelog.common
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.PorterDuff
+import android.graphics.*
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,39 +11,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.LayoutRes
 import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
-import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.Dash
-import com.google.android.gms.maps.model.Gap
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.Polyline
-import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
 import com.thequietz.travelog.R
 import com.thequietz.travelog.schedule.data.ColorRGB
 
-abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
-    Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
-    protected lateinit var binding: B
-    abstract val viewModel: VM
-
-    abstract val layoutId: Int
-
+abstract class GoogleMapFragment<VDB : ViewDataBinding>(
+   @LayoutRes layoutId: Int
+) : BaseFragment<VDB>(layoutId), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private val locationPermission = Manifest.permission.ACCESS_COARSE_LOCATION
 
@@ -94,15 +77,14 @@ abstract class GoogleMapFragment<B : ViewDataBinding, VM : ViewModel> :
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        val view = super.onCreateView(inflater, container, savedInstanceState)
         (childFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment)
             .getMapAsync(this)
-        return binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner = viewLifecycleOwner
         initViewModel()
         initTargetList()
         updateMapViewBound()

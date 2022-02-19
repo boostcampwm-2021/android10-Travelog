@@ -8,46 +8,47 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.thequietz.travelog.common.LoadingDialog
 import com.thequietz.travelog.R
+import com.thequietz.travelog.common.BaseFragment
+import com.thequietz.travelog.common.LoadingDialog
 import com.thequietz.travelog.databinding.FragmentRecordViewOneBinding
-import com.thequietz.travelog.util.makeSnackBar
 import com.thequietz.travelog.record.adapter.ImageViewPagerAdapter
 import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel
+import com.thequietz.travelog.util.makeSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RecordViewOneFragment : Fragment() {
-    private lateinit var _binding: FragmentRecordViewOneBinding
-    private val binding get() = _binding
+class RecordViewOneFragment :
+    BaseFragment<FragmentRecordViewOneBinding>(R.layout.fragment_record_view_one) {
     private val recordViewOneViewModel by viewModels<RecordViewOneViewModel>()
     private val args: RecordViewOneFragmentArgs by navArgs()
     private val adapter by lazy { ImageViewPagerAdapter() }
     lateinit var loading: LoadingDialog
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRecordViewOneBinding.inflate(inflater, container, false)
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+
         loading = LoadingDialog(requireContext())
         loading.show()
-        return binding.root
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            lifecycleOwner = viewLifecycleOwner
             viewModel = recordViewOneViewModel
             vpReviewViewOne.adapter = adapter
             ciReviewViewOne.attachToRecyclerView(binding.vpReviewViewOne.getChildAt(0) as RecyclerView)
@@ -63,7 +64,10 @@ class RecordViewOneFragment : Fragment() {
                         recordViewOneViewModel.setCurrentPosition(recordViewOneViewModel.index)
                     }
                     "" -> {
-                        binding.vpReviewViewOne.setCurrentItem(recordViewOneViewModel.startInd, true)
+                        binding.vpReviewViewOne.setCurrentItem(
+                            recordViewOneViewModel.startInd,
+                            true
+                        )
                         recordViewOneViewModel.setCurrentPosition(recordViewOneViewModel.startInd)
                     }
                 }
@@ -80,27 +84,27 @@ class RecordViewOneFragment : Fragment() {
     private fun setListener() {
         with(binding) {
             vpReviewViewOne.registerOnPageChangeCallback(object :
-                    ViewPager2.OnPageChangeCallback() {
-                    override fun onPageSelected(position: Int) {
-                        if (recordViewOneViewModel.islistUpdate.value == true) {
-                            RecordViewOneViewModel.currentPosition.value?.let {
-                                super.onPageSelected(it)
-                                vpReviewViewOne.post {
-                                    vpReviewViewOne.setCurrentItem(it, true)
-                                }
-                                recordViewOneViewModel.resetIsListUpdate()
-                            }
-                        } else {
-                            super.onPageSelected(position)
-                            recordViewOneViewModel.setCurrentPosition(position)
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    if (recordViewOneViewModel.islistUpdate.value == true) {
+                        RecordViewOneViewModel.currentPosition.value?.let {
+                            super.onPageSelected(it)
                             vpReviewViewOne.post {
-                                RecordViewOneViewModel.currentPosition.value?.let {
-                                    vpReviewViewOne.setCurrentItem(it, true)
-                                }
+                                vpReviewViewOne.setCurrentItem(it, true)
+                            }
+                            recordViewOneViewModel.resetIsListUpdate()
+                        }
+                    } else {
+                        super.onPageSelected(position)
+                        recordViewOneViewModel.setCurrentPosition(position)
+                        vpReviewViewOne.post {
+                            RecordViewOneViewModel.currentPosition.value?.let {
+                                vpReviewViewOne.setCurrentItem(it, true)
                             }
                         }
                     }
                 }
+            }
             )
             ibRecordViewOne.setOnClickListener {
                 val action =

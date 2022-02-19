@@ -20,10 +20,7 @@ import com.thequietz.travelog.common.GoogleMapFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewModel>() {
-
-    override val layoutId = R.layout.fragment_confirm
-    override val viewModel: ConfirmViewModel by viewModels()
+class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding>(R.layout.fragment_confirm) {
     override var drawMarker = true
     override var isMarkerNumbered = true
     override var drawOrderedPolyline = false
@@ -44,6 +41,7 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
     private lateinit var dayAdapter: ConfirmDayAdapter
     private lateinit var pageAdapter: ConfirmPagerAdapter
 
+    private val viewModel: ConfirmViewModel by viewModels()
     private val navArgs: ConfirmFragmentArgs by navArgs()
 
     override fun initViewModel() {
@@ -83,8 +81,6 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding, ConfirmViewMod
                     targetList.value = coordinates
                 }
             })
-
-        binding.lifecycleOwner = viewLifecycleOwner
 
         viewModel.schedules.observe(viewLifecycleOwner, {
             val keys = it.keys.toList()

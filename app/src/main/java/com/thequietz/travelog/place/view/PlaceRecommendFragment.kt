@@ -2,11 +2,7 @@ package com.thequietz.travelog.place.view
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -14,6 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thequietz.travelog.R
+import com.thequietz.travelog.common.BaseFragment
 import com.thequietz.travelog.databinding.FragmentPlaceRecommendBinding
 import com.thequietz.travelog.place.adapter.PlaceRecommendAdapter
 import com.thequietz.travelog.place.model.PlaceDetailModel
@@ -21,25 +18,10 @@ import com.thequietz.travelog.place.viewmodel.PlaceRecommendViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PlaceRecommendFragment : Fragment() {
-
-    private var _binding: FragmentPlaceRecommendBinding? = null
-    private val binding get() = _binding!!
-
+class PlaceRecommendFragment : BaseFragment<FragmentPlaceRecommendBinding>(R.layout.fragment_place_recommend) {
     private lateinit var _context: Context
     private val viewModel: PlaceRecommendViewModel by viewModels()
     private val navArgs: PlaceRecommendFragmentArgs by navArgs()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        _binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_place_recommend, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -87,11 +69,5 @@ class PlaceRecommendFragment : Fragment() {
                 return@setOnMenuItemClickListener false
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        _binding = null
     }
 }

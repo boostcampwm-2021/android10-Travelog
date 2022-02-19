@@ -4,19 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.thequietz.travelog.R
+import com.thequietz.travelog.common.BaseFragment
 import com.thequietz.travelog.databinding.FragmentRecordBinding
 import com.thequietz.travelog.record.adapter.RecordAdapter
 import com.thequietz.travelog.record.viewmodel.RecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RecordFragment : Fragment() {
-    private var _binding: FragmentRecordBinding? = null
-    private val binding get() = _binding!!
-
+class RecordFragment : BaseFragment<FragmentRecordBinding>(R.layout.fragment_record) {
     private val viewModel by viewModels<RecordViewModel>()
 
     override fun onCreateView(
@@ -24,7 +22,7 @@ class RecordFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRecordBinding.inflate(inflater, container, false)
+        val view = super.onCreateView(inflater, container, savedInstanceState)
 
         val adapter = RecordAdapter(::navigateToRecordBasicUi)
         binding.rvRecord.adapter = adapter
@@ -40,7 +38,7 @@ class RecordFragment : Fragment() {
             adapter.submitList(recordList)
         }
 
-        return binding.root
+        return view
     }
 
     private fun navigateToRecordBasicUi(
@@ -57,10 +55,5 @@ class RecordFragment : Fragment() {
         )
 
         findNavController().navigate(action)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

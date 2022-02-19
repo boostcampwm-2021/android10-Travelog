@@ -13,8 +13,8 @@ import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.thequietz.travelog.R
-import com.thequietz.travelog.databinding.FragmentScheduleDetailBinding
 import com.thequietz.travelog.common.GoogleMapFragment
+import com.thequietz.travelog.databinding.FragmentScheduleDetailBinding
 import com.thequietz.travelog.place.model.PlaceDetailModel
 import com.thequietz.travelog.schedule.adapter.ScheduleDetailAdapter
 import com.thequietz.travelog.schedule.adapter.ScheduleTouchHelperCallback
@@ -24,14 +24,13 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ScheduleDetailFragment :
-    GoogleMapFragment<FragmentScheduleDetailBinding, ScheduleDetailViewModel>() {
-    override val layoutId = R.layout.fragment_schedule_detail
-    override val viewModel by viewModels<ScheduleDetailViewModel>()
+    GoogleMapFragment<FragmentScheduleDetailBinding>(R.layout.fragment_schedule_detail) {
     override var drawMarker = true
     override var isMarkerNumbered = true
     override var drawOrderedPolyline = true
 
     private lateinit var adapter: ScheduleDetailAdapter
+    private val viewModel by viewModels<ScheduleDetailViewModel>()
     private val args: ScheduleDetailFragmentArgs by navArgs()
     private var mapFragment: SupportMapFragment? = null
 

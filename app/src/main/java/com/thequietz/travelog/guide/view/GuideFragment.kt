@@ -5,16 +5,14 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.thequietz.travelog.R
+import com.thequietz.travelog.common.BaseFragment
 import com.thequietz.travelog.databinding.FragmentGuideBinding
 import com.thequietz.travelog.guide.adapter.GuideMultiViewAdapter
 import com.thequietz.travelog.guide.viewmodel.GuideViewModel
@@ -22,22 +20,12 @@ import com.thequietz.travelog.util.makeSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class GuideFragment : Fragment() {
-    private lateinit var binding: FragmentGuideBinding
+class GuideFragment : BaseFragment<FragmentGuideBinding>(R.layout.fragment_guide) {
     private val guideViewModel by viewModels<GuideViewModel>()
     private val adapter by lazy { GuideMultiViewAdapter() }
 
     private lateinit var _context: Context
     private lateinit var inputManager: InputMethodManager
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentGuideBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,7 +33,6 @@ class GuideFragment : Fragment() {
         inputManager = _context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         with(binding) {
-            lifecycleOwner = viewLifecycleOwner
             viewModel = guideViewModel
             rvGuide.adapter = adapter
         }

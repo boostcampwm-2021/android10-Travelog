@@ -4,37 +4,31 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.thequietz.travelog.common.LoadingDialog
 import com.thequietz.travelog.R
+import com.thequietz.travelog.common.BaseFragment
+import com.thequietz.travelog.common.LoadingDialog
 import com.thequietz.travelog.data.db.dao.NewRecordImage
 import com.thequietz.travelog.databinding.FragmentRecordAddImageBinding
-import com.thequietz.travelog.util.makeSnackBar
 import com.thequietz.travelog.record.adapter.RecordAddImageAdapter
 import com.thequietz.travelog.record.viewmodel.RecordAddImageViewModel
 import com.thequietz.travelog.record.viewmodel.RecordViewOneViewModel
+import com.thequietz.travelog.util.makeSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class RecordAddImageFragment : Fragment() {
-    private lateinit var _binding: FragmentRecordAddImageBinding
-    private val binding get() = _binding
+class RecordAddImageFragment :
+    BaseFragment<FragmentRecordAddImageBinding>(R.layout.fragment_record_add_image) {
     private val recordAddImageViewModel by viewModels<RecordAddImageViewModel>()
     private val adapter by lazy { RecordAddImageAdapter() }
     lateinit var destinationSpinnerAdapter: ArrayAdapter<String>
@@ -78,20 +72,21 @@ class RecordAddImageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRecordAddImageBinding.inflate(inflater, container, false)
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+
         loading = LoadingDialog(requireContext())
         setHasOptionsMenu(true)
         loading.show()
 
         initToolbar()
         initAdapter()
-        return binding.root
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            lifecycleOwner = viewLifecycleOwner
             viewModel = recordAddImageViewModel
             rvRecordAddImage.adapter = adapter
         }
@@ -158,22 +153,23 @@ class RecordAddImageFragment : Fragment() {
             }
         }
         binding.spDestination.onItemSelectedListener = (
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    recordAddImageViewModel.placeAndScheduleList.value?.let {
-                        recordAddImageViewModel.setCurrentPlaceAndSchedule(position)
-                        recordAddImageViewModel.setMainImage(position)
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        recordAddImageViewModel.placeAndScheduleList.value?.let {
+                            recordAddImageViewModel.setCurrentPlaceAndSchedule(position)
+                            recordAddImageViewModel.setMainImage(position)
+                        }
+                    }
+
+                    override fun onNothingSelected(p0: AdapterView<*>?) {
                     }
                 }
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
-            }
-            )
+                )
     }
 
     private fun initToolbar() {

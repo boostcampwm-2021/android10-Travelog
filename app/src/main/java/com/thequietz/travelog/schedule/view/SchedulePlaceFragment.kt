@@ -2,13 +2,9 @@ package com.thequietz.travelog.schedule.view
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -18,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.thequietz.travelog.R
+import com.thequietz.travelog.common.BaseFragment
 import com.thequietz.travelog.databinding.FragmentSchedulePlaceBinding
 import com.thequietz.travelog.schedule.adapter.SchedulePlaceAdapter
 import com.thequietz.travelog.schedule.adapter.SchedulePlaceSelectedAdapter
@@ -25,27 +22,14 @@ import com.thequietz.travelog.schedule.viewmodel.SchedulePlaceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SchedulePlaceFragment : Fragment() {
-    private var _binding: FragmentSchedulePlaceBinding? = null
-    private val binding get() = _binding!!
-
+class SchedulePlaceFragment :
+    BaseFragment<FragmentSchedulePlaceBinding>(R.layout.fragment_schedule_place) {
     private lateinit var schedulePlaceAdapter: SchedulePlaceAdapter
     private lateinit var schedulePlaceSelectedAdapter: SchedulePlaceSelectedAdapter
     private lateinit var mContext: Context
     private lateinit var gson: Gson
 
     private val viewModel: SchedulePlaceViewModel by viewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        _binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_place, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -161,11 +145,5 @@ class SchedulePlaceFragment : Fragment() {
                 return@setOnMenuItemClickListener false
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        _binding = null
     }
 }

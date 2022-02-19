@@ -15,8 +15,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.AppBarLayout
 import com.google.gson.Gson
 import com.thequietz.travelog.R
-import com.thequietz.travelog.databinding.FragmentPlaceDetailBinding
 import com.thequietz.travelog.common.GoogleMapFragment
+import com.thequietz.travelog.databinding.FragmentPlaceDetailBinding
 import com.thequietz.travelog.place.adapter.PlaceDetailAdapter
 import com.thequietz.travelog.place.model.PlaceDetailLocation
 import com.thequietz.travelog.place.model.PlaceRecommendModel
@@ -25,14 +25,12 @@ import com.thequietz.travelog.place.viewmodel.PlaceDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding, PlaceDetailViewModel>() {
-
-    override val layoutId = R.layout.fragment_place_detail
-    override val viewModel by viewModels<PlaceDetailViewModel>()
+class PlaceDetailFragment : GoogleMapFragment<FragmentPlaceDetailBinding>(R.layout.fragment_place_detail) {
     override var drawMarker = true
     override var isMarkerNumbered = false
     override var drawOrderedPolyline = false
 
+    private val viewModel by viewModels<PlaceDetailViewModel>()
     private val navArgs: PlaceDetailFragmentArgs by navArgs()
 
     private var isRecommended: Boolean = false

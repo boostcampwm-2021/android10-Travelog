@@ -1,10 +1,7 @@
 package com.thequietz.travelog.guide.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -14,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.thequietz.travelog.R
+import com.thequietz.travelog.common.BaseFragment
 import com.thequietz.travelog.databinding.FragmentOtherInfoBinding
 import com.thequietz.travelog.guide.Place
 import com.thequietz.travelog.guide.adapter.OtherInfoAdapter
@@ -26,9 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class OtherInfoFragment : Fragment() {
-    private var _binding: FragmentOtherInfoBinding? = null
-    private val binding get() = _binding!!
+class OtherInfoFragment : BaseFragment<FragmentOtherInfoBinding>(R.layout.fragment_other_info) {
     private val otherInfoViewModel by viewModels<OtherInfoViewModel>()
     private val args: OtherInfoFragmentArgs by navArgs()
     private val vacationAdapter by lazy { OtherInfoAdapter() }
@@ -40,21 +36,11 @@ class OtherInfoFragment : Fragment() {
     var foodPrevItemCount = 0
     var festivalPrevItemCount = 0
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentOtherInfoBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         thisPlace = Gson().fromJson(args.item, Place::class.java)
 
         with(binding) {
-            lifecycleOwner = viewLifecycleOwner
             viewModel = otherInfoViewModel
             rvVacationSpot.adapter = vacationAdapter
             rvFood.adapter = foodAdapter
@@ -195,11 +181,5 @@ class OtherInfoFragment : Fragment() {
                 }
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        _binding = null
     }
 }

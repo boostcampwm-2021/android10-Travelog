@@ -21,8 +21,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.thequietz.travelog.R
-import com.thequietz.travelog.databinding.FragmentPlaceSearchBinding
 import com.thequietz.travelog.common.GoogleMapFragment
+import com.thequietz.travelog.databinding.FragmentPlaceSearchBinding
 import com.thequietz.travelog.place.adapter.PlaceLocationAdapter
 import com.thequietz.travelog.place.adapter.PlaceSearchAdapter
 import com.thequietz.travelog.place.model.PlaceDetailModel
@@ -32,10 +32,7 @@ import com.thequietz.travelog.schedule.model.SchedulePlaceModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceSearchViewModel>() {
-
-    override val viewModel: PlaceSearchViewModel by viewModels()
-    override val layoutId = R.layout.fragment_place_search
+class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding>(R.layout.fragment_place_search) {
     override var drawMarker = true
     override var isMarkerNumbered = true
     override var drawOrderedPolyline = false
@@ -47,6 +44,7 @@ class PlaceSearchFragment : GoogleMapFragment<FragmentPlaceSearchBinding, PlaceS
     private lateinit var _context: Context
     private lateinit var inputManager: InputMethodManager
 
+    private val viewModel: PlaceSearchViewModel by viewModels()
     private val navArgs: PlaceSearchFragmentArgs by navArgs()
     private var mapFragment: SupportMapFragment? = null
 

@@ -5,12 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.thequietz.travelog.R
+import com.thequietz.travelog.common.BaseFragment
 import com.thequietz.travelog.databinding.FragmentScheduleBinding
 import com.thequietz.travelog.schedule.adapter.ScheduleRecyclerAdapter
 import com.thequietz.travelog.schedule.viewmodel.ScheduleViewModel
@@ -18,10 +17,7 @@ import com.thequietz.travelog.util.ScheduleControlType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ScheduleFragment : Fragment() {
-
-    private var _binding: FragmentScheduleBinding? = null
-    private val binding get() = _binding!!
+class ScheduleFragment : BaseFragment<FragmentScheduleBinding>(R.layout.fragment_schedule) {
     private val viewModel: ScheduleViewModel by viewModels()
 
     override fun onCreateView(
@@ -29,10 +25,11 @@ class ScheduleFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_schedule, container, false)
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+
         initRecyclerView()
 
-        return binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,12 +39,6 @@ class ScheduleFragment : Fragment() {
             val action = ScheduleFragmentDirections.actionScheduleFragmentToSchedulePlaceFragment()
             it.findNavController().navigate(action)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        _binding = null
     }
 
     private fun initRecyclerView() {

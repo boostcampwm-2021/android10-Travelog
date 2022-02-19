@@ -15,10 +15,10 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
-import com.thequietz.travelog.common.LoadingDialog
 import com.thequietz.travelog.R
-import com.thequietz.travelog.databinding.FragmentRecordBasicBinding
 import com.thequietz.travelog.common.GoogleMapFragment
+import com.thequietz.travelog.common.LoadingDialog
+import com.thequietz.travelog.databinding.FragmentRecordBasicBinding
 import com.thequietz.travelog.record.adapter.RecordBasicAdapter
 import com.thequietz.travelog.record.adapter.RecordBasicViewHolder
 import com.thequietz.travelog.record.viewmodel.RecordBasicViewModel
@@ -86,10 +86,9 @@ class RecordBasicRecyclerViewScrollListener(
 }
 
 @AndroidEntryPoint
-class RecordBasicFragment : GoogleMapFragment<FragmentRecordBasicBinding, RecordBasicViewModel>() {
-    override val layoutId = R.layout.fragment_record_basic
-    override val viewModel by viewModels<RecordBasicViewModel>()
-
+class RecordBasicFragment :
+    GoogleMapFragment<FragmentRecordBasicBinding>(R.layout.fragment_record_basic) {
+    private val viewModel by viewModels<RecordBasicViewModel>()
     private val navArgs by navArgs<RecordBasicFragmentArgs>()
     private val adapter by lazy {
         RecordBasicAdapter(

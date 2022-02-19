@@ -10,8 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
@@ -20,20 +18,19 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.thequietz.travelog.R
+import com.thequietz.travelog.common.BaseFragment
 import com.thequietz.travelog.databinding.FragmentScheduleSelectBinding
-import com.thequietz.travelog.onThrottleClick
 import com.thequietz.travelog.schedule.model.ScheduleModel
 import com.thequietz.travelog.schedule.viewmodel.ScheduleSelectViewModel
 import com.thequietz.travelog.util.ScheduleControlType
+import com.thequietz.travelog.util.onThrottleClick
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.util.*
 
 @AndroidEntryPoint
-class ScheduleSelectFragment : Fragment() {
-    private var _binding: FragmentScheduleSelectBinding? = null
-    private val binding get() = _binding!!
-
+class ScheduleSelectFragment :
+    BaseFragment<FragmentScheduleSelectBinding>(R.layout.fragment_schedule_select) {
     private val scheduleSelectViewModel by viewModels<ScheduleSelectViewModel>()
     private val args: ScheduleSelectFragmentArgs by navArgs()
 
@@ -42,18 +39,16 @@ class ScheduleSelectFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_schedule_select, container, false)
+        val view = super.onCreateView(inflater, container, savedInstanceState)
         initEditText()
         initDatePicker()
         initHideKeyboard()
         initNextButton()
-        return binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = scheduleSelectViewModel
         setToolbar()
     }
@@ -190,11 +185,5 @@ class ScheduleSelectFragment : Fragment() {
                 binding.tvStartDateSelected.isClickable = true
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        _binding = null
     }
 }
