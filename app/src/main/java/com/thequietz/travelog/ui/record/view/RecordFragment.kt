@@ -30,11 +30,7 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>(R.layout.fragment_rec
         viewModel.loadData()
 
         viewModel.recordList.observe(viewLifecycleOwner) { recordList ->
-            if (recordList.isEmpty()) {
-                binding.tvNoRecord.visibility = View.VISIBLE
-            } else {
-                binding.tvNoRecord.visibility = View.INVISIBLE
-            }
+            binding.isEmpty = recordList.isEmpty()
             adapter.submitList(recordList)
         }
 
