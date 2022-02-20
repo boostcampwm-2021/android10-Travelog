@@ -34,8 +34,7 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     class RecordBasicItemViewHolder(
         private val binding: ItemRecyclerRecordBasicBinding,
-        private val navigateToRecordViewUi: (String, String) -> Unit,
-        private val showMenu: (View, Int) -> Unit
+        private val navigateToRecordViewUi: (String, String) -> Unit
     ) : RecordBasicViewHolder(binding.root) {
         private lateinit var item: RecordBasicItem.TravelDestination
 
@@ -44,23 +43,8 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             root.setOnClickListener {
                 navigateToRecordViewUi.invoke(item.day, item.name)
             }
-            /*
-            btnItemRecordBasicMore.setOnClickListener {
-                showMenu.invoke(it, absoluteAdapterPosition)
-            }
-             */
             tvItemRecordBasicSeq.text = item.seq.toString()
             tvItemRecordBasicTitle.text = item.name
-            /*
-            val adapter =
-                RecordPhotoAdapter(
-                    navigateToRecordViewUi = navigateToRecordViewUi,
-                    recordBasicItem = item
-                )
-            rvItemRecordBasic.adapter = adapter
-            if (item.images.first() == "") return
-            adapter.submitList(item.images)
-             */
         }
 
         override fun getDay(): String = item.day
@@ -76,7 +60,6 @@ sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
 class RecordBasicAdapter(
     private val navigateToRecordViewUi: (String, String) -> Unit,
-    private val showMenu: (View, Int) -> Unit,
     private val updateTargetList: (String) -> Unit,
     private val scrollToPosition: (Int) -> Unit
 ) : ListAdapter<RecordBasicItem, RecordBasicViewHolder>(RecordBasicDiffUtil()) {
@@ -107,8 +90,7 @@ class RecordBasicAdapter(
                         parent,
                         false
                     ),
-                    navigateToRecordViewUi,
-                    showMenu
+                    navigateToRecordViewUi
                 )
             }
         }

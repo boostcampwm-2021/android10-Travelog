@@ -198,63 +198,6 @@ class RecordBasicViewModel @Inject constructor(
         return list.toList()
     }
 
-    /* 이미지 추가 기능 삭제 예정
-    fun addImage(uri: Uri, position: Int) {
-        val tempRecordBasicItemList = _recordBasicItemList.value ?: return
-        tempRecordBasicItemList.getOrNull(position) ?: return
-
-        val tempRecordBasicItem =
-            tempRecordBasicItemList[position] as RecordBasicItem.TravelDestination
-        val tempImageList = tempRecordBasicItem.images.toMutableList()
-        val imageUrl = uri.toString()
-
-        if (tempImageList[0] == "") {
-            tempImageList[0] = imageUrl
-        } else {
-            tempImageList.add(imageUrl)
-        }
-
-        val item = RecordBasicItem.TravelDestination(
-            tempRecordBasicItem.name,
-            tempRecordBasicItem.date,
-            tempRecordBasicItem.day,
-            tempRecordBasicItem.group,
-            tempImageList.toList(),
-            tempRecordBasicItem.lat,
-            tempRecordBasicItem.lng
-        )
-
-        val tempRecordBasicItemMutableList = tempRecordBasicItemList.toMutableList()
-        tempRecordBasicItemMutableList[position] = item
-        _recordBasicItemList.value = tempRecordBasicItemMutableList.toList()
-
-        viewModelScope.launch(Dispatchers.IO) {
-            val tempRecordImageList = _recordImageList.value ?: return@launch
-            val tempRecordImage =
-                tempRecordImageList.find { it.place == item.name } ?: return@launch
-
-            if (tempRecordImage.url == "") {
-                repository.deleteRecordImageById(tempRecordImage.id)
-            }
-
-            repository.insertRecordImage(
-                RecordImage(
-                    travelId = tempRecordImage.travelId,
-                    title = tempRecordImage.title,
-                    startDate = tempRecordImage.startDate,
-                    endDate = tempRecordImage.endDate,
-                    day = tempRecordImage.day,
-                    place = tempRecordImage.place,
-                    url = imageUrl,
-                    group = tempRecordImage.group,
-                    lat = tempRecordImage.lat,
-                    lng = tempRecordImage.lng
-                )
-            )
-        }
-    }
-     */
-
     fun deleteRecord(position: Int) {
         val tempRecordBasicItemList = _recordBasicItemList.value ?: return
         val tempRecordBasicItemMutableList = tempRecordBasicItemList.toMutableList()
@@ -289,18 +232,4 @@ class RecordBasicViewModel @Inject constructor(
 
         targetList.value = list
     }
-
-    /* 삭제 예정
-    fun getIndexByGroupAndDay(group: Int, day: String): Int {
-        val recordImageList = _recordImageList.value ?: return 0
-
-        for ((index, recordImage) in recordImageList.withIndex()) {
-            if (recordImage.group == group && recordImage.day == day) {
-                return index
-            }
-        }
-
-        return 0
-    }
-     */
 }

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.widget.PopupMenu
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -93,7 +92,6 @@ class RecordBasicFragment :
     private val adapter by lazy {
         RecordBasicAdapter(
             ::navigateToRecordViewUi,
-            ::showMenu,
             ::updateTargetList,
             ::scrollToPosition
         )
@@ -102,15 +100,6 @@ class RecordBasicFragment :
         binding.rvRecordBasic.layoutManager as LinearLayoutManager
     }
     private val loadingDialog by lazy { LoadingDialog(requireContext()) }
-
-    /* 이미지 추가 기능 삭제 예정
-    private var position = 0
-    private val getImageUri: ActivityResultLauncher<String> =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri ?: return@registerForActivityResult
-            viewModel.addImage(uri, position)
-        }
-     */
 
     private lateinit var scrollListener: RecordBasicRecyclerViewScrollListener
 
@@ -238,35 +227,5 @@ class RecordBasicFragment :
             )
 
         findNavController().navigate(action)
-    }
-
-    /*
-    private fun navigateToRecordAddUi(day: String) {
-        val action = RecordBasicFragmentDirections.actionRecordBasicFragmentToRecordAddFragment(
-            travelId = navArgs.travelId,
-            day = day
-        )
-
-        findNavController().navigate(action)
-    }
-    */
-
-    private fun showMenu(view: View, position: Int) {
-        PopupMenu(requireActivity(), view).apply {
-            setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-//                    R.id.add_image -> {
-//                        this@RecordBasicFragment.position = position
-//                        getImageUri.launch("image/*")
-//                    }
-                    R.id.delete_record -> {
-                        viewModel.deleteRecord(position)
-                    }
-                }
-                true
-            }
-            menuInflater.inflate(R.menu.menu_record, menu)
-            show()
-        }
     }
 }

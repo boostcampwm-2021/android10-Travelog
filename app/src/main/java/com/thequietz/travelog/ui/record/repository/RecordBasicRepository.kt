@@ -29,35 +29,9 @@ class RecordBasicRepository @Inject constructor(
     fun loadRecordImagesByTravelId(travelId: Int) =
         recordImageDao.loadRecordImageByTravelId(travelId)
 
-    fun insertRecordImages(images: List<RecordImage>) {
-        coroutineScope.launch { recordImageDao.insert(*images.toTypedArray()) }
-    }
-
-    fun insertNewRecordImages(images: List<NewRecordImage>) {
-        coroutineScope.launch { newRecordImageDao.insert(*images.toTypedArray()) }
-    }
-
-    fun deleteRecordImageById(id: Int) {
-        coroutineScope.launch {
-            recordImageDao.deleteRecordImageById(id)
-        }
-    }
-
     fun deleteRecordImageByPlace(place: String) {
         coroutineScope.launch {
             recordImageDao.deleteRecordImageByPlace(place)
-        }
-    }
-
-    fun deleteRecordImageByTravelId(travelId: Int) {
-        coroutineScope.launch {
-            recordImageDao.deleteRecordImageByTravelId(travelId)
-        }
-    }
-
-    fun deleteNewRecordImageByTravelIdAndIsDefault(travelId: Int, isDefault: Boolean) {
-        coroutineScope.launch {
-            newRecordImageDao.deleteNewRecordImageByTravelIdAndIsDefault(travelId, isDefault)
         }
     }
 

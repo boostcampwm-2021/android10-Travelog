@@ -63,34 +63,4 @@ class RecordViewModel @Inject constructor(
 
         return recordList
     }
-
-    /*
-    private fun createRecordFromRecordImages(recordImages: List<RecordImage>): List<Record> {
-        val recordList = mutableListOf<Record>()
-        var travelId = -1
-
-        for (recordImage in recordImages) {
-            val tempImageList = if (travelId != recordImage.travelId) {
-                travelId = recordImage.travelId
-                mutableListOf()
-            } else {
-                recordList.removeLast().images.toMutableList()
-            }
-
-            tempImageList.add(recordImage.url)
-
-            recordList.add(
-                Record(
-                    recordImage.travelId,
-                    recordImage.title,
-                    recordImage.startDate,
-                    recordImage.endDate,
-                    tempImageList.toList()
-                )
-            )
-        }
-
-        return recordList.toList()
-    }
-     */
 }

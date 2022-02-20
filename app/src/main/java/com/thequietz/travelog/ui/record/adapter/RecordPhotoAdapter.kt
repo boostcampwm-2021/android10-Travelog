@@ -10,47 +10,31 @@ import com.bumptech.glide.Glide
 import com.thequietz.travelog.R
 import com.thequietz.travelog.databinding.ItemRecyclerRecordPhotoBinding
 import com.thequietz.travelog.ui.record.model.Record
-import com.thequietz.travelog.ui.record.model.RecordBasicItem
 
 class RecordPhotoAdapter(
-    private val navigateToRecordBasicUi: ((Int, String, String, String) -> Unit)? = null,
-    private val addImage: (() -> Unit)? = null,
-    private val recordBasicItem: RecordBasicItem.TravelDestination? = null,
-    private val recordItem: Record? = null
+    private val navigateToRecordBasicUi: ((Int, String, String, String) -> Unit),
+    private val recordItem: Record
 ) : ListAdapter<String, RecordPhotoAdapter.RecordPhotoViewHolder>(diffUtil) {
     inner class RecordPhotoViewHolder(private val binding: ItemRecyclerRecordPhotoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(url: String?) = with(binding) {
+        fun bind(url: String) = with(binding) {
             ivItemRecordPhoto.setOnClickListener {
-                // 여행 기록 기본 화면으로 이동 시
-                if (recordItem != null) {
-                    navigateToRecordBasicUi?.invoke(
-                        recordItem.travelId,
-                        recordItem.title,
-                        recordItem.startDate,
-                        recordItem.endDate
-                    )
-                }
-
-                // 여행 기록 추가 화면에서 이미지 추가 시
-                if (url == null) {
-                    addImage?.invoke()
-                }
+                navigateToRecordBasicUi.invoke(
+                    recordItem.travelId,
+                    recordItem.title,
+                    recordItem.startDate,
+                    recordItem.endDate
+                )
             }
 
             if (url == "empty") {
                 cvItemRecordPhoto.visibility = View.GONE
-                return@with
-            }
-
-            if (url != null) {
+            } else {
                 Glide.with(itemView)
                     .load(url)
                     .placeholder(R.drawable.bg_photo_placeholder)
                     .into(ivItemRecordPhoto)
-            } else {
-                ivItemRecordPhoto.setImageResource(R.drawable.ic_add)
             }
         }
     }
@@ -66,14 +50,8 @@ class RecordPhotoAdapter(
     }
 
     override fun onBindViewHolder(holder: RecordPhotoViewHolder, position: Int) {
-        val imageUrl = currentList.getOrNull(position)
-
+        val imageUrl = currentList.getOrNull(position) ?: return
         holder.bind(imageUrl)
-    }
-
-    override fun getItemCount(): Int {
-        if (addImage != null) return super.getItemCount() + 1
-        return super.getItemCount()
     }
 
     companion object {
