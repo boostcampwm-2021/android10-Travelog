@@ -134,9 +134,8 @@ class RecordBasicFragment :
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
-
         binding.rvRecordBasic.clearOnScrollListeners()
+        super.onDestroyView()
     }
 
     private fun initView() {
