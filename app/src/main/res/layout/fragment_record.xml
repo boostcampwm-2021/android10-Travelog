@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="isEmpty"
             type="Boolean" />
@@ -34,8 +36,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:text="@string/tv_no_record"
             android:visibility="@{isEmpty ? View.VISIBLE : View.INVISIBLE}"
-            android:text="기록이 없어요!\n일정을 먼저 추가해주세요!"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

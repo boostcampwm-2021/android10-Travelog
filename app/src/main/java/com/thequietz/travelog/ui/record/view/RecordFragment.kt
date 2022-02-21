@@ -1,9 +1,7 @@
 package com.thequietz.travelog.ui.record.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.thequietz.travelog.R
@@ -16,15 +14,11 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RecordFragment : BaseFragment<FragmentRecordBinding>(R.layout.fragment_record) {
     private val viewModel by viewModels<RecordViewModel>()
+    private val adapter by lazy { RecordAdapter(::navigateToRecordBasicUi) }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val view = super.onCreateView(inflater, container, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val adapter = RecordAdapter(::navigateToRecordBasicUi)
         binding.rvRecord.adapter = adapter
 
         viewModel.loadData()
@@ -33,8 +27,6 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>(R.layout.fragment_rec
             binding.isEmpty = recordList.isEmpty()
             adapter.submitList(recordList)
         }
-
-        return view
     }
 
     private fun navigateToRecordBasicUi(

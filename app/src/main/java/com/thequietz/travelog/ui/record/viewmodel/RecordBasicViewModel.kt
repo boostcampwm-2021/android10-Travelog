@@ -33,11 +33,14 @@ class RecordBasicViewModel @Inject constructor(
     private val _date = MutableLiveData<String>()
     val date: LiveData<String> = _date
 
+    private val _headerDay = MutableLiveData("Day1")
+    val headerDay: LiveData<String> = _headerDay
+
+    private val _headerDate = MutableLiveData<String>()
+    val headerDate: LiveData<String> = _headerDate
+
     private val _recordBasicItemList = MutableLiveData<List<RecordBasicItem>>()
     val recordBasicItemList: LiveData<List<RecordBasicItem>> = _recordBasicItemList
-
-    private val _recordImageList = MutableLiveData<List<RecordImage>>()
-    val recordImageList: LiveData<List<RecordImage>> = _recordImageList
 
     fun loadData(travelId: Int, title: String, startDate: String, endDate: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -61,36 +64,15 @@ class RecordBasicViewModel @Inject constructor(
                 repository.deleteAndInsertRecordImages(travelId, newRecordImages)
             }
 
+            val recordBasic = createRecordBasicFromRecordImages(newRecordImages)
+
             withContext(Dispatchers.Main) {
-                _recordImageList.value = newRecordImages
+                _title.value = recordBasic.title
+                _date.value = "${recordBasic.startDate} ~ ${recordBasic.endDate}"
+                _recordBasicItemList.value =
+                    createListOfRecyclerViewAdapterItem(recordBasic)
             }
         }
-    }
-
-    private fun createNewRecordImages(newRecordImages: List<RecordImage>): List<NewRecordImage> {
-        val tempNewRecordImages = mutableListOf<NewRecordImage>()
-        newRecordImages.forEach { recordImage ->
-            tempNewRecordImages.add(
-                NewRecordImage().copy(
-                    newTravelId = recordImage.travelId,
-                    newTitle = recordImage.title,
-                    newPlace = recordImage.place,
-                    url = "empty",
-                    comment = "코멘트를 남겨주세요!",
-                    isDefault = true
-                )
-            )
-        }
-        return tempNewRecordImages.toList()
-    }
-
-    fun createData() {
-        val recordImages = _recordImageList.value ?: emptyList()
-        val recordBasic = createRecordBasicFromRecordImages(recordImages)
-        _title.value = recordBasic.title
-        _date.value = "${recordBasic.startDate} ~ ${recordBasic.endDate}"
-        _recordBasicItemList.value =
-            createListOfRecyclerViewAdapterItem(recordBasic)
     }
 
     private fun createRecordImages(
@@ -140,6 +122,25 @@ class RecordBasicViewModel @Inject constructor(
         }
 
         return true
+    }
+
+    private fun createNewRecordImages(newRecordImages: List<RecordImage>): List<NewRecordImage> {
+        val tempNewRecordImages = mutableListOf<NewRecordImage>()
+
+        newRecordImages.forEach { recordImage ->
+            tempNewRecordImages.add(
+                NewRecordImage().copy(
+                    newTravelId = recordImage.travelId,
+                    newTitle = recordImage.title,
+                    newPlace = recordImage.place,
+                    url = "empty",
+                    comment = "코멘트를 남겨주세요!",
+                    isDefault = true
+                )
+            )
+        }
+
+        return tempNewRecordImages.toList()
     }
 
     private fun createRecordBasicFromRecordImages(recordImages: List<RecordImage>): RecordBasic {
@@ -198,29 +199,17 @@ class RecordBasicViewModel @Inject constructor(
         return list.toList()
     }
 
-    fun deleteRecord(position: Int) {
-        val tempRecordBasicItemList = _recordBasicItemList.value ?: return
-        val tempRecordBasicItemMutableList = tempRecordBasicItemList.toMutableList()
-
-        tempRecordBasicItemMutableList.getOrNull(position) ?: return
-        val removedItem = tempRecordBasicItemMutableList.removeAt(position)
-
-        _recordBasicItemList.value = tempRecordBasicItemMutableList.toList()
-
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteRecordImageByPlace((removedItem as RecordBasicItem.TravelDestination).name)
-        }
-    }
-
-    fun updateTargetList(day: String, targetList: MutableLiveData<MutableList<LatLng>>) {
+    fun updateTargetList(day: String, date: String, targetList: MutableLiveData<MutableList<LatLng>>) {
         val tempRecordBasicItemList = _recordBasicItemList.value ?: return
         val list = mutableListOf<LatLng>()
         var isCurrentDay = false
+        _headerDay.value = day
+        _headerDate.value = date
 
         for (tempRecordBasicItem in tempRecordBasicItemList) {
             when (tempRecordBasicItem) {
                 is RecordBasicItem.RecordBasicHeader -> {
-                    isCurrentDay = tempRecordBasicItem.day == day
+                    isCurrentDay = tempRecordBasicItem.day == headerDay.value
                 }
                 is RecordBasicItem.TravelDestination -> {
                     if (isCurrentDay) {

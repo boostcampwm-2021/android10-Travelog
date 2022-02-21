@@ -3,19 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="seq"
+            type="String" />
+
+        <variable
+            name="name"
+            type="String" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
         <View
             android:layout_width="2dp"
             android:layout_height="0dp"
             android:background="@color/gray"
-            app:layout_constraintStart_toStartOf="@id/tv_item_record_basic_seq"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/tv_item_record_basic_seq" />
+            app:layout_constraintEnd_toEndOf="@id/tv_item_record_basic_seq"
+            app:layout_constraintStart_toStartOf="@id/tv_item_record_basic_seq"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_item_record_basic_seq"
@@ -24,23 +35,25 @@
             android:layout_marginStart="26dp"
             android:background="@drawable/shape_circle"
             android:backgroundTint="#3C95FF"
-            android:textColor="@color/white"
             android:gravity="center"
+            android:text="@{seq}"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:text="1" />
 
         <TextView
             android:id="@+id/tv_item_record_basic_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
             android:layout_marginStart="18dp"
             android:layout_marginEnd="26dp"
-            android:layout_marginVertical="8dp"
             android:background="@drawable/bg_white_round"
             android:elevation="3dp"
             android:padding="12dp"
+            android:text="@{name}"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -48,29 +61,6 @@
             app:layout_constraintStart_toEndOf="@id/tv_item_record_basic_seq"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="불국사, 석굴암" />
-
-        <!--ImageView
-            android:id="@+id/btn_item_record_basic_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:paddingBottom="16dp"
-            android:src="@drawable/ic_more"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" /-->
-
-        <!--androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_item_record_basic"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
-            android:paddingHorizontal="16dp"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/tv_item_record_basic_title"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/item_recycler_record_photo" /-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

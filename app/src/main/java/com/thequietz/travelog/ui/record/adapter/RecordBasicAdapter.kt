@@ -1,103 +1,67 @@
 package com.thequietz.travelog.ui.record.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import com.thequietz.travelog.common.BaseListAdapter
 import com.thequietz.travelog.databinding.ItemRecyclerRecordBasicBinding
 import com.thequietz.travelog.databinding.ItemRecyclerRecordBasicHeaderBinding
 import com.thequietz.travelog.ui.record.model.RecordBasicItem
 
-sealed class RecordBasicViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    class RecordBasicHeaderViewHolder(
-        private val binding: ItemRecyclerRecordBasicHeaderBinding,
-        private val updateTargetList: (String) -> Unit,
-        private val scrollToPosition: (Int) -> Unit
-    ) : RecordBasicViewHolder(binding.root) {
-        private lateinit var item: RecordBasicItem.RecordBasicHeader
-
-        override fun <T : RecordBasicItem> bind(item: T) = with(binding) {
-            this@RecordBasicHeaderViewHolder.item = item as RecordBasicItem.RecordBasicHeader
-            root.setOnClickListener {
-                updateTargetList(item.day)
-                scrollToPosition(absoluteAdapterPosition)
-            }
-            tvItemRecordBasicHeaderTitle.text = item.day
-            tvItemRecordBasicHeaderDate.text = item.date
-        }
-
-        override fun getDay(): String = item.day
-        override fun getDate(): String = item.date
-    }
-
-    class RecordBasicItemViewHolder(
-        private val binding: ItemRecyclerRecordBasicBinding,
-        private val navigateToRecordViewUi: (String, String) -> Unit
-    ) : RecordBasicViewHolder(binding.root) {
-        private lateinit var item: RecordBasicItem.TravelDestination
-
-        override fun <T : RecordBasicItem> bind(item: T) = with(binding) {
-            this@RecordBasicItemViewHolder.item = item as RecordBasicItem.TravelDestination
-            root.setOnClickListener {
-                navigateToRecordViewUi.invoke(item.day, item.name)
-            }
-            tvItemRecordBasicSeq.text = item.seq.toString()
-            tvItemRecordBasicTitle.text = item.name
-        }
-
-        override fun getDay(): String = item.day
-        override fun getDate(): String = item.date
-    }
-
-    abstract fun <T : RecordBasicItem> bind(item: T)
-
-    abstract fun getDay(): String
-
-    abstract fun getDate(): String
-}
-
 class RecordBasicAdapter(
     private val navigateToRecordViewUi: (String, String) -> Unit,
-    private val updateTargetList: (String) -> Unit,
+    private val updateTargetList: (String, String) -> Unit,
     private val scrollToPosition: (Int) -> Unit
-) : ListAdapter<RecordBasicItem, RecordBasicViewHolder>(RecordBasicDiffUtil()) {
+) : BaseListAdapter<RecordBasicItem, ViewDataBinding>(RecordBasicDiffUtil()) {
+
+    override fun createBinding(parent: ViewGroup, viewType: Int): ViewDataBinding {
+        return when (viewType) {
+            HEADER_TYPE -> {
+                ItemRecyclerRecordBasicHeaderBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            }
+            else -> {
+                ItemRecyclerRecordBasicBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            }
+        }
+    }
+
+    override fun bind(binding: ViewDataBinding, position: Int) = with(binding) {
+        val item = currentList[position]
+        when (this) {
+            is ItemRecyclerRecordBasicHeaderBinding -> {
+                item as RecordBasicItem.RecordBasicHeader
+                root.setOnClickListener {
+                    updateTargetList(item.day, item.date)
+                    scrollToPosition(position)
+                }
+                day = item.day
+                date = item.date
+            }
+            is ItemRecyclerRecordBasicBinding -> {
+                item as RecordBasicItem.TravelDestination
+                root.setOnClickListener {
+                    navigateToRecordViewUi.invoke(item.day, item.name)
+                }
+                seq = item.seq.toString()
+                name = item.name
+            }
+        }
+    }
+
     override fun getItemViewType(position: Int): Int {
         return when (currentList[position]) {
             is RecordBasicItem.RecordBasicHeader -> HEADER_TYPE
             else -> ITEM_TYPE
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordBasicViewHolder {
-        return when (viewType) {
-            HEADER_TYPE -> {
-                RecordBasicViewHolder.RecordBasicHeaderViewHolder(
-                    ItemRecyclerRecordBasicHeaderBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    ),
-                    updateTargetList,
-                    scrollToPosition
-                )
-            }
-            else -> {
-                RecordBasicViewHolder.RecordBasicItemViewHolder(
-                    ItemRecyclerRecordBasicBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent,
-                        false
-                    ),
-                    navigateToRecordViewUi
-                )
-            }
-        }
-    }
-
-    override fun onBindViewHolder(holder: RecordBasicViewHolder, position: Int) {
-        holder.bind(currentList[position])
     }
 
     fun getPositionOfHeaderFromDay(day: String): Int {
@@ -107,6 +71,20 @@ class RecordBasicAdapter(
             }
         }
         return -1
+    }
+
+    fun getDay(position: Int): String {
+        return when (val item = currentList[position]) {
+            is RecordBasicItem.RecordBasicHeader -> item.day
+            is RecordBasicItem.TravelDestination -> item.day
+        }
+    }
+
+    fun getDate(position: Int): String {
+        return when (val item = currentList[position]) {
+            is RecordBasicItem.RecordBasicHeader -> item.date
+            is RecordBasicItem.TravelDestination -> item.date
+        }
     }
 
     companion object {

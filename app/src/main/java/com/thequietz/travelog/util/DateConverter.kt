@@ -100,6 +100,9 @@ fun createDateFromDay(startDate: String, day: String): String {
         if (isLeapYear) listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
         else listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
+    val day = ((tempDate[2] + tempDay) % (dayOfMonth[tempDate[1]] + 1)).toStringDate()
+    val month = (tempDate[1] + (tempDate[2] + tempDay) / (dayOfMonth[tempDate[1]]))
+
     // TODO("2달 이상 고려해야함.")
 
     if (tempDate[2] + tempDay <= dayOfMonth[tempDate[1]]) {

@@ -3,10 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="com.thequietz.travelog.ui.record.view.AppBarStateChangeListener.State" />
+
+        <variable
+            name="appBarState"
+            type="com.thequietz.travelog.ui.record.view.AppBarStateChangeListener.State" />
+
+        <variable
+            name="viewModel"
+            type="com.thequietz.travelog.ui.record.viewmodel.RecordBasicViewModel" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout"
@@ -21,9 +34,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
-                app:collapsedTitleGravity="center"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:title="">
+                app:titleEnabled="false">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -44,7 +56,7 @@
                         android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="경주 여행" />
+                        tools:text="@{viewModel.title}" />
 
                     <TextView
                         android:id="@+id/tv_record_basic_schedule"
@@ -54,7 +66,7 @@
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="@id/tv_record_basic_title"
                         app:layout_constraintTop_toBottomOf="@id/tv_record_basic_title"
-                        tools:text="21.10.26 ~ 10.27" />
+                        tools:text="@{viewModel.date}" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -64,7 +76,9 @@
                     android:layout_height="?attr/actionBarSize"
                     android:background="@color/white"
                     android:paddingEnd="?attr/actionBarSize"
-                    app:layout_collapseMode="pin" />
+                    app:layout_collapseMode="pin"
+                    app:subtitle='@{appBarState == State.COLLAPSED ? viewModel.date : ""}'
+                    app:title='@{appBarState == State.COLLAPSED ? viewModel.title : ""}' />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -86,13 +100,13 @@
                 android:id="@+id/rv_record_basic"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:clipToPadding="false"
                 android:overScrollMode="never"
                 android:paddingBottom="400dp"
-                android:clipToPadding="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:listitem="@layout/item_recycler_record_basic" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -109,6 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="26dp"
+                    android:text="@{viewModel.headerDay}"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -120,12 +135,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:textSize="16sp"
+                    android:text="@{viewModel.headerDate}"
                     android:textColor="#999999"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@id/tv_item_record_basic_header_day"
                     app:layout_constraintStart_toEndOf="@id/tv_item_record_basic_header_day"
                     app:layout_constraintTop_toTopOf="@id/tv_item_record_basic_header_day"
-                    tools:text="12.26 (토)" />
+                    tools:text="2021.12.26" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

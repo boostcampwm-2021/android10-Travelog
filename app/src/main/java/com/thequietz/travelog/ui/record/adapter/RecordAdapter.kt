@@ -3,60 +3,43 @@ package com.thequietz.travelog.ui.record.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import com.thequietz.travelog.common.BaseListAdapter
 import com.thequietz.travelog.databinding.ItemRecyclerRecordBinding
 import com.thequietz.travelog.ui.record.model.Record
 
 class RecordAdapter(
     private val navigateToRecordBasicUi: (Int, String, String, String) -> Unit
-) : ListAdapter<Record, RecordAdapter.RecordViewHolder>(diffUtil) {
-    inner class RecordViewHolder(private val binding: ItemRecyclerRecordBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Record) = with(binding) {
-            root.setOnClickListener {
-                navigateToRecordBasicUi.invoke(
-                    item.travelId,
-                    item.title,
-                    item.startDate,
-                    item.endDate
-                )
-            }
-            tvItemRecordTitle.text = item.title
-            tvItemRecordSchedule.text = "${item.startDate} ~ ${item.endDate.substring(5)}"
-            val adapter =
-                RecordPhotoAdapter(
-                    navigateToRecordBasicUi = navigateToRecordBasicUi,
-                    recordItem = item
-                )
-            rvItemRecordPhoto.adapter = adapter
-            adapter.submitList(item.images)
-        }
-    }
+) : BaseListAdapter<Record, ItemRecyclerRecordBinding>(RecordDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordViewHolder {
-        return RecordViewHolder(
-            ItemRecyclerRecordBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
+    private lateinit var adapter: RecordPhotoAdapter
+
+    override fun createBinding(parent: ViewGroup, viewType: Int): ItemRecyclerRecordBinding {
+        return ItemRecyclerRecordBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
         )
     }
 
-    override fun onBindViewHolder(holder: RecordViewHolder, position: Int) {
+    override fun bind(binding: ItemRecyclerRecordBinding, position: Int) = with(binding) {
         val item = currentList[position]
+        root.setOnClickListener {
+            navigateToRecordBasicUi(item.travelId, item.title, item.startDate, item.endDate)
+        }
+        title = item.title
+        schedule = "${item.startDate} ~ ${item.endDate.substring(5)}"
+        adapter = RecordPhotoAdapter(navigateToRecordBasicUi, item)
+        rvItemRecordPhoto.adapter = adapter
+        adapter.submitList(item.images)
+    }
+}
 
-        holder.bind(item)
+class RecordDiffCallback : DiffUtil.ItemCallback<Record>() {
+    override fun areItemsTheSame(oldItem: Record, newItem: Record): Boolean {
+        return oldItem.hashCode() == newItem.hashCode()
     }
 
-    companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<Record>() {
-            override fun areItemsTheSame(oldItem: Record, newItem: Record): Boolean {
-                return oldItem.hashCode() == newItem.hashCode()
-            }
-
-            override fun areContentsTheSame(oldItem: Record, newItem: Record): Boolean {
-                return oldItem == newItem
-            }
-        }
+    override fun areContentsTheSame(oldItem: Record, newItem: Record): Boolean {
+        return oldItem == newItem
     }
 }

@@ -42,8 +42,6 @@ class RecordViewModel @Inject constructor(
         val images = mutableListOf<String>()
 
         for (schedule in scheduleList) {
-            images.clear()
-
             for (newImage in newImageList) {
                 if (newImage.newTravelId == schedule.id) {
                     images.add(newImage.url)
@@ -59,6 +57,7 @@ class RecordViewModel @Inject constructor(
             )
 
             recordList.add(record)
+            images.clear()
         }
 
         return recordList
