@@ -65,15 +65,15 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(R.layout.fragment_menu) {
             }
         }
 
-        viewModel.recordAlarm.observe(this, {
+        viewModel.recordAlarm.observe(viewLifecycleOwner) {
             binding.spinnerRecord.isEnabled = it
-        })
+        }
 
-        viewModel.scheduleAlarm.observe(this, {
+        viewModel.scheduleAlarm.observe(viewLifecycleOwner) {
             binding.spinnerSchedule.isEnabled = it
-        })
+        }
 
-        viewModel.alarmPermission.observe(this, {
+        viewModel.alarmPermission.observe(viewLifecycleOwner) {
             if (it == false) {
                 binding.spinnerSchedule.isEnabled = false
                 binding.spinnerRecord.isEnabled = false
@@ -81,6 +81,6 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>(R.layout.fragment_menu) {
                 if (viewModel.recordAlarm.value == true) binding.spinnerRecord.isEnabled = true
                 if (viewModel.scheduleAlarm.value == true) binding.spinnerSchedule.isEnabled = true
             }
-        })
+        }
     }
 }
