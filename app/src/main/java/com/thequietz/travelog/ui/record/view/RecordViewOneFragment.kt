@@ -75,9 +75,9 @@ class RecordViewOneFragment :
                 loading.dismiss()
             }, 1000)
 
-            dataList.observe(viewLifecycleOwner, { it ->
+            dataList.observe(viewLifecycleOwner) { it ->
                 it?.let { adapter.submitList(it) }
-            })
+            }
         }
     }
 

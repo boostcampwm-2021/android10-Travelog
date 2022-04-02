@@ -26,7 +26,7 @@ import com.thequietz.travelog.util.ScheduleControlType
 import com.thequietz.travelog.util.onThrottleClick
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
 
 @AndroidEntryPoint
 class ScheduleSelectFragment :

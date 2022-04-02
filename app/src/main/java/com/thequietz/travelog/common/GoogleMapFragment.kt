@@ -2,7 +2,11 @@ package com.thequietz.travelog.common
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -22,13 +26,21 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.Dash
+import com.google.android.gms.maps.model.Gap
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.Polyline
+import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.snackbar.Snackbar
 import com.thequietz.travelog.R
 import com.thequietz.travelog.ui.schedule.data.ColorRGB
 
 abstract class GoogleMapFragment<VDB : ViewDataBinding>(
-   @LayoutRes layoutId: Int
+    @LayoutRes layoutId: Int
 ) : BaseFragment<VDB>(layoutId), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private val locationPermission = Manifest.permission.ACCESS_COARSE_LOCATION
@@ -97,20 +109,20 @@ abstract class GoogleMapFragment<VDB : ViewDataBinding>(
             setMinZoomPreference(6f)
 
             // viewLifecycleOwnerLiveData 추가
-            viewLifecycleOwnerLiveData.observe(viewLifecycleOwner, {
+            viewLifecycleOwnerLiveData.observe(viewLifecycleOwner) {
                 if (it == null)
                     return@observe
                 setOnMapLoadedCallback {
-                    targetList.observe(it, {
+                    targetList.observe(it) {
                         updateMapViewBound()
                         moveCameraByTargetCount(targetCount)
                         drawMarker()
-                    })
-                    markerColorList.observe(it, {
+                    }
+                    markerColorList.observe(it) {
                         drawMarker()
-                    })
+                    }
                 }
-            })
+            }
             uiSettings.apply {
                 isZoomControlsEnabled = true
             }

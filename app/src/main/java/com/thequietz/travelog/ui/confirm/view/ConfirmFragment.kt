@@ -12,11 +12,11 @@ import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.thequietz.travelog.R
+import com.thequietz.travelog.common.GoogleMapFragment
+import com.thequietz.travelog.databinding.FragmentConfirmBinding
 import com.thequietz.travelog.ui.confirm.adapter.ConfirmDayAdapter
 import com.thequietz.travelog.ui.confirm.adapter.ConfirmPagerAdapter
 import com.thequietz.travelog.ui.confirm.viewmodel.ConfirmViewModel
-import com.thequietz.travelog.databinding.FragmentConfirmBinding
-import com.thequietz.travelog.common.GoogleMapFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -82,16 +82,16 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding>(R.layout.fragm
                 }
             })
 
-        viewModel.schedules.observe(viewLifecycleOwner, {
+        viewModel.schedules.observe(viewLifecycleOwner) {
             val keys = it.keys.toList()
 
             dayAdapter.submitList(keys)
 
             if (keys.isEmpty()) return@observe
             viewModel.updateSchedule(keys[0])
-        })
+        }
 
-        viewModel.currentSchedule.observe(viewLifecycleOwner, {
+        viewModel.currentSchedule.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
                 val (_, _, mapX, mapY) = navArgs.defaultPlace
                 targetList.value = mutableListOf(LatLng(mapY, mapX))
@@ -117,7 +117,7 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding>(R.layout.fragm
             }?.toMutableList() ?: mutableListOf()
 
             targetList.value = coordinates
-        })
+        }
 
         viewModel.getSchedulesByNavArgs(navArgs.schedule, navArgs.scheduleDetails)
     }
@@ -139,7 +139,7 @@ class ConfirmFragment : GoogleMapFragment<FragmentConfirmBinding>(R.layout.fragm
     }
 
     override fun initTargetList() {
-        baseTargetList = navArgs.scheduleDetails.map { it ->
+        baseTargetList = navArgs.scheduleDetails.map {
             val location = it.destination.geometry.location
             LatLng(location.latitude, location.latitude)
         }.toMutableList()

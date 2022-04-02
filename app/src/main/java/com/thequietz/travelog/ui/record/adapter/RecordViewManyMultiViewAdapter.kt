@@ -12,11 +12,11 @@ import com.thequietz.travelog.databinding.ItemRecyclerRecordManyDateBinding
 import com.thequietz.travelog.databinding.ItemRecyclerRecordManyImagesBinding
 import com.thequietz.travelog.databinding.ItemRecyclerRecordManyPlaceBinding
 import com.thequietz.travelog.databinding.RecyclerRecordManyImageBinding
-import com.thequietz.travelog.util.makeToast
 import com.thequietz.travelog.ui.record.model.MyRecord
 import com.thequietz.travelog.ui.record.model.ViewType
 import com.thequietz.travelog.ui.record.view.RecordViewManyFragmentDirections
 import com.thequietz.travelog.ui.record.viewmodel.RecordViewManyInnerViewModel
+import com.thequietz.travelog.util.makeToast
 
 class RecordViewManyMultiViewAdapter(
     val innerViewModel: RecordViewManyInnerViewModel
