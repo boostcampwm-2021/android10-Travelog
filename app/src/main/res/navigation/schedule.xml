@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/scheduleFragment"
-        android:name="com.thequietz.travelog.schedule.view.ScheduleFragment"
+        android:name="com.thequietz.travelog.ui.schedule.view.ScheduleFragment"
         android:label="내 여행 일정"
         tools:layout="@layout/fragment_schedule">
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/schedulePlaceFragment"
-        android:name="com.thequietz.travelog.schedule.view.SchedulePlaceFragment"
+        android:name="com.thequietz.travelog.ui.schedule.view.SchedulePlaceFragment"
         android:label="도시 선택">
         <action
             android:id="@+id/action_schedulePlaceFragment_to_scheduleSelectFragment"
@@ -39,11 +39,11 @@
     </fragment>
     <fragment
         android:id="@+id/scheduleSelectFragment"
-        android:name="com.thequietz.travelog.schedule.view.ScheduleSelectFragment"
+        android:name="com.thequietz.travelog.ui.schedule.view.ScheduleSelectFragment"
         android:label="일정 선택">
         <argument
             android:name="placeList"
-            app:argType="com.thequietz.travelog.schedule.model.SchedulePlaceModel[]" />
+            app:argType="com.thequietz.travelog.ui.schedule.model.SchedulePlaceModel[]" />
         <action
             android:id="@+id/action_scheduleSelectFragment_to_scheduleDetailFragment"
             app:destination="@id/scheduleDetailFragment"
@@ -54,14 +54,14 @@
     </fragment>
     <fragment
         android:id="@+id/scheduleDetailFragment"
-        android:name="com.thequietz.travelog.schedule.view.ScheduleDetailFragment"
+        android:name="com.thequietz.travelog.ui.schedule.view.ScheduleDetailFragment"
         android:label="세부 일정 설정">
         <argument
             android:name="schedulePlaceArray"
-            app:argType="com.thequietz.travelog.schedule.model.SchedulePlaceModel[]" />
+            app:argType="com.thequietz.travelog.ui.schedule.model.SchedulePlaceModel[]" />
         <argument
             android:name="scheduleModel"
-            app:argType="com.thequietz.travelog.schedule.model.ScheduleModel" />
+            app:argType="com.thequietz.travelog.ui.schedule.model.ScheduleModel" />
         <argument
             android:name="type"
             android:defaultValue="TYPE_CREATE"
@@ -83,7 +83,7 @@
     </fragment>
     <fragment
         android:id="@+id/placeSearchFragment"
-        android:name="com.thequietz.travelog.place.view.PlaceSearchFragment"
+        android:name="com.thequietz.travelog.ui.place.view.PlaceSearchFragment"
         android:label="여행지 검색">
         <action
             android:id="@+id/action_placeSearchFragment_to_placeDetailFragment"
@@ -94,11 +94,11 @@
             app:popExitAnim="@anim/to_right" />
         <argument
             android:name="schedulePlaceArray"
-            app:argType="com.thequietz.travelog.schedule.model.SchedulePlaceModel[]" />
+            app:argType="com.thequietz.travelog.ui.schedule.model.SchedulePlaceModel[]" />
     </fragment>
     <fragment
         android:id="@+id/placeDetailFragment"
-        android:name="com.thequietz.travelog.place.view.PlaceDetailFragment"
+        android:name="com.thequietz.travelog.ui.place.view.PlaceDetailFragment"
         android:label="PlaceDetailFragment">
         <argument
             android:name="param"
@@ -112,7 +112,7 @@
     </fragment>
     <fragment
         android:id="@+id/placeRecommendFragment"
-        android:name="com.thequietz.travelog.place.view.PlaceRecommendFragment"
+        android:name="com.thequietz.travelog.ui.place.view.PlaceRecommendFragment"
         android:label="추천 여행지">
         <action
             android:id="@+id/action_placeRecommendFragment_to_placeDetailFragment"
@@ -130,18 +130,18 @@
             app:popExitAnim="@anim/to_right" />
         <argument
             android:name="schedulePlaceArray"
-            app:argType="com.thequietz.travelog.schedule.model.SchedulePlaceModel[]" />
+            app:argType="com.thequietz.travelog.ui.schedule.model.SchedulePlaceModel[]" />
     </fragment>
     <fragment
         android:id="@+id/confirmFragment"
-        android:name="com.thequietz.travelog.confirm.view.ConfirmFragment"
+        android:name="com.thequietz.travelog.ui.confirm.view.ConfirmFragment"
         android:label="일정 확인">
         <argument
             android:name="schedule"
-            app:argType="com.thequietz.travelog.schedule.model.ScheduleModel" />
+            app:argType="com.thequietz.travelog.ui.schedule.model.ScheduleModel" />
         <argument
             android:name="scheduleDetails"
-            app:argType="com.thequietz.travelog.schedule.model.ScheduleDetailModel[]" />
+            app:argType="com.thequietz.travelog.ui.schedule.model.ScheduleDetailModel[]" />
         <action
             android:id="@+id/action_confirmFragment_to_scheduleFragment"
             app:destination="@id/scheduleFragment"
@@ -153,7 +153,6 @@
             app:popUpToInclusive="true" />
         <argument
             android:name="defaultPlace"
-            app:argType="com.thequietz.travelog.schedule.model.SchedulePlaceModel" />
+            app:argType="com.thequietz.travelog.ui.schedule.model.SchedulePlaceModel" />
     </fragment>
-
 </navigation>

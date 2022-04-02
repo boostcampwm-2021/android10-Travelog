@@ -3,46 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="day"
+            type="String" />
+
+        <variable
+            name="date"
+            type="String" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/tv_item_record_basic_header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="26dp"
-            android:textSize="18sp"
+            android:text="@{day}"
             android:textColor="@color/black"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="Day1"/>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Day1" />
 
         <TextView
             android:id="@+id/tv_item_record_basic_header_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:textSize="16sp"
+            android:text="@{date}"
             android:textColor="#999999"
-            app:layout_constraintTop_toTopOf="@id/tv_item_record_basic_header_title"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_item_record_basic_header_title"
             app:layout_constraintStart_toEndOf="@id/tv_item_record_basic_header_title"
-            app:layout_constraintBottom_toBottomOf="@id/tv_item_record_basic_header_title"
-            tools:text="2021.12.26" />
-
-        <!--ImageButton
-            android:id="@+id/btn_item_record_basic_header_add_record"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="12dp"
-            android:background="@drawable/ic_add"
-            android:backgroundTint="@color/black"
             app:layout_constraintTop_toTopOf="@id/tv_item_record_basic_header_title"
-            app:layout_constraintBottom_toBottomOf="@id/tv_item_record_basic_header_title"
-            app:layout_constraintEnd_toEndOf="parent" /-->
+            tools:text="2021.12.26" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

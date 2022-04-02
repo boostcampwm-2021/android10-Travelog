@@ -7,14 +7,14 @@
 
         <variable
             name="viewModel"
-            type="com.thequietz.travelog.place.viewmodel.PlaceSearchViewModel" />
+            type="com.thequietz.travelog.ui.place.viewmodel.PlaceSearchViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".place.view.PlaceSearchFragment">
+        tools:context=".ui.place.view.PlaceSearchFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"

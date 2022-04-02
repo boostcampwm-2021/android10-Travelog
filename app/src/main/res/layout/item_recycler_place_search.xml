@@ -10,7 +10,7 @@
 
         <variable
             name="model"
-            type="com.thequietz.travelog.place.model.PlaceSearchModel" />
+            type="com.thequietz.travelog.ui.place.model.PlaceSearchModel" />
     </data>
 
     <LinearLayout

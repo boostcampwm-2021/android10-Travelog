@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.thequietz.travelog.schedule.viewmodel.ScheduleSelectViewModel" />
+            type="com.thequietz.travelog.ui.schedule.viewmodel.ScheduleSelectViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +18,7 @@
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        tools:context=".schedule.ScheduleSelectFragment">
+        tools:context=".ui.schedule.ScheduleSelectFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"

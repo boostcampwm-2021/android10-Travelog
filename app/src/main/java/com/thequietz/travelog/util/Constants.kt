@@ -1,8 +1,8 @@
 package com.thequietz.travelog.util
 
-import com.thequietz.travelog.record.model.RecordImage
-import com.thequietz.travelog.schedule.model.ScheduleModel
-import com.thequietz.travelog.schedule.model.SchedulePlaceModel
+import com.thequietz.travelog.ui.record.model.RecordImage
+import com.thequietz.travelog.ui.schedule.model.ScheduleModel
+import com.thequietz.travelog.ui.schedule.model.SchedulePlaceModel
 
 enum class ScheduleControlType {
     TYPE_CREATE,

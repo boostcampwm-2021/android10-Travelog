@@ -2,8 +2,8 @@ package com.thequietz.travelog.data.db
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import com.thequietz.travelog.place.model.PlaceDetailModel
-import com.thequietz.travelog.schedule.model.SchedulePlaceModel
+import com.thequietz.travelog.ui.place.model.PlaceDetailModel
+import com.thequietz.travelog.ui.schedule.model.SchedulePlaceModel
 
 class Converters {
     @TypeConverter

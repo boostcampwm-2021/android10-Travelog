@@ -26,29 +26,20 @@ fun addOneDate(date: String): String {
 
 /* RecordBasicViewModel.kt */
 
-fun Int.toStringDate(): String {
-    if (this / 10 == 0) {
-        return "0$this"
-    }
-    return "$this"
-}
+fun Int.toStringDate(): String = if (this / 10 == 0) "0$this" else "$this"
 
 fun String.nextDate(): String {
-    val tempDate = this.split('.').map { it.toInt() }
-    val isLeapYear = tempDate[0] % 4 == 0
+    val (year, month, day) = this.split('.').map { it.toInt() }
+    val isLeapYear = year % 4 == 0
     val dayOfMonth =
-        if (isLeapYear) listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+        if (isLeapYear) listOf(0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
         else listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
-    if (tempDate[2] + 1 <= dayOfMonth[tempDate[1]]) {
-        return "${tempDate[0]}.${(tempDate[1]).toStringDate()}.${(tempDate[2] + 1).toStringDate()}"
+    return when {
+        day + 1 <= dayOfMonth[month] -> "$year.${month.toStringDate()}.${(day + 1).toStringDate()}"
+        month + 1 <= 12 -> "$year.${(month + 1).toStringDate()}.01"
+        else -> "${year + 1}.01.01"
     }
-
-    if (tempDate[1] + 1 <= 12) {
-        return "${tempDate[0]}.${(tempDate[1] + 1).toStringDate()}.01"
-    }
-
-    return "${tempDate[0] + 1}.01.01"
 }
 
 fun createDayFromDate(startDate: String, date: String): String {
@@ -56,7 +47,7 @@ fun createDayFromDate(startDate: String, date: String): String {
     val tempDate = date.split('.').map { it.toInt() }
     val isLeapYear = tempDate[0] % 4 == 0
     val dayOfMonth =
-        if (isLeapYear) listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+        if (isLeapYear) listOf(0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
         else listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
     // 2020.12.30 ~ 2021.1.4
@@ -97,8 +88,11 @@ fun createDateFromDay(startDate: String, day: String): String {
     val tempDay = day.substring(3).toInt() - 1
     val isLeapYear = tempDate[0] % 4 == 0
     val dayOfMonth =
-        if (isLeapYear) listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+        if (isLeapYear) listOf(0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
         else listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+
+    val day = ((tempDate[2] + tempDay) % (dayOfMonth[tempDate[1]] + 1)).toStringDate()
+    val month = (tempDate[1] + (tempDate[2] + tempDay) / (dayOfMonth[tempDate[1]]))
 
     // TODO("2달 이상 고려해야함.")
 

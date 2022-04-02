@@ -9,7 +9,6 @@ plugins {
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file("local.properties").newDataInputStream())
-def googleMapApiKey = properties.getProperty('newGoogleMapKey')
 
 android {
     compileSdk 31
@@ -25,7 +24,7 @@ android {
         buildConfigField "String", "GOOGLE_MAP_KEY", properties["google_map_key"]
         buildConfigField "String", "TOUR_API_KEY", properties["tour_api_key"]
         buildConfigField "String", "NEW_TOUR_API_KEY", properties["new_tour_api_key"]
-        manifestPlaceholders = [googleMapKey:googleMapApiKey]
+        manifestPlaceholders["google_map_key"] = properties["google_map_key"]
     }
 
     buildTypes {
@@ -51,7 +50,6 @@ android {
 }
 
 dependencies {
-
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'
@@ -80,7 +78,7 @@ dependencies {
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    kapt 'com.github.bumptech.glide:compiler:4.12.0'
 
     // Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0-beta01'

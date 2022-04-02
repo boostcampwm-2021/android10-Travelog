@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/recordFragment"
-        android:name="com.thequietz.travelog.record.view.RecordFragment"
+        android:name="com.thequietz.travelog.ui.record.view.RecordFragment"
         android:label="나만의 여행 기록"
         tools:layout="@layout/fragment_record">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordBasicFragment"
-        android:name="com.thequietz.travelog.record.view.RecordBasicFragment"
+        android:name="com.thequietz.travelog.ui.record.view.RecordBasicFragment"
         android:label="">
         <action
             android:id="@+id/action_recordBasicFragment_to_recordViewOneFragment"
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordViewOneFragment"
-        android:name="com.thequietz.travelog.record.view.RecordViewOneFragment"
+        android:name="com.thequietz.travelog.ui.record.view.RecordViewOneFragment"
         android:label="RecordViewOneFragment">
         <action
             android:id="@+id/action_recordViewOneFragment_to_recordViewManyFragment"
@@ -68,12 +68,10 @@
             android:name="from"
             app:argType="string"
             android:defaultValue=""/>
-
-
     </fragment>
     <fragment
         android:id="@+id/recordViewManyFragment"
-        android:name="com.thequietz.travelog.record.view.RecordViewManyFragment"
+        android:name="com.thequietz.travelog.ui.record.view.RecordViewManyFragment"
         android:label="여행 기록 보기">
         <action
             android:id="@+id/action_recordViewManyFragment_to_recordViewOneFragment"
@@ -87,7 +85,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordAddImageFragment"
-        android:name="com.thequietz.travelog.record.view.RecordAddImageFragment"
+        android:name="com.thequietz.travelog.ui.record.view.RecordAddImageFragment"
         android:label="RecordAddImageFragment">
         <action
             android:id="@+id/action_recordAddImageFragment_to_recordViewOneFragment"
@@ -97,7 +95,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordAddFragment"
-        android:name="com.thequietz.travelog.record.view.RecordAddImageFragment"
+        android:name="com.thequietz.travelog.ui.record.view.RecordAddImageFragment"
         android:label="RecordAddFragment">
         <argument
             android:name="travelId"
@@ -106,5 +104,4 @@
             android:name="day"
             app:argType="string" />
     </fragment>
-
 </navigation>

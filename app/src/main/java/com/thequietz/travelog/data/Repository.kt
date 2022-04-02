@@ -11,10 +11,10 @@ import com.thequietz.travelog.data.db.dao.NewRecordImageDao
 import com.thequietz.travelog.data.db.dao.PlaceDao
 import com.thequietz.travelog.data.db.dao.RecommendPlaceDao
 import com.thequietz.travelog.data.db.dao.RecordImageDao
-import com.thequietz.travelog.getTodayDate
-import com.thequietz.travelog.guide.Place
-import com.thequietz.travelog.guide.RecommendPlace
-import com.thequietz.travelog.record.model.RecordImage
+import com.thequietz.travelog.ui.guide.Place
+import com.thequietz.travelog.ui.guide.RecommendPlace
+import com.thequietz.travelog.ui.record.model.RecordImage
+import com.thequietz.travelog.util.getTodayDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -204,7 +204,11 @@ class GuideRepository @Inject constructor(
         }
     }
 
-    suspend fun loadFestivalData(areaCode: String, contentTypeId: Int, pageNo: Int): List<RecommendPlace> {
+    suspend fun loadFestivalData(
+        areaCode: String,
+        contentTypeId: Int,
+        pageNo: Int
+    ): List<RecommendPlace> {
         val loadData =
             recommendPlaceDao.loadRecommendFestivalByAreaCode(areaCode, contentTypeId)
         if (loadData.size < pageNo * 10) {
@@ -258,7 +262,14 @@ class RecordRepository @Inject constructor(
     private val coroutineScope: CoroutineScope
 ) {
     fun loadAnyJoinedRecordByTravelIdAndPlaceAndDay(travelId: Int, day: String, place: String) =
-        joinRecordDao.loadStartJoinedRecordByTravelIdAndDayAndPlace(travelId, day, place, true, 1, 0)
+        joinRecordDao.loadStartJoinedRecordByTravelIdAndDayAndPlace(
+            travelId,
+            day,
+            place,
+            true,
+            1,
+            0
+        )
 
     fun loadDefaultJoinedRecordByTravelId(travelId: Int, place: String) =
         joinRecordDao.loadDefaultJoinedRecordByTravelId(travelId, place)
@@ -305,12 +316,15 @@ class RecordRepository @Inject constructor(
     fun insertEachNewRecordImages(image: NewRecordImage) {
         coroutineScope.launch { newRecordImageDao.insert(image) }
     }
+
     fun insertNewRecordImages(images: List<NewRecordImage>) {
         coroutineScope.launch { newRecordImageDao.insert(*images.toTypedArray()) }
     }
+
     fun insertRecordImages(images: List<RecordImage>) {
         coroutineScope.launch { recordImageDao.insert(*images.toTypedArray()) }
     }
+
     fun deleteNewRecordImages(images: List<NewRecordImage>) {
         coroutineScope.launch { newRecordImageDao.delete(*images.toTypedArray()) }
     }
@@ -323,6 +337,7 @@ class RecordRepository @Inject constructor(
             }
         }
     }
+
     fun deleteNewRecordImage(id: Int) {
         coroutineScope.launch {
             val data = newRecordImageDao.loadRecordImageById(id)

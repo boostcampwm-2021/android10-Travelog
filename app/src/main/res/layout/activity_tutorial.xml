@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:backgroundTint="@color/white"
-            android:text="건너뛰기"
+            android:text="@string/btn_tutorial_skip"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/ci_tutorial"

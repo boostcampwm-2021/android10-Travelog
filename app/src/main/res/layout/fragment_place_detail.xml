@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.thequietz.travelog.place.viewmodel.PlaceDetailViewModel" />
+            type="com.thequietz.travelog.ui.place.viewmodel.PlaceDetailViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".place.view.PlaceDetailFragment">
+        tools:context=".ui.place.view.PlaceDetailFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/abl_place_detail"

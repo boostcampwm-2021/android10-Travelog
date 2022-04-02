@@ -3,7 +3,7 @@ package com.thequietz.travelog.data.db.dao
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
-import com.thequietz.travelog.schedule.model.ScheduleDetailModel
+import com.thequietz.travelog.ui.schedule.model.ScheduleDetailModel
 
 @Dao
 abstract class ScheduleDetailDao : BaseDao<ScheduleDetailModel> {

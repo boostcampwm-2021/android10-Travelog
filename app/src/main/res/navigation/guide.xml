@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/guideFragment"
-        android:name="com.thequietz.travelog.guide.view.GuideFragment"
+        android:name="com.thequietz.travelog.ui.guide.view.GuideFragment"
         android:label="둘러보기"
         tools:layout="@layout/fragment_guide">
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/specificGuideFragment"
-        android:name="com.thequietz.travelog.guide.view.SpecificGuideFragment"
+        android:name="com.thequietz.travelog.ui.guide.view.SpecificGuideFragment"
         android:label="상세 지역 선택">
         <argument
             android:name="item"
@@ -41,20 +41,20 @@
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right"/>
+            app:popExitAnim="@anim/to_right" />
         <action
             android:id="@+id/action_directly_specificGuideFragment_to_otherInfoFragment"
-            app:popUpToInclusive="false"
-            app:popUpTo="@id/guideFragment"
+            app:destination="@id/otherInfoFragment"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
             app:popExitAnim="@anim/to_right"
-            app:destination="@id/otherInfoFragment" />
+            app:popUpTo="@id/guideFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/otherInfoFragment"
-        android:name="com.thequietz.travelog.guide.view.OtherInfoFragment"
+        android:name="com.thequietz.travelog.ui.guide.view.OtherInfoFragment"
         android:label="추천 정보">
         <argument
             android:name="item"
@@ -62,12 +62,12 @@
         <action
             android:id="@+id/action_otherInfoFragment_to_specificGuideFragment"
             app:destination="@id/specificGuideFragment"
-            app:popUpTo="@id/specificGuideFragment"
-            app:popUpToInclusive="true"
             app:enterAnim="@anim/from_right"
             app:exitAnim="@anim/to_left"
             app:popEnterAnim="@anim/from_left"
-            app:popExitAnim="@anim/to_right" />
+            app:popExitAnim="@anim/to_right"
+            app:popUpTo="@id/specificGuideFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_otherInfoFragment_to_placeDetailFragmentFromGuide"
             app:destination="@id/placeDetailFragmentFromGuide"
@@ -78,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/placeDetailFragmentFromGuide"
-        android:name="com.thequietz.travelog.place.view.PlaceDetailFragment"
+        android:name="com.thequietz.travelog.ui.place.view.PlaceDetailFragment"
         android:label="PlaceDetailFragment">
         <argument
             android:name="param"
@@ -90,9 +90,4 @@
             android:name="isGuide"
             app:argType="boolean" />
     </fragment>
-    <fragment
-        android:id="@+id/splashFragment"
-        android:name="com.thequietz.travelog.SplashFragment"
-        android:label="SplashFragment" />
-
 </navigation>

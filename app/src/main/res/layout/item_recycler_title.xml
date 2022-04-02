@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.thequietz.travelog.guide.model.Guide.Header" />
+            type="com.thequietz.travelog.ui.guide.model.Guide.Header" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

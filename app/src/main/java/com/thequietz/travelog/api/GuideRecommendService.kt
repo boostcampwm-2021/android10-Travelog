@@ -1,6 +1,6 @@
 package com.thequietz.travelog.api
 
-import com.thequietz.travelog.guide.RecommendResponse
+import com.thequietz.travelog.ui.guide.RecommendResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET

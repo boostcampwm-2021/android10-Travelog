@@ -21,11 +21,6 @@
         android:usesCleartextTraffic="true"
         android:usesNonSdkApi="true">
         <activity
-            android:name=".TutorialActivity"
-            android:exported="true" >
-
-        </activity>
-        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -34,18 +29,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="${googleMapKey}" />
-
+        <activity
+            android:name=".TutorialActivity"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${google_map_key}" />
 
         <receiver
-            android:name=".menu.alarm.AlarmReceiver"
+            android:name="com.thequietz.travelog.ui.menu.alarm.AlarmReceiver"
             android:exported="false" />
 
         <provider
@@ -57,6 +54,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_provider" />
         </provider>
-    </application>
 
+    </application>
 </manifest>
