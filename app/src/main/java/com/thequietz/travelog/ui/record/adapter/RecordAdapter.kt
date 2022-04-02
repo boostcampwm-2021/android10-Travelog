@@ -34,7 +34,7 @@ class RecordAdapter(
     }
 }
 
-class RecordDiffCallback : DiffUtil.ItemCallback<Record>() {
+private class RecordDiffCallback : DiffUtil.ItemCallback<Record>() {
     override fun areItemsTheSame(oldItem: Record, newItem: Record): Boolean {
         return oldItem.hashCode() == newItem.hashCode()
     }
