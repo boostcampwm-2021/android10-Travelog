@@ -81,66 +81,63 @@ class RecordViewOneFragment :
         }
     }
 
-    private fun setListener() {
-        with(binding) {
-            vpReviewViewOne.registerOnPageChangeCallback(object :
-                ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    if (recordViewOneViewModel.islistUpdate.value == true) {
-                        RecordViewOneViewModel.currentPosition.value?.let {
-                            super.onPageSelected(it)
-                            vpReviewViewOne.post {
-                                vpReviewViewOne.setCurrentItem(it, true)
-                            }
-                            recordViewOneViewModel.resetIsListUpdate()
-                        }
-                    } else {
-                        super.onPageSelected(position)
-                        recordViewOneViewModel.setCurrentPosition(position)
+    private fun setListener() = with(binding) {
+        vpReviewViewOne.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                if (recordViewOneViewModel.islistUpdate.value == true) {
+                    RecordViewOneViewModel.currentPosition.value?.let {
+                        super.onPageSelected(it)
                         vpReviewViewOne.post {
-                            RecordViewOneViewModel.currentPosition.value?.let {
-                                vpReviewViewOne.setCurrentItem(it, true)
-                            }
+                            vpReviewViewOne.setCurrentItem(it, true)
+                        }
+                        recordViewOneViewModel.resetIsListUpdate()
+                    }
+                } else {
+                    super.onPageSelected(position)
+                    recordViewOneViewModel.setCurrentPosition(position)
+                    vpReviewViewOne.post {
+                        RecordViewOneViewModel.currentPosition.value?.let {
+                            vpReviewViewOne.setCurrentItem(it, true)
                         }
                     }
                 }
-            })
-            ibRecordViewOne.setOnClickListener {
-                val action =
-                    recordViewOneViewModel.currentImage.value?.let {
+            }
+        })
+        ibRecordViewOne.setOnClickListener {
+            val action =
+                recordViewOneViewModel.currentImage.value?.let {
+                    val action = RecordViewOneFragmentDirections
+                        .actionRecordViewOneFragmentToRecordViewManyFragment(it.recordImage.travelId)
+                    findNavController().navigate(action)
+                }
+        }
+        ibRecordViewOneEditComment.setOnClickListener {
+            binding.etRecordViewOne.isEnabled = !binding.etRecordViewOne.isEnabled
+            binding.tvRecordViewOneSave.visibility = View.VISIBLE
+            binding.ibRecordViewOneEditComment.visibility = View.GONE
+        }
+        tvRecordViewOneSave.setOnClickListener {
+            val currentText = binding.etRecordViewOne.text.toString()
+            showChangeCommentDialog(currentText)
+        }
+        tvRecordViewOneReduce.setOnClickListener {
+            val popup = PopupMenu(requireContext(), it)
+            popup.menuInflater.inflate(R.menu.menu_record_image_view, popup.menu)
+
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.imageDelete -> {
+                        showDeleteDialog()
+                    }
+                    R.id.imageAdd -> {
                         val action = RecordViewOneFragmentDirections
-                            .actionRecordViewOneFragmentToRecordViewManyFragment(it.recordImage.travelId)
+                            .actionRecordViewOneFragmentToRecordAddImageFragment()
                         findNavController().navigate(action)
                     }
-            }
-            ibRecordViewOneEditComment.setOnClickListener {
-                binding.etRecordViewOne.isEnabled = !binding.etRecordViewOne.isEnabled
-                binding.tvRecordViewOneSave.visibility = View.VISIBLE
-                binding.ibRecordViewOneEditComment.visibility = View.GONE
-            }
-            tvRecordViewOneSave.setOnClickListener {
-                val currentText = binding.etRecordViewOne.text.toString()
-                showChangeCommentDialog(currentText)
-            }
-            tvRecordViewOneReduce.setOnClickListener {
-                val popup = PopupMenu(requireContext(), it)
-                popup.menuInflater.inflate(R.menu.menu_record_image_view, popup.menu)
-
-                popup.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.imageDelete -> {
-                            showDeleteDialog()
-                        }
-                        R.id.imageAdd -> {
-                            val action = RecordViewOneFragmentDirections
-                                .actionRecordViewOneFragmentToRecordAddImageFragment()
-                            findNavController().navigate(action)
-                        }
-                    }
-                    false
                 }
-                popup.show()
+                false
             }
+            popup.show()
         }
     }
 

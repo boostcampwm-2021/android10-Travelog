@@ -158,7 +158,7 @@ class RecordAddImageFragment :
             }
         }
         binding.spDestination.onItemSelectedListener =
-            (object : AdapterView.OnItemSelectedListener {
+            object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
                     view: View?,
@@ -173,7 +173,7 @@ class RecordAddImageFragment :
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
                 }
-            })
+            }
     }
 
     private fun initToolbar() {
