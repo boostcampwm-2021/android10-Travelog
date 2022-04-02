@@ -36,8 +36,8 @@ fun String.nextDate(): String {
         else listOf(0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
 
     return when {
-        day + 1 <= dayOfMonth[month] -> "${year}.${month.toStringDate()}.${(day + 1).toStringDate()}"
-        month + 1 <= 12 -> "${year}.${(month + 1).toStringDate()}.01"
+        day + 1 <= dayOfMonth[month] -> "$year.${month.toStringDate()}.${(day + 1).toStringDate()}"
+        month + 1 <= 12 -> "$year.${(month + 1).toStringDate()}.01"
         else -> "${year + 1}.01.01"
     }
 }

@@ -75,9 +75,9 @@ class RecordViewOneFragment :
                 loading.dismiss()
             }, 1000)
 
-            dataList.observe(viewLifecycleOwner, { it ->
+            dataList.observe(viewLifecycleOwner) { it ->
                 it?.let { adapter.submitList(it) }
-            })
+            }
         }
     }
 
@@ -104,8 +104,7 @@ class RecordViewOneFragment :
                         }
                     }
                 }
-            }
-            )
+            })
             ibRecordViewOne.setOnClickListener {
                 val action =
                     recordViewOneViewModel.currentImage.value?.let {

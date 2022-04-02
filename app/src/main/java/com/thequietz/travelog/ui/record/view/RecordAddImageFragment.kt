@@ -4,7 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResult
@@ -91,9 +96,9 @@ class RecordAddImageFragment :
             rvRecordAddImage.adapter = adapter
         }
         with(recordAddImageViewModel) {
-            imageList.observe(viewLifecycleOwner, { it ->
+            imageList.observe(viewLifecycleOwner) { it ->
                 it?.let { adapter.submitList(it) }
-            })
+            }
         }
         setListener()
         Handler(Looper.getMainLooper()).postDelayed({
@@ -152,24 +157,23 @@ class RecordAddImageFragment :
                 findNavController().navigate(action)
             }
         }
-        binding.spDestination.onItemSelectedListener = (
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        recordAddImageViewModel.placeAndScheduleList.value?.let {
-                            recordAddImageViewModel.setCurrentPlaceAndSchedule(position)
-                            recordAddImageViewModel.setMainImage(position)
-                        }
-                    }
-
-                    override fun onNothingSelected(p0: AdapterView<*>?) {
+        binding.spDestination.onItemSelectedListener =
+            (object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    recordAddImageViewModel.placeAndScheduleList.value?.let {
+                        recordAddImageViewModel.setCurrentPlaceAndSchedule(position)
+                        recordAddImageViewModel.setMainImage(position)
                     }
                 }
-                )
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+            })
     }
 
     private fun initToolbar() {
